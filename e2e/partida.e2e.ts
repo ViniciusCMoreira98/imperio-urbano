@@ -11,7 +11,9 @@ async function newPlayer(browser: Browser, nickname: string): Promise<Page> {
   return page;
 }
 
-const myTurn = (page: Page) => page.getByText('Sua vez', { exact: true });
+/** Em tela larga a vez aparece no quadro "Turno de" do canto inferior esquerdo. */
+const turnOf = (page: Page, name: string) => page.getByRole('status', { name: `Turno de: ${name}` });
+const myTurn = (page: Page) => turnOf(page, 'Você');
 
 /** Decisões que o jogador da vez pode recusar depois de andar; recusar mantém o teste previsível. */
 const DECLINE = ['ROLAR DADOS', 'Não comprar', 'Não construir', 'Não sediar'];
@@ -41,10 +43,10 @@ test('dois jogadores criam a sala, começam a partida e jogam um turno', async (
   for (const page of [ana, bia]) {
     await expect(page.getByRole('list', { name: 'Jogadores' })).toBeVisible();
   }
-  await expect(myTurn(ana).or(ana.getByText('Vez de Bia E2E'))).toBeVisible();
+  await expect(myTurn(ana).or(turnOf(ana, 'Bia E2E'))).toBeVisible();
   const [first, second] = (await myTurn(ana).isVisible()) ? [ana, bia] : [bia, ana];
   const firstName = first === ana ? 'Ana E2E' : 'Bia E2E';
-  await expect(second.getByText(`Vez de ${firstName}`)).toBeVisible();
+  await expect(turnOf(second, firstName)).toBeVisible();
 
   // Joga até a vez passar (dupla dá nova jogada; o Descanso só passa a vez).
   for (let step = 0; step < 12 && !(await myTurn(second).isVisible()); step++) {
@@ -56,7 +58,7 @@ test('dois jogadores criam a sala, começam a partida e jogam um turno', async (
     }
   }
   await expect(myTurn(second)).toBeVisible();
-  await expect(first.getByText(`Vez de ${first === ana ? 'Bia E2E' : 'Ana E2E'}`)).toBeVisible();
+  await expect(turnOf(first, first === ana ? 'Bia E2E' : 'Ana E2E')).toBeVisible();
 
   // O lance chegou aos dois navegadores pelo WebSocket.
   for (const page of [ana, bia]) {

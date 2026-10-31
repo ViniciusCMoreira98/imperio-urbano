@@ -34,7 +34,7 @@ export function EventLog() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="self-start rounded-xl border-2 border-white/10 bg-slate-900/90 px-3 py-1.5 text-xs font-bold text-white/85 backdrop-blur hover:bg-slate-800"
+        className="self-start hud-panel rounded-xl px-3 py-1.5 text-xs font-bold text-white/90 hover:brightness-125"
       >
         📜 Histórico
       </button>
@@ -42,7 +42,7 @@ export function EventLog() {
   }
 
   return (
-    <section className="w-full overflow-hidden rounded-xl border-2 border-white/10 bg-slate-900/90 text-xs text-white/85 backdrop-blur sm:w-72" aria-label="Histórico">
+    <section className="w-full overflow-hidden hud-panel rounded-xl text-xs text-white/90 sm:w-72" aria-label="Histórico">
       <div className="flex border-b border-white/10" role="tablist">
         {(
           [

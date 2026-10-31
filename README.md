@@ -75,3 +75,4 @@ Dois navegadores criam a sala, entram pelo código, iniciam a partida e jogam um
 3. [Domínio e fluxo de turnos](docs/03-dominio-e-fluxo.md)
 4. [Backlog](docs/04-backlog.md)
 5. [Direção visual](docs/05-direcao-visual.md)
+6. [Guideline de assets 3D](docs/06-guideline-assets-3d.md)

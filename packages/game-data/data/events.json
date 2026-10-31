@@ -11,9 +11,9 @@
     { "id": "reforma-urbana", "title": "Reforma urbana", "text": "A prefeitura exige reformas. Pague 25 por casa e 100 por hotel.", "effect": { "type": "PAY_PER_BUILDING", "perHouse": 25, "perHotel": 100 } },
     { "id": "aniversario", "title": "Aniversário", "text": "Hoje é seu aniversário! Cada jogador lhe dá 50.", "effect": { "type": "COLLECT_FROM_EACH", "amount": 50 } },
     { "id": "volta-ao-inicio", "title": "De volta ao começo", "text": "Avance até o Início.", "effect": { "type": "MOVE_TO", "tile": 0 } },
-    { "id": "voo-sao-paulo", "title": "Voo para São Paulo", "text": "Avance até São Paulo. Se passar pelo Início, receba o bônus.", "effect": { "type": "MOVE_TO", "tile": 35 } },
-    { "id": "tocha-olimpica", "title": "Tocha olímpica", "text": "Você foi chamado para conduzir a tocha. Avance até as Olimpíadas.", "effect": { "type": "MOVE_TO", "tile": 18 } },
-    { "id": "convite-brasilia", "title": "Convite em Brasília", "text": "Uma reunião importante no Planalto. Avance até o Distrito Federal.", "effect": { "type": "MOVE_TO", "tile": 25 } },
+    { "id": "voo-sao-paulo", "title": "Voo para São Paulo", "text": "Avance até São Paulo. Se passar pelo Início, receba o bônus.", "effect": { "type": "MOVE_TO", "tile": 26 } },
+    { "id": "tocha-olimpica", "title": "Tocha olímpica", "text": "Você foi chamado para conduzir a tocha. Avance até as Olimpíadas.", "effect": { "type": "MOVE_TO", "tile": 9 } },
+    { "id": "convite-brasilia", "title": "Convite em Brasília", "text": "Uma reunião importante no Planalto. Avance até o Distrito Federal.", "effect": { "type": "MOVE_TO", "tile": 14 } },
     { "id": "estrada-interditada", "title": "Estrada interditada", "text": "A ponte caiu. Volte 3 casas.", "effect": { "type": "MOVE_BY", "steps": -3 } },
     { "id": "carona", "title": "Carona", "text": "Um amigo passou de carro. Avance 3 casas.", "effect": { "type": "MOVE_BY", "steps": 3 } },
     { "id": "feriado-prolongado", "title": "Feriado prolongado", "text": "Hora de relaxar. Vá direto para o Descanso.", "effect": { "type": "GO_TO_REST" } }

@@ -19,9 +19,9 @@ import org.junit.jupiter.api.Test;
 class OlympicsTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int OLYMPICS_TILE = 18;
+    private static final int OLYMPICS_TILE = 9;
     private static final int FEE = CATALOG.rules().olympics().hostFee();
-    private static final StateDefinition AP = CATALOG.state("AP");
+    private static final StateDefinition AC = CATALOG.state("AC");
 
     private final GameEngine engine = new GameEngine(CATALOG);
     private GameState state;
@@ -51,7 +51,7 @@ class OlympicsTest {
 
     @Test
     void ownerLandingOnOlympicsChoosesAHost() {
-        give("ana", "AP");
+        give("ana", "AC");
         anaLandsOnOlympics();
 
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_OLYMPICS_HOST);
@@ -59,57 +59,57 @@ class OlympicsTest {
 
     @Test
     void firstEditionDoublesTheHostRent() {
-        give("ana", "AP");
+        give("ana", "AC");
         anaLandsOnOlympics();
-        GameEngine.Result result = run("ana", new HostOlympics("AP"));
+        GameEngine.Result result = run("ana", new HostOlympics("AC"));
 
-        assertThat(result.events()).containsExactly(new OlympicsHostSelected("ana", "AP", 1, 2, FEE));
-        assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AP", "ana", 2));
+        assertThat(result.events()).containsExactly(new OlympicsHostSelected("ana", "AC", 1, 2, FEE));
+        assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AC", "ana", 2));
         assertThat(state.player("ana").credits()).isEqualTo(1500 - FEE);
-        assertThat(engine.rentFor(state, "AP")).isEqualTo(2 * AP.rent().base());
+        assertThat(engine.rentFor(state, "AC")).isEqualTo(2 * AC.rent().base());
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
     @Test
     void newEditionMovesTheHostAndRaisesTheMultiplier() {
-        give("ana", "AP");
         give("ana", "AC");
-        state = state.withOlympics(new OlympicsState(1, "AP", "ana", 2));
+        give("ana", "AP");
+        state = state.withOlympics(new OlympicsState(1, "AC", "ana", 2));
         anaLandsOnOlympics();
-        run("ana", new HostOlympics("AC"));
+        run("ana", new HostOlympics("AP"));
 
-        assertThat(state.olympics()).isEqualTo(new OlympicsState(2, "AC", "ana", 3));
-        assertThat(engine.rentFor(state, "AP")).isEqualTo(AP.rent().base());
-        assertThat(engine.rentFor(state, "AC")).isEqualTo(3 * CATALOG.state("AC").rent().base());
+        assertThat(state.olympics()).isEqualTo(new OlympicsState(2, "AP", "ana", 3));
+        assertThat(engine.rentFor(state, "AC")).isEqualTo(AC.rent().base());
+        assertThat(engine.rentFor(state, "AP")).isEqualTo(3 * CATALOG.state("AP").rent().base());
     }
 
     @Test
     void multiplierStopsAtTen() {
-        give("ana", "AP");
-        state = state.withOlympics(new OlympicsState(9, "AP", "ana", 10));
+        give("ana", "AC");
+        state = state.withOlympics(new OlympicsState(9, "AC", "ana", 10));
         anaLandsOnOlympics();
-        run("ana", new HostOlympics("AP"));
+        run("ana", new HostOlympics("AC"));
 
-        assertThat(state.olympics()).isEqualTo(new OlympicsState(10, "AP", "ana", 10));
+        assertThat(state.olympics()).isEqualTo(new OlympicsState(10, "AC", "ana", 10));
     }
 
     @Test
     void multiplierAppliesOverBuildings() {
-        state = state.withProperty(new PropertyState("AP", "bia", 3, 1, 1))
-                .withOlympics(new OlympicsState(2, "AP", "bia", 3));
+        state = state.withProperty(new PropertyState("AC", "bia", 3, 1, 1))
+                .withOlympics(new OlympicsState(2, "AC", "bia", 3));
 
         run("ana", new RollDice(), 1, 2);
 
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - 3 * AP.rent().house3());
+        assertThat(state.player("ana").credits()).isEqualTo(1500 - 3 * AC.rent().house3());
     }
 
     @Test
     void cannotHostWithAnotherPlayersState() {
-        give("ana", "AP");
-        give("bia", "AC");
+        give("ana", "AC");
+        give("bia", "AP");
         anaLandsOnOlympics();
 
-        assertThatThrownBy(() -> run("ana", new HostOlympics("AC")))
+        assertThatThrownBy(() -> run("ana", new HostOlympics("AP")))
                 .isInstanceOf(RuleViolationException.class)
                 .hasMessage("Escolha um estado que você possui para sediar as Olimpíadas.");
         assertThatThrownBy(() -> run("ana", new HostOlympics("SP"))).isInstanceOf(RuleViolationException.class);
@@ -124,7 +124,7 @@ class OlympicsTest {
 
     @Test
     void noHostingWithoutCreditsForTheFee() {
-        give("ana", "AP");
+        give("ana", "AC");
         state = state.updatePlayer("ana", p -> p.withCredits(FEE - 1));
         anaLandsOnOlympics();
 
@@ -133,20 +133,20 @@ class OlympicsTest {
 
     @Test
     void skippingKeepsTheCurrentEdition() {
-        give("ana", "AP");
-        state = state.withOlympics(new OlympicsState(1, "AP", "ana", 2));
+        give("ana", "AC");
+        state = state.withOlympics(new OlympicsState(1, "AC", "ana", 2));
         anaLandsOnOlympics();
         run("ana", new SkipOlympics());
 
-        assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AP", "ana", 2));
+        assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AC", "ana", 2));
         assertThat(state.player("ana").credits()).isEqualTo(1500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
     @Test
     void cannotHostOutsideTheOlympicsTile() {
-        give("ana", "AP");
+        give("ana", "AC");
 
-        assertThatThrownBy(() -> run("ana", new HostOlympics("AP"))).isInstanceOf(RuleViolationException.class);
+        assertThatThrownBy(() -> run("ana", new HostOlympics("AC"))).isInstanceOf(RuleViolationException.class);
     }
 }

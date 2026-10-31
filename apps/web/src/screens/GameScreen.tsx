@@ -6,6 +6,7 @@ import { CardReveal } from '../hud/CardReveal';
 import { EventLog } from '../hud/EventLog';
 import { PlayersPanel } from '../hud/PlayersPanel';
 import { PropertyPanel } from '../hud/PropertyPanel';
+import { TurnBadge } from '../hud/TurnBadge';
 import { ViewControls } from '../hud/ViewControls';
 import { GameConnection } from '../net/gameSocket';
 import { useAppStore } from '../store/appStore';
@@ -53,7 +54,7 @@ export function GameScreen() {
       <BoardScene />
 
       <header className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 p-2 sm:p-3">
-        <Button className="px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
+        <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
           ←<span className="hidden sm:inline"> Menu</span>
         </Button>
         {connection !== 'open' && (
@@ -80,6 +81,9 @@ export function GameScreen() {
               <ActionBar myId={session.playerId} />
             </div>
           </footer>
+          <div className="absolute bottom-3 left-3 hidden lg:block">
+            <TurnBadge myId={session.playerId} />
+          </div>
           <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center">
             <CardReveal />
           </div>

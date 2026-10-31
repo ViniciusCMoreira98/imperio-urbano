@@ -12,3 +12,18 @@ body {
   color: #f5f1e6;
   font-family: system-ui, sans-serif;
 }
+
+/* HUD da partida (alvo visual): painéis roxos translúcidos com borda e brilho neon. */
+.hud-panel {
+  background: linear-gradient(180deg, rgba(52, 26, 104, 0.92), rgba(24, 14, 62, 0.94));
+  border: 2px solid rgba(167, 139, 250, 0.65);
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.45), inset 0 0 12px rgba(139, 92, 246, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+.hud-roll {
+  background: linear-gradient(180deg, #ffd23f 0%, #ff9f1c 55%, #f77f00 100%);
+  color: #3b1700;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 14px rgba(255, 159, 28, 0.6), inset 0 -3px 0 rgba(0, 0, 0, 0.18);
+}

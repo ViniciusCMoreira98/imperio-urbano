@@ -1,18 +1,24 @@
 # 05 — Direção visual
 
+**Alvo visual atual (substitui as referências abaixo onde divergirem):** [visual-alvo.webp](referencias/visual-alvo.webp). O usuário quer personagens, tabuleiro, HUD e ambiente assim: personagens chibi estilo anime sobre bases com anel de luz na cor do jogador; tabuleiro escuro com borda em neon (roxo, azul, amarelo), casas brancas com ilustração e faixa de cor, centro azul-escuro em grade com logotipo, mapa do Brasil e miniaturas 3D (prédios, estádio, Catedral de Brasília, coqueiros); ambiente do Rio ao entardecer (prédios iluminados, Cristo Redentor, Pão de Açúcar, mar com barcos); HUD em painéis roxos com borda neon, retrato, posição (1º–4º) e coroa no líder, barra inferior com botão laranja "Rolar dados". Continuam valendo: moeda "$", preços do catálogo, regras aprovadas e tela limpa no celular.
+
 Referência: [arte-conceito.webp](referencias/arte-conceito.webp). Ela define o **estilo**; regras e valores continuam vindo de `packages/game-data`.
+
+**Arte do tabuleiro** ([tabuleiro-arte.webp](referencias/tabuleiro-arte.webp), cópia em `assets/board`): define a **ordem das casas** (sentido horário a partir do Início: Roraima, Amazonas, Acre, Rondônia, Evento, Tocantins, Pará, Amapá, Olimpíadas, …) e é usada como arte: cada casa mostra a ilustração recortada da imagem (`apps/web/src/board/boardArt.ts`) e o centro usa o mapa ilustrado com o logotipo. Preços em "C" e textos dos cantos da imagem não são usados (valem catálogo e regras). Ajustes: a casa sem nome da imagem é a Viagem Nacional; como a imagem tem 9 casas no topo e 7 embaixo, o Maranhão desce para o lado direito e o Rio de Janeiro passa para a fileira de baixo, mantendo a sequência.
 Os preços, a ordem dos estados e os cantos da imagem são ilustrativos (há UF repetida e outras faltando) e **não** substituem o catálogo.
+
+**(Antes do alvo visual) A arte-conceito era a referência principal**: o usuário quer o resultado final bem próximo dela (mesa de madeira, casas com ilustração do ponto turístico, mapa ilustrado com o logotipo no centro, pilhas de cartas, cantos ilustrados). Referência secundária: [estilo-business-tour.webp](referencias/estilo-business-tour.webp) (Business Tour), só para personagens humanos como peões; nenhuma arte, personagem ou layout dele é copiado.
 
 ## O que adotar da referência
 
 | Área | Referência | Hoje (Marco 1) | Entrega |
 |---|---|---|---|
-| Ambiente | Tabuleiro sobre mesa de madeira, plantas desfocadas ao redor | Fundo azul liso | E24 |
-| Casas | Faixa colorida forte com sigla + preço; miniatura do ponto turístico sobre cada estado | Arte em canvas, sem miniaturas | E24, E27 |
+| Ambiente | Tabuleiro sobre mesa de madeira, plantas desfocadas ao redor | ✅ Ambiente paradisíaco brasileiro (pedido do usuário): deck de madeira numa praia, areia clara, mar turquesa com espuma, coqueiros, moitas floridas e morros no horizonte; sol quente | E24 |
+| Casas | Faixa colorida forte com sigla + preço; miniatura do ponto turístico sobre cada estado | Arte em canvas; ✅ casinhas e hotel 3D na cor do dono (E24); pontos turísticos na E27 | E24, E27 |
 | Cantos | Losangos/hexágonos ilustrados com ícone grande (Olimpíadas com tocha, Descanso com guarda-sol) | Quadrado colorido com símbolo | E27 |
 | Centro | Mapa ilustrado (rios, matas, cidades, Cristo, estádio), logotipo "Império Urbano — Edição Brasil" | Gradiente com "BRASIL" | E27 |
-| Baralhos | Pilhas 3D "Eventos" e "Propriedades" no centro | Placas reservadas | E24 |
-| Peões | Peões cartunescos coloridos (formato clássico) | Peão vermelho simples | E23 |
+| Baralhos | Pilhas 3D "Eventos" e "Propriedades" no centro | ✅ Pilha 3D de Eventos (não há baralho de propriedades nas regras) | E24 |
+| Peões | Personagens humanos em estilo cartoon (decisão do usuário, como no Business Tour) | ✅ Personagens humanos do pacote Mini Characters (Kenney, CC0, `apps/web/public/models/characters`): Jurema, Caio, Luana, Otávio e Seu Zé, sobre base na cor do jogador; andam com animação virados para onde vão e, parados, olham para a câmera | E23 |
 | Moeda | Sufixo C na arte | Mantido `$ 1.250` (decisão do usuário) | — |
 | Painel de jogadores | Cartões à esquerda: avatar, nome, saldo, casas/hotéis/estados, coroa no líder, borda na cor do peão | ✅ Feito (+ patrimônio e estado: automático, descansando, viagem) | E20 |
 | Carta do estado | Cabeçalho verde com nome e sigla, foto da paisagem, compra e aluguel base em destaque, tabela com ícones de casa, custo de construção, botão Comprar | Painel escuro com tabela | E27 (paisagem), E20 (ações) |
@@ -50,10 +56,14 @@ Padrão visual comum: fundo com paisagem brasileira desfocada, painel central az
 | Menu inicial | Logo, avatar + apelido do convidado, botões Jogar, Regras, Configurações | E18 (layout), E27 (arte de fundo e personagens) |
 | Criar sala / Entrar em sala | Abas Criar/Entrar; modo de jogo (Clássico/Rápido); código da sala com botão copiar | E18 |
 | Sala de espera | Código copiável, lista de jogadores com Pronto/Aguardando, coroa no anfitrião, avatar em destaque, Iniciar partida | E18 |
-| Seleção de avatar | Grade dos 5 avatares, selecionado com check, Confirmar | E18 (provisório 2D), E23 (prévia 3D) |
+| Seleção de avatar | Grade dos 5 avatares, selecionado com check, Confirmar | E18 (grade), ✅ E23 (prévia 3D na sala de espera) |
 | Regras | Abas por tema (objetivo, movimentação, propriedades, construções, Olimpíadas, eventos, vitória) | E29 |
 | Configurações | Áudio, gráficos, tela cheia, limpar dados locais | E28/E29 |
 | Partida | Igual à referência do tabuleiro | E20 |
+
+## Fora do visual (decisão do usuário)
+
+- Sem balão de texto narrando o lance: o resultado aparece nos dados da barra e no histórico.
 
 ## Itens das telas fora dos requisitos (não adotados sem decisão)
 

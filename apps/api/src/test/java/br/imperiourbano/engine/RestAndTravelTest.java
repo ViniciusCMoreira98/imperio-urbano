@@ -22,8 +22,8 @@ import org.junit.jupiter.api.Test;
 class RestAndTravelTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int REST_TILE = 9;
-    private static final int TRAVEL_TILE = 27;
+    private static final int REST_TILE = 18;
+    private static final int TRAVEL_TILE = 20;
     private static final int TRAVEL_FEE = CATALOG.rules().nationalTravel().fee();
 
     private final GameEngine engine = new GameEngine(CATALOG);
@@ -52,9 +52,9 @@ class RestAndTravelTest {
         run(playerId, new EndTurn());
     }
 
-    /** Bia joga uma vez sem dupla (2 + 3, a partir da casa onde estiver) e devolve a vez. */
+    /** Bia joga uma vez sem dupla (1 + 3, a partir da casa onde estiver) e devolve a vez. */
     private void biaPlays() {
-        run("bia", new RollDice(), 2, 3);
+        run("bia", new RollDice(), 1, 3);
         finishTurn("bia");
     }
 
@@ -69,7 +69,7 @@ class RestAndTravelTest {
 
     @Test
     void landingOnRestCostsTheNextTurn() {
-        placeAna(6);
+        placeAna(REST_TILE - 3);
         run("ana", new RollDice(), 1, 2);
         assertThat(state.player("ana").skipTurns()).isEqualTo(1);
         finishTurn("ana");
@@ -104,12 +104,12 @@ class RestAndTravelTest {
     @Test
     void restingPlayerStillCollectsRent() {
         anaRestingAtRest();
-        state = state.withProperty(PropertyState.purchased("AP", "ana"))
+        state = state.withProperty(PropertyState.purchased("AC", "ana"))
                 .withTurn(1, 1, TurnPhase.AWAITING_ROLL, 0);
 
         run("bia", new RollDice(), 1, 2);
 
-        assertThat(state.player("ana").credits()).isEqualTo(1500 + CATALOG.state("AP").rent().base());
+        assertThat(state.player("ana").credits()).isEqualTo(1500 + CATALOG.state("AC").rent().base());
     }
 
     @Test
@@ -154,7 +154,7 @@ class RestAndTravelTest {
     void travelPastStartPaysTheBonus() {
         anaChoosingTravel();
 
-        run("ana", new ChooseTravel(5));
+        run("ana", new ChooseTravel(3));
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 - TRAVEL_FEE + 200);
     }

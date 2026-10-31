@@ -5,11 +5,11 @@ import { formatCredits } from '../property-card/tileInfo';
 
 /** Avatares provisórios (fauna brasileira) até os modelos 3D da E23. */
 export const AVATARS: Record<AvatarId, { name: string; emoji: string }> = {
-  'avatar-1': { name: 'Arara', emoji: '🦜' },
-  'avatar-2': { name: 'Onça', emoji: '🐆' },
-  'avatar-3': { name: 'Tartaruga', emoji: '🐢' },
-  'avatar-4': { name: 'Boto', emoji: '🐬' },
-  'avatar-5': { name: 'Preguiça', emoji: '🦥' },
+  'avatar-1': { name: 'Jurema', emoji: '👩🏾' },
+  'avatar-2': { name: 'Caio', emoji: '🧑🏾' },
+  'avatar-3': { name: 'Luana', emoji: '👱🏼‍♀️' },
+  'avatar-4': { name: 'Otávio', emoji: '👨🏼‍💼' },
+  'avatar-5': { name: 'Seu Zé', emoji: '🧔🏽' },
 };
 
 export const PAWN_COLORS: Record<PawnColor, { name: string; hex: string }> = {

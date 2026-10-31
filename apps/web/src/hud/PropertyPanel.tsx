@@ -7,7 +7,7 @@ import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { TileActions } from './TileActions';
 
-const panelClass = 'w-full overflow-hidden rounded-2xl border-2 border-white/15 bg-slate-900/95 text-sm shadow-2xl backdrop-blur sm:w-80';
+const panelClass = 'w-full overflow-hidden hud-panel rounded-2xl text-sm sm:w-80';
 
 /** Ícones da linha da tabela de aluguel: sem construção, 1–4 casas, hotel. */
 const RENT_ICONS = ['🌱', '🏠', '🏠🏠', '🏠🏠🏠', '🏠🏠🏠🏠', '🏨'];

@@ -1,13 +1,17 @@
 // Peças visuais comuns às telas (estilo da referência: painel azul-marinho, botões saturados).
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type Variant = 'primary' | 'confirm' | 'secondary' | 'danger';
+type Variant = 'primary' | 'confirm' | 'secondary' | 'danger' | 'roll' | 'neon';
 
 const VARIANTS: Record<Variant, string> = {
   primary: 'bg-amber-400 text-slate-900 hover:bg-amber-300',
   confirm: 'bg-emerald-600 text-white hover:bg-emerald-500',
   secondary: 'bg-sky-800 text-white hover:bg-sky-700 border border-sky-500/40',
   danger: 'bg-rose-700 text-white hover:bg-rose-600',
+  /** Botão principal da partida (Rolar dados), laranja como na referência. */
+  roll: 'hud-roll uppercase hover:brightness-110',
+  /** Botões do HUD da partida: roxo com borda neon. */
+  neon: 'hud-panel text-white hover:brightness-125',
 };
 
 export function Button({

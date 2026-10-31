@@ -4,16 +4,17 @@ import { board } from '@imperio/game-data';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
 import { tilePlacement } from './layout';
+import { HotelModel, HouseModel } from './BuildingModels';
 import { OlympicHost } from './OlympicHost';
 import { Pawn } from './Pawn';
 import { TILE_HEIGHT } from './Tile';
 
 /** Cantos da casa para até 4 peões, conforme o assento. */
 const SEAT_OFFSETS: [number, number][] = [
-  [-0.18, -0.18],
-  [0.18, -0.18],
-  [-0.18, 0.18],
-  [0.18, 0.18],
+  [-0.22, -0.22],
+  [0.22, -0.22],
+  [-0.22, 0.22],
+  [0.22, 0.22],
 ];
 
 export function Pawns() {
@@ -27,6 +28,7 @@ export function Pawns() {
           <Pawn
             key={p.id}
             position={p.position}
+            avatarId={p.avatarId}
             color={PAWN_COLORS[p.pawnColor].hex}
             offset={SEAT_OFFSETS[p.seat % SEAT_OFFSETS.length]}
           />
@@ -34,8 +36,6 @@ export function Pawns() {
     </>
   );
 }
-
-const HOUSE = 0.14;
 
 export function Buildings() {
   const snapshot = useGameStore((s) => s.snapshot);
@@ -66,17 +66,16 @@ export function Buildings() {
             <boxGeometry args={[placement.width * 0.9, 0.012, 0.1]} />
             <meshStandardMaterial color={ownerColor} />
           </mesh>
+          {/* Construções na faixa interna da casa, de frente para fora (onde fica a câmera). */}
           {property.buildingLevel === 5 ? (
-            <mesh position={[0, 0.13, -placement.depth / 2 + 0.5]} castShadow>
-              <boxGeometry args={[0.5, 0.26, 0.24]} />
-              <meshStandardMaterial color={ownerColor} />
-            </mesh>
+            <group position={[0, 0, -placement.depth / 2 + 0.5]}>
+              <HotelModel color={ownerColor} />
+            </group>
           ) : (
             Array.from({ length: property.buildingLevel }, (_, i) => (
-              <mesh key={i} position={[-0.3 + i * 0.2, HOUSE / 2, -placement.depth / 2 + 0.5]} castShadow>
-                <boxGeometry args={[HOUSE, HOUSE, HOUSE]} />
-                <meshStandardMaterial color={ownerColor} />
-              </mesh>
+              <group key={i} position={[-0.3 + i * 0.2, 0, -placement.depth / 2 + 0.5]}>
+                <HouseModel color={ownerColor} />
+              </group>
             ))
           )}
           {hostMultiplier !== null && <OlympicHost placement={placement} multiplier={hostMultiplier} />}

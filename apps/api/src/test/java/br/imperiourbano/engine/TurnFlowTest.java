@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 class TurnFlowTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int REST_TILE = 9;
+    private static final int REST_TILE = 18;
 
     private final GameEngine engine = new GameEngine(CATALOG);
     private final List<GameEvent> log = new ArrayList<>();
@@ -81,7 +81,7 @@ class TurnFlowTest {
 
         assertThat(state.player("ana").position()).isEqualTo(7);
         assertThat(state.lastDice()).isEqualTo(new DiceRoll(3, 4));
-        // Casa 7 é o Amazonas, livre: o jogador decide se compra.
+        // Casa 7 é o Pará, livre: o jogador decide se compra.
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
     }
 
@@ -189,30 +189,8 @@ class TurnFlowTest {
         assertThat(rebuilt.version()).isEqualTo(log.size());
     }
 
-    /** Leva Ana até a casa desejada e devolve a vez para ela, sem passar pelo Início. */
+    /** Coloca Ana direto na casa desejada (andar até lá cairia em Eventos, com cartas sorteadas). */
     private void moveAnaTo(int target) {
-        int remaining = target - state.player("ana").position();
-        while (remaining > 0) {
-            // Passos de 3 a 11 sem dupla; nunca deixa sobrar 1 ou 2 (impossível sem dupla).
-            int step = remaining <= 11 ? remaining : Math.min(11, remaining - 3);
-            int first = Math.min(6, step - 1);
-            int second = step - first;
-            if (first == second) {
-                first--;
-                second++;
-            }
-            roll("ana", first, second);
-            finishRound();
-            remaining -= step;
-        }
-        assertThat(state.player("ana").position()).isEqualTo(target);
-    }
-
-    private void finishRound() {
-        endTurn("ana");
-        for (String id : List.of("bia", "caio")) {
-            roll(id, 1, 2);
-            endTurn(id);
-        }
+        state = state.updatePlayer("ana", p -> p.withPosition(target));
     }
 }

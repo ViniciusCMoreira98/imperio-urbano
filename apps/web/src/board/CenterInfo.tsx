@@ -1,4 +1,4 @@
-// Painéis sobre os espaços reservados do centro (seção 5): partida e baralho de eventos.
+// Centro do tabuleiro (seção 5): painel da partida e pilha 3D do baralho de eventos (E24).
 // As Olimpíadas ficam destacadas no próprio estado-sede (OlympicHost), a pedido do usuário.
 // Desenhados em canvas como textura, deitados no tabuleiro (sem elementos HTML dentro da cena 3D).
 import { useEffect, useMemo } from 'react';
@@ -9,8 +9,8 @@ import { useGameStore } from '../store/gameStore';
 import { centerSlots } from './BoardCenter';
 
 const PX_PER_UNIT = 256;
-/** Logo acima das placas reservadas (altura 0,05). */
-const PANEL_Y = 0.056;
+/** Logo acima do centro ilustrado. */
+const PANEL_Y = 0.012;
 
 type Line = { text: string; color?: string; size?: number; weight?: number };
 
@@ -74,14 +74,51 @@ function Panel({ x, z, w, d, texture }: { x: number; z: number; w: number; d: nu
   );
 }
 
+/** Cartas levemente desalinhadas, como um baralho de verdade; a de cima mostra a arte do verso. */
+const PILE = [
+  { turn: 0.06, dx: 0.02, dz: -0.01 },
+  { turn: -0.05, dx: -0.03, dz: 0.02 },
+  { turn: 0.03, dx: 0.01, dz: 0.03 },
+  { turn: -0.08, dx: 0.03, dz: -0.02 },
+  { turn: 0.02, dx: -0.01, dz: 0.0 },
+  { turn: -0.03, dx: 0, dz: 0.01 },
+];
+const CARD_THICKNESS = 0.03;
+
+function CardPile({ x, z, w, d, texture }: { x: number; z: number; w: number; d: number; texture: CanvasTexture }) {
+  useEffect(() => () => texture.dispose(), [texture]);
+  return (
+    <group position={[x, PANEL_Y, z]}>
+      {PILE.map(({ turn, dx, dz }, i) => {
+        const top = i === PILE.length - 1;
+        return (
+          <mesh key={i} position={[dx, CARD_THICKNESS * (i + 0.5), dz]} rotation={[0, turn, 0]} castShadow receiveShadow>
+            <boxGeometry args={[w, CARD_THICKNESS, d]} />
+            {/* Ordem das faces do BoxGeometry: +x, -x, +y (topo), -y, +z, -z. */}
+            {[0, 1, 2, 3, 4, 5].map((face) => (
+              <meshStandardMaterial
+                key={face}
+                attach={`material-${face}`}
+                color={face === 2 && top ? '#ffffff' : face === 2 || face === 3 ? '#5b21b6' : '#f5f3ff'}
+                map={face === 2 && top ? texture : null}
+              />
+            ))}
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
 export function CenterInfo({ size }: { size: number }) {
   const snapshot = useGameStore((s) => s.snapshot);
   const slots = useMemo(() => Object.fromEntries(centerSlots(size).map((s) => [s.label, s])), [size]);
   const { Eventos: deck, Partida: gameSlot } = slots;
 
+  const card = useMemo(() => ({ x: deck.x, z: deck.z, w: deck.w * 0.9, d: deck.d * 0.9 }), [deck]);
   const deckTexture = useMemo(
-    () => drawPanel(deck.w, deck.d, ['#7c3aed', '#4c1d95'], '#c4b5fd', [{ text: '❓', size: 70 }, { text: 'EVENTOS', size: 40, weight: 900 }]),
-    [deck],
+    () => drawPanel(card.w, card.d, ['#7c3aed', '#4c1d95'], '#c4b5fd', [{ text: '❓', size: 70 }, { text: 'EVENTOS', size: 40, weight: 900 }]),
+    [card],
   );
   const gameKey = snapshot ? JSON.stringify([snapshot.round, snapshot.mode, snapshot.status, snapshot.currentPlayerId]) : '';
   const gameTexture = useMemo(
@@ -91,7 +128,7 @@ export function CenterInfo({ size }: { size: number }) {
 
   return (
     <>
-      <Panel {...deck} texture={deckTexture} />
+      <CardPile {...card} texture={deckTexture} />
       {gameTexture && <Panel {...gameSlot} texture={gameTexture} />}
     </>
   );

@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-/** Servidor real + cliente WebSocket do JDK. Dados sempre 1 + 2: do Início, para no Amapá (livre). */
+/** Servidor real + cliente WebSocket do JDK. Dados sempre 1 + 2: do Início, para no Acre (livre). */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({TestcontainersConfiguration.class, GameSocketTest.FixedDiceConfig.class})
 class GameSocketTest {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { AvatarId, LobbyView, PawnColor } from '@imperio/shared-types';
+import { AvatarPreview } from '../avatars/AvatarPreview';
 import { AVATARS, PAWN_COLORS } from '../game/presentation';
 import { api, ApiError } from '../net/api';
 import { useAppStore } from '../store/appStore';
@@ -148,6 +149,8 @@ export function LobbyScreen() {
 
         {me && (
           <Panel title="Seu avatar">
+            <AvatarPreview avatarId={me.avatarId} color={PAWN_COLORS[me.pawnColor].hex} label={AVATARS[me.avatarId].name} />
+            <p className="mb-3 mt-1 text-center font-bold text-white">{AVATARS[me.avatarId].name}</p>
             <div className="grid grid-cols-5 gap-2" role="radiogroup" aria-label="Avatar">
               {(Object.keys(AVATARS) as AvatarId[]).map((id) => (
                 <button
@@ -165,7 +168,6 @@ export function LobbyScreen() {
                 </button>
               ))}
             </div>
-            <p className="mt-1 text-center text-sm text-white/70">{AVATARS[me.avatarId].name}</p>
 
             <h3 className="mb-2 mt-4 font-bold text-white">Cor do peão</h3>
             <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Cor do peão">

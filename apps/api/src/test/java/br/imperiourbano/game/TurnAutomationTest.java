@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 /**
- * Dados sempre 1 + 2 (Ana para no Amapá, livre); prazos curtos: 3 s para rolar, 1 s para decidir e
+ * Dados sempre 1 + 2 (Ana para no Acre, livre); prazos curtos: 3 s para rolar, 1 s para decidir e
  * 300 ms entre jogadas do modo automático. As duas começam conectadas.
  */
 @SpringBootTest
@@ -126,9 +126,9 @@ class TurnAutomationTest {
         List<GameEvent> log = store.loadEvents(gameId);
         assertThat(log).contains(
                 new GameEvent.DiceRolled(ana.playerId(), new DiceRoll(1, 2)),
-                new GameEvent.PurchaseDeclined(ana.playerId(), "AP"),
+                new GameEvent.PurchaseDeclined(ana.playerId(), "AC"),
                 new GameEvent.TurnEnded(ana.playerId(), bia.playerId(), 1));
-        assertThat(state().property("AP")).isEmpty();
+        assertThat(state().property("AC")).isEmpty();
     }
 
     @Test
@@ -143,7 +143,7 @@ class TurnAutomationTest {
 
         // Rolou e recusou a compra em segundos, sem esperar os prazos de 3 s + 1 s.
         assertThat(Duration.ofNanos(System.nanoTime() - start)).isLessThan(Duration.ofMillis(2_500));
-        assertThat(store.loadEvents(gameId)).contains(new GameEvent.PurchaseDeclined(ana.playerId(), "AP"));
+        assertThat(store.loadEvents(gameId)).contains(new GameEvent.PurchaseDeclined(ana.playerId(), "AC"));
         // Bia está conectada: a vez dela volta ao prazo normal.
         assertThat(timer.remainingMillis(gameId).getAsLong()).isGreaterThan(1_000L);
     }
@@ -177,7 +177,7 @@ class TurnAutomationTest {
 
         Thread.sleep(500);
 
-        assertThat(state().property("AP")).hasValueSatisfying(p -> assertThat(p.buildingLevel()).isEqualTo(1));
+        assertThat(state().property("AC")).hasValueSatisfying(p -> assertThat(p.buildingLevel()).isEqualTo(1));
         assertThat(state().version()).isEqualTo(version);
     }
 }

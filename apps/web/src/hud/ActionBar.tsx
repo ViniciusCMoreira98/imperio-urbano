@@ -39,9 +39,10 @@ export function ActionBar({ myId }: { myId: string }) {
     <div className="relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
       {selling && inDebt && <SellDrawer myId={myId} onClose={() => setSelling(false)} />}
 
-      <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2 border-white/10 bg-slate-900/92 px-2 py-1.5 shadow-2xl backdrop-blur sm:w-auto sm:px-3 sm:py-2">
+      <div className="flex w-full flex-wrap items-center justify-center gap-2 hud-panel rounded-2xl px-2 py-1.5 sm:w-auto sm:px-3 sm:py-2">
         <Dice values={snapshot.lastDice} />
-        <span className="text-sm text-white/90">
+        {/* Em telas largas a vez aparece no quadro "Turno de" (TurnBadge); aqui só nas menores. */}
+        <span className={`text-sm text-white/90 ${snapshot.status === 'FINISHED' ? '' : 'lg:hidden'}`}>
           {snapshot.status === 'FINISHED' ? (
             'Partida encerrada'
           ) : mine ? (
@@ -55,18 +56,18 @@ export function ActionBar({ myId }: { myId: string }) {
         {snapshot.status === 'IN_PROGRESS' && deadline !== null && <Countdown deadline={deadline} />}
 
         {canRoll && (
-          <Button variant="danger" className="px-5 py-2.5 text-base tracking-wide sm:text-lg" disabled={offline} onClick={() => act({ type: 'ROLL_DICE' })}>
+          <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline} onClick={() => act({ type: 'ROLL_DICE' })}>
             ROLAR DADOS
           </Button>
         )}
         {mine && phase === 'AWAITING_PURCHASE' && (
-          <Button disabled={offline} onClick={() => act({ type: 'DECLINE_PURCHASE' })}>Não comprar</Button>
+          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'DECLINE_PURCHASE' })}>Não comprar</Button>
         )}
         {mine && phase === 'AWAITING_BUILD' && (
-          <Button disabled={offline} onClick={() => act({ type: 'SKIP_BUILD' })}>Não construir</Button>
+          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_BUILD' })}>Não construir</Button>
         )}
         {mine && phase === 'AWAITING_OLYMPICS_HOST' && (
-          <Button disabled={offline} onClick={() => act({ type: 'SKIP_OLYMPICS' })}>Não sediar</Button>
+          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_OLYMPICS' })}>Não sediar</Button>
         )}
         {inDebt && (
           <>
@@ -88,7 +89,7 @@ export function ActionBar({ myId }: { myId: string }) {
       </div>
 
       {mine && phase && BOARD_HINTS[phase] && (
-        <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-xs text-white/85">{BOARD_HINTS[phase]}</p>
+        <p className="hud-panel rounded-lg px-3 py-1 text-xs text-white/90">{BOARD_HINTS[phase]}</p>
       )}
       {rejection && (
         <p role="alert" className="rounded-lg bg-rose-900/85 px-3 py-1 text-sm text-rose-100">
@@ -111,7 +112,7 @@ function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
   const missing = debt ? Math.max(0, debt.amount - credits) : 0;
   const creditor = snapshot.players.find((p) => p.id === debt?.creditorId)?.nickname ?? 'o banco';
   return (
-    <div className="absolute bottom-full mb-2 w-[min(20rem,calc(100vw-1.5rem))] rounded-2xl border-2 border-rose-400/50 bg-slate-900/95 p-3 text-sm shadow-2xl">
+    <div className="absolute bottom-full mb-2 w-[min(20rem,calc(100vw-1.5rem))] hud-panel rounded-2xl p-3 text-sm">
       <div className="mb-1 flex items-center justify-between">
         <h3 className="font-bold text-white">Pagar dívida</h3>
         <button type="button" className="px-2 text-lg" aria-label="Fechar" onClick={onClose}>
