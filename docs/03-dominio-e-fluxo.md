@@ -60,4 +60,8 @@ LOBBY ──START_GAME (2–4 prontos, chamado pelo anfitrião)──▶ IN_PROG
 4. É o turno do jogador e o comando é permitido na `phase` atual.
 5. Regra específica: saldo, disponibilidade, etapa de construção, posse da sede etc.
 
+Duplas (D9): dupla dá nova jogada (`TURN_ENDED` com o mesmo jogador); a 3ª dupla seguida (`rules.dice.maxDoublesInRow`) leva direto ao Descanso, sem bônus do Início, e encerra a sequência.
+
+Implementação: `apps/api/.../engine/GameEngine` — `decide(state, jogador, comando, dados) → eventos` e `apply(state, evento) → state`; `replay(log)` reconstrói a partida.
+
 Vitória: Clássico → resta 1 jogador não falido. Rápido → ao fim da 15ª rodada, maior patrimônio (D14).

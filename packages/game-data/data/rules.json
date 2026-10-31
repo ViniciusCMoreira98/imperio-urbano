@@ -3,7 +3,7 @@
   "players": { "min": 2, "max": 4 },
   "startingCredits": 1500,
   "passStartBonus": 200,
-  "dice": { "count": 2, "faces": 6 },
+  "dice": { "count": 2, "faces": 6, "maxDoublesInRow": 3 },
   "construction": {
     "maxHouses": 4,
     "firstVisitMaxHouses": 3,

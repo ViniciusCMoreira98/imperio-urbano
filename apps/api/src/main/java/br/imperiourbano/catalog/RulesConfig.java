@@ -20,7 +20,8 @@ public record RulesConfig(
     public record PlayerLimits(int min, int max) {
     }
 
-    public record DiceConfig(int count, int faces) {
+    /** Na {@code maxDoublesInRow}-ésima dupla seguida o jogador vai para o Descanso (D9). */
+    public record DiceConfig(int count, int faces, int maxDoublesInRow) {
     }
 
     public record ConstructionRules(

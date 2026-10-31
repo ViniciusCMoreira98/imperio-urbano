@@ -64,7 +64,7 @@ export interface RulesConfig {
   players: { min: number; max: number };
   startingCredits: number;
   passStartBonus: number;
-  dice: { count: number; faces: number };
+  dice: { count: number; faces: number; maxDoublesInRow: number };
   construction: {
     maxHouses: number;
     firstVisitMaxHouses: number;

@@ -36,7 +36,8 @@ export type DomainEvent =
   | { type: 'PLAYER_JOINED'; playerId: string; nickname: string }
   | { type: 'GAME_STARTED'; turnOrder: string[] }
   | { type: 'DICE_ROLLED'; playerId: string; dice: [number, number] }
-  | { type: 'PLAYER_MOVED'; playerId: string; from: number; to: number; passedStart: boolean }
+  /** startBonus > 0 ao passar/parar no Início; sentToRest na 3ª dupla seguida. */
+  | { type: 'PLAYER_MOVED'; playerId: string; from: number; to: number; startBonus: number; sentToRest: boolean }
   | { type: 'PROPERTY_PURCHASED'; playerId: string; stateId: StateId; price: number }
   | { type: 'HOUSE_BUILT'; playerId: string; stateId: StateId; houses: number; cost: number }
   | { type: 'HOTEL_BUILT'; playerId: string; stateId: StateId; cost: number }
@@ -44,6 +45,8 @@ export type DomainEvent =
   | { type: 'OLYMPICS_HOST_SELECTED'; playerId: string; stateId: StateId; edition: number; multiplier: number }
   | { type: 'EVENT_CARD_DRAWN'; playerId: string; cardId: string }
   | { type: 'PLAYER_BANKRUPT'; playerId: string; creditorId: string | null }
+  /** nextPlayerId igual ao atual quando a dupla dá nova jogada. */
+  | { type: 'TURN_ENDED'; playerId: string; nextPlayerId: string; round: number }
   | { type: 'GAME_FINISHED'; winnerIds: string[] };
 
 export type ServerMessage =
