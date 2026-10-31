@@ -142,6 +142,17 @@ public class LobbyService {
         return view(gameId);
     }
 
+    @Transactional(readOnly = true)
+    public boolean isMember(String gameId, String playerId) {
+        return members.existsById(new LobbyMemberRecord.Key(gameId, playerId));
+    }
+
+    /** Jogadores da sala com avatar e cor, para compor o snapshot enviado aos clientes. */
+    @Transactional(readOnly = true)
+    public List<LobbyView.Member> members(String gameId) {
+        return view(gameId).players();
+    }
+
     private LobbyView view(String gameId) {
         GameInfo game = store.find(gameId).orElseThrow(LobbyException::notFound);
         List<LobbyMemberRecord> seated = members.findByGameIdOrderBySeatAsc(gameId);

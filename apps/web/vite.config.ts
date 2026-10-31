@@ -7,7 +7,10 @@ export default defineConfig({
   server: {
     port: 5173,
     // Mesma origem para o navegador: /api vai para o servidor Spring Boot local, sem CORS.
-    proxy: { '/api': 'http://localhost:8080' },
+    proxy: {
+      '/api': 'http://localhost:8080',
+      '/ws': { target: 'ws://localhost:8080', ws: true },
+    },
   },
   // Pré-empacota tudo de uma vez: evita a reotimização no meio da sessão, que carrega duas cópias do React.
   optimizeDeps: {

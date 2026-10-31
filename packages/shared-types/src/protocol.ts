@@ -1,13 +1,10 @@
-// Contrato WebSocket: comandos (cliente → servidor) e eventos de domínio (servidor → cliente).
+// Contrato WebSocket /ws/games/{gameId}?token=...: comandos (cliente → servidor) e mensagens do servidor.
 // Os comandos nunca carregam valores calculados (dados, preços, saldos): o servidor decide.
-import type { AvatarId, GameSnapshot, PawnColor } from './game';
-import type { StateId } from './catalog';
+// Sala, avatar, cor e "pronto" são REST (/api/games), antes da partida começar.
+import type { GameSnapshot } from './game';
+import type { GameMode, StateId } from './catalog';
 
 export type Command =
-  | { type: 'JOIN_GAME'; inviteCode: string }
-  | { type: 'SELECT_AVATAR'; avatarId: AvatarId; pawnColor: PawnColor }
-  | { type: 'SET_READY'; ready: boolean }
-  | { type: 'START_GAME' }
   | { type: 'ROLL_DICE' }
   | { type: 'BUY_PROPERTY'; houses: number }
   | { type: 'DECLINE_PURCHASE' }
@@ -25,17 +22,15 @@ export type Command =
 export interface CommandEnvelope {
   /** UUID gerado pelo cliente; o servidor ignora comandos repetidos. */
   commandId: string;
-  gameId: string;
   /** Versão do snapshot que o cliente via ao enviar (detecção de conflito). */
   expectedVersion: number;
   command: Command;
 }
 
 export type DomainEvent =
-  | { type: 'GAME_CREATED'; inviteCode: string }
-  | { type: 'PLAYER_JOINED'; playerId: string; nickname: string }
-  | { type: 'GAME_STARTED'; turnOrder: string[] }
-  | { type: 'DICE_ROLLED'; playerId: string; dice: [number, number] }
+  /** A ordem do baralho de eventos não é enviada. */
+  | { type: 'GAME_STARTED'; gameId: string; mode: GameMode; turnOrder: { id: string; nickname: string }[]; startingCredits: number }
+  | { type: 'DICE_ROLLED'; playerId: string; dice: { first: number; second: number } }
   /** startBonus > 0 ao passar/parar no Início; sentToRest na 3ª dupla seguida. */
   | { type: 'PLAYER_MOVED'; playerId: string; from: number; to: number; startBonus: number; sentToRest: boolean }
   /** Rolou sem dupla no Descanso e perdeu a jogada. */
@@ -69,6 +64,7 @@ export type DomainEvent =
   | { type: 'TURN_ENDED'; playerId: string; nextPlayerId: string; round: number }
   | { type: 'GAME_FINISHED'; winnerIds: string[] };
 
+/** EVENTS e SNAPSHOT vão a todos quando um comando é aplicado; COMMAND_REJECTED (+ SNAPSHOT) só a quem enviou. */
 export type ServerMessage =
   | { kind: 'SNAPSHOT'; snapshot: GameSnapshot }
   | { kind: 'EVENTS'; version: number; events: DomainEvent[] }

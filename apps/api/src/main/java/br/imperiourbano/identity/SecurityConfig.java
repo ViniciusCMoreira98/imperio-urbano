@@ -30,6 +30,8 @@ class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/sessions").permitAll()
                         .requestMatchers("/error").permitAll()
+                        // WebSocket autentica no handshake (GameHandshakeInterceptor).
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(errors -> errors.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .addFilterBefore(new GuestTokenFilter(sessions), UsernamePasswordAuthenticationFilter.class)
