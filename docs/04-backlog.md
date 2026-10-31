@@ -37,8 +37,8 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 | ✅ E18 | Cliente `net/` + store ligado ao servidor; remove demo local |
 | ✅ E19 | Reconexão e retomada de partida (Testcontainers) |
 | ✅ E20 | HUD completo: jogadores, ações, histórico, carta do estado |
-| E21 | Negociação entre jogadores (D12) |
-| E22 | E2E Playwright com dois navegadores |
+| ~~E21~~ | ~~Negociação entre jogadores~~ — cancelada (D12) |
+| ✅ E22 | E2E Playwright com dois navegadores |
 
 ## Marco 4 — Visual e publicação
 

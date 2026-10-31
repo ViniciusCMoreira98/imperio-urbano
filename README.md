@@ -54,6 +54,20 @@ npm run dev
 
 Abra http://localhost:5173, escolha um apelido e crie uma sala. Para testar sozinho, abra outra aba no mesmo endereço: cada aba é um jogador diferente (a sessão fica no `sessionStorage` da aba). Entre com o código da sala, marquem "Estou pronto" e o anfitrião inicia.
 
+## Teste de ponta a ponta
+
+Com o PostgreSQL no ar (`docker compose … up -d`), instale o navegador uma vez e rode:
+
+```bash
+npx playwright install chromium
+```
+
+```bash
+npm run e2e
+```
+
+Dois navegadores criam a sala, entram pelo código, iniciam a partida e jogam um turno ([e2e/partida.e2e.ts](e2e/partida.e2e.ts)). A API e o Vite já em execução são reaproveitados; se não estiverem, o teste os sobe. Em falha, o relatório fica em `playwright-report/`.
+
 ## Documentação
 
 1. [Requisitos e decisões pendentes](docs/01-requisitos-e-decisoes.md)

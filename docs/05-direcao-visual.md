@@ -16,7 +16,7 @@ Os preços, a ordem dos estados e os cantos da imagem são ilustrativos (há UF 
 | Moeda | Sufixo C na arte | Mantido `$ 1.250` (decisão do usuário) | — |
 | Painel de jogadores | Cartões à esquerda: avatar, nome, saldo, casas/hotéis/estados, coroa no líder, borda na cor do peão | ✅ Feito (+ patrimônio e estado: automático, descansando, viagem) | E20 |
 | Carta do estado | Cabeçalho verde com nome e sigla, foto da paisagem, compra e aluguel base em destaque, tabela com ícones de casa, custo de construção, botão Comprar | Painel escuro com tabela | E27 (paisagem), E20 (ações) |
-| Barra inferior | Dados 3D brancos + botão vermelho **Rolar dados**; botões Construir, Vender, Trocar com ícone | ✅ Barra e botões feitos (dados ainda 2D; Trocar desativado até a E21) | E25 (dados 3D) |
+| Barra inferior | Dados 3D brancos + botão vermelho **Rolar dados**; botões Construir e Vender com ícone (sem Trocar: não há negociação, D12) | ✅ Barra e botões feitos (dados ainda 2D) | E25 (dados 3D) |
 | Histórico | Abas Chat / Eventos / Histórico no canto inferior esquerdo | ✅ Abas Histórico / Cartas sob os jogadores (chat fora do MVP) | E20 |
 | Atalhos | Minimapa + Configurações, Jogadores, Tela cheia no canto inferior direito | Botões de giro | E29 |
 
@@ -70,7 +70,7 @@ Padrão visual comum: fundo com paisagem brasileira desfocada, painel central az
 
 Diretriz do usuário: a partida não pode ficar poluída e precisa funcionar no celular.
 
-- Mostrar só o que serve agora: botões que não podem ser usados ficam escondidos, não desativados (Rolar só na vez de rolar; Vender só com dívida; Trocar volta com a negociação).
+- Mostrar só o que serve agora: botões que não podem ser usados ficam escondidos, não desativados (Rolar só na vez de rolar; Vender só com dívida).
 - Jogadores: avatar, nome, saldo e um ícone de estado (🤖 😴 ✈️ 💀); contagens e patrimônio ficam na dica.
 - Histórico recolhido num botão; a carta do estado só aparece com uma casa selecionada.
 - Rodada, modo e vez ficam no painel do centro do tabuleiro, não no topo.
