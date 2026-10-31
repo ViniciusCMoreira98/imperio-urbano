@@ -17,7 +17,7 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 
 | # | Entrega |
 |---|---|
-| E6 | Scaffold `apps/api` (Spring Boot 3, Java 21, Maven Wrapper), `catalog` lendo os JSON |
+| ✅ E6 | Scaffold `apps/api` (Spring Boot 4.1, Java 21, Maven Wrapper), `catalog` lendo os JSON |
 | E7 | `engine`: turnos, dados determinísticos, movimento, bônus do Início, duplas |
 | E8 | Compra e aluguel |
 | E9 | Construção por etapas/visitas (D4) |
@@ -41,5 +41,7 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 | E22 | E2E Playwright com dois navegadores |
 
 ## Marco 4 — Visual e publicação
+
+Referência de arte: [05-direcao-visual.md](05-direcao-visual.md).
 
 E23 avatares provisórios + seleção 3D · E24 miniaturas de casas/hotéis · E25 dados 3D · E26 anúncio olímpico com confete · E27 mapa central e cartas com SVG das UFs · E28 sons · E29 polimento e responsividade · E30 build de produção e hospedagem · E31 Electron (após web estável).
