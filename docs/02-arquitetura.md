@@ -42,7 +42,9 @@ Monólito modular. Um servidor Spring Boot autoritativo, um cliente React. Sem m
 | `realtime` | Handler WebSocket, sessões por partida, broadcast de eventos, snapshot no (re)connect, heartbeat. | `game`, `identity` |
 | `persistence` | Entidades JPA, repositórios, migrações Flyway. | — |
 
-Tabelas iniciais: `guest_sessions`, `games`, `game_players`, `game_events`, `game_snapshots`, `processed_commands`.
+Tabelas (Flyway, `apps/api/src/main/resources/db/migration`): `games`, `game_events`, `game_snapshots`, `processed_commands` (E14); `guest_sessions` e `game_players` entram com a E15/E16.
+
+`persistence.GameStore` grava, numa transação, os eventos de um comando (`sequence` = versão após o evento), o snapshot resultante e o `commandId`; a versão da partida em `games` faz a concorrência otimista. Eventos e estado viram JSON (`jsonb`) por `GameJson`, que nomeia cada evento como no protocolo TS (ex.: `DICE_ROLLED`) sem anotar o motor. A ordem do baralho fica no snapshot do servidor e não deve ir ao cliente.
 
 ## Módulos do frontend (`apps/web/src`)
 

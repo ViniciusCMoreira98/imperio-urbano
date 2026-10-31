@@ -6,13 +6,13 @@ Jogo de tabuleiro imobiliário multiplayer (2–4 jogadores) com os 26 estados e
 
 | Pasta | Conteúdo |
 |---|---|
-| `apps/web` | Cliente React + Three.js (a criar — E1) |
+| `apps/web` | Cliente React + Three.js |
 | `apps/api` | Servidor Spring Boot 4.1 (Java 21, Maven Wrapper) |
 | `apps/desktop` | Electron (fase final) |
 | `packages/game-data` | Catálogo de estados, tabuleiro e regras em JSON + validação |
 | `packages/shared-types` | Tipos TS de catálogo, snapshot, comandos e eventos |
 | `assets/` | Modelos GLB, texturas, cartas, áudio |
-| `infrastructure/docker` | Docker Compose |
+| `infrastructure/docker` | Docker Compose (PostgreSQL local) |
 | `docs/` | Requisitos, arquitetura, domínio, backlog |
 
 ## Comandos
@@ -23,15 +23,18 @@ npm test
 npm run typecheck
 ```
 
-Servidor (`apps/api`):
+Servidor (`apps/api`), com o Docker Desktop aberto:
 
 ```bash
+docker compose -f infrastructure/docker/compose.yaml up -d   # PostgreSQL em localhost:5432
 cd apps/api
-./mvnw test            # testes
-./mvnw spring-boot:run # sobe em http://localhost:8080
+./mvnw test            # testes (os de banco sobem um PostgreSQL próprio via Testcontainers)
+./mvnw spring-boot:run # sobe em http://localhost:8080 e aplica as migrações Flyway
 ```
 
-Requisitos: Node 22+, Java 21. Docker Desktop a partir do backend.
+Banco: `imperio` / usuário `imperio` / senha `imperio` (somente local; sobrescreva com `DB_URL`, `DB_USER`, `DB_PASSWORD`).
+
+Requisitos: Node 22+, Java 21, Docker Desktop.
 
 ## Documentação
 

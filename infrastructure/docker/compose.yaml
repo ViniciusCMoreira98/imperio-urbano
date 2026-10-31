@@ -1,0 +1,22 @@
+# Ambiente local: PostgreSQL do servidor. Uso: docker compose -f infrastructure/docker/compose.yaml up -d
+name: imperio-urbano
+
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: imperio
+      POSTGRES_USER: imperio
+      POSTGRES_PASSWORD: imperio
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U imperio -d imperio"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:
