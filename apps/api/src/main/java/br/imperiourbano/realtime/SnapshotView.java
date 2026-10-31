@@ -35,7 +35,9 @@ record SnapshotView(
         List<PropertyState> properties,
         OlympicsState olympics,
         Debt pendingDebt,
-        List<String> winnerIds) {
+        List<String> winnerIds,
+        /** Tempo até o servidor agir pelo jogador da vez; nulo quando não há prazo. */
+        Long turnTimeLeftMs) {
 
     record Player(
             String id,
@@ -52,7 +54,8 @@ record SnapshotView(
             boolean travelPending) {
     }
 
-    static SnapshotView of(GameState state, String inviteCode, List<LobbyView.Member> members, Set<String> connected) {
+    static SnapshotView of(GameState state, String inviteCode, List<LobbyView.Member> members, Set<String> connected,
+            Long turnTimeLeftMs) {
         Map<String, LobbyView.Member> byId = members.stream()
                 .collect(Collectors.toMap(LobbyView.Member::playerId, Function.identity()));
         List<Player> players = state.players().stream().map(p -> player(p, byId.get(p.id()), connected)).toList();
@@ -70,7 +73,8 @@ record SnapshotView(
                 state.properties().values().stream().sorted(Comparator.comparing(PropertyState::stateId)).toList(),
                 state.olympics(),
                 state.pendingDebt(),
-                state.winnerIds());
+                state.winnerIds(),
+                turnTimeLeftMs);
     }
 
     private static Player player(PlayerState p, LobbyView.Member member, Set<String> connected) {

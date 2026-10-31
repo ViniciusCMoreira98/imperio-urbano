@@ -1,5 +1,5 @@
-// Peão provisório (cilindro + esfera). Recebe a casa final e anima o percurso casa a casa,
-// sempre para a frente, a partir da casa onde está sendo exibido.
+// Peão provisório (cilindro + esfera). Recebe a casa final vinda do servidor e anima até ela:
+// casa a casa num lance de dados; num salto só quando é viagem, carta ou ida ao Descanso.
 import gsap from 'gsap';
 import { useLayoutEffect, useRef } from 'react';
 import type { Group } from 'three';
@@ -11,20 +11,23 @@ import { TILE_HEIGHT } from './Tile';
 const TILE_COUNT = board.tiles.length;
 const HOP_DURATION = 0.2;
 const HOP_HEIGHT = 0.45;
+/** Acima disso não foi um lance de dados (2d6 anda no máximo 12). */
+const MAX_WALK_STEPS = 12;
 
 interface PawnProps {
   position: number;
   color: string;
-  /** Chamado quando o peão termina de chegar em `position`. */
+  /** Deslocamento dentro da casa, para vários peões caberem lado a lado. */
+  offset: [number, number];
   onArrive?: (position: number) => void;
 }
 
-function tileCenter(index: number) {
+function spotOn(index: number, offset: [number, number]) {
   const p = tilePlacement(index, board.tilesPerSide);
-  return { x: p.x, z: p.z };
+  return { x: p.x + offset[0], z: p.z + offset[1] };
 }
 
-export function Pawn({ position, color, onArrive }: PawnProps) {
+export function Pawn({ position, color, offset, onArrive }: PawnProps) {
   const groupRef = useRef<Group>(null);
   const shownAt = useRef(position);
   const onArriveRef = useRef(onArrive);
@@ -37,33 +40,36 @@ export function Pawn({ position, color, onArrive }: PawnProps) {
     const from = shownAt.current;
     const steps = (position - from + TILE_COUNT) % TILE_COUNT;
     if (steps === 0) {
-      const { x, z } = tileCenter(position);
+      const { x, z } = spotOn(position, offset);
       group.position.set(x, TILE_HEIGHT, z);
       return;
     }
 
+    const path = steps <= MAX_WALK_STEPS ? movePath(from, steps, TILE_COUNT) : [position];
+    const hop = path.length === 1 ? HOP_DURATION * 3 : HOP_DURATION;
     const timeline = gsap.timeline({
       onComplete: () => {
         shownAt.current = position;
         onArriveRef.current?.(position);
       },
     });
-    movePath(from, steps, TILE_COUNT).forEach((index, i) => {
-      const { x, z } = tileCenter(index);
-      const at = i * HOP_DURATION;
+    path.forEach((index, i) => {
+      const { x, z } = spotOn(index, offset);
+      const at = i * hop;
+      const height = path.length === 1 ? HOP_HEIGHT * 3 : HOP_HEIGHT;
       timeline
-        .to(group.position, { x, z, duration: HOP_DURATION, ease: 'power1.inOut' }, at)
-        .to(group.position, { y: TILE_HEIGHT + HOP_HEIGHT, duration: HOP_DURATION / 2, ease: 'power2.out' }, at)
-        .to(group.position, { y: TILE_HEIGHT, duration: HOP_DURATION / 2, ease: 'power2.in' }, at + HOP_DURATION / 2);
+        .to(group.position, { x, z, duration: hop, ease: 'power1.inOut' }, at)
+        .to(group.position, { y: TILE_HEIGHT + height, duration: hop / 2, ease: 'power2.out' }, at)
+        .to(group.position, { y: TILE_HEIGHT, duration: hop / 2, ease: 'power2.in' }, at + hop / 2);
     });
 
     return () => {
       timeline.kill();
     };
-  }, [position]);
+  }, [position, offset]);
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={0.75}>
       <mesh position={[0, 0.06, 0]} castShadow>
         <cylinderGeometry args={[0.22, 0.26, 0.12, 24]} />
         <meshStandardMaterial color={color} />

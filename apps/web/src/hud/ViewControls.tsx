@@ -4,7 +4,7 @@ import { useViewStore } from '../store/viewStore';
 const buttonClass =
   'rounded-lg bg-white/10 px-3 py-1.5 text-sm hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-amber-300';
 
-/** Girar a vista (Q/E) e voltar à visão geral (Esc). */
+/** Girar a vista (Q/E) e voltar à visão geral (Esc). Duplo clique numa casa aproxima a câmera. */
 export function ViewControls() {
   const rotate = useViewStore((s) => s.rotate);
   const clearFocus = useViewStore((s) => s.clearFocus);

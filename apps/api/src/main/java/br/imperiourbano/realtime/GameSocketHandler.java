@@ -4,6 +4,8 @@ import br.imperiourbano.engine.GameEvent;
 import br.imperiourbano.engine.GameState;
 import br.imperiourbano.game.CommandEnvelope;
 import br.imperiourbano.game.GameService;
+import br.imperiourbano.game.GameUpdated;
+import br.imperiourbano.game.TurnTimer;
 import br.imperiourbano.lobby.LobbyService;
 import br.imperiourbano.persistence.GameStore;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -24,8 +28,9 @@ import tools.jackson.core.JacksonException;
 
 /**
  * Canal da partida. Cliente envia {@link CommandEnvelope}; servidor responde com:
- * {@code EVENTS} + {@code SNAPSHOT} para todos quando um comando é aplicado, {@code SNAPSHOT} ao conectar,
- * desconectar ou reenviar um comando já processado, e {@code COMMAND_REJECTED} só para quem enviou.
+ * {@code EVENTS} + {@code SNAPSHOT} para todos a cada {@link GameUpdated} (comando do jogador ou ação automática
+ * por prazo), {@code SNAPSHOT} ao conectar, desconectar ou reenviar um comando já processado, e
+ * {@code COMMAND_REJECTED} só para quem enviou.
  */
 @Component
 class GameSocketHandler extends TextWebSocketHandler {
@@ -55,20 +60,32 @@ class GameSocketHandler extends TextWebSocketHandler {
     private final GameService games;
     private final GameStore store;
     private final LobbyService lobby;
+    private final TurnTimer timer;
     /** gameId → conexões abertas (já envolvidas para envio seguro entre threads). */
     private final Map<String, Map<String, WebSocketSession>> rooms = new ConcurrentHashMap<>();
 
-    GameSocketHandler(GameService games, GameStore store, LobbyService lobby) {
+    GameSocketHandler(GameService games, GameStore store, LobbyService lobby, TurnTimer timer) {
         this.games = games;
         this.store = store;
         this.lobby = lobby;
+        this.timer = timer;
+    }
+
+    /** Depois do relógio do turno (ordem 1), para o snapshot já levar o prazo novo. */
+    @EventListener
+    @Order(2)
+    void onGameUpdated(GameUpdated update) {
+        if (!update.events().isEmpty()) {
+            broadcast(update.gameId(), new EventsMessage(update.state().version(), update.events()));
+        }
+        broadcastSnapshot(update.gameId(), update.state());
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession raw) {
         WebSocketSession session = new ConcurrentWebSocketSessionDecorator(raw, SEND_TIME_LIMIT_MS, BUFFER_LIMIT_BYTES);
         rooms.computeIfAbsent(gameId(raw), id -> new ConcurrentHashMap<>()).put(raw.getId(), session);
-        broadcastSnapshot(gameId(raw), games.current(gameId(raw)).orElseThrow());
+        games.announce(gameId(raw));
     }
 
     @Override
@@ -83,9 +100,8 @@ class GameSocketHandler extends TextWebSocketHandler {
             return;
         }
         switch (games.execute(gameId, playerId(raw), envelope)) {
+            // Já enviado a todos por onGameUpdated.
             case GameService.Applied applied -> {
-                broadcast(gameId, new EventsMessage(applied.state().version(), applied.events()));
-                broadcastSnapshot(gameId, applied.state());
             }
             case GameService.AlreadyProcessed done -> send(session, new SnapshotMessage(snapshot(gameId, done.state())));
             case GameService.Rejected rejected -> {
@@ -105,7 +121,7 @@ class GameSocketHandler extends TextWebSocketHandler {
             rooms.remove(gameId, room);
             return;
         }
-        games.current(gameId).ifPresent(state -> broadcastSnapshot(gameId, state));
+        games.announce(gameId);
     }
 
     private void broadcastSnapshot(String gameId, GameState state) {
@@ -118,7 +134,8 @@ class GameSocketHandler extends TextWebSocketHandler {
                 .map(GameSocketHandler::playerId)
                 .collect(Collectors.toSet());
         String inviteCode = store.find(gameId).orElseThrow().inviteCode();
-        return SnapshotView.of(state, inviteCode, lobby.members(gameId), connected);
+        Long timeLeft = timer.remainingMillis(gameId).isPresent() ? timer.remainingMillis(gameId).getAsLong() : null;
+        return SnapshotView.of(state, inviteCode, lobby.members(gameId), connected, timeLeft);
     }
 
     private void broadcast(String gameId, Object message) {

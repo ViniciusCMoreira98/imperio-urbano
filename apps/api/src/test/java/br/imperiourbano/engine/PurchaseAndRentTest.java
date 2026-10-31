@@ -156,7 +156,7 @@ class PurchaseAndRentTest {
         RulesConfig doubled = new RulesConfig(rules.version(), rules.players(), rules.startingCredits(),
                 rules.passStartBonus(), rules.dice(),
                 new RulesConfig.ConstructionRules(4, 3, false, 2),
-                rules.olympics(), rules.rest(), rules.nationalTravel(), rules.modes());
+                rules.olympics(), rules.rest(), rules.nationalTravel(), rules.turnTimers(), rules.modes());
         engine = new GameEngine(new Catalog(CATALOG.states(), CATALOG.board(), doubled, CATALOG.eventCards()));
         giveTo("bia", "AC", "RR", "AP");
 

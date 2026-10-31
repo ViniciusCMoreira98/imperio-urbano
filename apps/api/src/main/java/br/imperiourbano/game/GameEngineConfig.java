@@ -1,9 +1,11 @@
 package br.imperiourbano.game;
 
 import br.imperiourbano.catalog.Catalog;
+import br.imperiourbano.catalog.RulesConfig;
 import br.imperiourbano.engine.Dice;
 import br.imperiourbano.engine.GameEngine;
 import br.imperiourbano.engine.RandomDice;
+import java.time.Duration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,5 +22,12 @@ class GameEngineConfig {
     @Bean
     Dice dice() {
         return new RandomDice();
+    }
+
+    /** Prazos vindos de rules.json; testes substituem por prazos curtos. */
+    @Bean
+    TurnTimeouts turnTimeouts(Catalog catalog) {
+        RulesConfig.TurnTimers timers = catalog.rules().turnTimers();
+        return new TurnTimeouts(Duration.ofSeconds(timers.rollSeconds()), Duration.ofSeconds(timers.decisionSeconds()));
     }
 }

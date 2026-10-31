@@ -16,8 +16,9 @@ interface TileProps {
 }
 
 export function Tile({ tile, placement, state, group }: TileProps) {
+  const selectTile = useViewStore((s) => s.selectTile);
   const focusTile = useViewStore((s) => s.focusTile);
-  const selected = useViewStore((s) => s.focusedTile === tile.index);
+  const selected = useViewStore((s) => s.selectedTile === tile.index);
   const [hovered, setHovered] = useState(false);
   const materials = useMemo(() => {
     const side = new MeshStandardMaterial({ color: '#d9cba8' });
@@ -65,6 +66,10 @@ export function Tile({ tile, placement, state, group }: TileProps) {
       onClick={(e) => {
         // Ignora o clique que encerra um arrasto de rotação.
         if (e.delta > 4) return;
+        e.stopPropagation();
+        selectTile(tile.index);
+      }}
+      onDoubleClick={(e) => {
         e.stopPropagation();
         focusTile(tile.index);
       }}

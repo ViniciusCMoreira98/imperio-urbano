@@ -13,6 +13,7 @@ public record RulesConfig(
         OlympicsRules olympics,
         RestRules rest,
         NationalTravelRules nationalTravel,
+        TurnTimers turnTimers,
         Map<GameMode, ModeConfig> modes) {
 
     public RulesConfig {
@@ -51,6 +52,10 @@ public record RulesConfig(
 
     /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
     public record NationalTravelRules(int fee) {
+    }
+
+    /** Prazos do turno: rolar/viajar e decidir; ao acabar, o servidor executa a ação padrão. */
+    public record TurnTimers(int rollSeconds, int decisionSeconds) {
     }
 
     /** {@code roundLimit} nulo = sem limite de rodadas. */

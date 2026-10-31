@@ -92,5 +92,7 @@ export interface RulesConfig {
   rest: { turnsLost: number };
   /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
   nationalTravel: { fee: number };
+  /** Tempo para rolar (ou escolher a viagem) e para decidir compra/construção/Olimpíadas; ao acabar, o servidor joga. */
+  turnTimers: { rollSeconds: number; decisionSeconds: number };
   modes: Record<GameMode, { roundLimit: number | null }>;
 }

@@ -7,6 +7,7 @@ import br.imperiourbano.engine.GameEvent.GameStarted;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
 import br.imperiourbano.engine.GameState;
 import br.imperiourbano.engine.GameStatus;
+import br.imperiourbano.game.GameUpdated;
 import br.imperiourbano.identity.GuestPrincipal;
 import br.imperiourbano.persistence.GameInfo;
 import br.imperiourbano.persistence.GameStore;
@@ -18,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,12 +42,15 @@ public class LobbyService {
     private final GameEngine engine;
     private final int minPlayers;
     private final int maxPlayers;
+    private final ApplicationEventPublisher publisher;
     private final SecureRandom random = new SecureRandom();
 
-    LobbyService(GameStore store, LobbyMemberRepository members, GameEngine engine, Catalog catalog) {
+    LobbyService(GameStore store, LobbyMemberRepository members, GameEngine engine, Catalog catalog,
+            ApplicationEventPublisher publisher) {
         this.store = store;
         this.members = members;
         this.engine = engine;
+        this.publisher = publisher;
         this.minPlayers = catalog.rules().players().min();
         this.maxPlayers = catalog.rules().players().max();
     }
@@ -139,6 +144,8 @@ public class LobbyService {
                 seated.stream().map(m -> new StartingPlayer(m.playerId(), m.nickname())).toList());
         GameState state = engine.apply(null, started);
         store.append(gameId, game.version(), List.of(started), state, null, null);
+        // Inicia o relógio do primeiro turno.
+        publisher.publishEvent(new GameUpdated(gameId, List.of(started), state));
         return view(gameId);
     }
 

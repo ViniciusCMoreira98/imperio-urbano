@@ -76,4 +76,6 @@ export interface GameSnapshot {
   olympics: OlympicsState;
   pendingDebt: Debt | null;
   winnerIds: string[];
+  /** Tempo até o servidor jogar pelo jogador da vez (rolar, recusar compra...); null sem prazo. */
+  turnTimeLeftMs: number | null;
 }

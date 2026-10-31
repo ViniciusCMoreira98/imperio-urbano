@@ -38,3 +38,30 @@ Os preços, a ordem dos estados e os cantos da imagem são ilustrativos (há UF 
 ## Produção dos modelos
 
 Miniaturas e peões em low-poly feitos no Blender (GLB, < 2 mil triângulos por miniatura, textura atlas compartilhada), carregados com `useGLTF` e instanciados. Enquanto não existirem, usar formas procedurais no mesmo estilo de cor.
+
+## Telas e menus
+
+Referências: [menu-inicial.webp](referencias/menu-inicial.webp) e [telas-menu.webp](referencias/telas-menu.webp). Valem como guia de estilo e de organização das telas; como na arte do tabuleiro, textos e números da imagem são ilustrativos.
+
+Padrão visual comum: fundo com paisagem brasileira desfocada, painel central azul-marinho com borda clara, título em faixa no topo, botão voltar (←) no canto, botão principal amarelo/verde grande e botões secundários azuis com ícone.
+
+| Tela da referência | O que entra | Entrega |
+|---|---|---|
+| Menu inicial | Logo, avatar + apelido do convidado, botões Jogar, Regras, Configurações | E18 (layout), E27 (arte de fundo e personagens) |
+| Criar sala / Entrar em sala | Abas Criar/Entrar; modo de jogo (Clássico/Rápido); código da sala com botão copiar | E18 |
+| Sala de espera | Código copiável, lista de jogadores com Pronto/Aguardando, coroa no anfitrião, avatar em destaque, Iniciar partida | E18 |
+| Seleção de avatar | Grade dos 5 avatares, selecionado com check, Confirmar | E18 (provisório 2D), E23 (prévia 3D) |
+| Regras | Abas por tema (objetivo, movimentação, propriedades, construções, Olimpíadas, eventos, vitória) | E29 |
+| Configurações | Áudio, gráficos, tela cheia, limpar dados locais | E28/E29 |
+| Partida | Igual à referência do tabuleiro | E20 |
+
+## Itens das telas fora dos requisitos (não adotados sem decisão)
+
+| Item na arte | Situação |
+|---|---|
+| Moedas (5.000) e diamantes (250) com botão "+" | Não previsto: implica economia/loja fora da partida. Não adotar no MVP. |
+| Nível do jogador, XP, conquistas, estatísticas, histórico (Perfil) | Exige contas permanentes; o MVP usa convidados (D15). Pós-MVP. |
+| "Partida Rápida" pública (encontrar partida) | Requisito pede salas privadas por código. Pós-MVP (matchmaking). |
+| Número de jogadores e "permitir entrada por código" ao criar sala | Hoje a sala aceita 2–4 e só existe entrada por código. Proposta: limite opcional de jogadores na E18 se você quiser. |
+| "Limite de rodadas: Sem limite" | Já coberto pelo modo: Clássico = sem limite, Rápido = 15 rodadas. |
+| "Salas online" (lista de salas) | Só salas privadas no MVP. |

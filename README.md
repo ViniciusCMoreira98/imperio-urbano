@@ -36,6 +36,24 @@ Banco: `imperio` / usuário `imperio` / senha `imperio` (somente local; sobrescr
 
 Requisitos: Node 22+, Java 21, Docker Desktop.
 
+## Jogar localmente
+
+Com o Docker Desktop aberto, em três terminais:
+
+```bash
+docker compose -f infrastructure/docker/compose.yaml up -d
+```
+
+```bash
+cd apps/api && ./mvnw spring-boot:run
+```
+
+```bash
+npm run dev
+```
+
+Abra http://localhost:5173, escolha um apelido e crie uma sala. Para testar sozinho, abra outra aba no mesmo endereço: cada aba é um jogador diferente (a sessão fica no `sessionStorage` da aba). Entre com o código da sala, marquem "Estou pronto" e o anfitrião inicia.
+
 ## Documentação
 
 1. [Requisitos e decisões pendentes](docs/01-requisitos-e-decisoes.md)

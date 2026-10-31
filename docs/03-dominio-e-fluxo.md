@@ -69,6 +69,8 @@ Descanso (D2): no turno seguinte o jogador rola; sem dupla perde a jogada (`REST
 
 Viagem Nacional (D3): no turno seguinte, se tiver saldo para a taxa (50), escolhe qualquer outra casa (`CHOOSE_TRAVEL`) e viaja no sentido do percurso, recebendo o bônus se passar pelo Início; a casa de destino é resolvida normalmente. Rolar os dados recusa a viagem.
 
+Ritmo do turno (D21): quando não resta decisão (fase `AWAITING_END_TURN`), o servidor passa a vez sozinho — por isso comprar encerra o turno. Prazos por fase (`TurnTimeouts`): rolar ou escolher viagem (10 s) → `ROLL_DICE`; comprar (15 s) → `DECLINE_PURCHASE`; construir → `SKIP_BUILD`; Olimpíadas → `SKIP_OLYMPICS`. O prazo pertence à versão do estado (qualquer ação reinicia; reconectar não) e o snapshot leva `turnTimeLeftMs`. Dívida não tem prazo.
+
 Duplas (D9): dupla dá nova jogada (`TURN_ENDED` com o mesmo jogador); a 3ª dupla seguida (`rules.dice.maxDoublesInRow`) leva direto ao Descanso, sem bônus do Início, e encerra a sequência.
 
 Implementação: `apps/api/.../engine/GameEngine` — `decide(state, jogador, comando, dados) → eventos` e `apply(state, evento) → state`; `replay(log)` reconstrói a partida.

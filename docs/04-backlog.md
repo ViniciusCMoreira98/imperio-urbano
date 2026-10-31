@@ -34,7 +34,7 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 | ✅ E15 | Sessão de convidado + Spring Security |
 | ✅ E16 | Lobby: criar sala, código, entrar, avatar/cor, pronto, iniciar |
 | ✅ E17 | WebSocket: comandos, idempotência, broadcast, snapshot |
-| E18 | Cliente `net/` + store ligado ao servidor; remove demo local |
+| ✅ E18 | Cliente `net/` + store ligado ao servidor; remove demo local |
 | E19 | Reconexão e retomada de partida (Testcontainers) |
 | E20 | HUD completo: jogadores, ações, histórico, carta do estado |
 | E21 | Negociação entre jogadores (D12) |
