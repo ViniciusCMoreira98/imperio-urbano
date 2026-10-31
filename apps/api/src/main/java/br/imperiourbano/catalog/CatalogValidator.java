@@ -27,7 +27,30 @@ public final class CatalogValidator {
         validateStates(catalog, errors);
         validateBoard(catalog.board(), errors);
         validateRules(catalog.rules(), errors);
+        validateEventCards(catalog, errors);
         return errors;
+    }
+
+    /** Baralho: ids únicos e parâmetros coerentes com o tipo de efeito. */
+    private static void validateEventCards(Catalog catalog, List<String> errors) {
+        if (catalog.eventCards().isEmpty()) errors.add("Baralho de eventos vazio");
+        Set<String> ids = new HashSet<>();
+        for (EventCard card : catalog.eventCards()) {
+            if (!ids.add(card.id())) errors.add("Carta duplicada: " + card.id());
+            CardEffect e = card.effect();
+            boolean valid = switch (e.type()) {
+                case GAIN, PAY, COLLECT_FROM_EACH -> positive(e.amount());
+                case PAY_PER_BUILDING -> positive(e.perHouse()) && positive(e.perHotel());
+                case MOVE_TO -> e.tile() != null && e.tile() >= 0 && e.tile() < catalog.board().tileCount();
+                case MOVE_BY -> e.steps() != null && e.steps() != 0;
+                case GO_TO_REST -> true;
+            };
+            if (!valid) errors.add(card.id() + ": parâmetros inválidos para " + e.type());
+        }
+    }
+
+    private static boolean positive(Integer value) {
+        return value != null && value > 0;
     }
 
     private static void validateStates(Catalog catalog, List<String> errors) {

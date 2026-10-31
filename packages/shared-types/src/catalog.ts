@@ -57,6 +57,22 @@ export interface BoardDefinition {
   tiles: TileDefinition[];
 }
 
+export type CardEffect =
+  | { type: 'GAIN'; amount: number }
+  | { type: 'PAY'; amount: number }
+  | { type: 'PAY_PER_BUILDING'; perHouse: number; perHotel: number }
+  | { type: 'COLLECT_FROM_EACH'; amount: number }
+  | { type: 'MOVE_TO'; tile: number }
+  | { type: 'MOVE_BY'; steps: number }
+  | { type: 'GO_TO_REST' };
+
+export interface EventCard {
+  id: string;
+  title: string;
+  text: string;
+  effect: CardEffect;
+}
+
 export type GameMode = 'CLASSIC' | 'QUICK';
 
 export interface RulesConfig {

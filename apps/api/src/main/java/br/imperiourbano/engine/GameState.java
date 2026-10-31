@@ -22,6 +22,7 @@ public record GameState(
         int doublesInRow,
         Map<String, PropertyState> properties,
         OlympicsState olympics,
+        EventDeck eventDeck,
         Debt pendingDebt,
         List<String> winnerIds) {
 
@@ -68,22 +69,22 @@ public record GameState(
 
     GameState withPlayers(List<PlayerState> value) {
         return new GameState(gameId, mode, status, version, round, value, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, pendingDebt, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds);
     }
 
     GameState withTurn(int playerIndex, int roundValue, TurnPhase phaseValue, int doubles) {
         return new GameState(gameId, mode, status, version, roundValue, players, playerIndex, phaseValue, lastDice,
-                doubles, properties, olympics, pendingDebt, winnerIds);
+                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds);
     }
 
     GameState withPhase(TurnPhase value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, value, lastDice,
-                doublesInRow, properties, olympics, pendingDebt, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds);
     }
 
     GameState withDice(DiceRoll dice, int doubles) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, dice,
-                doubles, properties, olympics, pendingDebt, winnerIds);
+                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds);
     }
 
     GameState withProperty(PropertyState property) {
@@ -100,26 +101,31 @@ public record GameState(
 
     GameState withProperties(Map<String, PropertyState> value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, value, olympics, pendingDebt, winnerIds);
+                doublesInRow, value, olympics, eventDeck, pendingDebt, winnerIds);
     }
 
     GameState withOlympics(OlympicsState value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, value, pendingDebt, winnerIds);
+                doublesInRow, properties, value, eventDeck, pendingDebt, winnerIds);
+    }
+
+    GameState withEventDeck(EventDeck value) {
+        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
+                doublesInRow, properties, olympics, value, pendingDebt, winnerIds);
     }
 
     GameState withPendingDebt(Debt value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, value, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, value, winnerIds);
     }
 
     GameState finished(List<String> winners) {
         return new GameState(gameId, mode, GameStatus.FINISHED, version, round, players, currentPlayerIndex, null,
-                lastDice, doublesInRow, properties, olympics, null, winners);
+                lastDice, doublesInRow, properties, olympics, eventDeck, null, winners);
     }
 
     GameState nextVersion() {
         return new GameState(gameId, mode, status, version + 1, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, pendingDebt, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds);
     }
 }

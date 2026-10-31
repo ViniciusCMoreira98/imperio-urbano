@@ -1,6 +1,8 @@
 package br.imperiourbano.engine;
 
+import br.imperiourbano.catalog.CardEffect;
 import br.imperiourbano.catalog.Catalog;
+import br.imperiourbano.catalog.EventCard;
 import br.imperiourbano.catalog.GameMode;
 import br.imperiourbano.catalog.RulesConfig;
 import br.imperiourbano.catalog.StateDefinition;
@@ -20,9 +22,13 @@ import br.imperiourbano.engine.GameCommand.SkipBuild;
 import br.imperiourbano.engine.GameCommand.SkipOlympics;
 import br.imperiourbano.engine.GameEvent.BuildSkipped;
 import br.imperiourbano.engine.GameEvent.BuildingSold;
+import br.imperiourbano.engine.GameEvent.CreditsFromBank;
+import br.imperiourbano.engine.GameEvent.CreditsToBank;
+import br.imperiourbano.engine.GameEvent.CreditsTransferred;
 import br.imperiourbano.engine.GameEvent.DebtIncurred;
 import br.imperiourbano.engine.GameEvent.DebtSettled;
 import br.imperiourbano.engine.GameEvent.DiceRolled;
+import br.imperiourbano.engine.GameEvent.EventCardDrawn;
 import br.imperiourbano.engine.GameEvent.GameFinished;
 import br.imperiourbano.engine.GameEvent.GameStarted;
 import br.imperiourbano.engine.GameEvent.HotelBuilt;
@@ -37,13 +43,16 @@ import br.imperiourbano.engine.GameEvent.PurchaseDeclined;
 import br.imperiourbano.engine.GameEvent.RentPaid;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
 import br.imperiourbano.engine.GameEvent.TurnEnded;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.random.RandomGenerator;
 
 /**
  * Motor de regras puro (sem Spring, sem I/O). {@link #decide} valida um comando e produz eventos;
@@ -51,13 +60,23 @@ import java.util.Optional;
  */
 public final class GameEngine {
 
+    /** Movimentos encadeados por cartas (ex.: carta que leva a outra casa de Eventos). */
+    private static final int MAX_CHAINED_LANDINGS = 3;
+
     private final Catalog catalog;
+    private final RandomGenerator shuffler;
     private final RulesConfig rules;
     private final int tileCount;
     private final int restTile;
 
     public GameEngine(Catalog catalog) {
+        this(catalog, new SecureRandom());
+    }
+
+    /** {@code shuffler} só embaralha o baralho no início; dados vêm de {@link Dice} a cada rolagem. */
+    public GameEngine(Catalog catalog, RandomGenerator shuffler) {
         this.catalog = catalog;
+        this.shuffler = shuffler;
         this.rules = catalog.rules();
         this.tileCount = catalog.board().tileCount();
         this.restTile = catalog.board().tiles().stream()
@@ -95,7 +114,9 @@ public final class GameEngine {
         if (new HashSet<>(turnOrder.stream().map(StartingPlayer::id).toList()).size() != count) {
             throw new RuleViolationException("Jogadores repetidos na partida.");
         }
-        return new GameStarted(gameId, mode, turnOrder, rules.startingCredits());
+        List<String> deck = new ArrayList<>(catalog.eventCards().stream().map(EventCard::id).toList());
+        Collections.shuffle(deck, shuffler);
+        return new GameStarted(gameId, mode, turnOrder, rules.startingCredits(), deck);
     }
 
     public List<GameEvent> decide(GameState state, String playerId, GameCommand command, Dice dice) {
@@ -159,6 +180,12 @@ public final class GameEngine {
             case DebtIncurred e -> state
                     .withPendingDebt(new Debt(e.debtorId(), e.creditorId(), e.amount()))
                     .withPhase(TurnPhase.AWAITING_DEBT_RESOLUTION);
+            case EventCardDrawn e -> state.withEventDeck(state.eventDeck().advanced());
+            case CreditsFromBank e -> state.updatePlayer(e.playerId(), p -> p.withCredits(p.credits() + e.amount()));
+            case CreditsToBank e -> state.updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.amount()));
+            case CreditsTransferred e -> state
+                    .updatePlayer(e.fromId(), p -> p.withCredits(p.credits() - e.amount()))
+                    .updatePlayer(e.toId(), p -> p.withCredits(p.credits() + e.amount()));
             case BuildingSold e -> state
                     .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() + e.refund()))
                     .withProperty(state.property(e.stateId()).orElseThrow().downgraded());
@@ -231,7 +258,8 @@ public final class GameEngine {
                 .map(p -> new PlayerState(p.id(), p.nickname(), e.startingCredits(), 0, false, 0))
                 .toList();
         return new GameState(e.gameId(), e.mode(), GameStatus.IN_PROGRESS, 0, 1, players, 0,
-                TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE, null, List.of());
+                TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE,
+                new EventDeck(e.eventDeck(), 0), null, List.of());
     }
 
     /** D11: credor recebe saldo e estados (com construções); banco como credor libera os estados. D8: sede perde o marcador. */
@@ -267,21 +295,77 @@ public final class GameEngine {
             d.emit(new PlayerMoved(player.id(), player.position(), restTile, 0, true));
             return;
         }
-        int steps = player.position() + roll.total();
-        int bonus = steps >= tileCount ? rules.passStartBonus() : 0;
-        d.emit(new PlayerMoved(player.id(), player.position(), steps % tileCount, bonus, false));
-        resolveLanding(d);
+        moveForward(d, roll.total(), 0);
+    }
+
+    /** Avança no sentido do percurso, pagando o bônus ao passar ou parar no Início. */
+    private void moveForward(Decision d, int steps, int depth) {
+        PlayerState player = d.state.currentPlayer();
+        int target = player.position() + steps;
+        int bonus = target >= tileCount ? rules.passStartBonus() : 0;
+        d.emit(new PlayerMoved(player.id(), player.position(), target % tileCount, bonus, false));
+        resolveLanding(d, depth);
     }
 
     /** Efeitos automáticos da casa de chegada. Decisões do jogador ficam para a fase definida em apply. */
-    private void resolveLanding(Decision d) {
+    private void resolveLanding(Decision d, int depth) {
         PlayerState player = d.state.currentPlayer();
         TileDefinition tile = catalog.tile(player.position());
-        if (tile.type() != TileType.PROPERTY) return;
+        switch (tile.type()) {
+            case PROPERTY -> d.state.property(tile.stateId())
+                    .filter(property -> !property.ownerId().equals(player.id()))
+                    .ifPresent(property -> chargeRent(d, player, property));
+            case EVENT -> {
+                if (depth < MAX_CHAINED_LANDINGS) drawEventCard(d, depth);
+            }
+            default -> {
+            }
+        }
+    }
 
-        d.state.property(tile.stateId())
-                .filter(property -> !property.ownerId().equals(player.id()))
-                .ifPresent(property -> chargeRent(d, player, property));
+    private void drawEventCard(Decision d, int depth) {
+        PlayerState player = d.state.currentPlayer();
+        EventCard card = catalog.eventCard(d.state.eventDeck().peek());
+        d.emit(new EventCardDrawn(player.id(), card.id()));
+        CardEffect effect = card.effect();
+        switch (effect.type()) {
+            case GAIN -> d.emit(new CreditsFromBank(player.id(), effect.amount()));
+            case PAY -> payBank(d, player, effect.amount());
+            case PAY_PER_BUILDING -> {
+                int total = d.state.propertiesOf(player.id()).stream()
+                        .mapToInt(p -> p.buildingLevel() == PropertyState.HOTEL_LEVEL
+                                ? effect.perHotel()
+                                : p.buildingLevel() * effect.perHouse())
+                        .sum();
+                if (total > 0) payBank(d, player, total);
+            }
+            case COLLECT_FROM_EACH -> d.state.activePlayers().stream()
+                    .filter(other -> !other.id().equals(player.id()))
+                    .forEach(other -> {
+                        // Quem não tem o valor inteiro paga o que tem; não gera dívida fora do próprio turno.
+                        int paid = Math.min(effect.amount(), Math.max(0, d.state.player(other.id()).credits()));
+                        if (paid > 0) d.emit(new CreditsTransferred(other.id(), player.id(), paid));
+                    });
+            case MOVE_TO -> moveForward(d, Math.floorMod(effect.tile() - player.position(), tileCount), depth + 1);
+            case MOVE_BY -> {
+                if (effect.steps() > 0) {
+                    moveForward(d, effect.steps(), depth + 1);
+                } else {
+                    int to = Math.floorMod(player.position() + effect.steps(), tileCount);
+                    d.emit(new PlayerMoved(player.id(), player.position(), to, 0, false));
+                    resolveLanding(d, depth + 1);
+                }
+            }
+            case GO_TO_REST -> d.emit(new PlayerMoved(player.id(), player.position(), restTile, 0, true));
+        }
+    }
+
+    private void payBank(Decision d, PlayerState player, int amount) {
+        if (d.state.player(player.id()).credits() >= amount) {
+            d.emit(new CreditsToBank(player.id(), amount));
+        } else {
+            d.emit(new DebtIncurred(player.id(), null, amount));
+        }
     }
 
     private void chargeRent(Decision d, PlayerState payer, PropertyState property) {

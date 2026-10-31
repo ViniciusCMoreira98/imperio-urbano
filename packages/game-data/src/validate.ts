@@ -1,4 +1,4 @@
-import type { BoardDefinition, RulesConfig, StateDefinition } from '@imperio/shared-types';
+import type { BoardDefinition, EventCard, RulesConfig, StateDefinition } from '@imperio/shared-types';
 
 export const ALL_STATE_IDS = [
   'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA',
@@ -66,5 +66,39 @@ export function validateCatalog(
     errors.push('Casas da primeira visita excedem o máximo');
   }
 
+  return errors;
+}
+
+/** Baralho de eventos: ids únicos e parâmetros coerentes com o tipo de efeito. */
+export function validateEventCards(cards: EventCard[], board: BoardDefinition): string[] {
+  const errors: string[] = [];
+  if (cards.length === 0) errors.push('Baralho de eventos vazio');
+  const ids = new Set<string>();
+  for (const card of cards) {
+    if (ids.has(card.id)) errors.push(`Carta duplicada: ${card.id}`);
+    ids.add(card.id);
+    if (!card.title || !card.text) errors.push(`${card.id}: título e texto são obrigatórios`);
+    const e = card.effect;
+    switch (e.type) {
+      case 'GAIN':
+      case 'PAY':
+      case 'COLLECT_FROM_EACH':
+        if (!(e.amount > 0)) errors.push(`${card.id}: valor deve ser positivo`);
+        break;
+      case 'PAY_PER_BUILDING':
+        if (!(e.perHouse > 0 && e.perHotel > 0)) errors.push(`${card.id}: valores por construção devem ser positivos`);
+        break;
+      case 'MOVE_TO':
+        if (!(e.tile >= 0 && e.tile < board.tiles.length)) errors.push(`${card.id}: casa de destino inexistente`);
+        break;
+      case 'MOVE_BY':
+        if (!Number.isInteger(e.steps) || e.steps === 0) errors.push(`${card.id}: deslocamento inválido`);
+        break;
+      case 'GO_TO_REST':
+        break;
+      default:
+        errors.push(`${(card as EventCard).id}: tipo de efeito desconhecido`);
+    }
+  }
   return errors;
 }

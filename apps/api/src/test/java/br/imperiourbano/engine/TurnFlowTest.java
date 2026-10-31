@@ -137,7 +137,7 @@ class TurnFlowTest {
 
     @Test
     void doubleGivesAnotherRollToSamePlayer() {
-        roll("ana", 2, 2);
+        roll("ana", 3, 3);
         endTurn("ana");
 
         assertThat(state.currentPlayer().id()).isEqualTo("ana");

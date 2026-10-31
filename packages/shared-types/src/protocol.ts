@@ -51,6 +51,9 @@ export type DomainEvent =
   | { type: 'OLYMPICS_HOST_SELECTED'; playerId: string; stateId: StateId; edition: number; multiplier: number; fee: number }
   | { type: 'OLYMPICS_SKIPPED'; playerId: string }
   | { type: 'EVENT_CARD_DRAWN'; playerId: string; cardId: string }
+  | { type: 'CREDITS_FROM_BANK'; playerId: string; amount: number }
+  | { type: 'CREDITS_TO_BANK'; playerId: string; amount: number }
+  | { type: 'CREDITS_TRANSFERRED'; fromId: string; toId: string; amount: number }
   | { type: 'BUILDING_SOLD'; playerId: string; stateId: StateId; refund: number }
   | { type: 'PROPERTY_SOLD'; playerId: string; stateId: StateId; refund: number }
   | { type: 'DEBT_SETTLED'; debtorId: string; creditorId: string | null; amount: number }

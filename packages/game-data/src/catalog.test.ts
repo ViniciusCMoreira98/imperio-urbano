@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { StateDefinition } from '@imperio/shared-types';
-import { board, rules, states, validateCatalog } from './index';
+import { board, eventCards, rules, states, validateCatalog, validateEventCards } from './index';
 
 describe('catálogo de jogo', () => {
   it('é consistente', () => {
@@ -22,5 +22,17 @@ describe('catálogo de jogo', () => {
     const tiles = board.tiles.map((t) => (t.index === 2 ? { ...t, stateId: states[0].id } : t));
     const errors = validateCatalog(states, { ...board, tiles }, rules);
     expect(errors.some((e) => e.includes('aparece 2 vez'))).toBe(true);
+  });
+
+  it('tem um baralho de eventos consistente', () => {
+    expect(eventCards).toHaveLength(16);
+    expect(validateEventCards(eventCards, board)).toEqual([]);
+  });
+
+  it('detecta carta duplicada e destino inexistente', () => {
+    const broken = [...eventCards, { ...eventCards[0] }, { id: 'x', title: 'X', text: 'X', effect: { type: 'MOVE_TO' as const, tile: 99 } }];
+    const errors = validateEventCards(broken, board);
+    expect(errors).toContain(`Carta duplicada: ${eventCards[0].id}`);
+    expect(errors).toContain('x: casa de destino inexistente');
   });
 });

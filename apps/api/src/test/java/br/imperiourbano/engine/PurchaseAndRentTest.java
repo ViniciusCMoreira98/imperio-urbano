@@ -157,7 +157,7 @@ class PurchaseAndRentTest {
                 rules.passStartBonus(), rules.dice(),
                 new RulesConfig.ConstructionRules(4, 3, false, 2),
                 rules.olympics(), rules.modes());
-        engine = new GameEngine(new Catalog(CATALOG.states(), CATALOG.board(), doubled));
+        engine = new GameEngine(new Catalog(CATALOG.states(), CATALOG.board(), doubled, CATALOG.eventCards()));
         giveTo("bia", "AC", "RR", "AP");
 
         run("ana", new RollDice(), 1, 2);

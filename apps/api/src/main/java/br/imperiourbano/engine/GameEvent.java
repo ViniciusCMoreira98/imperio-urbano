@@ -9,11 +9,13 @@ public sealed interface GameEvent {
     record StartingPlayer(String id, String nickname) {
     }
 
-    record GameStarted(String gameId, GameMode mode, List<StartingPlayer> turnOrder, int startingCredits)
-            implements GameEvent {
+    /** {@code eventDeck}: ids das cartas já embaralhadas, sorteadas uma única vez aqui. */
+    record GameStarted(String gameId, GameMode mode, List<StartingPlayer> turnOrder, int startingCredits,
+            List<String> eventDeck) implements GameEvent {
 
         public GameStarted {
             turnOrder = List.copyOf(turnOrder);
+            eventDeck = List.copyOf(eventDeck);
         }
     }
 
@@ -46,6 +48,18 @@ public sealed interface GameEvent {
     }
 
     record OlympicsSkipped(String playerId) implements GameEvent {
+    }
+
+    record EventCardDrawn(String playerId, String cardId) implements GameEvent {
+    }
+
+    record CreditsFromBank(String playerId, int amount) implements GameEvent {
+    }
+
+    record CreditsToBank(String playerId, int amount) implements GameEvent {
+    }
+
+    record CreditsTransferred(String fromId, String toId, int amount) implements GameEvent {
     }
 
     record RentPaid(String fromId, String toId, String stateId, int amount) implements GameEvent {

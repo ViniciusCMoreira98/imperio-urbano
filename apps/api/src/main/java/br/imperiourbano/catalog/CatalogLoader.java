@@ -15,6 +15,9 @@ public final class CatalogLoader {
     private record StatesFile(int version, List<StateDefinition> states) {
     }
 
+    private record EventsFile(int version, List<EventCard> cards) {
+    }
+
     private CatalogLoader() {
     }
 
@@ -23,7 +26,8 @@ public final class CatalogLoader {
         Catalog catalog = new Catalog(
                 read("states.json", StatesFile.class).states(),
                 read("board.json", BoardDefinition.class),
-                read("rules.json", RulesConfig.class));
+                read("rules.json", RulesConfig.class),
+                read("events.json", EventsFile.class).cards());
         List<String> errors = CatalogValidator.validate(catalog);
         if (!errors.isEmpty()) {
             throw new IllegalStateException("Catálogo inválido:\n- " + String.join("\n- ", errors));

@@ -14,7 +14,7 @@ class CatalogValidatorTest {
     void detectsMissingAndDuplicatedState() {
         List<StateDefinition> states = new ArrayList<>(valid.states().subList(1, 27));
         states.add(valid.states().get(1));
-        Catalog broken = new Catalog(states, valid.board(), valid.rules());
+        Catalog broken = new Catalog(states, valid.board(), valid.rules(), valid.eventCards());
 
         assertThat(CatalogValidator.validate(broken)).contains(
                 "Estado ausente: " + valid.states().get(0).id(),
@@ -28,7 +28,7 @@ class CatalogValidatorTest {
         tiles.set(2, new TileDefinition(second.index(), TileType.PROPERTY, valid.board().tiles().get(1).stateId(), null));
         BoardDefinition board = new BoardDefinition(1, valid.board().tilesPerSide(), valid.board().colorGroups(), tiles);
 
-        assertThat(CatalogValidator.validate(new Catalog(valid.states(), board, valid.rules())))
+        assertThat(CatalogValidator.validate(new Catalog(valid.states(), board, valid.rules(), valid.eventCards())))
                 .anyMatch(e -> e.contains("aparece 2 vez"));
     }
 
@@ -40,7 +40,7 @@ class CatalogValidatorTest {
         states.set(states.indexOf(ac), new StateDefinition(ac.id(), ac.abbreviation(), ac.name(), ac.region(),
                 ac.colorGroup(), ac.price(), bad, ac.houseCost(), ac.hotelCost()));
 
-        assertThat(CatalogValidator.validate(new Catalog(states, valid.board(), valid.rules())))
+        assertThat(CatalogValidator.validate(new Catalog(states, valid.board(), valid.rules(), valid.eventCards())))
                 .contains("AC: aluguéis devem ser positivos e crescentes");
     }
 }
