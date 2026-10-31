@@ -38,6 +38,12 @@ export type DomainEvent =
   | { type: 'DICE_ROLLED'; playerId: string; dice: [number, number] }
   /** startBonus > 0 ao passar/parar no Início; sentToRest na 3ª dupla seguida. */
   | { type: 'PLAYER_MOVED'; playerId: string; from: number; to: number; startBonus: number; sentToRest: boolean }
+  /** Rolou sem dupla no Descanso e perdeu a jogada. */
+  | { type: 'REST_TURN_LOST'; playerId: string }
+  /** Dupla no Descanso: sai e anda, sem jogada extra. */
+  | { type: 'REST_LEFT'; playerId: string }
+  | { type: 'TRAVEL_CHOSEN'; playerId: string; tileIndex: number; fee: number }
+  | { type: 'TRAVEL_DECLINED'; playerId: string }
   | { type: 'PROPERTY_PURCHASED'; playerId: string; stateId: StateId; price: number }
   | { type: 'PURCHASE_DECLINED'; playerId: string; stateId: StateId }
   /** count = casas construídas agora; cost = custo total. */

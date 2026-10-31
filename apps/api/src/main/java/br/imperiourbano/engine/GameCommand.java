@@ -42,6 +42,10 @@ public sealed interface GameCommand {
     record DeclareBankruptcy() implements GameCommand {
     }
 
+    /** Viagem Nacional: viaja até a casa escolhida pagando a taxa. Rolar os dados recusa a viagem. */
+    record ChooseTravel(int tileIndex) implements GameCommand {
+    }
+
     record EndTurn() implements GameCommand {
     }
 }

@@ -88,5 +88,9 @@ export interface RulesConfig {
     fullGroupBaseRentMultiplier: number;
   };
   olympics: { hostFee: number; multipliers: number[] };
+  /** Descanso (D2): jogadas perdidas; uma dupla libera antes. */
+  rest: { turnsLost: number };
+  /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
+  nationalTravel: { fee: number };
   modes: Record<GameMode, { roundLimit: number | null }>;
 }

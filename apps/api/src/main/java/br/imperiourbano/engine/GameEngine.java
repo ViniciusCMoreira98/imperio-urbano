@@ -11,6 +11,7 @@ import br.imperiourbano.catalog.TileType;
 import br.imperiourbano.engine.GameCommand.Build;
 import br.imperiourbano.engine.GameCommand.BuildHotel;
 import br.imperiourbano.engine.GameCommand.BuyProperty;
+import br.imperiourbano.engine.GameCommand.ChooseTravel;
 import br.imperiourbano.engine.GameCommand.DeclareBankruptcy;
 import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
@@ -39,6 +40,10 @@ import br.imperiourbano.engine.GameEvent.PlayerBankrupt;
 import br.imperiourbano.engine.GameEvent.PlayerMoved;
 import br.imperiourbano.engine.GameEvent.PropertyPurchased;
 import br.imperiourbano.engine.GameEvent.PropertySold;
+import br.imperiourbano.engine.GameEvent.RestLeft;
+import br.imperiourbano.engine.GameEvent.RestTurnLost;
+import br.imperiourbano.engine.GameEvent.TravelChosen;
+import br.imperiourbano.engine.GameEvent.TravelDeclined;
 import br.imperiourbano.engine.GameEvent.PurchaseDeclined;
 import br.imperiourbano.engine.GameEvent.RentPaid;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
@@ -143,7 +148,7 @@ public final class GameEngine {
             case DiceRolled e -> state.withDice(e.dice(), e.dice().isDouble() ? state.doublesInRow() + 1 : 0);
             case PlayerMoved e -> {
                 GameState moved = state.updatePlayer(e.playerId(),
-                        p -> p.withPosition(e.to()).withCredits(p.credits() + e.startBonus()));
+                        p -> arrive(p.withPosition(e.to()).withCredits(p.credits() + e.startBonus())));
                 if (e.sentToRest()) {
                     yield moved.withDice(moved.lastDice(), 0).withPhase(TurnPhase.AWAITING_END_TURN);
                 }
@@ -153,6 +158,17 @@ public final class GameEngine {
                         .orElse(moved);
                 yield visited.withPhase(phaseAfterLanding(visited, player));
             }
+            case RestTurnLost e -> state
+                    .updatePlayer(e.playerId(), p -> p.withSkipTurns(p.skipTurns() - 1))
+                    .withPhase(TurnPhase.AWAITING_END_TURN);
+            case RestLeft e -> state
+                    .updatePlayer(e.playerId(), p -> p.withSkipTurns(0))
+                    .withDice(state.lastDice(), 0);
+            case TravelChosen e -> state.updatePlayer(e.playerId(),
+                    p -> p.withCredits(p.credits() - e.fee()).withTravelPending(false));
+            case TravelDeclined e -> state
+                    .updatePlayer(e.playerId(), p -> p.withTravelPending(false))
+                    .withPhase(TurnPhase.AWAITING_ROLL);
             case PropertyPurchased e -> state
                     .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.price()))
                     .withProperty(PropertyState.purchased(e.stateId(), e.playerId()))
@@ -207,7 +223,8 @@ public final class GameEngine {
             case TurnEnded e -> {
                 int nextIndex = state.indexOf(e.nextPlayerId());
                 boolean sameTurn = nextIndex == state.currentPlayerIndex();
-                yield state.withTurn(nextIndex, e.round(), TurnPhase.AWAITING_ROLL, sameTurn ? state.doublesInRow() : 0);
+                yield state.withTurn(nextIndex, e.round(), turnStartPhase(state.players().get(nextIndex)),
+                        sameTurn ? state.doublesInRow() : 0);
             }
         };
         return next.nextVersion();
@@ -238,6 +255,7 @@ public final class GameEngine {
         Decision decision = new Decision(state);
         switch (command) {
             case RollDice ignored -> rollDice(decision, dice);
+            case ChooseTravel c -> chooseTravel(decision, c.tileIndex());
             case BuyProperty c -> buyProperty(decision, c.houses());
             case DeclinePurchase ignored -> declinePurchase(decision);
             case Build c -> build(decision, c.houses());
@@ -255,7 +273,7 @@ public final class GameEngine {
 
     private GameState initialState(GameStarted e) {
         List<PlayerState> players = e.turnOrder().stream()
-                .map(p -> new PlayerState(p.id(), p.nickname(), e.startingCredits(), 0, false, 0))
+                .map(p -> PlayerState.starting(p.id(), p.nickname(), e.startingCredits()))
                 .toList();
         return new GameState(e.gameId(), e.mode(), GameStatus.IN_PROGRESS, 0, 1, players, 0,
                 TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE,
@@ -286,16 +304,55 @@ public final class GameEngine {
     }
 
     private void rollDice(Decision d, Dice dice) {
-        requirePhase(d.state, TurnPhase.AWAITING_ROLL, "Você não pode rolar os dados agora.");
+        if (d.state.phase() != TurnPhase.AWAITING_ROLL && d.state.phase() != TurnPhase.AWAITING_TRAVEL_DESTINATION) {
+            throw new RuleViolationException("Você não pode rolar os dados agora.");
+        }
         PlayerState player = d.state.currentPlayer();
+        if (player.travelPending()) {
+            d.emit(new TravelDeclined(player.id()));
+        }
         DiceRoll roll = dice.roll();
         d.emit(new DiceRolled(player.id(), roll));
 
-        if (d.state.doublesInRow() >= rules.dice().maxDoublesInRow()) {
+        if (player.skipTurns() > 0) {
+            if (!roll.isDouble()) {
+                d.emit(new RestTurnLost(player.id()));
+                return;
+            }
+            d.emit(new RestLeft(player.id()));
+        } else if (d.state.doublesInRow() >= rules.dice().maxDoublesInRow()) {
             d.emit(new PlayerMoved(player.id(), player.position(), restTile, 0, true));
             return;
         }
         moveForward(d, roll.total(), 0);
+    }
+
+    private void chooseTravel(Decision d, int tileIndex) {
+        requirePhase(d.state, TurnPhase.AWAITING_TRAVEL_DESTINATION, "Não há viagem disponível agora.");
+        PlayerState player = d.state.currentPlayer();
+        if (tileIndex < 0 || tileIndex >= tileCount || tileIndex == player.position()) {
+            throw new RuleViolationException("Escolha outra casa do tabuleiro como destino.");
+        }
+        int fee = rules.nationalTravel().fee();
+        requireCredits(player, fee);
+        d.emit(new TravelChosen(player.id(), tileIndex, fee));
+        moveForward(d, Math.floorMod(tileIndex - player.position(), tileCount), 0);
+    }
+
+    /** Efeitos de chegar a uma casa: Descanso faz perder jogadas; Viagem Nacional libera a viagem seguinte. */
+    private PlayerState arrive(PlayerState player) {
+        return switch (catalog.tile(player.position()).type()) {
+            case REST -> player.withSkipTurns(rules.rest().turnsLost());
+            case NATIONAL_TRAVEL -> player.withTravelPending(true);
+            default -> player;
+        };
+    }
+
+    /** Viagem pendente e taxa pagável abrem a escolha do destino; senão o turno começa pela rolagem. */
+    private TurnPhase turnStartPhase(PlayerState player) {
+        return player.travelPending() && player.credits() >= rules.nationalTravel().fee()
+                ? TurnPhase.AWAITING_TRAVEL_DESTINATION
+                : TurnPhase.AWAITING_ROLL;
     }
 
     /** Avança no sentido do percurso, pagando o bônus ao passar ou parar no Início. */

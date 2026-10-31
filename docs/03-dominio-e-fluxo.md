@@ -42,8 +42,8 @@ LOBBY ──START_GAME (2–4 prontos, chamado pelo anfitrião)──▶ IN_PROG
   │ Estado de adversário .... RENT_PAID automático (saldo insuficiente → DEBT)     │
   │ Olimpíadas .............. AWAITING_OLYMPICS_HOST se possui estado e saldo ≥ 50 │
   │ Eventos ................. EVENT_CARD_DRAWN → aplica efeito (pode encadear)     │
-  │ Descanso ................ skipTurns = 1                                        │
-  │ Viagem Nacional ......... marca viagem para o próximo turno                    │
+  │ Descanso ................ skipTurns = rules.rest.turnsLost (também via carta/3ª dupla) │
+  │ Viagem Nacional ......... travelPending; próximo turno abre AWAITING_TRAVEL_DESTINATION │
   │ Início / Visita ......... nada                                                 │
   └────────────────────────────────────────────────────────────────────────────────┘
                                        │
@@ -64,6 +64,10 @@ LOBBY ──START_GAME (2–4 prontos, chamado pelo anfitrião)──▶ IN_PROG
 Construção (D4): a compra conta como 1ª visita e permite até 3 casas; em qualquer visita do dono a 1ª etapa (até 3 casas) pode ser completada; a 4ª casa exige uma visita posterior àquela em que chegou a 3; o hotel, uma visita posterior à 4ª casa. Só parar na casa conta como visita; visitas de adversários não contam. A fase AWAITING_BUILD só abre se houver construção permitida e pagável.
 
 Olimpíadas (D6–D7): ao parar na casa, quem possui ao menos um estado e tem saldo para a taxa (50) escolhe a sede. Cada edição avança o multiplicador (×2, ×3 … ×10, depois fica em ×10), que se aplica ao aluguel total da sede, inclusive construções. A sede anterior perde o benefício; reescolher a mesma sede também avança a edição.
+
+Descanso (D2): no turno seguinte o jogador rola; sem dupla perde a jogada (`REST_TURN_LOST`), com dupla sai e anda normalmente, sem jogada extra (`REST_LEFT`). Continua recebendo aluguéis.
+
+Viagem Nacional (D3): no turno seguinte, se tiver saldo para a taxa (50), escolhe qualquer outra casa (`CHOOSE_TRAVEL`) e viaja no sentido do percurso, recebendo o bônus se passar pelo Início; a casa de destino é resolvida normalmente. Rolar os dados recusa a viagem.
 
 Duplas (D9): dupla dá nova jogada (`TURN_ENDED` com o mesmo jogador); a 3ª dupla seguida (`rules.dice.maxDoublesInRow`) leva direto ao Descanso, sem bônus do Início, e encerra a sequência.
 

@@ -31,6 +31,8 @@ export interface PlayerState {
   connected: boolean;
   bankrupt: boolean;
   skipTurns: number;
+  /** Parou na Viagem Nacional: na próxima jogada pode escolher o destino. */
+  travelPending: boolean;
 }
 
 export interface PropertyState {

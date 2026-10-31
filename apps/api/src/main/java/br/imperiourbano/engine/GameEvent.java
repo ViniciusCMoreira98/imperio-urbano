@@ -26,6 +26,20 @@ public sealed interface GameEvent {
     record PlayerMoved(String playerId, int from, int to, int startBonus, boolean sentToRest) implements GameEvent {
     }
 
+    /** Rolou sem dupla no Descanso: perde a jogada. */
+    record RestTurnLost(String playerId) implements GameEvent {
+    }
+
+    /** Tirou dupla no Descanso: sai e anda normalmente, sem jogada extra. */
+    record RestLeft(String playerId) implements GameEvent {
+    }
+
+    record TravelChosen(String playerId, int tileIndex, int fee) implements GameEvent {
+    }
+
+    record TravelDeclined(String playerId) implements GameEvent {
+    }
+
     record PropertyPurchased(String playerId, String stateId, int price) implements GameEvent {
     }
 

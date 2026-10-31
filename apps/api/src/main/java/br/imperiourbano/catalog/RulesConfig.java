@@ -11,6 +11,8 @@ public record RulesConfig(
         DiceConfig dice,
         ConstructionRules construction,
         OlympicsRules olympics,
+        RestRules rest,
+        NationalTravelRules nationalTravel,
         Map<GameMode, ModeConfig> modes) {
 
     public RulesConfig {
@@ -41,6 +43,14 @@ public record RulesConfig(
         public int multiplierForEdition(int edition) {
             return multipliers.get(Math.min(edition, multipliers.size()) - 1);
         }
+    }
+
+    /** Descanso (D2): jogadas perdidas ao parar; uma dupla libera antes. */
+    public record RestRules(int turnsLost) {
+    }
+
+    /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
+    public record NationalTravelRules(int fee) {
     }
 
     /** {@code roundLimit} nulo = sem limite de rodadas. */
