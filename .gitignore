@@ -1,0 +1,13 @@
+node_modules/
+dist/
+build/
+target/
+.gradle/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+.idea/
+*.log

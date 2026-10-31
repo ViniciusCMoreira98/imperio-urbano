@@ -1,0 +1,491 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "AC",
+      "abbreviation": "AC",
+      "name": "Acre",
+      "region": "NORTE",
+      "colorGroup": "NORTE_I",
+      "price": 100,
+      "rent": {
+        "base": 10,
+        "house1": 40,
+        "house2": 90,
+        "house3": 160,
+        "house4": 220,
+        "hotel": 300
+      },
+      "houseCost": 50,
+      "hotelCost": 100
+    },
+    {
+      "id": "RR",
+      "abbreviation": "RR",
+      "name": "Roraima",
+      "region": "NORTE",
+      "colorGroup": "NORTE_I",
+      "price": 110,
+      "rent": {
+        "base": 10,
+        "house1": 45,
+        "house2": 100,
+        "house3": 175,
+        "house4": 240,
+        "hotel": 330
+      },
+      "houseCost": 55,
+      "hotelCost": 110
+    },
+    {
+      "id": "AP",
+      "abbreviation": "AP",
+      "name": "Amapá",
+      "region": "NORTE",
+      "colorGroup": "NORTE_I",
+      "price": 120,
+      "rent": {
+        "base": 10,
+        "house1": 50,
+        "house2": 110,
+        "house3": 190,
+        "house4": 265,
+        "hotel": 360
+      },
+      "houseCost": 60,
+      "hotelCost": 120
+    },
+    {
+      "id": "RO",
+      "abbreviation": "RO",
+      "name": "Rondônia",
+      "region": "NORTE",
+      "colorGroup": "NORTE_II",
+      "price": 135,
+      "rent": {
+        "base": 15,
+        "house1": 55,
+        "house2": 120,
+        "house3": 215,
+        "house4": 295,
+        "hotel": 405
+      },
+      "houseCost": 70,
+      "hotelCost": 135
+    },
+    {
+      "id": "TO",
+      "abbreviation": "TO",
+      "name": "Tocantins",
+      "region": "NORTE",
+      "colorGroup": "NORTE_II",
+      "price": 145,
+      "rent": {
+        "base": 15,
+        "house1": 60,
+        "house2": 130,
+        "house3": 230,
+        "house4": 320,
+        "hotel": 435
+      },
+      "houseCost": 75,
+      "hotelCost": 145
+    },
+    {
+      "id": "AM",
+      "abbreviation": "AM",
+      "name": "Amazonas",
+      "region": "NORTE",
+      "colorGroup": "NORTE_II",
+      "price": 160,
+      "rent": {
+        "base": 15,
+        "house1": 65,
+        "house2": 145,
+        "house3": 255,
+        "house4": 350,
+        "hotel": 480
+      },
+      "houseCost": 80,
+      "hotelCost": 160
+    },
+    {
+      "id": "PA",
+      "abbreviation": "PA",
+      "name": "Pará",
+      "region": "NORTE",
+      "colorGroup": "NORTE_II",
+      "price": 170,
+      "rent": {
+        "base": 15,
+        "house1": 70,
+        "house2": 155,
+        "house3": 270,
+        "house4": 375,
+        "hotel": 510
+      },
+      "houseCost": 85,
+      "hotelCost": 170
+    },
+    {
+      "id": "PI",
+      "abbreviation": "PI",
+      "name": "Piauí",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_I",
+      "price": 185,
+      "rent": {
+        "base": 20,
+        "house1": 75,
+        "house2": 165,
+        "house3": 295,
+        "house4": 405,
+        "hotel": 555
+      },
+      "houseCost": 95,
+      "hotelCost": 185
+    },
+    {
+      "id": "MA",
+      "abbreviation": "MA",
+      "name": "Maranhão",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_I",
+      "price": 195,
+      "rent": {
+        "base": 20,
+        "house1": 80,
+        "house2": 175,
+        "house3": 310,
+        "house4": 430,
+        "hotel": 585
+      },
+      "houseCost": 100,
+      "hotelCost": 195
+    },
+    {
+      "id": "SE",
+      "abbreviation": "SE",
+      "name": "Sergipe",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_I",
+      "price": 205,
+      "rent": {
+        "base": 20,
+        "house1": 80,
+        "house2": 185,
+        "house3": 330,
+        "house4": 450,
+        "hotel": 615
+      },
+      "houseCost": 105,
+      "hotelCost": 205
+    },
+    {
+      "id": "AL",
+      "abbreviation": "AL",
+      "name": "Alagoas",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_II",
+      "price": 215,
+      "rent": {
+        "base": 20,
+        "house1": 85,
+        "house2": 195,
+        "house3": 345,
+        "house4": 475,
+        "hotel": 645
+      },
+      "houseCost": 110,
+      "hotelCost": 215
+    },
+    {
+      "id": "PB",
+      "abbreviation": "PB",
+      "name": "Paraíba",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_II",
+      "price": 225,
+      "rent": {
+        "base": 25,
+        "house1": 90,
+        "house2": 205,
+        "house3": 360,
+        "house4": 495,
+        "hotel": 675
+      },
+      "houseCost": 115,
+      "hotelCost": 225
+    },
+    {
+      "id": "RN",
+      "abbreviation": "RN",
+      "name": "Rio Grande do Norte",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_II",
+      "price": 235,
+      "rent": {
+        "base": 25,
+        "house1": 95,
+        "house2": 210,
+        "house3": 375,
+        "house4": 515,
+        "hotel": 705
+      },
+      "houseCost": 120,
+      "hotelCost": 235
+    },
+    {
+      "id": "CE",
+      "abbreviation": "CE",
+      "name": "Ceará",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_II",
+      "price": 250,
+      "rent": {
+        "base": 25,
+        "house1": 100,
+        "house2": 225,
+        "house3": 400,
+        "house4": 550,
+        "hotel": 750
+      },
+      "houseCost": 125,
+      "hotelCost": 250
+    },
+    {
+      "id": "PE",
+      "abbreviation": "PE",
+      "name": "Pernambuco",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_III",
+      "price": 265,
+      "rent": {
+        "base": 25,
+        "house1": 105,
+        "house2": 240,
+        "house3": 425,
+        "house4": 585,
+        "hotel": 795
+      },
+      "houseCost": 135,
+      "hotelCost": 265
+    },
+    {
+      "id": "BA",
+      "abbreviation": "BA",
+      "name": "Bahia",
+      "region": "NORDESTE",
+      "colorGroup": "NORDESTE_III",
+      "price": 280,
+      "rent": {
+        "base": 30,
+        "house1": 110,
+        "house2": 250,
+        "house3": 450,
+        "house4": 615,
+        "hotel": 840
+      },
+      "houseCost": 140,
+      "hotelCost": 280
+    },
+    {
+      "id": "MS",
+      "abbreviation": "MS",
+      "name": "Mato Grosso do Sul",
+      "region": "CENTRO_OESTE",
+      "colorGroup": "CENTRO_OESTE",
+      "price": 295,
+      "rent": {
+        "base": 30,
+        "house1": 120,
+        "house2": 265,
+        "house3": 470,
+        "house4": 650,
+        "hotel": 885
+      },
+      "houseCost": 150,
+      "hotelCost": 295
+    },
+    {
+      "id": "MT",
+      "abbreviation": "MT",
+      "name": "Mato Grosso",
+      "region": "CENTRO_OESTE",
+      "colorGroup": "CENTRO_OESTE",
+      "price": 310,
+      "rent": {
+        "base": 30,
+        "house1": 125,
+        "house2": 280,
+        "house3": 495,
+        "house4": 680,
+        "hotel": 930
+      },
+      "houseCost": 155,
+      "hotelCost": 310
+    },
+    {
+      "id": "GO",
+      "abbreviation": "GO",
+      "name": "Goiás",
+      "region": "CENTRO_OESTE",
+      "colorGroup": "CENTRO_OESTE",
+      "price": 320,
+      "rent": {
+        "base": 30,
+        "house1": 130,
+        "house2": 290,
+        "house3": 510,
+        "house4": 705,
+        "hotel": 960
+      },
+      "houseCost": 160,
+      "hotelCost": 320
+    },
+    {
+      "id": "DF",
+      "abbreviation": "DF",
+      "name": "Distrito Federal",
+      "region": "CENTRO_OESTE",
+      "colorGroup": "CENTRO_OESTE",
+      "price": 340,
+      "rent": {
+        "base": 35,
+        "house1": 135,
+        "house2": 305,
+        "house3": 545,
+        "house4": 750,
+        "hotel": 1020
+      },
+      "houseCost": 170,
+      "hotelCost": 340
+    },
+    {
+      "id": "SC",
+      "abbreviation": "SC",
+      "name": "Santa Catarina",
+      "region": "SUL",
+      "colorGroup": "SUL",
+      "price": 355,
+      "rent": {
+        "base": 35,
+        "house1": 140,
+        "house2": 320,
+        "house3": 570,
+        "house4": 780,
+        "hotel": 1065
+      },
+      "houseCost": 180,
+      "hotelCost": 355
+    },
+    {
+      "id": "PR",
+      "abbreviation": "PR",
+      "name": "Paraná",
+      "region": "SUL",
+      "colorGroup": "SUL",
+      "price": 370,
+      "rent": {
+        "base": 35,
+        "house1": 150,
+        "house2": 335,
+        "house3": 590,
+        "house4": 815,
+        "hotel": 1110
+      },
+      "houseCost": 185,
+      "hotelCost": 370
+    },
+    {
+      "id": "RS",
+      "abbreviation": "RS",
+      "name": "Rio Grande do Sul",
+      "region": "SUL",
+      "colorGroup": "SUL",
+      "price": 385,
+      "rent": {
+        "base": 40,
+        "house1": 155,
+        "house2": 345,
+        "house3": 615,
+        "house4": 845,
+        "hotel": 1155
+      },
+      "houseCost": 195,
+      "hotelCost": 385
+    },
+    {
+      "id": "ES",
+      "abbreviation": "ES",
+      "name": "Espírito Santo",
+      "region": "SUDESTE",
+      "colorGroup": "SUDESTE",
+      "price": 400,
+      "rent": {
+        "base": 40,
+        "house1": 160,
+        "house2": 360,
+        "house3": 640,
+        "house4": 880,
+        "hotel": 1200
+      },
+      "houseCost": 200,
+      "hotelCost": 400
+    },
+    {
+      "id": "MG",
+      "abbreviation": "MG",
+      "name": "Minas Gerais",
+      "region": "SUDESTE",
+      "colorGroup": "SUDESTE",
+      "price": 430,
+      "rent": {
+        "base": 45,
+        "house1": 170,
+        "house2": 385,
+        "house3": 690,
+        "house4": 945,
+        "hotel": 1290
+      },
+      "houseCost": 215,
+      "hotelCost": 430
+    },
+    {
+      "id": "RJ",
+      "abbreviation": "RJ",
+      "name": "Rio de Janeiro",
+      "region": "SUDESTE",
+      "colorGroup": "SUDESTE",
+      "price": 460,
+      "rent": {
+        "base": 45,
+        "house1": 185,
+        "house2": 415,
+        "house3": 735,
+        "house4": 1010,
+        "hotel": 1380
+      },
+      "houseCost": 230,
+      "hotelCost": 460
+    },
+    {
+      "id": "SP",
+      "abbreviation": "SP",
+      "name": "São Paulo",
+      "region": "SUDESTE",
+      "colorGroup": "SUDESTE",
+      "price": 500,
+      "rent": {
+        "base": 50,
+        "house1": 200,
+        "house2": 450,
+        "house3": 800,
+        "house4": 1100,
+        "hotel": 1500
+      },
+      "houseCost": 250,
+      "hotelCost": 500
+    }
+  ]
+}
