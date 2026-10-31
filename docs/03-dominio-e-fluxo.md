@@ -35,7 +35,8 @@ LOBBY ──START_GAME (2–4 prontos, chamado pelo anfitrião)──▶ IN_PROG
         │ (Viagem pendente → AWAITING_TRAVEL_DESTINATION)   │
         ▼                                                   ▼
   ┌───────────────────────────── resolução da casa ───────────────────────────────┐
-  │ Estado livre ............ AWAITING_PURCHASE (BUY_PROPERTY{0..3} | DECLINE)     │
+  │ Estado livre ............ AWAITING_PURCHASE se o saldo cobre o preço          │
+  │                            (BUY_PROPERTY{0..3} | DECLINE_PURCHASE)             │
   │ Estado próprio .......... ownerVisits++ → AWAITING_BUILD se houver etapa       │
   │                            disponível (BUILD | BUILD_HOTEL | SKIP_BUILD)       │
   │ Estado de adversário .... RENT_PAID automático (saldo insuficiente → DEBT)     │

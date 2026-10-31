@@ -19,7 +19,7 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 |---|---|
 | ✅ E6 | Scaffold `apps/api` (Spring Boot 4.1, Java 21, Maven Wrapper), `catalog` lendo os JSON |
 | ✅ E7 | `engine`: turnos, dados determinísticos, movimento, bônus do Início, duplas |
-| E8 | Compra e aluguel |
+| ✅ E8 | Compra e aluguel |
 | E9 | Construção por etapas/visitas (D4) |
 | E10 | Olimpíadas |
 | E11 | Dívida, venda ao banco, falência, vitória (Clássico e Rápido) |

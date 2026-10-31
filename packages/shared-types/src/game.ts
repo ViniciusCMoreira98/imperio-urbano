@@ -50,6 +50,13 @@ export interface OlympicsState {
   multiplier: number;
 }
 
+export interface Debt {
+  debtorId: string;
+  /** null = banco. */
+  creditorId: string | null;
+  amount: number;
+}
+
 export interface GameSnapshot {
   gameId: string;
   inviteCode: string;
@@ -64,5 +71,6 @@ export interface GameSnapshot {
   players: PlayerState[];
   properties: PropertyState[];
   olympics: OlympicsState;
+  pendingDebt: Debt | null;
   winnerIds: string[];
 }

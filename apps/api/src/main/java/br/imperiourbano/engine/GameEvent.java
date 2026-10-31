@@ -24,6 +24,19 @@ public sealed interface GameEvent {
     record PlayerMoved(String playerId, int from, int to, int startBonus, boolean sentToRest) implements GameEvent {
     }
 
+    record PropertyPurchased(String playerId, String stateId, int price) implements GameEvent {
+    }
+
+    record PurchaseDeclined(String playerId, String stateId) implements GameEvent {
+    }
+
+    record RentPaid(String fromId, String toId, String stateId, int amount) implements GameEvent {
+    }
+
+    /** Aluguel maior que o saldo: a resolução (venda ou falência) entra na E11. */
+    record DebtIncurred(String debtorId, String creditorId, int amount) implements GameEvent {
+    }
+
     /** {@code nextPlayerId} igual ao atual quando a dupla dá nova jogada. */
     record TurnEnded(String playerId, String nextPlayerId, int round) implements GameEvent {
     }

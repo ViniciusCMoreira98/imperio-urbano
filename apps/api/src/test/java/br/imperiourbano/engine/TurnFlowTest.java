@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import br.imperiourbano.catalog.Catalog;
 import br.imperiourbano.catalog.CatalogLoader;
 import br.imperiourbano.catalog.GameMode;
+import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.RollDice;
 import br.imperiourbano.engine.GameEvent.PlayerMoved;
@@ -45,7 +46,11 @@ class TurnFlowTest {
         run(playerId, new RollDice(), FixedDice.of(a, b));
     }
 
+    /** Recusa a compra pendente, se houver, e passa a vez. */
     private void endTurn(String playerId) {
+        if (state.phase() == TurnPhase.AWAITING_PURCHASE) {
+            run(playerId, new DeclinePurchase(), FixedDice.of());
+        }
         run(playerId, new EndTurn(), FixedDice.of());
     }
 
@@ -76,7 +81,8 @@ class TurnFlowTest {
 
         assertThat(state.player("ana").position()).isEqualTo(7);
         assertThat(state.lastDice()).isEqualTo(new DiceRoll(3, 4));
-        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
+        // Casa 7 é o Amazonas, livre: o jogador decide se compra.
+        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
     }
 
     @Test
@@ -88,7 +94,7 @@ class TurnFlowTest {
 
     @Test
     void cannotRollTwiceOrEndTurnBeforeRolling() {
-        assertThatThrownBy(() -> endTurn("ana")).isInstanceOf(RuleViolationException.class);
+        assertThatThrownBy(() -> run("ana", new EndTurn(), FixedDice.of())).isInstanceOf(RuleViolationException.class);
         roll("ana", 1, 2);
         assertThatThrownBy(() -> roll("ana", 1, 2)).isInstanceOf(RuleViolationException.class);
     }

@@ -39,9 +39,12 @@ export type DomainEvent =
   /** startBonus > 0 ao passar/parar no Início; sentToRest na 3ª dupla seguida. */
   | { type: 'PLAYER_MOVED'; playerId: string; from: number; to: number; startBonus: number; sentToRest: boolean }
   | { type: 'PROPERTY_PURCHASED'; playerId: string; stateId: StateId; price: number }
+  | { type: 'PURCHASE_DECLINED'; playerId: string; stateId: StateId }
   | { type: 'HOUSE_BUILT'; playerId: string; stateId: StateId; houses: number; cost: number }
   | { type: 'HOTEL_BUILT'; playerId: string; stateId: StateId; cost: number }
   | { type: 'RENT_PAID'; fromId: string; toId: string; stateId: StateId; amount: number }
+  /** Aluguel maior que o saldo; creditorId nulo = banco. */
+  | { type: 'DEBT_INCURRED'; debtorId: string; creditorId: string | null; amount: number }
   | { type: 'OLYMPICS_HOST_SELECTED'; playerId: string; stateId: StateId; edition: number; multiplier: number }
   | { type: 'EVENT_CARD_DRAWN'; playerId: string; cardId: string }
   | { type: 'PLAYER_BANKRUPT'; playerId: string; creditorId: string | null }

@@ -1,8 +1,11 @@
 package br.imperiourbano.engine;
 
 import br.imperiourbano.catalog.GameMode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 /** Estado imutável da partida. Só muda aplicando eventos (GameEngine.apply). */
@@ -16,10 +19,13 @@ public record GameState(
         int currentPlayerIndex,
         TurnPhase phase,
         DiceRoll lastDice,
-        int doublesInRow) {
+        int doublesInRow,
+        Map<String, PropertyState> properties,
+        Debt pendingDebt) {
 
     public GameState {
         players = List.copyOf(players);
+        properties = Map.copyOf(properties);
     }
 
     public PlayerState currentPlayer() {
@@ -27,10 +33,11 @@ public record GameState(
     }
 
     public PlayerState player(String id) {
-        return players.stream()
-                .filter(p -> p.id().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Jogador inexistente: " + id));
+        return players.get(indexOf(id));
+    }
+
+    public Optional<PropertyState> property(String stateId) {
+        return Optional.ofNullable(properties.get(stateId));
     }
 
     int indexOf(String playerId) {
@@ -45,22 +52,39 @@ public record GameState(
     }
 
     GameState withPlayers(List<PlayerState> value) {
-        return new GameState(gameId, mode, status, version, round, value, currentPlayerIndex, phase, lastDice, doublesInRow);
+        return new GameState(gameId, mode, status, version, round, value, currentPlayerIndex, phase, lastDice,
+                doublesInRow, properties, pendingDebt);
     }
 
     GameState withTurn(int playerIndex, int roundValue, TurnPhase phaseValue, int doubles) {
-        return new GameState(gameId, mode, status, version, roundValue, players, playerIndex, phaseValue, lastDice, doubles);
+        return new GameState(gameId, mode, status, version, roundValue, players, playerIndex, phaseValue, lastDice,
+                doubles, properties, pendingDebt);
     }
 
     GameState withPhase(TurnPhase value) {
-        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, value, lastDice, doublesInRow);
+        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, value, lastDice,
+                doublesInRow, properties, pendingDebt);
     }
 
     GameState withDice(DiceRoll dice, int doubles) {
-        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, dice, doubles);
+        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, dice,
+                doubles, properties, pendingDebt);
+    }
+
+    GameState withProperty(PropertyState property) {
+        Map<String, PropertyState> next = new HashMap<>(properties);
+        next.put(property.stateId(), property);
+        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
+                doublesInRow, next, pendingDebt);
+    }
+
+    GameState withPendingDebt(Debt value) {
+        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
+                doublesInRow, properties, value);
     }
 
     GameState nextVersion() {
-        return new GameState(gameId, mode, status, version + 1, round, players, currentPlayerIndex, phase, lastDice, doublesInRow);
+        return new GameState(gameId, mode, status, version + 1, round, players, currentPlayerIndex, phase, lastDice,
+                doublesInRow, properties, pendingDebt);
     }
 }
