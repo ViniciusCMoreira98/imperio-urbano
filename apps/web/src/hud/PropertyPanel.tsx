@@ -1,5 +1,5 @@
-// Painel lateral direito: dados da casa selecionada (seção 11 dos requisitos), dono e construções
-// vindos do servidor e as ações disponíveis para o jogador da vez.
+// Painel lateral direito: carta do estado selecionado (seção 6 dos requisitos e arte de referência),
+// com dono, construções e Olimpíadas vindos do servidor e as ações do jogador da vez.
 import { PAWN_COLORS } from '../game/presentation';
 import { HOTEL_LEVEL, currentRent, propertyAt } from '../game/rules';
 import { formatCredits, regionName, tileInfo } from '../property-card/tileInfo';
@@ -7,7 +7,10 @@ import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { TileActions } from './TileActions';
 
-const panelClass = 'w-72 overflow-hidden rounded-xl bg-slate-900/85 text-sm shadow-lg backdrop-blur';
+const panelClass = 'w-full overflow-hidden rounded-2xl border-2 border-white/15 bg-slate-900/95 text-sm shadow-2xl backdrop-blur sm:w-80';
+
+/** Ícones da linha da tabela de aluguel: sem construção, 1–4 casas, hotel. */
+const RENT_ICONS = ['🌱', '🏠', '🏠🏠', '🏠🏠🏠', '🏠🏠🏠🏠', '🏨'];
 
 /** Texto escuro sobre cores claras, claro sobre escuras. */
 function readableTextColor(hex: string): string {
@@ -21,16 +24,14 @@ export function PropertyPanel({ myId }: { myId: string }) {
   const clearFocus = useViewStore((s) => s.clearFocus);
   const snapshot = useGameStore((s) => s.snapshot);
 
-  if (index === null) {
-    return <div className={`${panelClass} p-3 text-white/70`}>Clique em uma casa para ver os detalhes.</div>;
-  }
+  if (index === null) return null;
 
   const info = tileInfo(index);
   const closeButton = (
     <button
       type="button"
       onClick={clearFocus}
-      className="rounded px-2 text-lg leading-none opacity-80 hover:opacity-100"
+      className="rounded px-2 text-xl leading-none opacity-80 hover:opacity-100"
       aria-label="Fechar"
     >
       ×
@@ -40,11 +41,11 @@ export function PropertyPanel({ myId }: { myId: string }) {
   if (info.kind === 'special') {
     return (
       <section className={panelClass} aria-label={info.title}>
-        <header className="flex items-start justify-between bg-white/10 px-3 py-2">
-          <h2 className="text-base font-bold">{info.title}</h2>
+        <header className="flex items-start justify-between bg-sky-800 px-4 py-3">
+          <h2 className="text-lg font-black uppercase tracking-wide">{info.title}</h2>
           {closeButton}
         </header>
-        <div className="space-y-3 p-3">
+        <div className="space-y-3 p-4">
           <p className="leading-relaxed">{info.description}</p>
           <TileActions tileIndex={index} myId={myId} />
         </div>
@@ -57,45 +58,54 @@ export function PropertyPanel({ myId }: { myId: string }) {
   const owner = snapshot?.players.find((p) => p.id === property?.ownerId);
   const isHost = snapshot?.olympics.hostStateId === state.id;
   const level = property?.buildingLevel ?? 0;
+  const headerText = readableTextColor(group.color);
 
   return (
     <section className={panelClass} aria-label={state.name}>
-      <header
-        className="flex items-start justify-between px-3 py-2"
-        style={{ background: group.color, color: readableTextColor(group.color) }}
-      >
+      <header className="flex items-start justify-between px-4 py-3" style={{ background: group.color, color: headerText }}>
         <div>
-          <h2 className="text-lg font-extrabold leading-tight">{state.name}</h2>
-          <p className="text-xs font-semibold opacity-85">
-            {state.abbreviation} · {regionName(state)} · Grupo {group.name}
-          </p>
+          <h2 className="text-lg font-black uppercase leading-tight tracking-wide">
+            {state.name} ({state.abbreviation})
+          </h2>
+          <p className="text-xs font-semibold opacity-85">{regionName(state)}</p>
         </div>
         {closeButton}
       </header>
 
       <div className="space-y-3 p-3">
-        <div className="flex items-baseline justify-between">
-          <span className="text-white/70">Valor de compra</span>
-          <span className="text-lg font-bold">{formatCredits(state.price)}</span>
+        <div className="grid grid-cols-2 gap-2 text-center">
+          <div className="rounded-lg bg-emerald-700 px-2 py-1.5">
+            <p className="text-xs text-white/85">Valor de compra</p>
+            <p className="text-xl font-black">{formatCredits(state.price)}</p>
+          </div>
+          <div className="rounded-lg bg-white/90 px-2 py-1.5 text-slate-900">
+            <p className="text-xs">Aluguel base</p>
+            <p className="text-xl font-black">{formatCredits(state.rent.base)}</p>
+          </div>
         </div>
 
-        <table className="w-full">
-          <caption className="pb-1 text-left text-xs uppercase tracking-wide text-white/60">Aluguel</caption>
+        <table className="w-full" aria-label="Aluguel por construção">
           <tbody>
-            {rents.map((row, i) => (
-              <tr key={row.label} className={`border-t border-white/10 ${property && i === level ? 'font-bold text-amber-300' : ''}`}>
-                <td className="py-1">{row.label}</td>
-                <td className="py-1 text-right tabular-nums">{formatCredits(row.value)}</td>
-              </tr>
-            ))}
+            {rents.map((row, i) => {
+              const current = property !== undefined && i === level;
+              return (
+                <tr key={row.label} className={`border-t border-white/10 ${current ? 'bg-amber-300/15 font-bold text-amber-300' : ''}`}>
+                  <td className="w-16 py-1 text-xs" aria-hidden>
+                    {RENT_ICONS[i]}
+                  </td>
+                  <td className="py-1">{row.label}</td>
+                  <td className="py-1 pr-1 text-right tabular-nums">{formatCredits(row.value)}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
 
         <dl className="grid grid-cols-2 gap-y-1">
-          <dt className="text-white/70">Cada casa</dt>
-          <dd className="text-right font-semibold">{formatCredits(state.houseCost)}</dd>
-          <dt className="text-white/70">Hotel</dt>
-          <dd className="text-right font-semibold">{formatCredits(state.hotelCost)}</dd>
+          <dt className="text-white/70">Construir</dt>
+          <dd className="text-right">
+            🏠 {formatCredits(state.houseCost)} · 🏨 {formatCredits(state.hotelCost)}
+          </dd>
           <dt className="text-white/70">Proprietário</dt>
           <dd className="text-right">
             {owner ? (
@@ -112,7 +122,7 @@ export function PropertyPanel({ myId }: { myId: string }) {
               <dt className="text-white/70">Construções</dt>
               <dd className="text-right">{level === HOTEL_LEVEL ? 'Hotel' : `${level} casa(s)`}</dd>
               <dt className="text-white/70">Aluguel atual</dt>
-              <dd className="text-right font-bold text-amber-300">{formatCredits(currentRent(snapshot!, state))}</dd>
+              <dd className="text-right font-black text-amber-300">{formatCredits(currentRent(snapshot!, state))}</dd>
             </>
           )}
         </dl>

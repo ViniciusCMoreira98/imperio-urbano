@@ -42,6 +42,43 @@ export function affordablePurchaseHouses(definition: StateDefinition, credits: n
   return houses;
 }
 
+/** Valor investido em construções no estado (casas e hotel). */
+export function investedIn(definition: StateDefinition, property: PropertyState): number {
+  const houses = Math.min(property.buildingLevel, rules.construction.maxHouses) * definition.houseCost;
+  return houses + (property.buildingLevel === HOTEL_LEVEL ? definition.hotelCost : 0);
+}
+
+/** Quanto o banco paga (50%, D10): uma construção (casa ou hotel) e o estado com tudo o que tem. */
+export function saleRefunds(definition: StateDefinition, property: PropertyState): { building: number | null; state: number } {
+  const buildingCost = property.buildingLevel === HOTEL_LEVEL ? definition.hotelCost : definition.houseCost;
+  return {
+    building: property.buildingLevel > 0 ? Math.floor(buildingCost / 2) : null,
+    state: Math.floor((definition.price + investedIn(definition, property)) / 2),
+  };
+}
+
+/** Patrimônio como no modo Rápido: saldo + preço dos estados + investido em construções. */
+export function netWorth(snapshot: GameSnapshot, playerId: string): number {
+  const player = playerOf(snapshot, playerId);
+  if (!player) return 0;
+  return snapshot.properties
+    .filter((p) => p.ownerId === playerId)
+    .reduce((total, p) => {
+      const definition = statesById.get(p.stateId);
+      return definition ? total + definition.price + investedIn(definition, p) : total;
+    }, player.credits);
+}
+
+/** Jogadores ativos com o maior patrimônio (coroa no painel); vazio se todos empatam. */
+export function leaders(snapshot: GameSnapshot): string[] {
+  const active = snapshot.players.filter((p) => !p.bankrupt);
+  if (active.length < 2) return active.map((p) => p.id);
+  const worth = new Map(active.map((p) => [p.id, netWorth(snapshot, p.id)]));
+  const best = Math.max(...worth.values());
+  const top = active.filter((p) => worth.get(p.id) === best).map((p) => p.id);
+  return top.length === active.length ? [] : top;
+}
+
 /** Aluguel atual como o servidor calcula (sem o bônus de grupo, desligado nas regras atuais). */
 export function currentRent(snapshot: GameSnapshot, definition: StateDefinition): number {
   const property = snapshot.properties.find((p) => p.stateId === definition.id);

@@ -14,10 +14,10 @@ Os preços, a ordem dos estados e os cantos da imagem são ilustrativos (há UF 
 | Baralhos | Pilhas 3D "Eventos" e "Propriedades" no centro | Placas reservadas | E24 |
 | Peões | Peões cartunescos coloridos (formato clássico) | Peão vermelho simples | E23 |
 | Moeda | Sufixo C na arte | Mantido `$ 1.250` (decisão do usuário) | — |
-| Painel de jogadores | Cartões à esquerda: avatar, nome, saldo, casas/hotéis/estados, coroa no líder, borda na cor do peão | Placa vazia | E20 |
+| Painel de jogadores | Cartões à esquerda: avatar, nome, saldo, casas/hotéis/estados, coroa no líder, borda na cor do peão | ✅ Feito (+ patrimônio e estado: automático, descansando, viagem) | E20 |
 | Carta do estado | Cabeçalho verde com nome e sigla, foto da paisagem, compra e aluguel base em destaque, tabela com ícones de casa, custo de construção, botão Comprar | Painel escuro com tabela | E27 (paisagem), E20 (ações) |
-| Barra inferior | Dados 3D brancos + botão vermelho **Rolar dados**; botões Construir, Vender, Trocar com ícone | Botão verde + texto | E25, E20 |
-| Histórico | Abas Chat / Eventos / Histórico no canto inferior esquerdo | — | E20 (chat fora do MVP) |
+| Barra inferior | Dados 3D brancos + botão vermelho **Rolar dados**; botões Construir, Vender, Trocar com ícone | ✅ Barra e botões feitos (dados ainda 2D; Trocar desativado até a E21) | E25 (dados 3D) |
+| Histórico | Abas Chat / Eventos / Histórico no canto inferior esquerdo | ✅ Abas Histórico / Cartas sob os jogadores (chat fora do MVP) | E20 |
 | Atalhos | Minimapa + Configurações, Jogadores, Tela cheia no canto inferior direito | Botões de giro | E29 |
 
 ## Paleta e tipografia
@@ -65,3 +65,14 @@ Padrão visual comum: fundo com paisagem brasileira desfocada, painel central az
 | Número de jogadores e "permitir entrada por código" ao criar sala | Hoje a sala aceita 2–4 e só existe entrada por código. Proposta: limite opcional de jogadores na E18 se você quiser. |
 | "Limite de rodadas: Sem limite" | Já coberto pelo modo: Clássico = sem limite, Rápido = 15 rodadas. |
 | "Salas online" (lista de salas) | Só salas privadas no MVP. |
+
+## Tela limpa e celular
+
+Diretriz do usuário: a partida não pode ficar poluída e precisa funcionar no celular.
+
+- Mostrar só o que serve agora: botões que não podem ser usados ficam escondidos, não desativados (Rolar só na vez de rolar; Vender só com dívida; Trocar volta com a negociação).
+- Jogadores: avatar, nome, saldo e um ícone de estado (🤖 😴 ✈️ 💀); contagens e patrimônio ficam na dica.
+- Histórico recolhido num botão; a carta do estado só aparece com uma casa selecionada.
+- Rodada, modo e vez ficam no painel do centro do tabuleiro, não no topo.
+- Olimpíadas: destaque no estado-sede (moldura dourada, tocha e selo ×N), não no centro da mesa (D22).
+- Celular (< 640 px): jogadores numa faixa no topo, carta do estado como folha acima da barra, câmera enquadrando pela largura (mais estreita em pé).

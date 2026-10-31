@@ -35,6 +35,16 @@ export function tilePose(placement: TilePlacement): CameraPose {
   };
 }
 
+/**
+ * Distância para uma esfera de raio `radius` caber inteira na tela, considerando o campo de visão
+ * vertical (`fovDegrees`) e o horizontal, que é o mais estreito em telas em pé (celular).
+ */
+export function fitDistance(radius: number, fovDegrees: number, aspect: number): number {
+  const vertical = (fovDegrees * Math.PI) / 180;
+  const horizontal = 2 * Math.atan(Math.tan(vertical / 2) * aspect);
+  return radius / Math.sin(Math.min(vertical, horizontal) / 2);
+}
+
 /** Ângulo equivalente a `target` mais próximo de `current`, evitando giros de mais de meia volta. */
 export function nearestAngle(current: number, target: number): number {
   const twoPi = Math.PI * 2;

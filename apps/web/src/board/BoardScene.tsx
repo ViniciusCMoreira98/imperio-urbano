@@ -3,6 +3,7 @@ import { board, states } from '@imperio/game-data';
 import { Buildings, Pawns } from './Pieces';
 import { BoardCenter } from './BoardCenter';
 import { CameraRig } from './CameraRig';
+import { CenterInfo } from './CenterInfo';
 import { CORNER_SIZE, boardLength, tilePlacement } from './layout';
 import { Tile } from './Tile';
 
@@ -65,6 +66,7 @@ export function BoardScene() {
       ))}
 
       <BoardCenter size={LENGTH - 2 * CORNER_SIZE} />
+      <CenterInfo size={LENGTH - 2 * CORNER_SIZE} />
 
       <Buildings />
       <Pawns />

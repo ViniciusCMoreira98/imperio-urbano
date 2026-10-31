@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BoardScene } from '../board/BoardScene';
 import { isMyTurn, playerOf } from '../game/rules';
 import { ActionBar } from '../hud/ActionBar';
+import { CardReveal } from '../hud/CardReveal';
 import { EventLog } from '../hud/EventLog';
 import { PlayersPanel } from '../hud/PlayersPanel';
 import { PropertyPanel } from '../hud/PropertyPanel';
@@ -51,39 +52,36 @@ export function GameScreen() {
     <div className="relative h-full w-full overflow-hidden">
       <BoardScene />
 
-      <header className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 p-3">
-        <Button className="px-3 py-1 text-sm" onClick={leave}>
-          ← Menu
+      <header className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 p-2 sm:p-3">
+        <Button className="px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
+          ←<span className="hidden sm:inline"> Menu</span>
         </Button>
-        <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-white/80">
-          Sala <span className="font-mono font-bold tracking-widest text-white">{snapshot?.inviteCode ?? '……'}</span>
-          {snapshot && <> · Rodada {snapshot.round}</>}
-          {snapshot?.mode === 'QUICK' && ' de 15'}
-          {connection !== 'open' && <span className="text-amber-300"> · reconectando…</span>}
-        </p>
-        <span className="w-20" />
+        {connection !== 'open' && (
+          <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-amber-300">reconectando…</p>
+        )}
+        <ViewControls />
       </header>
 
       {!snapshot ? (
         <p className="absolute inset-0 flex items-center justify-center text-white/80">Conectando à partida…</p>
       ) : (
         <>
-          <aside className="absolute left-3 top-16">
+          {/* Celular: faixa no topo. Computador: coluna à esquerda. Rodada e sala ficam no centro do tabuleiro. */}
+          <aside className="absolute inset-x-2 top-12 flex flex-col gap-2 sm:inset-x-auto sm:left-3 sm:top-16 sm:max-h-[calc(100%-7rem)] sm:overflow-y-auto">
             <PlayersPanel myId={session.playerId} />
+            <EventLog />
           </aside>
-          <aside className="absolute right-3 top-16">
+          {/* Carta do estado: folha acima da barra no celular; coluna à direita no computador. */}
+          <aside className="absolute inset-x-2 bottom-20 max-h-[45%] overflow-y-auto sm:inset-x-auto sm:bottom-auto sm:right-3 sm:top-16 sm:max-h-[calc(100%-7rem)]">
             <PropertyPanel myId={session.playerId} />
           </aside>
-          <div className="absolute bottom-3 left-3">
-            <EventLog />
-          </div>
-          <footer className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-            <div className="pointer-events-auto">
+          <footer className="pointer-events-none absolute inset-x-2 bottom-2 flex justify-center sm:bottom-3">
+            <div className="pointer-events-auto w-full sm:w-auto">
               <ActionBar myId={session.playerId} />
             </div>
           </footer>
-          <div className="absolute bottom-3 right-3">
-            <ViewControls />
+          <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center">
+            <CardReveal />
           </div>
           {snapshot.status === 'FINISHED' && <FinishedOverlay onLeave={leave} />}
         </>

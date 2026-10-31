@@ -77,7 +77,7 @@ Implementação: `apps/api/.../engine/GameEngine` — `decide(state, jogador, co
 
 Eventos (D13): `packages/game-data/data/events.json` traz 16 cartas originais (ganhar, pagar, reforma por construção, aniversário, mover para casa, andar ±3, ir ao Descanso). O baralho é embaralhado uma vez no `GAME_STARTED` e recomeça na mesma ordem ao acabar; a ordem é informação oculta e não vai no snapshot. Pagamento sem saldo vira dívida com o banco. Movimentos de carta resolvem a nova casa (aluguel, compra, Olimpíadas, outra carta — até 3 encadeamentos).
 
-Dívida e falência (D10–D11): no próprio turno o jogador pode vender ao banco uma casa/hotel (50% do custo; o hotel volta a 4 casas) ou um estado (50% do preço + 50% do investido). Com dívida pendente, a dívida é quitada automaticamente assim que o saldo cobre. Sem saída, declara falência: saldo e estados (com construções, visitas reiniciadas) vão ao credor; se o credor for o banco, os estados voltam livres. Sede olímpica do falido ou vendida perde o marcador (D8).
+Dívida e falência (D10–D11): vender ao banco só é permitido com dívida pendente (`AWAITING_DEBT_RESOLUTION`): uma casa/hotel (50% do custo; o hotel volta a 4 casas) ou um estado (50% do preço + 50% do investido). A dívida é quitada automaticamente assim que o saldo cobre. Fora disso o servidor recusa: "Só é possível vender ao banco para pagar uma dívida." Sem saída, declara falência: saldo e estados (com construções, visitas reiniciadas) vão ao credor; se o credor for o banco, os estados voltam livres. Sede olímpica do falido ou vendida perde o marcador (D8).
 
 Abandono: partida em andamento sem ninguém conectado por `rules.abandonment.seconds` (120 s) termina com `GAME_ABANDONED`, sem vencedor. Quem volta antes cancela o encerramento.
 

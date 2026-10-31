@@ -1,9 +1,20 @@
 // Centro do tabuleiro: área do mapa do Brasil (arte final na E27) e espaços reservados
-// para o baralho de eventos, as informações da partida e o painel olímpico, longe do mapa.
+// para o baralho de eventos e as informações da partida, longe do mapa.
 import { useEffect, useMemo } from 'react';
 import { CanvasTexture, SRGBColorSpace } from 'three';
 
 const SLOT_HEIGHT = 0.05;
+
+export type CenterSlot = 'Eventos' | 'Partida';
+
+/** Espaços reservados no centro, longe do mapa. As Olimpíadas aparecem no estado-sede, não aqui. */
+export function centerSlots(size: number): { label: CenterSlot; x: number; z: number; w: number; d: number }[] {
+  const s = size / 2;
+  return [
+    { label: 'Eventos', x: -s + 1.2, z: -s + 1.0, w: 1.8, d: 1.5 },
+    { label: 'Partida', x: 0, z: s - 0.75, w: 4, d: 1.1 },
+  ];
+}
 
 interface BoardCenterProps {
   size: number;
@@ -30,12 +41,7 @@ export function BoardCenter({ size }: BoardCenterProps) {
 
   useEffect(() => () => mapTexture.dispose(), [mapTexture]);
 
-  const s = size / 2;
-  const slots = [
-    { label: 'Eventos', x: -s + 1.1, z: -s + 0.8, w: 1.4, d: 1 },
-    { label: 'Olimpíadas', x: s - 1.1, z: -s + 0.8, w: 1.4, d: 1 },
-    { label: 'Partida', x: 0, z: s - 0.65, w: 3, d: 0.8 },
-  ];
+  const slots = centerSlots(size);
 
   return (
     <group>

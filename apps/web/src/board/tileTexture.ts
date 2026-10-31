@@ -22,9 +22,11 @@ interface TileArt {
   group?: ColorGroup;
   width: number;
   depth: number;
+  /** Estado comprado: aluguel atual (com construções e Olimpíadas) e a cor do peão do dono. */
+  owned?: { rent: number; ownerColor: string };
 }
 
-export function createTileTexture({ tile, state, group, width, depth }: TileArt): CanvasTexture {
+export function createTileTexture({ tile, state, group, width, depth, owned }: TileArt): CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = Math.round(width * PX_PER_UNIT);
   canvas.height = Math.round(depth * PX_PER_UNIT);
@@ -44,8 +46,14 @@ export function createTileTexture({ tile, state, group, width, depth }: TileArt)
     ctx.font = `800 ${w * 0.36}px system-ui, sans-serif`;
     ctx.fillText(state.abbreviation, w / 2, h * 0.42);
     drawWrapped(ctx, state.name, w / 2, h * 0.62, w * 0.88, w * 0.11);
-    ctx.font = `700 ${w * 0.15}px system-ui, sans-serif`;
-    ctx.fillText(`$ ${state.price}`, w / 2, h * 0.88);
+    // Como no Business Tour: estado livre não mostra valor; comprado mostra o aluguel numa faixa do dono.
+    if (owned) {
+      ctx.fillStyle = owned.ownerColor;
+      ctx.fillRect(0, h * 0.78, w, h * 0.22);
+      ctx.fillStyle = readableOn(owned.ownerColor);
+      ctx.font = `800 ${w * 0.17}px system-ui, sans-serif`;
+      ctx.fillText(`$ ${owned.rent}`, w / 2, h * 0.89, w * 0.92);
+    }
   } else {
     const style = SPECIAL_STYLE[tile.type as Exclude<TileType, 'PROPERTY'>];
     ctx.fillStyle = style.bg;
@@ -69,6 +77,13 @@ export function createTileTexture({ tile, state, group, width, depth }: TileArt)
   texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = 4;
   return texture;
+}
+
+/** Texto escuro sobre cores claras (ex.: peão amarelo), claro sobre escuras. */
+function readableOn(hex: string): string {
+  const n = parseInt(hex.slice(1), 16);
+  const luminance = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 0xff) + 0.114 * (n & 0xff)) / 255;
+  return luminance > 0.6 ? INK : '#ffffff';
 }
 
 /** Quebra o texto em linhas que cabem em maxWidth, centralizadas em y. */

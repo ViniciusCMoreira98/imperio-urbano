@@ -26,8 +26,8 @@ export function ViewControls() {
       <button type="button" className={buttonClass} onClick={() => rotate(-1)} title="Girar à esquerda (Q)">
         ⟲
       </button>
-      <button type="button" className={buttonClass} onClick={clearFocus} title="Visão geral (Esc)">
-        Visão geral
+      <button type="button" className={buttonClass} onClick={clearFocus} title="Visão geral (Esc)" aria-label="Visão geral">
+        ⌂
       </button>
       <button type="button" className={buttonClass} onClick={() => rotate(1)} title="Girar à direita (E)">
         ⟳

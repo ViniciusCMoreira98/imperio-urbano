@@ -1,46 +1,61 @@
 import { useEffect, useState } from 'react';
+import { board, rules, states } from '@imperio/game-data';
 import type { Command, TurnPhase } from '@imperio/shared-types';
-import { rules } from '@imperio/game-data';
-import { isMyTurn } from '../game/rules';
+import { HOTEL_LEVEL, isMyTurn, saleRefunds } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { useGameStore } from '../store/gameStore';
+import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 
-/** Dica da fase para quem está jogando; as escolhas de casa ficam no painel do estado. */
-const PHASE_HINTS: Partial<Record<TurnPhase, string>> = {
-  AWAITING_PURCHASE: 'Compre o estado (com até 3 casas) no painel à direita, ou recuse. Sem decisão, a compra é perdida.',
-  AWAITING_BUILD: 'Você voltou ao seu estado: construa no painel à direita, ou dispense.',
-  AWAITING_OLYMPICS_HOST: `Clique num estado seu no tabuleiro para sediar as Olimpíadas (${formatCredits(rules.olympics.hostFee)}).`,
-  AWAITING_TRAVEL_DESTINATION: `Clique numa casa do tabuleiro para viajar (${formatCredits(rules.nationalTravel.fee)}), ou role os dados.`,
-  AWAITING_DEBT_RESOLUTION: 'Venda construções ou estados no painel do estado, ou declare falência.',
+/** Só quando a escolha é feita tocando no tabuleiro; nas demais, a carta do estado já se explica. */
+const BOARD_HINTS: Partial<Record<TurnPhase, string>> = {
+  AWAITING_OLYMPICS_HOST: `Toque num estado seu para sediar as Olimpíadas (${formatCredits(rules.olympics.hostFee)})`,
+  AWAITING_TRAVEL_DESTINATION: `Toque numa casa para viajar (${formatCredits(rules.nationalTravel.fee)}) ou role os dados`,
 };
 
-/** Barra inferior: dados, de quem é a vez e as ações que não dependem de escolher uma casa. */
+const statesById = new Map(states.map((s) => [s.id, s]));
+
+/** Barra inferior enxuta: dados, de quem é a vez, prazo e apenas as ações possíveis agora. */
 export function ActionBar({ myId }: { myId: string }) {
   const snapshot = useGameStore((s) => s.snapshot);
   const send = useGameStore((s) => s.send);
   const rejection = useGameStore((s) => s.rejection);
   const connection = useGameStore((s) => s.connection);
   const deadline = useGameStore((s) => s.turnDeadline);
+  const [selling, setSelling] = useState(false);
+  const inDebt = !!snapshot && isMyTurn(snapshot, myId) && snapshot.phase === 'AWAITING_DEBT_RESOLUTION';
+  // A venda só existe para pagar dívida: abre sozinha quando a dívida aparece e fecha quando é quitada.
+  useEffect(() => setSelling(inDebt), [inDebt]);
   if (!snapshot) return null;
 
   const mine = isMyTurn(snapshot, myId);
   const phase = snapshot.phase;
   const current = snapshot.players.find((p) => p.id === snapshot.currentPlayerId);
-  const act = (command: Command) => send(command);
   const offline = connection !== 'open';
+  const act = (command: Command) => send(command);
+  const canRoll = mine && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
 
   return (
-    <div className="flex max-w-3xl flex-col items-center gap-2 rounded-2xl bg-slate-900/90 px-4 py-3 shadow-2xl backdrop-blur">
-      <div className="flex flex-wrap items-center justify-center gap-3">
+    <div className="relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
+      {selling && inDebt && <SellDrawer myId={myId} onClose={() => setSelling(false)} />}
+
+      <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2 border-white/10 bg-slate-900/92 px-2 py-1.5 shadow-2xl backdrop-blur sm:w-auto sm:px-3 sm:py-2">
         <Dice values={snapshot.lastDice} />
-        <p className="text-sm text-white/90">
-          {snapshot.status === 'FINISHED' ? 'Partida encerrada.' : mine ? <strong className="text-amber-300">Sua vez!</strong> : <>Vez de <strong>{current?.nickname}</strong></>}
-          {mine && snapshot.pendingDebt && <> · Dívida: {formatCredits(snapshot.pendingDebt.amount)}</>}
-        </p>
+        <span className="text-sm text-white/90">
+          {snapshot.status === 'FINISHED' ? (
+            'Partida encerrada'
+          ) : mine ? (
+            <strong className="text-amber-300">Sua vez</strong>
+          ) : (
+            <>
+              Vez de <strong>{current?.nickname}</strong>
+            </>
+          )}
+        </span>
         {snapshot.status === 'IN_PROGRESS' && deadline !== null && <Countdown deadline={deadline} />}
-        {mine && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION') && (
-          <Button variant="danger" className="text-lg" disabled={offline} onClick={() => act({ type: 'ROLL_DICE' })}>
+
+        {canRoll && (
+          <Button variant="danger" className="px-5 py-2.5 text-base tracking-wide sm:text-lg" disabled={offline} onClick={() => act({ type: 'ROLL_DICE' })}>
             ROLAR DADOS
           </Button>
         )}
@@ -53,10 +68,17 @@ export function ActionBar({ myId }: { myId: string }) {
         {mine && phase === 'AWAITING_OLYMPICS_HOST' && (
           <Button disabled={offline} onClick={() => act({ type: 'SKIP_OLYMPICS' })}>Não sediar</Button>
         )}
-        {mine && phase === 'AWAITING_DEBT_RESOLUTION' && (
-          <Button variant="danger" disabled={offline} onClick={() => act({ type: 'DECLARE_BANKRUPTCY' })}>
-            Declarar falência
-          </Button>
+        {inDebt && (
+          <>
+            {snapshot.properties.some((p) => p.ownerId === myId) && (
+              <Button variant="primary" disabled={offline} onClick={() => setSelling((open) => !open)}>
+                💲 Vender
+              </Button>
+            )}
+            <Button variant="danger" disabled={offline} onClick={() => act({ type: 'DECLARE_BANKRUPTCY' })}>
+              Falência
+            </Button>
+          </>
         )}
         {mine && phase === 'AWAITING_END_TURN' && (
           <Button variant="confirm" disabled={offline} onClick={() => act({ type: 'END_TURN' })}>
@@ -64,12 +86,69 @@ export function ActionBar({ myId }: { myId: string }) {
           </Button>
         )}
       </div>
-      {mine && phase && PHASE_HINTS[phase] && <p className="text-xs text-white/70">{PHASE_HINTS[phase]}</p>}
+
+      {mine && phase && BOARD_HINTS[phase] && (
+        <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-xs text-white/85">{BOARD_HINTS[phase]}</p>
+      )}
       {rejection && (
-        <p role="alert" className="text-sm text-rose-300">
+        <p role="alert" className="rounded-lg bg-rose-900/85 px-3 py-1 text-sm text-rose-100">
           {rejection}
         </p>
       )}
+    </div>
+  );
+}
+
+/** Pagar a dívida vendendo ao banco: quanto falta e os bens do jogador. */
+function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
+  const snapshot = useGameStore((s) => s.snapshot)!;
+  const send = useGameStore((s) => s.send);
+  const offline = useGameStore((s) => s.connection !== 'open');
+  const selectTile = useViewStore((s) => s.selectTile);
+  const list = snapshot.properties.filter((p) => p.ownerId === myId);
+  const debt = snapshot.pendingDebt;
+  const credits = snapshot.players.find((p) => p.id === myId)?.credits ?? 0;
+  const missing = debt ? Math.max(0, debt.amount - credits) : 0;
+  const creditor = snapshot.players.find((p) => p.id === debt?.creditorId)?.nickname ?? 'o banco';
+  return (
+    <div className="absolute bottom-full mb-2 w-[min(20rem,calc(100vw-1.5rem))] rounded-2xl border-2 border-rose-400/50 bg-slate-900/95 p-3 text-sm shadow-2xl">
+      <div className="mb-1 flex items-center justify-between">
+        <h3 className="font-bold text-white">Pagar dívida</h3>
+        <button type="button" className="px-2 text-lg" aria-label="Fechar" onClick={onClose}>
+          ×
+        </button>
+      </div>
+      {debt && (
+        <p className="mb-2 text-white/85">
+          Você deve <strong>{formatCredits(debt.amount)}</strong> a {creditor}. Faltam{' '}
+          <strong className="text-rose-300">{formatCredits(missing)}</strong>.
+        </p>
+      )}
+      <ul className="max-h-56 space-y-2 overflow-y-auto pr-1">
+        {list.map((property) => {
+          const definition = statesById.get(property.stateId)!;
+          const refunds = saleRefunds(definition, property);
+          const tile = board.tiles.find((t) => t.stateId === property.stateId)!;
+          return (
+            <li key={property.stateId} className="rounded-lg bg-slate-800 p-2">
+              <button type="button" className="font-bold text-white hover:underline" onClick={() => selectTile(tile.index)}>
+                {definition.name}
+              </button>
+              <span className="text-white/60"> · {property.buildingLevel === HOTEL_LEVEL ? 'hotel' : `${property.buildingLevel} casa(s)`}</span>
+              <div className="mt-1 flex gap-2">
+                {refunds.building !== null && (
+                  <Button className="flex-1 px-2 py-1 text-xs" disabled={offline} onClick={() => send({ type: 'SELL_BUILDING', stateId: property.stateId })}>
+                    {property.buildingLevel === HOTEL_LEVEL ? 'Hotel' : 'Casa'} +{formatCredits(refunds.building)}
+                  </Button>
+                )}
+                <Button className="flex-1 px-2 py-1 text-xs" disabled={offline} onClick={() => send({ type: 'SELL_PROPERTY', stateId: property.stateId })}>
+                  Estado +{formatCredits(refunds.state)}
+                </Button>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -98,7 +177,7 @@ const PIPS: Record<number, string> = { 1: '⚀', 2: '⚁', 3: '⚂', 4: '⚃', 5
 function Dice({ values }: { values: [number, number] | null }) {
   if (!values) return null;
   return (
-    <span className="text-4xl leading-none text-white" aria-label={`Dados: ${values[0]} e ${values[1]}`}>
+    <span className="rounded-lg bg-white px-1.5 text-3xl leading-tight text-slate-900" aria-label={`Dados: ${values[0]} e ${values[1]}`}>
       {PIPS[values[0]]}
       {PIPS[values[1]]}
     </span>

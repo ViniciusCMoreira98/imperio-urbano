@@ -31,11 +31,11 @@ public sealed interface GameCommand {
     record SkipOlympics() implements GameCommand {
     }
 
-    /** Vende ao banco uma casa (ou o hotel, que volta a quatro casas) por metade do custo. */
+    /** Só com dívida pendente: vende ao banco uma casa (ou o hotel, que volta a quatro casas) por metade do custo. */
     record SellBuilding(String stateId) implements GameCommand {
     }
 
-    /** Vende o estado ao banco por metade do preço e das construções. */
+    /** Só com dívida pendente: vende o estado ao banco por metade do preço e das construções. */
     record SellProperty(String stateId) implements GameCommand {
     }
 

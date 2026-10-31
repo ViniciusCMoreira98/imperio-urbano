@@ -3,7 +3,7 @@ import { states } from '@imperio/game-data';
 import type { GameSnapshot, PropertyState } from '@imperio/shared-types';
 import { reduceServerMessage } from '../store/gameStore';
 import { describeEvent } from './presentation';
-import { affordablePurchaseHouses, buildOptions, currentRent } from './rules';
+import { affordablePurchaseHouses, buildOptions, currentRent, investedIn, leaders, netWorth } from './rules';
 
 const snapshot = (version: number, extra: Partial<GameSnapshot> = {}): GameSnapshot => ({
   gameId: 'g1',
@@ -74,6 +74,28 @@ describe('regras de apoio à interface', () => {
       olympics: { edition: 2, hostStateId: 'AP', hostPlayerId: 'ana', multiplier: 3 },
     });
     expect(currentRent(hosted, ap)).toBe(3 * ap.rent.house2);
+  });
+
+  it('valor do estado sobe a cada construção', () => {
+    const am = states.find((s) => s.id === 'AM')!;
+    const values = [0, 1, 2, 3, 4, 5].map((level) => am.price + investedIn(am, property(level, 3, 1)));
+    expect(values[0]).toBe(am.price);
+    expect(values[1]).toBe(am.price + am.houseCost);
+    expect(values[5]).toBe(am.price + 4 * am.houseCost + am.hotelCost);
+    values.slice(1).forEach((value, i) => expect(value).toBeGreaterThan(values[i]));
+  });
+
+  it('calcula patrimônio e líder', () => {
+    const ap = states.find((s) => s.id === 'AP')!;
+    const player = (id: string, credits: number) =>
+      ({ id, nickname: id, credits, bankrupt: false }) as GameSnapshot['players'][number];
+    const game = snapshot(1, {
+      players: [player('ana', 1000), player('bia', 1000)],
+      properties: [property(2, 1, 1)],
+    });
+    expect(netWorth(game, 'ana')).toBe(1000 + ap.price + 2 * ap.houseCost);
+    expect(leaders(game)).toEqual(['ana']);
+    expect(leaders(snapshot(1, { players: [player('ana', 500), player('bia', 500)] }))).toEqual([]);
   });
 
   it('descreve eventos em português', () => {

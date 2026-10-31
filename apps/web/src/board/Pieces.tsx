@@ -4,6 +4,7 @@ import { board } from '@imperio/game-data';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
 import { tilePlacement } from './layout';
+import { OlympicHost } from './OlympicHost';
 import { Pawn } from './Pawn';
 import { TILE_HEIGHT } from './Tile';
 
@@ -47,14 +48,14 @@ export function Buildings() {
         property,
         placement: tilePlacement(tile.index, board.tilesPerSide),
         ownerColor: colorOf.get(property.ownerId ?? '') ?? '#ffffff',
-        isHost: snapshot.olympics.hostStateId === property.stateId,
+        hostMultiplier: snapshot.olympics.hostStateId === property.stateId ? snapshot.olympics.multiplier : null,
       };
     });
   }, [snapshot]);
 
   return (
     <>
-      {items.map(({ property, placement, ownerColor, isHost }) => (
+      {items.map(({ property, placement, ownerColor, hostMultiplier }) => (
         <group
           key={property.stateId}
           position={[placement.x, TILE_HEIGHT, placement.z]}
@@ -78,12 +79,7 @@ export function Buildings() {
               </mesh>
             ))
           )}
-          {isHost && (
-            <mesh position={[0.32, 0.25, 0.1]} castShadow>
-              <coneGeometry args={[0.1, 0.3, 5]} />
-              <meshStandardMaterial color="#f2b33d" emissive="#f2b33d" emissiveIntensity={0.4} />
-            </mesh>
-          )}
+          {hostMultiplier !== null && <OlympicHost placement={placement} multiplier={hostMultiplier} />}
         </group>
       ))}
     </>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { nearestAngle, overviewPose, tilePose } from './cameraPose';
+import { fitDistance, nearestAngle, overviewPose, tilePose } from './cameraPose';
 import { tilePlacement } from './layout';
 
 describe('poses da câmera', () => {
@@ -20,5 +20,14 @@ describe('poses da câmera', () => {
     expect(nearestAngle(0, (3 * Math.PI) / 2)).toBeCloseTo(-Math.PI / 2);
     expect(nearestAngle(10 * Math.PI, 0.1)).toBeCloseTo(10 * Math.PI + 0.1);
     expect(nearestAngle(-0.1, -2 * Math.PI + 0.1)).toBeCloseTo(0.1);
+  });
+});
+
+describe('enquadramento', () => {
+  it('afasta mais a câmera em tela em pé (celular)', () => {
+    const landscape = fitDistance(7, 35, 16 / 9);
+    const portrait = fitDistance(7, 35, 375 / 812);
+    expect(portrait).toBeGreaterThan(landscape * 1.8);
+    expect(fitDistance(7, 35, 1)).toBeCloseTo(7 / Math.sin((17.5 * Math.PI) / 180));
   });
 });

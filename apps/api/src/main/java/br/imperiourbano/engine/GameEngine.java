@@ -524,6 +524,7 @@ public final class GameEngine {
     }
 
     private void sellBuilding(Decision d, String stateId) {
+        requireDebt(d.state);
         PlayerState player = d.state.currentPlayer();
         PropertyState property = ownedBy(d.state, player, stateId);
         if (property.buildingLevel() == 0) {
@@ -536,11 +537,17 @@ public final class GameEngine {
     }
 
     private void sellProperty(Decision d, String stateId) {
+        requireDebt(d.state);
         PlayerState player = d.state.currentPlayer();
         PropertyState property = ownedBy(d.state, player, stateId);
         int refund = (catalog.state(stateId).price() + investedIn(property)) / 2;
         d.emit(new PropertySold(player.id(), stateId, refund));
         settleDebtIfPossible(d);
+    }
+
+    /** Vender ao banco só serve para pagar uma dívida que o saldo não cobre (D10). */
+    private static void requireDebt(GameState state) {
+        requirePhase(state, TurnPhase.AWAITING_DEBT_RESOLUTION, "Só é possível vender ao banco para pagar uma dívida.");
     }
 
     private void settleDebtIfPossible(Decision d) {

@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { MeshStandardMaterial } from 'three';
 import type { ColorGroup, StateDefinition, TileDefinition } from '@imperio/shared-types';
+import { PAWN_COLORS } from '../game/presentation';
+import { currentRent } from '../game/rules';
+import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import type { TilePlacement } from './layout';
 import { createTileTexture } from './tileTexture';
@@ -20,14 +23,22 @@ export function Tile({ tile, placement, state, group }: TileProps) {
   const focusTile = useViewStore((s) => s.focusTile);
   const selected = useViewStore((s) => s.selectedTile === tile.index);
   const [hovered, setHovered] = useState(false);
+  // Valores primitivos: a casa só redesenha quando o aluguel ou o dono dela mudam.
+  const rent = useGameStore((s) => (s.snapshot && state ? currentRent(s.snapshot, state) : 0));
+  const ownerColor = useGameStore((s) => {
+    const ownerId = s.snapshot?.properties.find((p) => p.stateId === state?.id)?.ownerId;
+    const owner = s.snapshot?.players.find((p) => p.id === ownerId);
+    return owner ? PAWN_COLORS[owner.pawnColor].hex : null;
+  });
   const materials = useMemo(() => {
     const side = new MeshStandardMaterial({ color: '#d9cba8' });
+    const owned = ownerColor ? { rent, ownerColor } : undefined;
     const top = new MeshStandardMaterial({
-      map: createTileTexture({ tile, state, group, width: placement.width, depth: placement.depth }),
+      map: createTileTexture({ tile, state, group, width: placement.width, depth: placement.depth, owned }),
     });
     // Ordem das faces do BoxGeometry: +x, -x, +y (topo), -y, +z, -z.
     return [side, side, top, side, side, side];
-  }, [tile, state, group, placement.width, placement.depth]);
+  }, [tile, state, group, placement.width, placement.depth, rent, ownerColor]);
 
   useEffect(
     () => () => {

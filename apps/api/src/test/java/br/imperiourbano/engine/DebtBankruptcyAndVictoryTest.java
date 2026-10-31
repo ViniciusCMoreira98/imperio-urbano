@@ -44,6 +44,11 @@ class DebtBankruptcyAndVictoryTest {
         state = state.updatePlayer(playerId, p -> p.withCredits(credits));
     }
 
+    /** Dívida com o banco grande o bastante para não ser quitada por uma venda. */
+    private void anaOwesTheBank(int amount) {
+        state = state.withPendingDebt(new Debt("ana", null, amount)).withPhase(TurnPhase.AWAITING_DEBT_RESOLUTION);
+    }
+
     /** Ana, com pouco saldo, para no Amapá de Bia (1 + 2) e fica devendo o aluguel base. */
     private void anaOwesRentToBia(int anaCredits) {
         state = state.withProperty(PropertyState.purchased("AP", "bia"));
@@ -88,9 +93,23 @@ class DebtBankruptcyAndVictoryTest {
     }
 
     @Test
+    void salesOnlyHappenToPayADebt() {
+        start(GameMode.CLASSIC, "ana", "bia");
+        state = state.withProperty(new PropertyState("AC", "ana", 2, 1, 1));
+
+        assertThatThrownBy(() -> run("ana", new SellBuilding("AC")))
+                .hasMessage("Só é possível vender ao banco para pagar uma dívida.");
+        assertThatThrownBy(() -> run("ana", new SellProperty("AC")))
+                .hasMessage("Só é possível vender ao banco para pagar uma dívida.");
+        run("ana", new RollDice(), 1, 2);
+        assertThatThrownBy(() -> run("ana", new SellProperty("AC"))).isInstanceOf(RuleViolationException.class);
+    }
+
+    @Test
     void sellingAHotelGoesBackToFourHouses() {
         start(GameMode.CLASSIC, "ana", "bia");
         state = state.withProperty(new PropertyState("AC", "ana", PropertyState.HOTEL_LEVEL, 3, 3));
+        anaOwesTheBank(9_999);
 
         run("ana", new SellBuilding("AC"));
 
@@ -103,6 +122,7 @@ class DebtBankruptcyAndVictoryTest {
         start(GameMode.CLASSIC, "ana", "bia");
         state = state.withProperty(new PropertyState("AC", "ana", 2, 1, 1))
                 .withOlympics(new OlympicsState(3, "AC", "ana", 4));
+        anaOwesTheBank(9_999);
 
         run("ana", new SellProperty("AC"));
 
@@ -116,6 +136,7 @@ class DebtBankruptcyAndVictoryTest {
         start(GameMode.CLASSIC, "ana", "bia");
         state = state.withProperty(PropertyState.purchased("AC", "ana"))
                 .withProperty(PropertyState.purchased("RR", "bia"));
+        anaOwesTheBank(9_999);
 
         assertThatThrownBy(() -> run("ana", new SellProperty("RR")))
                 .hasMessage("Você só pode vender estados que possui.");

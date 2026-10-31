@@ -5,7 +5,7 @@ import { useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import { board } from '@imperio/game-data';
 import { useViewStore } from '../store/viewStore';
-import { nearestAngle, overviewPose, tilePose } from './cameraPose';
+import { fitDistance, nearestAngle, overviewPose, tilePose } from './cameraPose';
 import { tilePlacement } from './layout';
 
 const { ACTION } = CameraControlsImpl;
@@ -21,6 +21,7 @@ export function CameraRig({ fitRadius }: CameraRigProps) {
   const focusedTile = useViewStore((s) => s.focusedTile);
   const quarterTurns = useViewStore((s) => s.quarterTurns);
   const aspect = useThree((s) => s.size.width / s.size.height);
+  const fov = useThree((s) => ('fov' in s.camera ? (s.camera.fov as number) : 35));
 
   useEffect(() => {
     const controls = controlsRef.current;
@@ -46,8 +47,8 @@ export function CameraRig({ fitRadius }: CameraRigProps) {
 
     void controls.moveTo(...pose.target, smooth);
     void controls.rotateTo(nearestAngle(controls.azimuthAngle, pose.azimuth), pose.polar, smooth);
-    void controls.dollyTo(pose.distance ?? controls.getDistanceToFitSphere(fitRadius), smooth);
-  }, [focusedTile, quarterTurns, fitRadius, aspect]);
+    void controls.dollyTo(pose.distance ?? fitDistance(fitRadius, fov, aspect), smooth);
+  }, [focusedTile, quarterTurns, fitRadius, aspect, fov]);
 
   return (
     <CameraControls
@@ -57,7 +58,7 @@ export function CameraRig({ fitRadius }: CameraRigProps) {
       minPolarAngle={0.35}
       maxPolarAngle={1.15}
       minDistance={4}
-      maxDistance={40}
+      maxDistance={70}
     />
   );
 }
