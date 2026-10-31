@@ -69,7 +69,7 @@ Descanso (D2): no turno seguinte o jogador rola; sem dupla perde a jogada (`REST
 
 Viagem Nacional (D3): no turno seguinte, se tiver saldo para a taxa (50), escolhe qualquer outra casa (`CHOOSE_TRAVEL`) e viaja no sentido do percurso, recebendo o bônus se passar pelo Início; a casa de destino é resolvida normalmente. Rolar os dados recusa a viagem.
 
-Ritmo do turno (D21): quando não resta decisão (fase `AWAITING_END_TURN`), o servidor passa a vez sozinho — por isso comprar encerra o turno. Prazos por fase (`TurnTimeouts`): rolar ou escolher viagem (10 s) → `ROLL_DICE`; comprar (15 s) → `DECLINE_PURCHASE`; construir → `SKIP_BUILD`; Olimpíadas → `SKIP_OLYMPICS`. O prazo pertence à versão do estado (qualquer ação reinicia; reconectar não) e o snapshot leva `turnTimeLeftMs`. Dívida não tem prazo.
+Ritmo do turno (D21): quando não resta decisão (fase `AWAITING_END_TURN`), o servidor passa a vez sozinho — por isso comprar encerra o turno. Prazos por fase (`TurnTimeouts`): rolar ou escolher viagem (10 s) → `ROLL_DICE`; comprar (15 s) → `DECLINE_PURCHASE`; construir → `SKIP_BUILD`; Olimpíadas → `SKIP_OLYMPICS`. O prazo pertence à versão do estado (qualquer ação reinicia; reconectar não) e o snapshot leva `turnTimeLeftMs`. Dívida não tem prazo para quem está conectado. Jogador da vez desconectado: modo automático (`turnTimers.automaticSeconds`), com as mesmas ações padrão e, na dívida, venda da construção mais cara, depois de um estado, e falência só sem nada a vender.
 
 Duplas (D9): dupla dá nova jogada (`TURN_ENDED` com o mesmo jogador); a 3ª dupla seguida (`rules.dice.maxDoublesInRow`) leva direto ao Descanso, sem bônus do Início, e encerra a sequência.
 
@@ -78,5 +78,7 @@ Implementação: `apps/api/.../engine/GameEngine` — `decide(state, jogador, co
 Eventos (D13): `packages/game-data/data/events.json` traz 16 cartas originais (ganhar, pagar, reforma por construção, aniversário, mover para casa, andar ±3, ir ao Descanso). O baralho é embaralhado uma vez no `GAME_STARTED` e recomeça na mesma ordem ao acabar; a ordem é informação oculta e não vai no snapshot. Pagamento sem saldo vira dívida com o banco. Movimentos de carta resolvem a nova casa (aluguel, compra, Olimpíadas, outra carta — até 3 encadeamentos).
 
 Dívida e falência (D10–D11): no próprio turno o jogador pode vender ao banco uma casa/hotel (50% do custo; o hotel volta a 4 casas) ou um estado (50% do preço + 50% do investido). Com dívida pendente, a dívida é quitada automaticamente assim que o saldo cobre. Sem saída, declara falência: saldo e estados (com construções, visitas reiniciadas) vão ao credor; se o credor for o banco, os estados voltam livres. Sede olímpica do falido ou vendida perde o marcador (D8).
+
+Abandono: partida em andamento sem ninguém conectado por `rules.abandonment.seconds` (120 s) termina com `GAME_ABANDONED`, sem vencedor. Quem volta antes cancela o encerramento.
 
 Vitória: Clássico → resta 1 jogador não falido. Rápido → ao fim da 15ª rodada, maior patrimônio (D14).

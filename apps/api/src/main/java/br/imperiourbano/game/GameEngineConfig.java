@@ -24,10 +24,17 @@ class GameEngineConfig {
         return new RandomDice();
     }
 
+    /** Tempo sem ninguém conectado até encerrar a partida (rules.json); testes usam um tempo curto. */
+    @Bean
+    AbandonmentWatcher.Policy abandonmentPolicy(Catalog catalog) {
+        return new AbandonmentWatcher.Policy(Duration.ofSeconds(catalog.rules().abandonment().seconds()));
+    }
+
     /** Prazos vindos de rules.json; testes substituem por prazos curtos. */
     @Bean
     TurnTimeouts turnTimeouts(Catalog catalog) {
         RulesConfig.TurnTimers timers = catalog.rules().turnTimers();
-        return new TurnTimeouts(Duration.ofSeconds(timers.rollSeconds()), Duration.ofSeconds(timers.decisionSeconds()));
+        return new TurnTimeouts(Duration.ofSeconds(timers.rollSeconds()), Duration.ofSeconds(timers.decisionSeconds()),
+                Duration.ofSeconds(timers.automaticSeconds()));
     }
 }

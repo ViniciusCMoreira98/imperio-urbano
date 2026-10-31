@@ -15,6 +15,14 @@ export class GameConnection {
   private attempts = 0;
   private closedByUs = false;
   private retryTimer: ReturnType<typeof setTimeout> | undefined;
+  /** Rede voltou ou a aba voltou a ficar visível: tenta já, sem esperar o próximo intervalo. */
+  private readonly retryNow = () => {
+    if (this.closedByUs || this.socket?.readyState === WebSocket.OPEN || this.socket?.readyState === WebSocket.CONNECTING) {
+      return;
+    }
+    clearTimeout(this.retryTimer);
+    this.connect();
+  };
 
   constructor(
     private readonly gameId: string,
@@ -23,6 +31,10 @@ export class GameConnection {
   ) {}
 
   connect() {
+    if (this.closedByUs || !this.socket) {
+      window.addEventListener('online', this.retryNow);
+      document.addEventListener('visibilitychange', this.retryNow);
+    }
     this.closedByUs = false;
     this.handlers.onStatus('connecting');
     const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
@@ -54,6 +66,8 @@ export class GameConnection {
 
   close() {
     this.closedByUs = true;
+    window.removeEventListener('online', this.retryNow);
+    document.removeEventListener('visibilitychange', this.retryNow);
     clearTimeout(this.retryTimer);
     this.socket?.close();
     this.socket = null;

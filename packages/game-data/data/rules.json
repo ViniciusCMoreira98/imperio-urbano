@@ -16,7 +16,8 @@
   },
   "rest": { "turnsLost": 1 },
   "nationalTravel": { "fee": 50 },
-  "turnTimers": { "rollSeconds": 10, "decisionSeconds": 15 },
+  "turnTimers": { "rollSeconds": 10, "decisionSeconds": 15, "automaticSeconds": 2 },
+  "abandonment": { "seconds": 120 },
   "modes": {
     "CLASSIC": { "roundLimit": null },
     "QUICK": { "roundLimit": 15 }

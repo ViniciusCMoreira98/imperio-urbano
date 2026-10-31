@@ -14,6 +14,7 @@ public record RulesConfig(
         RestRules rest,
         NationalTravelRules nationalTravel,
         TurnTimers turnTimers,
+        AbandonmentRules abandonment,
         Map<GameMode, ModeConfig> modes) {
 
     public RulesConfig {
@@ -54,8 +55,15 @@ public record RulesConfig(
     public record NationalTravelRules(int fee) {
     }
 
-    /** Prazos do turno: rolar/viajar e decidir; ao acabar, o servidor executa a ação padrão. */
-    public record TurnTimers(int rollSeconds, int decisionSeconds) {
+    /**
+     * Prazos do turno: rolar/viajar e decidir; ao acabar, o servidor executa a ação padrão.
+     * {@code automaticSeconds}: pausa entre as jogadas do modo automático (jogador desconectado).
+     */
+    public record TurnTimers(int rollSeconds, int decisionSeconds, int automaticSeconds) {
+    }
+
+    /** Partida em andamento sem ninguém conectado por {@code seconds} é encerrada sem vencedor. */
+    public record AbandonmentRules(int seconds) {
     }
 
     /** {@code roundLimit} nulo = sem limite de rodadas. */

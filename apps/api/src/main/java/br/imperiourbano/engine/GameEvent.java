@@ -97,6 +97,10 @@ public sealed interface GameEvent {
     record PlayerBankrupt(String playerId, String creditorId) implements GameEvent {
     }
 
+    /** Todos saíram e ninguém voltou a tempo: partida encerrada sem vencedor. */
+    record GameAbandoned() implements GameEvent {
+    }
+
     record GameFinished(List<String> winnerIds) implements GameEvent {
 
         public GameFinished {

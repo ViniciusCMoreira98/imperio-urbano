@@ -95,12 +95,16 @@ export function GameScreen() {
 function FinishedOverlay({ onLeave }: { onLeave: () => void }) {
   const snapshot = useGameStore((s) => s.snapshot)!;
   const names = snapshot.winnerIds.map((id) => snapshot.players.find((p) => p.id === id)?.nickname ?? id);
+  // Sem vencedores = partida encerrada por abandono.
+  const abandoned = names.length === 0;
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/50">
       <div className="rounded-2xl bg-slate-900 p-6 text-center shadow-2xl">
-        <p className="text-5xl">🏆</p>
-        <h2 className="mt-2 text-2xl font-extrabold text-amber-300">Fim de jogo!</h2>
-        <p className="mt-1 text-white">{names.join(' e ')} venceu.</p>
+        <p className="text-5xl">{abandoned ? '🚪' : '🏆'}</p>
+        <h2 className="mt-2 text-2xl font-extrabold text-amber-300">{abandoned ? 'Partida encerrada' : 'Fim de jogo!'}</h2>
+        <p className="mt-1 text-white">
+          {abandoned ? 'Todos saíram e ninguém voltou a tempo. Não houve vencedor.' : `${names.join(' e ')} venceu.`}
+        </p>
         <Button variant="primary" className="mt-4" onClick={onLeave}>
           Voltar ao menu
         </Button>

@@ -38,6 +38,8 @@ export const api = {
   createGame: (token: string, mode: GameMode) => request<LobbyView>('POST', '/games', token, { mode }),
   joinGame: (token: string, inviteCode: string) => request<LobbyView>('POST', '/games/join', token, { inviteCode }),
   lobby: (token: string, gameId: string) => request<LobbyView>('GET', `/games/${gameId}`, token),
+  /** Salas e partidas não encerradas do jogador. */
+  myGames: (token: string) => request<LobbyView[]>('GET', '/games/mine', token),
   customize: (token: string, gameId: string, avatarId: AvatarId, pawnColor: PawnColor) =>
     request<LobbyView>('PUT', `/games/${gameId}/me`, token, { avatarId, pawnColor }),
   setReady: (token: string, gameId: string, ready: boolean) =>

@@ -18,9 +18,12 @@ interface AppState {
 }
 
 const initialGameId = loadGameId();
+const initialSession = loadSession();
+// Mantém o "último convidado" do dispositivo em dia, inclusive para sessões abertas antes deste recurso.
+if (initialSession) saveSession(initialSession);
 
 export const useAppStore = create<AppState>()((set) => ({
-  session: loadSession(),
+  session: initialSession,
   // Com uma sala salva, a tela de sala confere no servidor e segue para a partida se já começou.
   screen: initialGameId ? 'lobby' : 'menu',
   gameId: initialGameId,

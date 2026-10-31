@@ -62,6 +62,8 @@ export type DomainEvent =
   | { type: 'PLAYER_BANKRUPT'; playerId: string; creditorId: string | null }
   /** nextPlayerId igual ao atual quando a dupla dá nova jogada. */
   | { type: 'TURN_ENDED'; playerId: string; nextPlayerId: string; round: number }
+  /** Todos saíram e ninguém voltou a tempo: encerrada sem vencedor. */
+  | { type: 'GAME_ABANDONED' }
   | { type: 'GAME_FINISHED'; winnerIds: string[] };
 
 /** EVENTS e SNAPSHOT vão a todos quando um comando é aplicado; COMMAND_REJECTED (+ SNAPSHOT) só a quem enviou. */

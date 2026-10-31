@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { GameMode } from '@imperio/shared-types';
+import type { LobbyView } from '@imperio/shared-types';
 import { api, ApiError } from '../net/api';
+import { loadLastSession } from '../net/session';
 import { useAppStore } from '../store/appStore';
 import { Button, ErrorText, Logo, MenuBackground, Panel } from '../ui/ui';
 
@@ -26,6 +28,7 @@ function NicknameForm() {
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const last = loadLastSession();
 
   async function submit() {
     setBusy(true);
@@ -64,6 +67,11 @@ function NicknameForm() {
         </Button>
         <ErrorText message={error} />
       </form>
+      {last && (
+        <Button variant="confirm" className="mt-3 w-full" onClick={() => setSession(last)}>
+          Continuar como {last.nickname}
+        </Button>
+      )}
     </Panel>
   );
 }
@@ -76,10 +84,11 @@ function PlayMenu() {
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [myGames, setMyGames] = useState<LobbyView[]>([]);
 
-  // Token guardado de outra execução do servidor deixa de valer: volta a pedir o apelido.
+  // Token que não vale mais volta a pedir o apelido; com token válido, lista as partidas em aberto.
   useEffect(() => {
-    api.me(session.token).catch((e) => {
+    api.myGames(session.token).then(setMyGames, (e) => {
       if (e instanceof ApiError && e.status === 401) setSession(null);
     });
   }, [session.token, setSession]);
@@ -104,6 +113,25 @@ function PlayMenu() {
           trocar apelido
         </button>
       </p>
+
+      {myGames.length > 0 && (
+        <div className="mb-5">
+          <h2 className="mb-2 font-bold text-white">Suas partidas</h2>
+          <ul className="space-y-2">
+            {myGames.map((game) => (
+              <li key={game.gameId} className="flex items-center gap-2 rounded-lg bg-slate-800 px-3 py-2 text-sm">
+                <span className="font-mono font-bold tracking-widest text-white">{game.inviteCode}</span>
+                <span className="flex-1 text-white/70">
+                  {game.status === 'IN_PROGRESS' ? 'em andamento' : 'na sala de espera'} · {game.players.length} jogador(es)
+                </span>
+                <Button variant="primary" className="px-3 py-1 text-sm" onClick={() => openLobby(game)}>
+                  Voltar
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <h2 className="mb-2 font-bold text-white">Criar sala privada</h2>
       <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Modo de jogo">

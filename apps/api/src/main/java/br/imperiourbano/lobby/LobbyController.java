@@ -2,6 +2,7 @@ package br.imperiourbano.lobby;
 
 import br.imperiourbano.catalog.GameMode;
 import br.imperiourbano.identity.GuestPrincipal;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -47,6 +48,12 @@ class LobbyController {
     @PostMapping("/join")
     LobbyView join(@AuthenticationPrincipal GuestPrincipal player, @RequestBody JoinRequest request) {
         return lobby.join(player, request.inviteCode());
+    }
+
+    /** Para voltar a uma partida depois de fechar a aba ou trocar de dispositivo. */
+    @GetMapping("/mine")
+    List<LobbyView> mine(@AuthenticationPrincipal GuestPrincipal player) {
+        return lobby.activeGames(player);
     }
 
     @GetMapping("/{gameId}")

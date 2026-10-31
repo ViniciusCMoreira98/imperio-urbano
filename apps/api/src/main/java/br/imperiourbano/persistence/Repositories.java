@@ -14,6 +14,9 @@ interface GameRecordRepository extends JpaRepository<GameRecord, String> {
 
     Optional<GameRecord> findByInviteCode(String inviteCode);
 
+    @Query("select g.id from GameRecord g where g.status = 'IN_PROGRESS'")
+    List<String> findInProgressIds();
+
     /** Trava a linha da partida até o fim da transação (entradas simultâneas na mesma sala). */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select g from GameRecord g where g.id = :id")

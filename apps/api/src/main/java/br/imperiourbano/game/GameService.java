@@ -26,7 +26,8 @@ import org.springframework.stereotype.Service;
  * protege contra escritas concorrentes de outra instância.
  *
  * <p>Fluxo automático: quando não resta decisão no turno (fase AWAITING_END_TURN), a vez passa sozinha;
- * quando o prazo do turno acaba, {@link #timeout} executa a ação padrão no lugar do jogador.
+ * quando o prazo do turno acaba (ou logo, se o jogador da vez está desconectado), {@link #timeout}
+ * executa a ação padrão no lugar dele.
  */
 @Service
 public class GameService {
@@ -110,12 +111,26 @@ public class GameService {
      * Prazo esgotado: se a partida ainda está na versão em que o prazo começou, joga a ação padrão
      * pelo jogador da vez. Se alguém agiu antes, não faz nada.
      */
-    public void timeout(String gameId, long version) {
+    public void timeout(String gameId, long version, boolean automaticMode) {
         withLock(gameId, () -> {
             GameState state = store.loadSnapshot(gameId).orElse(null);
             if (state == null || state.version() != version || state.status() != GameStatus.IN_PROGRESS) return null;
-            timeouts.forState(state).ifPresent(timeout -> apply(gameId, state, state.currentPlayer().id(),
+            timeouts.forState(state, automaticMode).ifPresent(timeout -> apply(gameId, state, state.currentPlayer().id(),
                     timeout.defaultCommand(), "auto:" + gameId + ":" + version));
+            return null;
+        });
+    }
+
+    /** Todos saíram e ninguém voltou a tempo: encerra a partida sem vencedor. */
+    public void abandon(String gameId) {
+        withLock(gameId, () -> {
+            store.loadSnapshot(gameId).filter(s -> s.status() == GameStatus.IN_PROGRESS).ifPresent(state -> {
+                List<GameEvent> events = engine.abandon(state);
+                GameState finished = state;
+                for (GameEvent event : events) finished = engine.apply(finished, event);
+                store.append(gameId, state.version(), events, finished, null, null);
+                publisher.publishEvent(new GameUpdated(gameId, events, finished));
+            });
             return null;
         });
     }

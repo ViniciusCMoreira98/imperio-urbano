@@ -37,7 +37,9 @@ export function PlayersPanel({ myId }: { myId: string }) {
             </div>
             <p className="mt-1 text-xs text-white/70">
               🏠 {owned.length} estado(s) · {houses} casa(s) · {hotels} hotel(éis)
-              {!p.connected && !p.bankrupt && <span className="text-rose-300"> · desconectado</span>}
+              {!p.connected && !p.bankrupt && (
+                <span className="text-sky-300" title="Desconectado: o servidor joga por este jogador até ele voltar."> · 🤖 automático</span>
+              )}
               {p.bankrupt && <span className="text-rose-300"> · faliu</span>}
               {p.skipTurns > 0 && <span className="text-sky-300"> · descansando</span>}
             </p>

@@ -1,5 +1,7 @@
 package br.imperiourbano.game;
 
+import br.imperiourbano.engine.GameState;
+import br.imperiourbano.engine.GameStatus;
 import jakarta.annotation.PreDestroy;
 import java.time.Duration;
 import java.time.Instant;
@@ -19,17 +21,21 @@ import org.springframework.stereotype.Component;
 /**
  * Relógio do turno, um por partida. O prazo pertence a uma versão do estado: qualquer ação nova
  * (do jogador ou automática) muda a versão e reinicia o relógio; reconectar não reinicia.
+ * Jogador da vez desconectado entra no modo automático: o servidor joga por ele a cada poucos segundos
+ * até ele voltar. Partida sem ninguém conectado fica pausada: o prazo vence sem jogar, e recomeça
+ * inteiro quando alguém volta (assim o servidor não joga sozinho uma partida abandonada).
  */
 @Component
 public class TurnTimer {
 
     private static final Logger log = LoggerFactory.getLogger(TurnTimer.class);
 
-    private record Scheduled(long version, Instant deadline, ScheduledFuture<?> future) {
+    private record Scheduled(long version, boolean automatic, Instant deadline, ScheduledFuture<?> future) {
     }
 
     private final GameService games;
     private final TurnTimeouts timeouts;
+    private final Presence presence;
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
         Thread thread = new Thread(runnable, "turn-timer");
         thread.setDaemon(true);
@@ -37,9 +43,10 @@ public class TurnTimer {
     });
     private final Map<String, Scheduled> timers = new ConcurrentHashMap<>();
 
-    TurnTimer(GameService games, TurnTimeouts timeouts) {
+    TurnTimer(GameService games, TurnTimeouts timeouts, Presence presence) {
         this.games = games;
         this.timeouts = timeouts;
+        this.presence = presence;
     }
 
     /** Roda antes de quem envia o snapshot, para o prazo novo já sair nele. */
@@ -48,15 +55,29 @@ public class TurnTimer {
     void onGameUpdated(GameUpdated update) {
         String gameId = update.gameId();
         long version = update.state().version();
+        boolean automatic = isAutomatic(gameId, update);
         Scheduled existing = timers.get(gameId);
-        if (existing != null && existing.version() == version) return;
+        // Mesma versão e mesmo modo com prazo correndo: mantém (reconectar não ganha tempo extra).
+        // Se o jogador da vez caiu ou voltou, o modo muda e o prazo é refeito.
+        if (existing != null && existing.version() == version && existing.automatic() == automatic
+                && !existing.future().isDone()) {
+            return;
+        }
         if (existing != null) existing.future().cancel(false);
 
-        timeouts.forState(update.state()).ifPresentOrElse(timeout -> {
+        timeouts.forState(update.state(), automatic).ifPresentOrElse(timeout -> {
             Duration duration = timeout.duration();
-            ScheduledFuture<?> future = scheduler.schedule(() -> fire(gameId, version), duration.toMillis(), TimeUnit.MILLISECONDS);
-            timers.put(gameId, new Scheduled(version, Instant.now().plus(duration), future));
+            ScheduledFuture<?> future = scheduler.schedule(() -> fire(gameId, version, automatic),
+                    duration.toMillis(), TimeUnit.MILLISECONDS);
+            timers.put(gameId, new Scheduled(version, automatic, Instant.now().plus(duration), future));
         }, () -> timers.remove(gameId));
+    }
+
+    /** Jogador da vez sem conexão aberta: o servidor joga por ele. */
+    private boolean isAutomatic(String gameId, GameUpdated update) {
+        GameState state = update.state();
+        return state.status() == GameStatus.IN_PROGRESS
+                && !presence.connected(gameId).contains(state.currentPlayer().id());
     }
 
     /** Milissegundos até o prazo atual, se houver. */
@@ -66,9 +87,13 @@ public class TurnTimer {
         return OptionalLong.of(Math.max(0, Duration.between(Instant.now(), scheduled.deadline()).toMillis()));
     }
 
-    private void fire(String gameId, long version) {
+    private void fire(String gameId, long version, boolean automatic) {
+        if (!presence.anyone(gameId)) {
+            log.debug("Partida {} sem jogadores conectados: prazo pausado", gameId);
+            return;
+        }
         try {
-            games.timeout(gameId, version);
+            games.timeout(gameId, version, automatic);
         } catch (RuntimeException e) {
             log.warn("Falha na ação automática da partida {}: {}", gameId, e.getMessage());
         }

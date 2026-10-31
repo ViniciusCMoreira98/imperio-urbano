@@ -210,6 +210,39 @@ class GameSocketTest {
     }
 
     @Test
+    void reconnectingResumesTheSameGameWithoutExtraTime() throws Exception {
+        ana = connect(anaToken);
+        ana.drain();
+        ana.send(command("r1", 1, ROLL));
+        String before = ana.next("SNAPSHOT");
+        ana.socket.abort();
+
+        ana = connect(anaToken);
+        String after = ana.next("SNAPSHOT");
+
+        assertThat(after).contains("\"version\":3", "\"phase\":\"AWAITING_PURCHASE\"", "\"connected\":true");
+        assertThat(timeLeft(after)).isLessThanOrEqualTo(timeLeft(before));
+    }
+
+    private static long timeLeft(String snapshot) {
+        return Long.parseLong(snapshot.replaceAll("(?s).*\"turnTimeLeftMs\":(\\d+).*", "$1"));
+    }
+
+    @Test
+    void othersSeeWhoDisconnected() throws Exception {
+        ana = connect(anaToken);
+        bia = connect(biaToken);
+        ana.drain();
+
+        bia.socket.sendClose(WebSocket.NORMAL_CLOSURE, "saindo").join();
+
+        String snapshot = ana.next("SNAPSHOT");
+        String biaEntry = snapshot.replaceAll("(?s).*(\\{[^{}]*\"nickname\":\"Bia\"[^{}]*\\}).*", "$1");
+        assertThat(biaEntry).contains("\"connected\":false");
+        bia = null;
+    }
+
+    @Test
     void malformedMessageIsRejected() throws Exception {
         ana = connect(anaToken);
         ana.drain();

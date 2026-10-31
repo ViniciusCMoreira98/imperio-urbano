@@ -67,6 +67,10 @@ class LobbyMemberRecord {
         this.ready = value;
     }
 
+    String gameId() {
+        return gameId;
+    }
+
     String playerId() {
         return playerId;
     }

@@ -158,6 +158,21 @@ class LobbyApiTest {
     }
 
     @Test
+    void playersListTheirOpenGames() throws Exception {
+        String ana = login("Ana");
+        Room room = createRoom(ana, "CLASSIC");
+        String bia = login("Bia");
+        join(bia, room.code());
+
+        MvcTestResult mine = mvc.get().uri("/api/games/mine").header(HttpHeaders.AUTHORIZATION, bia).exchange();
+
+        assertThat(mine).hasStatusOk();
+        assertThat(mine).bodyJson().extractingPath("$[0].gameId").isEqualTo(room.id());
+        assertThat(mvc.get().uri("/api/games/mine").header(HttpHeaders.AUTHORIZATION, login("Outro")).exchange())
+                .bodyJson().extractingPath("$.length()").isEqualTo(0);
+    }
+
+    @Test
     void startingCreatesTheEngineGameInSeatOrder() throws Exception {
         String ana = login("Ana");
         Room room = createRoom(ana, "QUICK");

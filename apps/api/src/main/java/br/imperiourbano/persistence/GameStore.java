@@ -47,6 +47,11 @@ public class GameStore {
     }
 
     @Transactional(readOnly = true)
+    public List<String> inProgressGameIds() {
+        return games.findInProgressIds();
+    }
+
+    @Transactional(readOnly = true)
     public boolean inviteCodeExists(String inviteCode) {
         return games.findByInviteCode(inviteCode).isPresent();
     }

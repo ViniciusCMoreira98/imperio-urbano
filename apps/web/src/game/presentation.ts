@@ -1,5 +1,5 @@
 // Nomes, cores e textos exibidos na partida.
-import { board, eventCards, states } from '@imperio/game-data';
+import { board, eventCards, rules, states } from '@imperio/game-data';
 import type { AvatarId, DomainEvent, PawnColor } from '@imperio/shared-types';
 import { formatCredits } from '../property-card/tileInfo';
 
@@ -79,6 +79,8 @@ export function describeEvent(event: DomainEvent, name: (playerId: string) => st
       return `${name(event.debtorId)} quitou a dívida.`;
     case 'PLAYER_BANKRUPT':
       return `${name(event.playerId)} faliu.`;
+    case 'GAME_ABANDONED':
+      return `Partida encerrada: todos saíram por mais de ${Math.round(rules.abandonment.seconds / 60)} minutos.`;
     case 'GAME_FINISHED':
       return `Fim de jogo! ${event.winnerIds.map(name).join(' e ')} venceu.`;
     default:

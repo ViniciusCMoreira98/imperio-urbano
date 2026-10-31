@@ -27,7 +27,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-/** Dados sempre 1 + 2 (Ana para no Amapá, livre); prazos curtos: 3 s para rolar, 1 s para decidir. */
+/**
+ * Dados sempre 1 + 2 (Ana para no Amapá, livre); prazos curtos: 3 s para rolar, 1 s para decidir e
+ * 300 ms entre jogadas do modo automático. As duas começam conectadas.
+ */
 @SpringBootTest
 @Import({TestcontainersConfiguration.class, TurnAutomationTest.Config.class})
 class TurnAutomationTest {
@@ -43,7 +46,7 @@ class TurnAutomationTest {
         @Bean
         @Primary
         TurnTimeouts fastTimeouts() {
-            return new TurnTimeouts(Duration.ofSeconds(3), Duration.ofSeconds(1));
+            return new TurnTimeouts(Duration.ofSeconds(3), Duration.ofSeconds(1), Duration.ofMillis(300));
         }
     }
 
@@ -62,6 +65,9 @@ class TurnAutomationTest {
     @Autowired
     TurnTimer timer;
 
+    @Autowired
+    Presence presence;
+
     private GuestPrincipal ana;
     private GuestPrincipal bia;
     private String gameId;
@@ -75,6 +81,8 @@ class TurnAutomationTest {
         lobby.join(bia, room.inviteCode());
         lobby.setReady(ana, gameId, true);
         lobby.setReady(bia, gameId, true);
+        presence.joined(gameId, ana.playerId());
+        presence.joined(gameId, bia.playerId());
         lobby.start(ana, gameId);
     }
 
@@ -121,6 +129,44 @@ class TurnAutomationTest {
                 new GameEvent.PurchaseDeclined(ana.playerId(), "AP"),
                 new GameEvent.TurnEnded(ana.playerId(), bia.playerId(), 1));
         assertThat(state().property("AP")).isEmpty();
+    }
+
+    @Test
+    void disconnectedPlayerIsPlayedAutomaticallyRightAway() throws InterruptedException {
+        presence.left(gameId, ana.playerId());
+        long start = System.nanoTime();
+        games.announce(gameId);
+
+        while (!state().currentPlayer().id().equals(bia.playerId()) && System.nanoTime() - start < Duration.ofSeconds(5).toNanos()) {
+            Thread.sleep(50);
+        }
+
+        // Rolou e recusou a compra em segundos, sem esperar os prazos de 3 s + 1 s.
+        assertThat(Duration.ofNanos(System.nanoTime() - start)).isLessThan(Duration.ofMillis(2_500));
+        assertThat(store.loadEvents(gameId)).contains(new GameEvent.PurchaseDeclined(ana.playerId(), "AP"));
+        // Bia está conectada: a vez dela volta ao prazo normal.
+        assertThat(timer.remainingMillis(gameId).getAsLong()).isGreaterThan(1_000L);
+    }
+
+    @Test
+    void abandonedGameWaitsAndResumesWhenSomeoneReturns() throws InterruptedException {
+        presence.left(gameId, bia.playerId());
+        presence.left(gameId, ana.playerId());
+        games.announce(gameId);
+        long version = state().version();
+
+        Thread.sleep(3_500);
+        assertThat(state().version()).isEqualTo(version);
+
+        presence.joined(gameId, ana.playerId());
+        games.announce(gameId);
+        assertThat(timer.remainingMillis(gameId).getAsLong()).isGreaterThan(2_000L);
+
+        long deadline = System.nanoTime() + Duration.ofSeconds(6).toNanos();
+        while (state().version() == version && System.nanoTime() < deadline) {
+            Thread.sleep(100);
+        }
+        assertThat(store.loadEvents(gameId)).contains(new GameEvent.DiceRolled(ana.playerId(), new DiceRoll(1, 2)));
     }
 
     @Test

@@ -149,6 +149,15 @@ public class LobbyService {
         return view(gameId);
     }
 
+    /** Salas e partidas ainda não encerradas do jogador, da mais recente para a mais antiga. */
+    @Transactional(readOnly = true)
+    public List<LobbyView> activeGames(GuestPrincipal player) {
+        return members.findByPlayerIdOrderByJoinedAtDesc(player.playerId()).stream()
+                .map(m -> view(m.gameId()))
+                .filter(game -> game.status() != GameStatus.FINISHED)
+                .toList();
+    }
+
     @Transactional(readOnly = true)
     public boolean isMember(String gameId, String playerId) {
         return members.existsById(new LobbyMemberRecord.Key(gameId, playerId));

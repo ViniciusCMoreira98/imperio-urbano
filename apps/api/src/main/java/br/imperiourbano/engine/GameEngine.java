@@ -29,6 +29,7 @@ import br.imperiourbano.engine.GameEvent.CreditsTransferred;
 import br.imperiourbano.engine.GameEvent.DebtIncurred;
 import br.imperiourbano.engine.GameEvent.DebtSettled;
 import br.imperiourbano.engine.GameEvent.DiceRolled;
+import br.imperiourbano.engine.GameEvent.GameAbandoned;
 import br.imperiourbano.engine.GameEvent.EventCardDrawn;
 import br.imperiourbano.engine.GameEvent.GameFinished;
 import br.imperiourbano.engine.GameEvent.GameStarted;
@@ -122,6 +123,14 @@ public final class GameEngine {
         List<String> deck = new ArrayList<>(catalog.eventCards().stream().map(EventCard::id).toList());
         Collections.shuffle(deck, shuffler);
         return new GameStarted(gameId, mode, turnOrder, rules.startingCredits(), deck);
+    }
+
+    /** Encerramento por abandono (decidido pelo servidor, não por um jogador). */
+    public List<GameEvent> abandon(GameState state) {
+        if (state.status() != GameStatus.IN_PROGRESS) {
+            throw new RuleViolationException("A partida não está em andamento.");
+        }
+        return List.of(new GameAbandoned());
     }
 
     public List<GameEvent> decide(GameState state, String playerId, GameCommand command, Dice dice) {
@@ -220,6 +229,7 @@ public final class GameEngine {
             }
             case PlayerBankrupt e -> applyBankruptcy(state, e);
             case GameFinished e -> state.finished(e.winnerIds());
+            case GameAbandoned e -> state.finished(List.of());
             case TurnEnded e -> {
                 int nextIndex = state.indexOf(e.nextPlayerId());
                 boolean sameTurn = nextIndex == state.currentPlayerIndex();

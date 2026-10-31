@@ -93,6 +93,9 @@ export interface RulesConfig {
   /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
   nationalTravel: { fee: number };
   /** Tempo para rolar (ou escolher a viagem) e para decidir compra/construção/Olimpíadas; ao acabar, o servidor joga. */
-  turnTimers: { rollSeconds: number; decisionSeconds: number };
+  /** automaticSeconds: pausa entre as jogadas feitas pelo servidor para quem está desconectado. */
+  turnTimers: { rollSeconds: number; decisionSeconds: number; automaticSeconds: number };
+  /** Partida em andamento sem ninguém conectado por esse tempo é encerrada sem vencedor. */
+  abandonment: { seconds: number };
   modes: Record<GameMode, { roundLimit: number | null }>;
 }

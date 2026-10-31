@@ -45,6 +45,7 @@ class GameJsonTest {
             new GameEvent.PropertySold("bia", "AC", 60),
             new GameEvent.DebtSettled("bia", null, 80),
             new GameEvent.PlayerBankrupt("bia", "ana"),
+            new GameEvent.GameAbandoned(),
             new GameEvent.GameFinished(List.of("ana")),
             new GameEvent.TurnEnded("ana", "bia", 2));
 
