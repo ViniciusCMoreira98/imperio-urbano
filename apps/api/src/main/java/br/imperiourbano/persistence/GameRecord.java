@@ -25,6 +25,9 @@ class GameRecord {
     @Column(nullable = false)
     private long version;
 
+    @Column(name = "host_player_id")
+    private String hostPlayerId;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -34,12 +37,17 @@ class GameRecord {
     protected GameRecord() {
     }
 
-    GameRecord(String id, String inviteCode, String mode, String status) {
+    GameRecord(String id, String inviteCode, String mode, String status, String hostPlayerId) {
         this.id = id;
         this.inviteCode = inviteCode;
         this.mode = mode;
         this.status = status;
+        this.hostPlayerId = hostPlayerId;
         this.createdAt = Instant.now();
         this.updatedAt = createdAt;
+    }
+
+    GameInfo info() {
+        return new GameInfo(id, inviteCode, mode, status, version, hostPlayerId);
     }
 }

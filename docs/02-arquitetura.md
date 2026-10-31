@@ -44,7 +44,9 @@ Monólito modular. Um servidor Spring Boot autoritativo, um cliente React. Sem m
 
 Sessão de convidado (E15): `POST /api/sessions {nickname}` cria o jogador e devolve `{playerId, nickname, token}` (o token só aparece aí; o banco guarda o hash SHA-256). Demais rotas exigem `Authorization: Bearer <token>`; `GET /api/sessions/me` confere um token guardado. Apelido: 2–20 caracteres (letras, números, espaço, `. _ -`). Em desenvolvimento o Vite repassa `/api` para `localhost:8080`.
 
-Tabelas (Flyway, `apps/api/src/main/resources/db/migration`): `games`, `game_events`, `game_snapshots`, `processed_commands` (E14); `guest_sessions` e `game_players` entram com a E15/E16.
+Salas (E16), todas com token: `POST /api/games {mode}` cria a sala (o criador é o anfitrião, assento 0); `POST /api/games/join {inviteCode}` entra pelo código de 6 caracteres (sem I, O, 0, 1; maiúsculas ou minúsculas); `GET /api/games/{id}`; `PUT /api/games/{id}/me {avatarId, pawnColor}` (avatares podem repetir, cores não); `PUT /api/games/{id}/me/ready {ready}`; `POST /api/games/{id}/start` (só o anfitrião, 2–4 jogadores todos prontos; ordem de jogo = assentos). Quem não é da sala recebe 404. Alterações travam a linha da partida (`SELECT … FOR UPDATE`) para entradas simultâneas não disputarem assento.
+
+Tabelas (Flyway, `apps/api/src/main/resources/db/migration`): `games`, `game_events`, `game_snapshots`, `processed_commands` (E14); `guest_sessions` (E15); `game_players` e `games.host_player_id` (E16).
 
 `persistence.GameStore` grava, numa transação, os eventos de um comando (`sequence` = versão após o evento), o snapshot resultante e o `commandId`; a versão da partida em `games` faz a concorrência otimista. Eventos e estado viram JSON (`jsonb`) por `GameJson`, que nomeia cada evento como no protocolo TS (ex.: `DICE_ROLLED`) sem anotar o motor. A ordem do baralho fica no snapshot do servidor e não deve ir ao cliente.
 

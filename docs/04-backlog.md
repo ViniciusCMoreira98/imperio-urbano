@@ -32,7 +32,7 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 |---|---|
 | ✅ E14 | Docker Compose (PostgreSQL), Flyway, persistência de eventos/snapshots |
 | ✅ E15 | Sessão de convidado + Spring Security |
-| E16 | Lobby: criar sala, código, entrar, avatar/cor, pronto, iniciar |
+| ✅ E16 | Lobby: criar sala, código, entrar, avatar/cor, pronto, iniciar |
 | E17 | WebSocket: comandos, idempotência, broadcast, snapshot |
 | E18 | Cliente `net/` + store ligado ao servidor; remove demo local |
 | E19 | Reconexão e retomada de partida (Testcontainers) |

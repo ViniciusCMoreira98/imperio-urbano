@@ -32,8 +32,29 @@ public class GameStore {
     }
 
     @Transactional
-    public void createGame(String gameId, String inviteCode, GameMode mode) {
-        games.save(new GameRecord(gameId, inviteCode, mode.name(), GameStatus.LOBBY.name()));
+    public void createGame(String gameId, String inviteCode, GameMode mode, String hostPlayerId) {
+        games.save(new GameRecord(gameId, inviteCode, mode.name(), GameStatus.LOBBY.name(), hostPlayerId));
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<GameInfo> find(String gameId) {
+        return games.findById(gameId).map(GameRecord::info);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<GameInfo> findByInviteCode(String inviteCode) {
+        return games.findByInviteCode(inviteCode).map(GameRecord::info);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean inviteCodeExists(String inviteCode) {
+        return games.findByInviteCode(inviteCode).isPresent();
+    }
+
+    /** Lê a partida travando a linha; use dentro da transação de quem vai alterá-la. */
+    @Transactional
+    public Optional<GameInfo> lock(String gameId) {
+        return games.lockById(gameId).map(GameRecord::info);
     }
 
     /**

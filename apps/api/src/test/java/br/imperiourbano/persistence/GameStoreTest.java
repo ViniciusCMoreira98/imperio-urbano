@@ -39,7 +39,7 @@ class GameStoreTest {
     void startPersistedGame() {
         engine = new GameEngine(catalog);
         gameId = UUID.randomUUID().toString();
-        store.createGame(gameId, gameId.substring(0, 6).toUpperCase(), GameMode.CLASSIC);
+        store.createGame(gameId, gameId.substring(0, 6).toUpperCase(), GameMode.CLASSIC, null);
 
         GameEvent started = engine.start(gameId, GameMode.CLASSIC, List.of(
                 new StartingPlayer("ana", "Ana"), new StartingPlayer("bia", "Bia")));
