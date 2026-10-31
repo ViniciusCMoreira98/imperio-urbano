@@ -22,7 +22,7 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 | ✅ E8 | Compra e aluguel |
 | ✅ E9 | Construção por etapas/visitas (D4) |
 | ✅ E10 | Olimpíadas |
-| E11 | Dívida, venda ao banco, falência, vitória (Clássico e Rápido) |
+| ✅ E11 | Dívida, venda ao banco, falência, vitória (Clássico e Rápido) |
 | E12 | Cartas de eventos (16 cartas) |
 | E13 | Descanso, Viagem Nacional |
 

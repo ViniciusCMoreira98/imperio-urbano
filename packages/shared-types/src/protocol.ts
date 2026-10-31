@@ -51,6 +51,10 @@ export type DomainEvent =
   | { type: 'OLYMPICS_HOST_SELECTED'; playerId: string; stateId: StateId; edition: number; multiplier: number; fee: number }
   | { type: 'OLYMPICS_SKIPPED'; playerId: string }
   | { type: 'EVENT_CARD_DRAWN'; playerId: string; cardId: string }
+  | { type: 'BUILDING_SOLD'; playerId: string; stateId: StateId; refund: number }
+  | { type: 'PROPERTY_SOLD'; playerId: string; stateId: StateId; refund: number }
+  | { type: 'DEBT_SETTLED'; debtorId: string; creditorId: string | null; amount: number }
+  /** Bens vão para o credor; com o banco (null), os estados voltam livres. */
   | { type: 'PLAYER_BANKRUPT'; playerId: string; creditorId: string | null }
   /** nextPlayerId igual ao atual quando a dupla dá nova jogada. */
   | { type: 'TURN_ENDED'; playerId: string; nextPlayerId: string; round: number }

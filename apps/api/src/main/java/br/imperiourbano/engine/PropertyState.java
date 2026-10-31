@@ -21,6 +21,16 @@ public record PropertyState(String stateId, String ownerId, int buildingLevel, i
         return new PropertyState(stateId, ownerId, level, ownerVisits, ownerVisits);
     }
 
+    /** Desce um nível (venda de construção) sem alterar a contagem de visitas. */
+    PropertyState downgraded() {
+        return new PropertyState(stateId, ownerId, buildingLevel - 1, ownerVisits, levelReachedAtVisit);
+    }
+
+    /** Novo dono começa a contar visitas do zero, mantendo as construções. */
+    PropertyState transferredTo(String newOwnerId) {
+        return new PropertyState(stateId, newOwnerId, buildingLevel, 0, 0);
+    }
+
     /** Verdadeiro se o nível atual foi alcançado numa visita anterior à atual. */
     boolean reachedInEarlierVisit() {
         return levelReachedAtVisit < ownerVisits;

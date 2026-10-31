@@ -22,11 +22,13 @@ public record GameState(
         int doublesInRow,
         Map<String, PropertyState> properties,
         OlympicsState olympics,
-        Debt pendingDebt) {
+        Debt pendingDebt,
+        List<String> winnerIds) {
 
     public GameState {
         players = List.copyOf(players);
         properties = Map.copyOf(properties);
+        winnerIds = List.copyOf(winnerIds);
     }
 
     public PlayerState currentPlayer() {
@@ -37,8 +39,16 @@ public record GameState(
         return players.get(indexOf(id));
     }
 
+    public List<PlayerState> activePlayers() {
+        return players.stream().filter(p -> !p.bankrupt()).toList();
+    }
+
     public Optional<PropertyState> property(String stateId) {
         return Optional.ofNullable(properties.get(stateId));
+    }
+
+    public List<PropertyState> propertiesOf(String playerId) {
+        return properties.values().stream().filter(p -> p.ownerId().equals(playerId)).toList();
     }
 
     public boolean ownsAnyProperty(String playerId) {
@@ -58,43 +68,58 @@ public record GameState(
 
     GameState withPlayers(List<PlayerState> value) {
         return new GameState(gameId, mode, status, version, round, value, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, pendingDebt);
+                doublesInRow, properties, olympics, pendingDebt, winnerIds);
     }
 
     GameState withTurn(int playerIndex, int roundValue, TurnPhase phaseValue, int doubles) {
         return new GameState(gameId, mode, status, version, roundValue, players, playerIndex, phaseValue, lastDice,
-                doubles, properties, olympics, pendingDebt);
+                doubles, properties, olympics, pendingDebt, winnerIds);
     }
 
     GameState withPhase(TurnPhase value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, value, lastDice,
-                doublesInRow, properties, olympics, pendingDebt);
+                doublesInRow, properties, olympics, pendingDebt, winnerIds);
     }
 
     GameState withDice(DiceRoll dice, int doubles) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, dice,
-                doubles, properties, olympics, pendingDebt);
+                doubles, properties, olympics, pendingDebt, winnerIds);
     }
 
     GameState withProperty(PropertyState property) {
         Map<String, PropertyState> next = new HashMap<>(properties);
         next.put(property.stateId(), property);
+        return withProperties(next);
+    }
+
+    GameState withoutProperty(String stateId) {
+        Map<String, PropertyState> next = new HashMap<>(properties);
+        next.remove(stateId);
+        return withProperties(next);
+    }
+
+    GameState withProperties(Map<String, PropertyState> value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, next, olympics, pendingDebt);
+                doublesInRow, value, olympics, pendingDebt, winnerIds);
     }
 
     GameState withOlympics(OlympicsState value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, value, pendingDebt);
+                doublesInRow, properties, value, pendingDebt, winnerIds);
     }
 
     GameState withPendingDebt(Debt value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, value);
+                doublesInRow, properties, olympics, value, winnerIds);
+    }
+
+    GameState finished(List<String> winners) {
+        return new GameState(gameId, mode, GameStatus.FINISHED, version, round, players, currentPlayerIndex, null,
+                lastDice, doublesInRow, properties, olympics, null, winners);
     }
 
     GameState nextVersion() {
         return new GameState(gameId, mode, status, version + 1, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, pendingDebt);
+                doublesInRow, properties, olympics, pendingDebt, winnerIds);
     }
 }

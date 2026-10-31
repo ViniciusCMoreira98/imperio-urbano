@@ -55,6 +55,27 @@ public sealed interface GameEvent {
     record DebtIncurred(String debtorId, String creditorId, int amount) implements GameEvent {
     }
 
+    record BuildingSold(String playerId, String stateId, int refund) implements GameEvent {
+    }
+
+    record PropertySold(String playerId, String stateId, int refund) implements GameEvent {
+    }
+
+    /** Dívida pendente quitada após vendas; {@code creditorId} nulo = banco. */
+    record DebtSettled(String debtorId, String creditorId, int amount) implements GameEvent {
+    }
+
+    /** Bens vão para o credor; com o banco como credor, os estados voltam livres (D11). */
+    record PlayerBankrupt(String playerId, String creditorId) implements GameEvent {
+    }
+
+    record GameFinished(List<String> winnerIds) implements GameEvent {
+
+        public GameFinished {
+            winnerIds = List.copyOf(winnerIds);
+        }
+    }
+
     /** {@code nextPlayerId} igual ao atual quando a dupla dá nova jogada. */
     record TurnEnded(String playerId, String nextPlayerId, int round) implements GameEvent {
     }

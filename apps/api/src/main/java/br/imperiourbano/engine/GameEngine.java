@@ -9,27 +9,37 @@ import br.imperiourbano.catalog.TileType;
 import br.imperiourbano.engine.GameCommand.Build;
 import br.imperiourbano.engine.GameCommand.BuildHotel;
 import br.imperiourbano.engine.GameCommand.BuyProperty;
+import br.imperiourbano.engine.GameCommand.DeclareBankruptcy;
 import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.HostOlympics;
 import br.imperiourbano.engine.GameCommand.RollDice;
+import br.imperiourbano.engine.GameCommand.SellBuilding;
+import br.imperiourbano.engine.GameCommand.SellProperty;
 import br.imperiourbano.engine.GameCommand.SkipBuild;
 import br.imperiourbano.engine.GameCommand.SkipOlympics;
 import br.imperiourbano.engine.GameEvent.BuildSkipped;
+import br.imperiourbano.engine.GameEvent.BuildingSold;
 import br.imperiourbano.engine.GameEvent.DebtIncurred;
+import br.imperiourbano.engine.GameEvent.DebtSettled;
 import br.imperiourbano.engine.GameEvent.DiceRolled;
+import br.imperiourbano.engine.GameEvent.GameFinished;
 import br.imperiourbano.engine.GameEvent.GameStarted;
 import br.imperiourbano.engine.GameEvent.HotelBuilt;
 import br.imperiourbano.engine.GameEvent.HouseBuilt;
 import br.imperiourbano.engine.GameEvent.OlympicsHostSelected;
 import br.imperiourbano.engine.GameEvent.OlympicsSkipped;
+import br.imperiourbano.engine.GameEvent.PlayerBankrupt;
 import br.imperiourbano.engine.GameEvent.PlayerMoved;
 import br.imperiourbano.engine.GameEvent.PropertyPurchased;
+import br.imperiourbano.engine.GameEvent.PropertySold;
 import br.imperiourbano.engine.GameEvent.PurchaseDeclined;
 import br.imperiourbano.engine.GameEvent.RentPaid;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
 import br.imperiourbano.engine.GameEvent.TurnEnded;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -149,6 +159,24 @@ public final class GameEngine {
             case DebtIncurred e -> state
                     .withPendingDebt(new Debt(e.debtorId(), e.creditorId(), e.amount()))
                     .withPhase(TurnPhase.AWAITING_DEBT_RESOLUTION);
+            case BuildingSold e -> state
+                    .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() + e.refund()))
+                    .withProperty(state.property(e.stateId()).orElseThrow().downgraded());
+            case PropertySold e -> {
+                GameState sold = state
+                        .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() + e.refund()))
+                        .withoutProperty(e.stateId());
+                yield state.olympics().isHost(e.stateId()) ? sold.withOlympics(sold.olympics().withoutHost()) : sold;
+            }
+            case DebtSettled e -> {
+                GameState paid = state.updatePlayer(e.debtorId(), p -> p.withCredits(p.credits() - e.amount()));
+                if (e.creditorId() != null) {
+                    paid = paid.updatePlayer(e.creditorId(), p -> p.withCredits(p.credits() + e.amount()));
+                }
+                yield paid.withPendingDebt(null).withPhase(TurnPhase.AWAITING_END_TURN);
+            }
+            case PlayerBankrupt e -> applyBankruptcy(state, e);
+            case GameFinished e -> state.finished(e.winnerIds());
             case TurnEnded e -> {
                 int nextIndex = state.indexOf(e.nextPlayerId());
                 boolean sameTurn = nextIndex == state.currentPlayerIndex();
@@ -190,6 +218,9 @@ public final class GameEngine {
             case SkipBuild ignored -> skipBuild(decision);
             case HostOlympics c -> hostOlympics(decision, c.stateId());
             case SkipOlympics ignored -> skipOlympics(decision);
+            case SellBuilding c -> sellBuilding(decision, c.stateId());
+            case SellProperty c -> sellProperty(decision, c.stateId());
+            case DeclareBankruptcy ignored -> declareBankruptcy(decision);
             case EndTurn ignored -> endTurn(decision);
         }
         return decision;
@@ -200,7 +231,30 @@ public final class GameEngine {
                 .map(p -> new PlayerState(p.id(), p.nickname(), e.startingCredits(), 0, false, 0))
                 .toList();
         return new GameState(e.gameId(), e.mode(), GameStatus.IN_PROGRESS, 0, 1, players, 0,
-                TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE, null);
+                TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE, null, List.of());
+    }
+
+    /** D11: credor recebe saldo e estados (com construções); banco como credor libera os estados. D8: sede perde o marcador. */
+    private GameState applyBankruptcy(GameState state, PlayerBankrupt e) {
+        PlayerState debtor = state.player(e.playerId());
+        Map<String, PropertyState> properties = new HashMap<>(state.properties());
+        for (PropertyState property : state.propertiesOf(e.playerId())) {
+            if (e.creditorId() == null) {
+                properties.remove(property.stateId());
+            } else {
+                properties.put(property.stateId(), property.transferredTo(e.creditorId()));
+            }
+        }
+        GameState next = state.withProperties(properties)
+                .updatePlayer(e.playerId(), PlayerState::asBankrupt)
+                .withPendingDebt(null);
+        if (e.creditorId() != null) {
+            next = next.updatePlayer(e.creditorId(), p -> p.withCredits(p.credits() + debtor.credits()));
+        }
+        if (e.playerId().equals(state.olympics().hostPlayerId())) {
+            next = next.withOlympics(next.olympics().withoutHost());
+        }
+        return next;
     }
 
     private void rollDice(Decision d, Dice dice) {
@@ -318,6 +372,40 @@ public final class GameEngine {
         d.emit(new OlympicsSkipped(d.state.currentPlayer().id()));
     }
 
+    private void sellBuilding(Decision d, String stateId) {
+        PlayerState player = d.state.currentPlayer();
+        PropertyState property = ownedBy(d.state, player, stateId);
+        if (property.buildingLevel() == 0) {
+            throw new RuleViolationException("Não há construções para vender neste estado.");
+        }
+        StateDefinition definition = catalog.state(stateId);
+        int cost = property.buildingLevel() == PropertyState.HOTEL_LEVEL ? definition.hotelCost() : definition.houseCost();
+        d.emit(new BuildingSold(player.id(), stateId, cost / 2));
+        settleDebtIfPossible(d);
+    }
+
+    private void sellProperty(Decision d, String stateId) {
+        PlayerState player = d.state.currentPlayer();
+        PropertyState property = ownedBy(d.state, player, stateId);
+        int refund = (catalog.state(stateId).price() + investedIn(property)) / 2;
+        d.emit(new PropertySold(player.id(), stateId, refund));
+        settleDebtIfPossible(d);
+    }
+
+    private void settleDebtIfPossible(Decision d) {
+        Debt debt = d.state.pendingDebt();
+        if (debt != null && d.state.player(debt.debtorId()).credits() >= debt.amount()) {
+            d.emit(new DebtSettled(debt.debtorId(), debt.creditorId(), debt.amount()));
+        }
+    }
+
+    private void declareBankruptcy(Decision d) {
+        requirePhase(d.state, TurnPhase.AWAITING_DEBT_RESOLUTION,
+                "Só é possível declarar falência com uma dívida que não pode ser paga.");
+        d.emit(new PlayerBankrupt(d.state.currentPlayer().id(), d.state.pendingDebt().creditorId()));
+        passTurn(d);
+    }
+
     private void endTurn(Decision d) {
         requirePhase(d.state, TurnPhase.AWAITING_END_TURN, "Termine as ações do turno antes de passar a vez.");
         GameState state = d.state;
@@ -327,10 +415,57 @@ public final class GameEngine {
             d.emit(new TurnEnded(player.id(), player.id(), state.round()));
             return;
         }
+        passTurn(d);
+    }
+
+    /** Passa a vez ou encerra a partida: resta um jogador (ambos os modos) ou o limite de rodadas do modo Rápido. */
+    private void passTurn(Decision d) {
+        GameState state = d.state;
+        List<PlayerState> active = state.activePlayers();
+        if (active.size() == 1) {
+            d.emit(new GameFinished(List.of(active.getFirst().id())));
+            return;
+        }
         int current = state.currentPlayerIndex();
         int next = nextActivePlayer(state, current);
         int round = next <= current ? state.round() + 1 : state.round();
-        d.emit(new TurnEnded(player.id(), state.players().get(next).id(), round));
+        Integer roundLimit = rules.modes().get(state.mode()).roundLimit();
+        if (roundLimit != null && round > roundLimit) {
+            d.emit(new GameFinished(winnersByEquity(state)));
+            return;
+        }
+        d.emit(new TurnEnded(state.currentPlayer().id(), state.players().get(next).id(), round));
+    }
+
+    /** Maior patrimônio; empate desempatado pelo saldo; persistindo, todos os empatados vencem (D14). */
+    private List<String> winnersByEquity(GameState state) {
+        Comparator<PlayerState> ranking = Comparator
+                .comparingInt((PlayerState p) -> equity(state, p.id()))
+                .thenComparingInt(PlayerState::credits);
+        List<PlayerState> active = state.activePlayers();
+        PlayerState best = active.stream().max(ranking).orElseThrow();
+        return active.stream().filter(p -> ranking.compare(p, best) == 0).map(PlayerState::id).toList();
+    }
+
+    /** Patrimônio = saldo + preço dos estados + valor investido em construções. */
+    public int equity(GameState state, String playerId) {
+        int assets = state.propertiesOf(playerId).stream()
+                .mapToInt(p -> catalog.state(p.stateId()).price() + investedIn(p))
+                .sum();
+        return state.player(playerId).credits() + assets;
+    }
+
+    private int investedIn(PropertyState property) {
+        StateDefinition definition = catalog.state(property.stateId());
+        int houses = Math.min(property.buildingLevel(), rules.construction().maxHouses());
+        int hotel = property.buildingLevel() == PropertyState.HOTEL_LEVEL ? definition.hotelCost() : 0;
+        return houses * definition.houseCost() + hotel;
+    }
+
+    private static PropertyState ownedBy(GameState state, PlayerState player, String stateId) {
+        return (stateId == null ? Optional.<PropertyState>empty() : state.property(stateId))
+                .filter(p -> p.ownerId().equals(player.id()))
+                .orElseThrow(() -> new RuleViolationException("Você só pode vender estados que possui."));
     }
 
     /** Construções permitidas agora, considerando etapa e visitas (D4), sem olhar o saldo. */

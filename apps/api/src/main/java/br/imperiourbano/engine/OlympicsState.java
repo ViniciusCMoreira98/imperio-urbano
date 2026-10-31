@@ -8,4 +8,9 @@ public record OlympicsState(int edition, String hostStateId, String hostPlayerId
     boolean isHost(String stateId) {
         return stateId.equals(hostStateId);
     }
+
+    /** Sede removida (venda, troca ou falência, D8); a contagem de edições continua. */
+    OlympicsState withoutHost() {
+        return new OlympicsState(edition, null, null, 1);
+    }
 }

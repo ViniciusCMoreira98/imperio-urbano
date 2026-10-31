@@ -16,4 +16,8 @@ public record PlayerState(
     PlayerState withPosition(int value) {
         return new PlayerState(id, nickname, credits, value, bankrupt, skipTurns);
     }
+
+    PlayerState asBankrupt() {
+        return new PlayerState(id, nickname, 0, position, true, 0);
+    }
 }
