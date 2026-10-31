@@ -10,8 +10,8 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 | ✅ E1 | Scaffold `apps/web` (Vite + React + TS + Tailwind + R3F + Drei + Zustand) | `npm run dev` abre cena vazia |
 | ✅ E2 | Geometria do tabuleiro a partir de `board.json` (casas, cores, bordas elevadas, centro reservado) | 36 casas corretas na tela |
 | ✅ E3 | Câmera isométrica: visão geral, zoom e rotação limitados, foco suave | Inspecionar qualquer casa |
-| E4 | Casas interativas: hover/seleção → painel lateral com dados do estado | Clique mostra preço/aluguéis |
-| E5 | Peão + demo local de dados (isolada em `src/dev`) com animação GSAP casa a casa | Peão dá voltas no tabuleiro |
+| ✅ E4 | Casas interativas: hover/seleção → painel lateral com dados do estado | Clique mostra preço/aluguéis |
+| ✅ E5 | Peão + demo local de dados (isolada em `src/dev`) com animação GSAP casa a casa | Peão dá voltas no tabuleiro |
 
 ## Marco 2 — Motor de regras (backend, sem rede)
 

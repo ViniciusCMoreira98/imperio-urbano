@@ -7,6 +7,6 @@ export default defineConfig({
   server: { port: 5173 },
   // Pré-empacota tudo de uma vez: evita a reotimização no meio da sessão, que carrega duas cópias do React.
   optimizeDeps: {
-    include: ['react', 'react-dom/client', 'three', '@react-three/fiber', '@react-three/drei', 'zustand'],
+    include: ['react', 'react-dom/client', 'three', '@react-three/fiber', '@react-three/drei', 'zustand', 'gsap'],
   },
 });

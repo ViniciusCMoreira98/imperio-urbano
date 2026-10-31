@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MeshStandardMaterial } from 'three';
 import type { ColorGroup, StateDefinition, TileDefinition } from '@imperio/shared-types';
 import { useViewStore } from '../store/viewStore';
@@ -6,6 +6,7 @@ import type { TilePlacement } from './layout';
 import { createTileTexture } from './tileTexture';
 
 export const TILE_HEIGHT = 0.08;
+const SELECTED_LIFT = 0.06;
 
 interface TileProps {
   tile: TileDefinition;
@@ -16,6 +17,8 @@ interface TileProps {
 
 export function Tile({ tile, placement, state, group }: TileProps) {
   const focusTile = useViewStore((s) => s.focusTile);
+  const selected = useViewStore((s) => s.focusedTile === tile.index);
+  const [hovered, setHovered] = useState(false);
   const materials = useMemo(() => {
     const side = new MeshStandardMaterial({ color: '#d9cba8' });
     const top = new MeshStandardMaterial({
@@ -34,12 +37,31 @@ export function Tile({ tile, placement, state, group }: TileProps) {
     [materials],
   );
 
+  useEffect(() => {
+    const top = materials[2];
+    top.emissive.set(selected ? '#ffc23d' : '#ffffff');
+    top.emissiveIntensity = selected ? 0.3 : hovered ? 0.12 : 0;
+  }, [materials, selected, hovered]);
+
+  useEffect(() => {
+    if (!hovered) return;
+    document.body.style.cursor = 'pointer';
+    return () => {
+      document.body.style.cursor = '';
+    };
+  }, [hovered]);
+
   return (
     <mesh
-      position={[placement.x, TILE_HEIGHT / 2, placement.z]}
+      position={[placement.x, TILE_HEIGHT / 2 + (selected ? SELECTED_LIFT : 0), placement.z]}
       rotation={[0, placement.rotationY, 0]}
       material={materials}
       receiveShadow
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setHovered(true);
+      }}
+      onPointerOut={() => setHovered(false)}
       onClick={(e) => {
         // Ignora o clique que encerra um arrasto de rotação.
         if (e.delta > 4) return;

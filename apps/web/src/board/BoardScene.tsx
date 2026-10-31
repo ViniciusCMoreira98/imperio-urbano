@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import { board, states } from '@imperio/game-data';
+import { DemoPawn } from '../dev/DemoPawn';
 import { BoardCenter } from './BoardCenter';
 import { CameraRig } from './CameraRig';
 import { CORNER_SIZE, boardLength, tilePlacement } from './layout';
@@ -64,6 +65,8 @@ export function BoardScene() {
       ))}
 
       <BoardCenter size={LENGTH - 2 * CORNER_SIZE} />
+
+      <DemoPawn />
 
       <CameraRig fitRadius={OUTER * 0.6} />
     </Canvas>
