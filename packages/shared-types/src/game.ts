@@ -43,6 +43,7 @@ export interface PropertyState {
   levelReachedAtVisit: number;
 }
 
+/** edition 0 e multiplier 1 = nenhuma edição realizada. */
 export interface OlympicsState {
   edition: number;
   hostStateId: StateId | null;

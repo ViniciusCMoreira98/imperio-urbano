@@ -30,6 +30,24 @@ public sealed interface GameEvent {
     record PurchaseDeclined(String playerId, String stateId) implements GameEvent {
     }
 
+    /** {@code count} casas construídas agora, ao custo total {@code cost}. */
+    record HouseBuilt(String playerId, String stateId, int count, int cost) implements GameEvent {
+    }
+
+    record HotelBuilt(String playerId, String stateId, int cost) implements GameEvent {
+    }
+
+    record BuildSkipped(String playerId, String stateId) implements GameEvent {
+    }
+
+    /** Nova sede; a anterior perde o benefício. */
+    record OlympicsHostSelected(String playerId, String stateId, int edition, int multiplier, int fee)
+            implements GameEvent {
+    }
+
+    record OlympicsSkipped(String playerId) implements GameEvent {
+    }
+
     record RentPaid(String fromId, String toId, String stateId, int amount) implements GameEvent {
     }
 

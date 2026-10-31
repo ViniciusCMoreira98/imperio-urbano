@@ -62,7 +62,7 @@ class PurchaseAndRentTest {
     @Test
     void buyingTransfersOwnershipAndChargesPrice() {
         run("ana", new RollDice(), 1, 2);
-        GameEngine.Result result = run("ana", new BuyProperty());
+        GameEngine.Result result = run("ana", new BuyProperty(0));
 
         assertThat(result.events()).containsExactly(new PropertyPurchased("ana", "AP", AP.price()));
         assertThat(state.player("ana").credits()).isEqualTo(1500 - AP.price());
@@ -86,7 +86,7 @@ class PurchaseAndRentTest {
 
     @Test
     void cannotBuyOutsidePurchasePhase() {
-        assertThatThrownBy(() -> run("ana", new BuyProperty()))
+        assertThatThrownBy(() -> run("ana", new BuyProperty(0)))
                 .isInstanceOf(RuleViolationException.class)
                 .hasMessage("Não há estado para comprar agora.");
     }
@@ -98,13 +98,13 @@ class PurchaseAndRentTest {
         run("ana", new RollDice(), 1, 2);
 
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
-        assertThatThrownBy(() -> run("ana", new BuyProperty())).isInstanceOf(RuleViolationException.class);
+        assertThatThrownBy(() -> run("ana", new BuyProperty(0))).isInstanceOf(RuleViolationException.class);
     }
 
     @Test
     void opponentPaysBaseRentAutomatically() {
         run("ana", new RollDice(), 1, 2);
-        run("ana", new BuyProperty());
+        run("ana", new BuyProperty(0));
         run("ana", new EndTurn());
 
         GameEngine.Result result = run("bia", new RollDice(), 1, 2);
@@ -133,7 +133,7 @@ class PurchaseAndRentTest {
 
         assertThat(result.events()).noneMatch(e -> e instanceof RentPaid);
         assertThat(state.player("ana").credits()).isEqualTo(1500);
-        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
+        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_BUILD);
     }
 
     @Test

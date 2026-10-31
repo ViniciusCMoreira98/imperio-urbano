@@ -6,13 +6,23 @@ import br.imperiourbano.catalog.RulesConfig;
 import br.imperiourbano.catalog.StateDefinition;
 import br.imperiourbano.catalog.TileDefinition;
 import br.imperiourbano.catalog.TileType;
+import br.imperiourbano.engine.GameCommand.Build;
+import br.imperiourbano.engine.GameCommand.BuildHotel;
 import br.imperiourbano.engine.GameCommand.BuyProperty;
 import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
+import br.imperiourbano.engine.GameCommand.HostOlympics;
 import br.imperiourbano.engine.GameCommand.RollDice;
+import br.imperiourbano.engine.GameCommand.SkipBuild;
+import br.imperiourbano.engine.GameCommand.SkipOlympics;
+import br.imperiourbano.engine.GameEvent.BuildSkipped;
 import br.imperiourbano.engine.GameEvent.DebtIncurred;
 import br.imperiourbano.engine.GameEvent.DiceRolled;
 import br.imperiourbano.engine.GameEvent.GameStarted;
+import br.imperiourbano.engine.GameEvent.HotelBuilt;
+import br.imperiourbano.engine.GameEvent.HouseBuilt;
+import br.imperiourbano.engine.GameEvent.OlympicsHostSelected;
+import br.imperiourbano.engine.GameEvent.OlympicsSkipped;
 import br.imperiourbano.engine.GameEvent.PlayerMoved;
 import br.imperiourbano.engine.GameEvent.PropertyPurchased;
 import br.imperiourbano.engine.GameEvent.PurchaseDeclined;
@@ -23,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Motor de regras puro (sem Spring, sem I/O). {@link #decide} valida um comando e produz eventos;
@@ -105,15 +116,33 @@ public final class GameEngine {
                 if (e.sentToRest()) {
                     yield moved.withDice(moved.lastDice(), 0).withPhase(TurnPhase.AWAITING_END_TURN);
                 }
-                yield moved.withPhase(canBuyHere(moved, moved.player(e.playerId()))
-                        ? TurnPhase.AWAITING_PURCHASE
-                        : TurnPhase.AWAITING_END_TURN);
+                PlayerState player = moved.player(e.playerId());
+                GameState visited = ownedPropertyHere(moved, player)
+                        .map(p -> moved.withProperty(p.withOwnerVisit()))
+                        .orElse(moved);
+                yield visited.withPhase(phaseAfterLanding(visited, player));
             }
             case PropertyPurchased e -> state
                     .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.price()))
                     .withProperty(PropertyState.purchased(e.stateId(), e.playerId()))
                     .withPhase(TurnPhase.AWAITING_END_TURN);
             case PurchaseDeclined e -> state.withPhase(TurnPhase.AWAITING_END_TURN);
+            case HouseBuilt e -> {
+                PropertyState property = state.property(e.stateId()).orElseThrow();
+                yield state.updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.cost()))
+                        .withProperty(property.withLevel(property.buildingLevel() + e.count()))
+                        .withPhase(TurnPhase.AWAITING_END_TURN);
+            }
+            case HotelBuilt e -> state
+                    .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.cost()))
+                    .withProperty(state.property(e.stateId()).orElseThrow().withLevel(PropertyState.HOTEL_LEVEL))
+                    .withPhase(TurnPhase.AWAITING_END_TURN);
+            case BuildSkipped e -> state.withPhase(TurnPhase.AWAITING_END_TURN);
+            case OlympicsHostSelected e -> state
+                    .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.fee()))
+                    .withOlympics(new OlympicsState(e.edition(), e.stateId(), e.playerId(), e.multiplier()))
+                    .withPhase(TurnPhase.AWAITING_END_TURN);
+            case OlympicsSkipped e -> state.withPhase(TurnPhase.AWAITING_END_TURN);
             case RentPaid e -> state
                     .updatePlayer(e.fromId(), p -> p.withCredits(p.credits() - e.amount()))
                     .updatePlayer(e.toId(), p -> p.withCredits(p.credits() + e.amount()));
@@ -129,13 +158,16 @@ public final class GameEngine {
         return next.nextVersion();
     }
 
-    /** Aluguel atual do estado (zero se pertence ao banco). Olimpíadas entram na E10. */
+    /** Aluguel atual do estado (zero se pertence ao banco), já com bônus de grupo e multiplicador olímpico. */
     public int rentFor(GameState state, String stateId) {
         return state.property(stateId).map(property -> {
             StateDefinition definition = catalog.state(stateId);
             int rent = definition.rent().forLevel(property.buildingLevel());
             if (property.buildingLevel() == 0 && ownsWholeGroup(state, property.ownerId(), definition.colorGroup())) {
                 rent *= rules.construction().fullGroupBaseRentMultiplier();
+            }
+            if (state.olympics().isHost(stateId)) {
+                rent *= state.olympics().multiplier();
             }
             return rent;
         }).orElse(0);
@@ -151,8 +183,13 @@ public final class GameEngine {
         Decision decision = new Decision(state);
         switch (command) {
             case RollDice ignored -> rollDice(decision, dice);
-            case BuyProperty ignored -> buyProperty(decision);
+            case BuyProperty c -> buyProperty(decision, c.houses());
             case DeclinePurchase ignored -> declinePurchase(decision);
+            case Build c -> build(decision, c.houses());
+            case BuildHotel ignored -> buildHotel(decision);
+            case SkipBuild ignored -> skipBuild(decision);
+            case HostOlympics c -> hostOlympics(decision, c.stateId());
+            case SkipOlympics ignored -> skipOlympics(decision);
             case EndTurn ignored -> endTurn(decision);
         }
         return decision;
@@ -163,7 +200,7 @@ public final class GameEngine {
                 .map(p -> new PlayerState(p.id(), p.nickname(), e.startingCredits(), 0, false, 0))
                 .toList();
         return new GameState(e.gameId(), e.mode(), GameStatus.IN_PROGRESS, 0, 1, players, 0,
-                TurnPhase.AWAITING_ROLL, null, 0, Map.of(), null);
+                TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE, null);
     }
 
     private void rollDice(Decision d, Dice dice) {
@@ -202,20 +239,83 @@ public final class GameEngine {
         }
     }
 
-    private void buyProperty(Decision d) {
+    /** Compra e, na mesma visita, até {@code firstVisitMaxHouses} casas (primeira etapa, D4). */
+    private void buyProperty(Decision d, int houses) {
         requirePhase(d.state, TurnPhase.AWAITING_PURCHASE, "Não há estado para comprar agora.");
+        int maxHouses = rules.construction().firstVisitMaxHouses();
+        if (houses < 0 || houses > maxHouses) {
+            throw new RuleViolationException("Na compra é possível construir de 0 a %d casas.".formatted(maxHouses));
+        }
         PlayerState player = d.state.currentPlayer();
         StateDefinition definition = catalog.state(catalog.tile(player.position()).stateId());
-        if (player.credits() < definition.price()) {
+        int housesCost = houses * definition.houseCost();
+        if (player.credits() < definition.price() + housesCost) {
             throw new RuleViolationException("Saldo insuficiente para comprar " + definition.name() + ".");
         }
         d.emit(new PropertyPurchased(player.id(), definition.id(), definition.price()));
+        if (houses > 0) {
+            d.emit(new HouseBuilt(player.id(), definition.id(), houses, housesCost));
+        }
+    }
+
+    private void build(Decision d, int houses) {
+        requirePhase(d.state, TurnPhase.AWAITING_BUILD, "Você só pode construir ao parar no próprio estado.");
+        PlayerState player = d.state.currentPlayer();
+        PropertyState property = ownedPropertyHere(d.state, player).orElseThrow();
+        int allowed = buildOptions(property).houses();
+        if (allowed == 0) {
+            throw new RuleViolationException("Não é possível construir casas neste estado agora.");
+        }
+        if (houses < 1 || houses > allowed) {
+            throw new RuleViolationException("Você pode construir de 1 a %d casa(s) agora.".formatted(allowed));
+        }
+        int cost = houses * catalog.state(property.stateId()).houseCost();
+        requireCredits(player, cost);
+        d.emit(new HouseBuilt(player.id(), property.stateId(), houses, cost));
+    }
+
+    private void buildHotel(Decision d) {
+        requirePhase(d.state, TurnPhase.AWAITING_BUILD, "Você só pode construir ao parar no próprio estado.");
+        PlayerState player = d.state.currentPlayer();
+        PropertyState property = ownedPropertyHere(d.state, player).orElseThrow();
+        if (!buildOptions(property).hotel()) {
+            throw new RuleViolationException("O hotel exige quatro casas e uma nova visita ao estado.");
+        }
+        int cost = catalog.state(property.stateId()).hotelCost();
+        requireCredits(player, cost);
+        d.emit(new HotelBuilt(player.id(), property.stateId(), cost));
+    }
+
+    private void skipBuild(Decision d) {
+        requirePhase(d.state, TurnPhase.AWAITING_BUILD, "Não há construção para recusar agora.");
+        PlayerState player = d.state.currentPlayer();
+        d.emit(new BuildSkipped(player.id(), catalog.tile(player.position()).stateId()));
     }
 
     private void declinePurchase(Decision d) {
         requirePhase(d.state, TurnPhase.AWAITING_PURCHASE, "Não há compra para recusar agora.");
         PlayerState player = d.state.currentPlayer();
         d.emit(new PurchaseDeclined(player.id(), catalog.tile(player.position()).stateId()));
+    }
+
+    private void hostOlympics(Decision d, String stateId) {
+        requirePhase(d.state, TurnPhase.AWAITING_OLYMPICS_HOST, "Você só pode organizar as Olimpíadas ao parar na casa Olimpíadas.");
+        PlayerState player = d.state.currentPlayer();
+        boolean owns = stateId != null
+                && d.state.property(stateId).map(p -> p.ownerId().equals(player.id())).orElse(false);
+        if (!owns) {
+            throw new RuleViolationException("Escolha um estado que você possui para sediar as Olimpíadas.");
+        }
+        int fee = rules.olympics().hostFee();
+        requireCredits(player, fee);
+        int edition = d.state.olympics().edition() + 1;
+        d.emit(new OlympicsHostSelected(player.id(), stateId, edition,
+                rules.olympics().multiplierForEdition(edition), fee));
+    }
+
+    private void skipOlympics(Decision d) {
+        requirePhase(d.state, TurnPhase.AWAITING_OLYMPICS_HOST, "Não há Olimpíadas para recusar agora.");
+        d.emit(new OlympicsSkipped(d.state.currentPlayer().id()));
     }
 
     private void endTurn(Decision d) {
@@ -233,12 +333,56 @@ public final class GameEngine {
         d.emit(new TurnEnded(player.id(), state.players().get(next).id(), round));
     }
 
-    /** Estado livre na casa do jogador e saldo suficiente para comprá-lo. */
-    private boolean canBuyHere(GameState state, PlayerState player) {
+    /** Construções permitidas agora, considerando etapa e visitas (D4), sem olhar o saldo. */
+    public record BuildOptions(int houses, boolean hotel) {
+    }
+
+    public BuildOptions buildOptions(PropertyState property) {
+        RulesConfig.ConstructionRules construction = rules.construction();
+        int level = property.buildingLevel();
+        int houses = 0;
+        if (level < construction.firstVisitMaxHouses()) {
+            houses = construction.firstVisitMaxHouses() - level;
+        } else if (level < construction.maxHouses() && property.reachedInEarlierVisit()) {
+            houses = 1;
+        }
+        boolean hotel = level == construction.maxHouses() && property.reachedInEarlierVisit();
+        return new BuildOptions(houses, hotel);
+    }
+
+    /**
+     * Fase após parar: Olimpíadas (possui estado e paga a taxa), compra (estado livre e saldo),
+     * construção (próprio estado com opção pagável) ou fim do turno.
+     */
+    private TurnPhase phaseAfterLanding(GameState state, PlayerState player) {
         TileDefinition tile = catalog.tile(player.position());
-        return tile.type() == TileType.PROPERTY
-                && state.property(tile.stateId()).isEmpty()
-                && player.credits() >= catalog.state(tile.stateId()).price();
+        if (tile.type() == TileType.OLYMPICS) {
+            boolean canHost = state.ownsAnyProperty(player.id()) && player.credits() >= rules.olympics().hostFee();
+            return canHost ? TurnPhase.AWAITING_OLYMPICS_HOST : TurnPhase.AWAITING_END_TURN;
+        }
+        if (tile.type() != TileType.PROPERTY) return TurnPhase.AWAITING_END_TURN;
+        StateDefinition definition = catalog.state(tile.stateId());
+        Optional<PropertyState> property = state.property(tile.stateId());
+        if (property.isEmpty()) {
+            return player.credits() >= definition.price() ? TurnPhase.AWAITING_PURCHASE : TurnPhase.AWAITING_END_TURN;
+        }
+        if (!property.get().ownerId().equals(player.id())) return TurnPhase.AWAITING_END_TURN;
+        BuildOptions options = buildOptions(property.get());
+        boolean canAfford = (options.houses() > 0 && player.credits() >= definition.houseCost())
+                || (options.hotel() && player.credits() >= definition.hotelCost());
+        return canAfford ? TurnPhase.AWAITING_BUILD : TurnPhase.AWAITING_END_TURN;
+    }
+
+    private Optional<PropertyState> ownedPropertyHere(GameState state, PlayerState player) {
+        TileDefinition tile = catalog.tile(player.position());
+        if (tile.type() != TileType.PROPERTY) return Optional.empty();
+        return state.property(tile.stateId()).filter(p -> p.ownerId().equals(player.id()));
+    }
+
+    private static void requireCredits(PlayerState player, int amount) {
+        if (player.credits() < amount) {
+            throw new RuleViolationException("Saldo insuficiente.");
+        }
     }
 
     private boolean ownsWholeGroup(GameState state, String ownerId, String colorGroup) {

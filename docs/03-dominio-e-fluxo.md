@@ -61,6 +61,10 @@ LOBBY ──START_GAME (2–4 prontos, chamado pelo anfitrião)──▶ IN_PROG
 4. É o turno do jogador e o comando é permitido na `phase` atual.
 5. Regra específica: saldo, disponibilidade, etapa de construção, posse da sede etc.
 
+Construção (D4): a compra conta como 1ª visita e permite até 3 casas; em qualquer visita do dono a 1ª etapa (até 3 casas) pode ser completada; a 4ª casa exige uma visita posterior àquela em que chegou a 3; o hotel, uma visita posterior à 4ª casa. Só parar na casa conta como visita; visitas de adversários não contam. A fase AWAITING_BUILD só abre se houver construção permitida e pagável.
+
+Olimpíadas (D6–D7): ao parar na casa, quem possui ao menos um estado e tem saldo para a taxa (50) escolhe a sede. Cada edição avança o multiplicador (×2, ×3 … ×10, depois fica em ×10), que se aplica ao aluguel total da sede, inclusive construções. A sede anterior perde o benefício; reescolher a mesma sede também avança a edição.
+
 Duplas (D9): dupla dá nova jogada (`TURN_ENDED` com o mesmo jogador); a 3ª dupla seguida (`rules.dice.maxDoublesInRow`) leva direto ao Descanso, sem bônus do Início, e encerra a sequência.
 
 Implementação: `apps/api/.../engine/GameEngine` — `decide(state, jogador, comando, dados) → eventos` e `apply(state, evento) → state`; `replay(log)` reconstrói a partida.
