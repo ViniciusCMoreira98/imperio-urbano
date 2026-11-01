@@ -81,3 +81,4 @@ Dois navegadores criam a sala, entram pelo código, iniciam a partida e jogam um
 9. [Meshy: versão texturizada e proposta de animação](docs/09-meshy-versao-texturizada.md)
 10. [Meshy: recriação aprovada e restauração de credenciais](docs/10-meshy-recriacao-aprovada.md)
 11. [Contratos entre engenharia e arte 3D](docs/11-contratos-claude-codex.md)
+12. [Primeiro personagem Meshy no manifesto](docs/12-integracao-meshy-manifesto.md)

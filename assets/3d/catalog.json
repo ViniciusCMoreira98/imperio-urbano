@@ -236,11 +236,11 @@
       "formats": [
         "glb"
       ],
-      "status": "downloaded",
+      "status": "candidate",
       "license": "pending-verification",
       "sourceSha256": "e4b1de4f65a93fe6e88e748aaa6ade30fca21383e74023b2849480fa7f67931b",
-      "optimizedPath": null,
-      "validationReport": "assets/3d/reviews/steampunk-brasil-v01-textured/khronos-web.json",
+      "optimizedPath": "assets/3d/optimized/characters/steampunk-brasil-v01-game-v01.glb",
+      "validationReport": "assets/3d/reviews/manifest-integration/khronos.json",
       "rig": "absent",
       "animations": [],
       "generation": {
@@ -297,12 +297,37 @@
           "390x844"
         ],
         "pending": [
-          "194 triângulos acima do limite de 12000",
-          "Textura 4K acima do limite inicial de 1024; sem aprovação de orçamento GPU",
-          "Rig e animações",
-          "Licença e benchmark móvel real"
-        ]
-      }
+          "Confirmação da licença antes de distribuição",
+          "Política de memória GPU para textura 4K e benchmark móvel",
+          "Pose estática em T; rig e animações opcionais no contrato atual"
+        ],
+        "manifestIntegration": {
+          "avatarId": "avatar-3",
+          "status": "candidate",
+          "sha256": "6464d04215354c6c4a6d54dc6dd7e2e25e05c44c83ae9ac121f8cfcc4c0d69e7",
+          "metrics": {
+            "bytes": 2019584,
+            "triangles": 11900,
+            "meshPrimitives": 1,
+            "materials": 1,
+            "textures": 1,
+            "images": 1,
+            "skins": 0,
+            "animations": []
+          },
+          "textureSize": [
+            4096,
+            4096
+          ],
+          "khronosErrors": 0,
+          "khronosWarnings": 0,
+          "geometryAndFileBudgetPassed": true,
+          "licenseConfirmed": false,
+          "mobileHardwareBenchmark": false,
+          "additionalCredits": 0
+        }
+      },
+      "publicPath": "/models/characters/steampunk-brasil-v01.glb"
     }
   ]
 }
