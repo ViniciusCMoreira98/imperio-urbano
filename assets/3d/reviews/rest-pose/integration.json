@@ -1,0 +1,128 @@
+{
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "avatarId": "avatar-3",
+      "modelId": "steampunk-brasil-v01-textured",
+      "motion": "idle",
+      "instances": [
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        }
+      ],
+      "loaded": true,
+      "errors": [],
+      "avatarSwitchPassed": true,
+      "missingWalkClipHandled": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 1000
+      },
+      "avatarId": "avatar-3",
+      "modelId": "steampunk-brasil-v01-textured",
+      "motion": "idle",
+      "instances": [
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000067055226,
+          "height": 0.8599999993294477,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        }
+      ],
+      "loaded": true,
+      "errors": [],
+      "avatarSwitchPassed": true,
+      "missingWalkClipHandled": true
+    }
+  ],
+  "fallback": {
+    "passed": true,
+    "reserveLoaded": true,
+    "expectedWarnings": 10
+  },
+  "mobileHardwareBenchmark": false
+}

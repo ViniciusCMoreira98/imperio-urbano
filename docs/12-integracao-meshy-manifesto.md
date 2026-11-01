@@ -1,5 +1,7 @@
 # 12 — Primeiro personagem Meshy no manifesto
 
+Atualização posterior: o manifesto agora aponta para a revisão de braços baixos descrita em [13 — pose de repouso](13-luana-pose-repouso.md). O restante deste documento registra a integração inicial da versão em T.
+
 Integração local feita na branch `codex/meshy-phase-b`, após sincronização em `6c5e3e1` e autorização para a próxima tarefa. Respeitado o [contrato 11](11-contratos-claude-codex.md): conteúdo do manifesto e assets alterados; formato, validação, carregador, base, backend e lógica de movimento preservados. Nenhuma chamada paga ou geração nova. Custo adicional: **zero créditos**; recriação anterior permanece em 30.
 
 ## Conteúdo integrado

@@ -239,8 +239,8 @@
       "status": "candidate",
       "license": "pending-verification",
       "sourceSha256": "e4b1de4f65a93fe6e88e748aaa6ade30fca21383e74023b2849480fa7f67931b",
-      "optimizedPath": "assets/3d/optimized/characters/steampunk-brasil-v01-game-v01.glb",
-      "validationReport": "assets/3d/reviews/manifest-integration/khronos.json",
+      "optimizedPath": "assets/3d/optimized/characters/steampunk-brasil-v01-rest-v01.glb",
+      "validationReport": "assets/3d/reviews/rest-pose/khronos.json",
       "rig": "absent",
       "animations": [],
       "generation": {
@@ -298,15 +298,14 @@
         ],
         "pending": [
           "Confirmação da licença antes de distribuição",
-          "Política de memória GPU para textura 4K e benchmark móvel",
-          "Pose estática em T; rig e animações opcionais no contrato atual"
+          "Política de memória GPU para textura 4K e benchmark móvel"
         ],
         "manifestIntegration": {
           "avatarId": "avatar-3",
           "status": "candidate",
-          "sha256": "6464d04215354c6c4a6d54dc6dd7e2e25e05c44c83ae9ac121f8cfcc4c0d69e7",
+          "sha256": "21636805b6a0f2d9ee2c788343aa5db362f58e13fccfd851f11185b361ca40bd",
           "metrics": {
-            "bytes": 2019584,
+            "bytes": 2020832,
             "triangles": 11900,
             "meshPrimitives": 1,
             "materials": 1,
@@ -325,9 +324,21 @@
           "licenseConfirmed": false,
           "mobileHardwareBenchmark": false,
           "additionalCredits": 0
+        },
+        "restPose": {
+          "sourceOptimizedPath": "assets/3d/optimized/characters/steampunk-brasil-v01-game-v01.glb",
+          "optimizedPath": "assets/3d/optimized/characters/steampunk-brasil-v01-rest-v01.glb",
+          "sha256": "21636805b6a0f2d9ee2c788343aa5db362f58e13fccfd851f11185b361ca40bd",
+          "textureSha256": "6146d5b4b76c05c5d62f42d9e5394709a182b5419d5c1c2df188b42ef7cd6117",
+          "textureIdentical": true,
+          "protectedHeadLegsAndTorsoUnchanged": true,
+          "armRotationDegrees": 60,
+          "exportedRig": false,
+          "additionalCredits": 0,
+          "report": "assets/3d/reviews/rest-pose/pose.json"
         }
       },
-      "publicPath": "/models/characters/steampunk-brasil-v01.glb"
+      "publicPath": "/models/characters/steampunk-brasil-v01-rest-v01.glb"
     }
   ]
 }

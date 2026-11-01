@@ -19,7 +19,7 @@ function Figures({ avatarId, motion }: { avatarId: AvatarId; motion: 'idle' | 'w
       group.traverse((node: any) => {
         if (node.isMesh && node.name) meshes.push({ name: node.name, triangles: (node.geometry.index?.count ?? node.geometry.attributes.position.count) / 3 });
       });
-      return { minY: bounds.min.y, height: bounds.max.y - bounds.min.y, meshes };
+      return { minY: bounds.min.y, height: bounds.max.y - bounds.min.y, width: bounds.max.x - bounds.min.x, meshes };
     });
     (window as any).manifestQA = { avatarId, modelId: characterFor(avatarId).id, motion, instances, loaded: instances.length === 4 && instances.every(i => i.meshes.length > 0) };
   });
