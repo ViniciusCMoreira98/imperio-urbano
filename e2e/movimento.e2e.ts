@@ -25,16 +25,25 @@ test.describe('movimento dos personagens', () => {
     for (const page of [ana, bia]) await expect.poll(async () => allAtOfficialTiles(await boardView(page))).toBe(true);
 
     await roll(first);
+    // A partida segue sozinha (prazos), então cada tela é conferida contra o próprio estado oficial.
     for (const page of [first, second]) {
-      // Os dois navegadores chegam à mesma versão, sem ressincronia (eventos em sequência)…
-      await expect.poll(async () => (await boardView(page)).eventsVersion).toBe((await boardView(first)).version);
+      // Eventos chegaram em sequência até o snapshot desta tela, sem ressincronia…
+      await expect.poll(async () => {
+        const view = await boardView(page);
+        return view.eventsVersion === view.version;
+      }).toBe(true);
       // …e, terminados os saltos, cada personagem está parado na casa que o servidor informou.
       await expect.poll(async () => allAtOfficialTiles(await boardView(page)), { timeout: 20_000 }).toBe(true);
       expect((await boardView(page)).resync).toBe(1);
     }
-    const official = (await boardView(first)).players.map((p) => p.position);
-    expect((await boardView(second)).players.map((p) => p.position)).toEqual(official);
-    expect(official.some((tile) => tile !== 0)).toBe(true);
+    // As duas telas mostram as mesmas posições quando estão na mesma versão da partida.
+    await expect
+      .poll(async () => {
+        const [a, b] = [await boardView(first), await boardView(second)];
+        return a.version === b.version && JSON.stringify(a.players.map((p) => p.position)) === JSON.stringify(b.players.map((p) => p.position));
+      })
+      .toBe(true);
+    expect((await boardView(first)).players.some((p) => p.position !== 0)).toBe(true);
   });
 
   test('quem recarrega no meio dos saltos vê o personagem direto na casa oficial', async ({ browser }) => {

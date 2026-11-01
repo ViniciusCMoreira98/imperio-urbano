@@ -8,6 +8,8 @@ export const TILE_WIDTH = 1;
 export const CORNER_SIZE = 1.6;
 /** Espessura das casas: o topo delas fica em y = TILE_HEIGHT (contrato em docs/11-contratos-claude-codex.md). */
 export const TILE_HEIGHT = 0.08;
+/** Quanto a casa selecionada sobe; quem está em cima dela sobe junto. */
+export const SELECTED_TILE_LIFT = 0.06;
 
 export interface TilePlacement {
   index: number;

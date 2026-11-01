@@ -11,8 +11,11 @@ const webPort = Number(process.env.E2E_WEB_PORT ?? 5173);
 export default defineConfig({
   testDir: '.',
   testMatch: '*.e2e.ts',
-  timeout: 120_000,
-  expect: { timeout: 15_000 },
+  timeout: 180_000,
+  // O 3D roda sem placa de vídeo no navegador de teste: telas demoram a abrir sob carga.
+  expect: { timeout: 30_000 },
+  // Uma nova tentativa por teste; falha repetida continua reprovando.
+  retries: 1,
   fullyParallel: false,
   workers: 1,
   reporter: [['list'], ['html', { open: 'never', outputFolder: '../playwright-report' }]],

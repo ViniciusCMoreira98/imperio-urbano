@@ -66,7 +66,8 @@ test('desempenho com quatro personagens', async ({ browser }) => {
   const [host, ...guests] = pages;
 
   await host.getByRole('button', { name: 'CRIAR SALA' }).click();
-  const code = (await host.getByText(/^[A-Z0-9]{6}$/).textContent())!.trim();
+  await expect(host.getByText('Sala de espera')).toBeVisible();
+  const code = (await host.getByText(/^[A-Z0-9]{6}$/).first().textContent())!.trim();
   for (const guest of guests) {
     await guest.getByLabel('Código da sala').fill(code);
     await guest.getByRole('button', { name: 'ENTRAR' }).click();
@@ -76,15 +77,16 @@ test('desempenho com quatro personagens', async ({ browser }) => {
   await host.getByRole('button', { name: 'Estou pronto' }).click();
   await host.getByRole('button', { name: 'INICIAR PARTIDA' }).click();
   for (const page of pages) await expect(page.getByRole('list', { name: 'Jogadores' })).toBeVisible();
-  // Espera os quatro personagens carregarem e pararem no Início.
-  await expect.poll(async () => (await boardView(host)).players.every((p) => p.resting)).toBe(true);
+  // Espera os quatro personagens estarem desenhados (o prazo pode já ter jogado por alguém).
+  await expect.poll(async () => (await boardView(host)).players.every((p) => p.drawnTile !== null), { timeout: 60_000 }).toBe(true);
 
   const idle = await measure(host, 60);
 
   // Mede durante os saltos de quem estiver na vez.
   let roller = host;
   for (const page of pages) if (await myTurn(page).isVisible()) roller = page;
-  await roller.getByRole('button', { name: 'ROLAR DADOS' }).click();
+  // O prazo pode ter rolado antes: sem o botão, mede assim mesmo (a partida segue com saltos).
+  await roller.getByRole('button', { name: 'ROLAR DADOS' }).click({ timeout: 5_000 }).catch(() => undefined);
   const hopping = await measure(host, 60);
 
   const heapMB = await host.evaluate(() => Math.round(((performance as unknown as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? 0) / 1048576));

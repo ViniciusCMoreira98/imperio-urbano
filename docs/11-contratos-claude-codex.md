@@ -35,6 +35,16 @@ Normalização feita pelo carregador (não alterar a geometria original):
 
 Esqueleto e animações são **opcionais**: com `SkinnedMesh` o modelo é clonado com `SkeletonUtils.clone`; sem, com `clone()` comum. O movimento entre casas é procedural (saltos), sem depender de clip de caminhada.
 
+Clips opcionais por nome (procurados no GLB; não precisam de campo no manifesto):
+
+| Clip | Quando toca | Sem o clip |
+|---|---|---|
+| `idle` (ou o `idleClip` do manifesto) | parado na casa | personagem estático |
+| `celebrate` | vencedor, no fim da partida, parado na casa | saltinhos procedurais no lugar |
+| `defeat` | jogador que faliu, antes de sair do tabuleiro | só a saída procedural (encolhe e afunda) |
+
+O clip só é usado se existir; nada no jogo depende dele. Animações de esqueleto devem ficar no lugar (sem deslocar a raiz), porque posição e saltos são do jogo.
+
 Requisitos do GLB (alinhados a `docs/07-meshy-pipeline.md` do Codex): glTF 2.0 autocontido ou com texturas ao lado, Y para cima, frente +Z, **sem pedestal/base**, até 12 mil triângulos e 3 MiB.
 
 ## 2. Superfície das casas (implementado na Etapa 3)
