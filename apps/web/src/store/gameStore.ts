@@ -82,3 +82,6 @@ export const useGameStore = create<GameStoreState>()((set) => ({
   clearRejection: () => set({ rejection: null }),
   reset: () => set({ ...empty, connection: 'closed', send: () => false }),
 }));
+
+// Gancho de teste, só em desenvolvimento: o E2E lê o estado oficial que este navegador recebeu.
+if (import.meta.env.DEV && typeof window !== 'undefined') (window as unknown as { __imperioGame?: typeof useGameStore }).__imperioGame = useGameStore;

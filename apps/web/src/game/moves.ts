@@ -39,3 +39,31 @@ export function hopTiles(move: PawnMove, tileCount: number): number[] {
   if (move.kind === 'jump') return [move.to];
   return movePath(move.from, (move.to - move.from + tileCount) % tileCount, tileCount);
 }
+
+/** Fila maior que isso (aba em segundo plano, rede atrasada): vira um salto direto ao último destino. */
+export const MAX_QUEUED = 2;
+
+/**
+ * Acrescenta à fila de um personagem os movimentos novos dele (id maior que o último tratado), em ordem.
+ * Atrasado demais para animar tudo, troca a fila por um salto único da casa mostrada ao último destino.
+ */
+export function enqueueMoves(
+  queue: PawnMove[],
+  moves: PawnMove[],
+  playerId: string,
+  handled: number,
+  shownTile: number,
+): { queue: PawnMove[]; handled: number } {
+  const next = [...queue];
+  let last = handled;
+  for (const move of moves) {
+    if (move.playerId !== playerId || move.id <= last) continue;
+    last = move.id;
+    next.push(move);
+  }
+  if (next.length > MAX_QUEUED) {
+    const final = next[next.length - 1];
+    return { queue: [{ ...final, from: shownTile, kind: 'jump' }], handled: last };
+  }
+  return { queue: next, handled: last };
+}

@@ -5,6 +5,17 @@ import raw from './characters.json';
 
 export type CharacterStatus = 'candidate' | 'validated' | 'approved' | 'published';
 
+/**
+ * Uniforme na cor do jogador (contrato 4 em docs/11): máscara UV (canal R) das partes a recolorir,
+ * luminância de referência do tecido original (espaço linear) e, opcional, a faixa de altura da
+ * geometria original onde a máscara vale (protege cabeça e pernas).
+ */
+export interface CharacterUniform {
+  mask: string;
+  referenceLuminance: number;
+  localYRange?: [number, number];
+}
+
 export interface CharacterAsset {
   id: string;
   avatarId: AvatarId | null;
@@ -19,6 +30,8 @@ export interface CharacterAsset {
   idleClip: string | null;
   status: CharacterStatus;
   license: string;
+  /** Ausente: o personagem mantém as cores do modelo. */
+  uniform?: CharacterUniform;
 }
 
 export interface CharacterManifest {
@@ -50,6 +63,19 @@ export function manifestProblems(manifest: CharacterManifest): string[] {
     if (!Number.isFinite(c.rotationY)) problems.push(`${where}: rotationY inválida`);
     if (c.offset.length !== 3 || !c.offset.every(Number.isFinite)) problems.push(`${where}: offset deve ter 3 números`);
     if (!STATUSES.includes(c.status)) problems.push(`${where}: status desconhecido ${c.status}`);
+    if (c.uniform) {
+      const u = c.uniform;
+      if (!/^\/models\/.+\.png$/.test(u.mask)) problems.push(`${where}: máscara do uniforme deve ser .png em /models/`);
+      if (!(u.referenceLuminance > 0 && Number.isFinite(u.referenceLuminance))) {
+        problems.push(`${where}: referenceLuminance deve ser positiva`);
+      }
+      if (u.localYRange !== undefined) {
+        const [min, max] = u.localYRange;
+        if (u.localYRange.length !== 2 || !Number.isFinite(min) || !Number.isFinite(max) || min >= max) {
+          problems.push(`${where}: localYRange deve ser [mínimo, máximo] com mínimo < máximo`);
+        }
+      }
+    }
   }
   for (const id of AVATAR_IDS) if (!avatars.has(id)) problems.push(`${id} sem personagem`);
   if (!ids.has(manifest.fallback)) problems.push(`fallback "${manifest.fallback}" não existe`);

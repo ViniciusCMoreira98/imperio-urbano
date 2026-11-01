@@ -33,7 +33,12 @@
       "offset": [0, 0, 0],
       "idleClip": null,
       "status": "candidate",
-      "license": "Gerado no Meshy 7.1 para o projeto; termos de distribuição a confirmar"
+      "license": "Gerado no Meshy 7.1 para o projeto; termos de distribuição a confirmar",
+      "uniform": {
+        "mask": "/models/characters/steampunk-brasil-v01-uniform-mask-v04.png",
+        "referenceLuminance": 0.02695356,
+        "localYRange": [-0.57, 0.07]
+      }
     },
     {
       "id": "kenney-female-b",

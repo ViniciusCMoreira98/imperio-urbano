@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "assetId": "steampunk-brasil-v01-textured",
+  "glb": "/models/characters/steampunk-brasil-v01-rest-v01.glb",
+  "materialIndex": 0,
+  "uniform": {
+    "mask": "/models/characters/steampunk-brasil-v01-uniform-mask-v04.png",
+    "referenceLuminance": 0.02695356,
+    "localYRange": [
+      -0.57,
+      0.07
+    ]
+  },
+  "channel": "r",
+  "colorSpace": "linear",
+  "flipY": false,
+  "generateMipmaps": false,
+  "minFilter": "LinearFilter",
+  "magFilter": "LinearFilter",
+  "guardSpace": "mesh-local-bind-pose-Y",
+  "uvSet": "TEXCOORD_0",
+  "method": "masked-luminance-v1",
+  "size": [
+    1024,
+    1024
+  ],
+  "target": "coat-and-sleeves-only",
+  "selectedGeometryFaces": 5179,
+  "maskedTexelsAboveHalf": 102942,
+  "maskedFraction": 0.09817314147949219,
+  "productionIntegration": "pending-Claude"
+}

@@ -1,19 +1,5 @@
-import { expect, test, type Browser, type Page } from '@playwright/test';
-
-/** Cada jogador num contexto próprio: sessão e armazenamento separados, como dois navegadores. */
-async function newPlayer(browser: Browser, nickname: string): Promise<Page> {
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  await page.goto('/');
-  await page.getByLabel('Apelido').fill(nickname);
-  await page.getByRole('button', { name: 'ENTRAR' }).click();
-  await expect(page.getByText(`Olá, ${nickname}!`)).toBeVisible();
-  return page;
-}
-
-/** Em tela larga a vez aparece no quadro "Turno de" do canto inferior esquerdo. */
-const turnOf = (page: Page, name: string) => page.getByRole('status', { name: `Turno de: ${name}` });
-const myTurn = (page: Page) => turnOf(page, 'Você');
+import { expect, test } from '@playwright/test';
+import { myTurn, newPlayer, turnOf } from './helpers';
 
 /** Decisões que o jogador da vez pode recusar depois de andar; recusar mantém o teste previsível. */
 const DECLINE = ['ROLAR DADOS', 'Não comprar', 'Não construir', 'Não sediar'];

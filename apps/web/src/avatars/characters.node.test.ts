@@ -21,6 +21,11 @@ describe('manifesto de personagens', () => {
       expect(existsSync(path), `${c.id}: ${c.file} não existe`).toBe(true);
       expect(statSync(path).size, `${c.id}: acima de 3 MiB`).toBeLessThanOrEqual(MAX_BYTES);
       if (c.file.endsWith('.glb')) expect(readFileSync(path).subarray(0, 4).toString('latin1')).toBe('glTF');
+      if (c.uniform) {
+        const mask = `${publicDir}${c.uniform.mask}`;
+        expect(existsSync(mask), `${c.id}: máscara ${c.uniform.mask} não existe`).toBe(true);
+        expect(readFileSync(mask).subarray(1, 4).toString('latin1'), `${c.id}: máscara não é PNG`).toBe('PNG');
+      }
     }
   });
 

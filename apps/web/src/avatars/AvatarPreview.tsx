@@ -15,7 +15,7 @@ function Turntable({ avatarId, color }: { avatarId: AvatarId; color: string }) {
     <group ref={ref}>
       <PlayerBase color={color} active={false} />
       <group position={[0, BASE_HEIGHT, 0]}>
-        <AvatarFigure avatarId={avatarId} />
+        <AvatarFigure avatarId={avatarId} color={color} />
       </group>
     </group>
   );

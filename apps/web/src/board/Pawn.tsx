@@ -12,9 +12,10 @@ import type { AvatarId } from '@imperio/shared-types';
 import { AvatarFigure } from '../avatars/AvatarFigure';
 import { characterFor } from '../avatars/characterManifest';
 import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
-import { type PawnMove, hopTiles } from '../game/moves';
+import { type PawnMove, enqueueMoves, hopTiles } from '../game/moves';
 import { useGameStore } from '../store/gameStore';
 import { tileAnchor } from './layout';
+import { forgetPawn, reportPawn } from './pawnDebug';
 import type { PawnSpot } from './pawnLayout';
 
 const TILE_COUNT = board.tiles.length;
@@ -24,8 +25,6 @@ const HOP = { turn: 0.12, prepare: 0.06, air: 0.24, land: 0.08, height: 0.22 };
 const LEAP = { turn: 0.18, prepare: 0.1, air: 0.7, land: 0.12, height: 1.3 };
 /** Agachamento antes de sair e ao pousar (só o grupo do corpo desce; nada estica). */
 const CROUCH = 0.03;
-/** Fila maior que isso (aba em segundo plano, rede atrasada): pula direto para o último destino. */
-const MAX_QUEUED = 2;
 /** Deslize até o novo lugar dentro da mesma casa (alguém entrou ou saiu dela). */
 const SHIFT_DURATION = 0.3;
 /** Giro suave para a câmera quando parado. */
@@ -86,6 +85,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
     root.position.set(target.x, target.y, target.z);
     body.position.y = BASE_HEIGHT;
     shownTile.current = tile;
+    reportPawn(playerId, { tile, resting: true });
   };
 
   /** Ao fim dos saltos: confere com o oficial e acomoda no lugar certo dentro da casa. */
@@ -98,7 +98,14 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
       return;
     }
     shift.current?.kill();
-    shift.current = gsap.to(root.position, { x: target.x, y: target.y, z: target.z, duration: SHIFT_DURATION, ease: 'power2.out' });
+    shift.current = gsap.to(root.position, {
+      x: target.x,
+      y: target.y,
+      z: target.z,
+      duration: SHIFT_DURATION,
+      ease: 'power2.out',
+      onComplete: () => reportPawn(playerId, { tile, resting: true }),
+    });
   };
 
   const land = () => {
@@ -120,6 +127,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
     }
     const tiles = hopTiles(move, TILE_COUNT);
     const style = move.kind === 'jump' ? LEAP : HOP;
+    reportPawn(playerId, { tile: move.to, resting: false });
     const tl = gsap.timeline({ onComplete: runNext });
     tiles.forEach((tile, i) => {
       // Decidido na hora do salto (o snapshot chega logo depois dos eventos): a última casa do último
@@ -151,6 +159,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
     return () => {
       timeline.current?.kill();
       shift.current?.kill();
+      forgetPawn(playerId);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -164,16 +173,9 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
           return;
         }
         if (state.moves === previous.moves) return;
-        for (const move of state.moves) {
-          if (move.playerId !== playerId || move.id <= handled.current) continue;
-          handled.current = move.id;
-          queue.current.push(move);
-        }
-        if (queue.current.length > MAX_QUEUED) {
-          // Atrasado demais para animar tudo: um salto direto ao último destino.
-          const last = queue.current[queue.current.length - 1];
-          queue.current = [{ ...last, from: shownTile.current, kind: 'jump' }];
-        }
+        const next = enqueueMoves(queue.current, state.moves, playerId, handled.current, shownTile.current);
+        queue.current = next.queue;
+        handled.current = next.handled;
         if (!timeline.current && queue.current.length > 0) {
           shift.current?.kill();
           runNext();
@@ -207,7 +209,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
       <group ref={bodyRef} position={[0, BASE_HEIGHT, 0]}>
         <group ref={faceRef}>
           <Suspense fallback={null}>
-            <AvatarFigure avatarId={avatarId} />
+            <AvatarFigure avatarId={avatarId} color={color} />
           </Suspense>
         </group>
         {active && <ActiveMarker color={color} height={characterFor(avatarId).height + 0.25} />}

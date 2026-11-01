@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { DomainEvent, GameSnapshot } from '@imperio/shared-types';
 import { type ServerState, reduceServerMessage } from '../store/gameStore';
-import { hopTiles, movesFromEvents } from './moves';
+import { type PawnMove, enqueueMoves, hopTiles, movesFromEvents } from './moves';
 
 const N = 36;
 const moved = (playerId: string, from: number, to: number, extra: Partial<{ sentToRest: boolean; startBonus: number }> = {}): DomainEvent => ({
@@ -92,5 +92,30 @@ describe('fila de movimentos no store', () => {
     expect(reconnected.moves).toEqual([]);
     expect(reconnected.resync).toBe(pending.resync + 1);
     expect(reconnected.eventsVersion).toBe(30);
+  });
+});
+
+describe('fila de um personagem', () => {
+  const move = (id: number, playerId: string, from: number, to: number): PawnMove => ({ id, playerId, from, to, kind: 'walk' });
+
+  it('pega só os movimentos novos do próprio jogador, em ordem', () => {
+    const all = [move(5, 'ana', 0, 4), move(6, 'bia', 0, 3), move(9, 'ana', 4, 9)];
+    const { queue, handled } = enqueueMoves([], all, 'ana', 4, 0);
+    expect(queue.map((m) => m.id)).toEqual([5, 9]);
+    expect(handled).toBe(9);
+  });
+
+  it('não repete movimentos já tratados (mesma lista recebida de novo)', () => {
+    const all = [move(5, 'ana', 0, 4)];
+    const first = enqueueMoves([], all, 'ana', -1, 0);
+    const again = enqueueMoves(first.queue, all, 'ana', first.handled, 0);
+    expect(again.queue).toHaveLength(1);
+  });
+
+  it('atrasado demais: um salto direto da casa mostrada ao último destino', () => {
+    const all = [move(1, 'ana', 0, 4), move(3, 'ana', 4, 9), move(5, 'ana', 9, 15)];
+    const { queue, handled } = enqueueMoves([], all, 'ana', -1, 0);
+    expect(queue).toEqual([{ id: 5, playerId: 'ana', from: 0, to: 15, kind: 'jump' }]);
+    expect(handled).toBe(5);
   });
 });

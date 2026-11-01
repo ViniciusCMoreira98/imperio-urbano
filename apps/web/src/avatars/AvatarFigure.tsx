@@ -1,14 +1,17 @@
 // Personagem do jogador carregado do manifesto (characters.json; contrato em
 // docs/11-contratos-claude-codex.md); a base colorida é outro componente (PlayerBase). Esqueleto e animações são
 // opcionais: modelos estáticos (ex.: Meshy sem rig) funcionam igual. Um modelo ausente ou com erro
-// cai no personagem reserva, com aviso no console.
+// cai no personagem reserva, com aviso no console. Com 'uniform' no manifesto, casaco e mangas seguem
+// a cor do jogador (uniformTint.ts); sem ele, o modelo mantém as cores originais.
 import { useAnimations, useGLTF } from '@react-three/drei';
-import { Component, type ReactNode, Suspense, useEffect, useMemo, useRef } from 'react';
-import { Box3, type Group, type Object3D } from 'three';
+import { useLoader } from '@react-three/fiber';
+import { Component, type ReactNode, Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { Box3, type Group, type Material, type Mesh, type Object3D, TextureLoader } from 'three';
 import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import type { AvatarId } from '@imperio/shared-types';
-import { type CharacterAsset, characterFiles, characterFor, fallbackCharacter } from './characterManifest';
+import { type CharacterAsset, type CharacterUniform, characterFiles, characterFor, characterManifest, fallbackCharacter } from './characterManifest';
 import { normalizePlacement } from './normalize';
+import { type UniformTint, applyUniformTint, prepareUniformMask } from './uniformTint';
 
 export type AvatarMotion = 'idle' | 'walk';
 
@@ -20,8 +23,60 @@ function hasSkin(root: Object3D): boolean {
   return skinned;
 }
 
+/**
+ * Uniforme na cor do jogador sobre a cópia do modelo: troca os materiais antes de desenhar e, ao sair,
+ * devolve os originais e libera só os clones (seguro com a montagem dupla do modo estrito do React).
+ */
+function UniformLayer({ model, uniform, color }: { model: Object3D; uniform: CharacterUniform; color: string }) {
+  const loaded = useLoader(TextureLoader, uniform.mask);
+  const mask = useMemo(() => prepareUniformMask(loaded), [loaded]);
+  const tint = useRef<UniformTint | null>(null);
+  const colorRef = useRef(color);
+  colorRef.current = color;
+
+  useLayoutEffect(() => {
+    const originals = new Map<Mesh, Material | Material[]>();
+    model.traverse((child) => {
+      const mesh = child as Mesh;
+      if (mesh.isMesh) originals.set(mesh, mesh.material);
+    });
+    const applied = applyUniformTint(model, mask, uniform, colorRef.current);
+    tint.current = applied;
+    return () => {
+      tint.current = null;
+      originals.forEach((material, mesh) => {
+        mesh.material = material;
+      });
+      applied.dispose();
+    };
+  }, [model, mask, uniform]);
+
+  // Trocar a cor só muda o valor do uniforme desta cópia (sem recompilar, sem afetar outras).
+  useEffect(() => {
+    tint.current?.setColor(color);
+  }, [color]);
+  return null;
+}
+
+/** Máscara que não carrega: o personagem fica com as cores originais, com aviso no console. */
+class MaskBoundary extends Component<{ mask: string; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.warn(`[personagens] Máscara do uniforme ${this.props.mask} não carregou; mantendo as cores do modelo.`, error);
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
 /** Modelo normalizado; animação só se o clip existir no arquivo. */
-function CharacterModel({ asset, motion }: { asset: CharacterAsset; motion: AvatarMotion }) {
+function CharacterModel({ asset, motion, color }: { asset: CharacterAsset; motion: AvatarMotion; color: string }) {
   const { scene, animations } = useGLTF(asset.file);
   // Cada peão precisa da própria cópia; com esqueleto, a cópia precisa religar os ossos.
   const model = useMemo(() => {
@@ -52,6 +107,11 @@ function CharacterModel({ asset, motion }: { asset: CharacterAsset; motion: Avat
       <group ref={root} position={placement.position} scale={placement.scale}>
         <primitive object={model} />
       </group>
+      {asset.uniform && (
+        <MaskBoundary mask={asset.uniform.mask}>
+          <UniformLayer model={model} uniform={asset.uniform} color={color} />
+        </MaskBoundary>
+      )}
     </group>
   );
 }
@@ -74,7 +134,7 @@ class ModelFallback extends Component<{ asset: CharacterAsset; children: ReactNo
 }
 
 /** Só o personagem, com os pés em y = 0 e o rosto virado para +z. */
-export function AvatarFigure({ avatarId, motion = 'idle' }: { avatarId: AvatarId; motion?: AvatarMotion }) {
+export function AvatarFigure({ avatarId, color, motion = 'idle' }: { avatarId: AvatarId; color: string; motion?: AvatarMotion }) {
   const asset = characterFor(avatarId);
   const reserve = fallbackCharacter();
   return (
@@ -85,14 +145,14 @@ export function AvatarFigure({ avatarId, motion = 'idle' }: { avatarId: AvatarId
         asset.id === reserve.id ? null : (
           <ModelFallback asset={reserve} fallback={null}>
             <Suspense fallback={null}>
-              <CharacterModel asset={reserve} motion={motion} />
+              <CharacterModel asset={reserve} motion={motion} color={color} />
             </Suspense>
           </ModelFallback>
         )
       }
     >
       <Suspense fallback={null}>
-        <CharacterModel asset={asset} motion={motion} />
+        <CharacterModel asset={asset} motion={motion} color={color} />
       </Suspense>
     </ModelFallback>
   );
@@ -101,4 +161,7 @@ export function AvatarFigure({ avatarId, motion = 'idle' }: { avatarId: AvatarId
 /** Baixa cada modelo uma vez logo no início, para não piscar quando a partida ou a sala abrirem. */
 export function preloadAvatars() {
   characterFiles().forEach((file) => useGLTF.preload(file));
+  characterManifest.characters.forEach((c) => {
+    if (c.uniform) useLoader.preload(TextureLoader, c.uniform.mask);
+  });
 }
