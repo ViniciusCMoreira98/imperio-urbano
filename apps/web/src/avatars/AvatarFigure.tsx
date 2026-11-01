@@ -1,53 +1,84 @@
-// Avatares: personagens humanos low-poly do pacote "Mini Characters" (Kenney, CC0; ver
-// public/models/characters/LICENSE-kenney.txt), sobre uma base na cor do peão do jogador.
+// Personagem do jogador carregado do manifesto (characters.json; contrato em
+// docs/08-contratos-claude-codex.md), sobre uma base na cor do peão. Esqueleto e animações são
+// opcionais: modelos estáticos (ex.: Meshy sem rig) funcionam igual. Um modelo ausente ou com erro
+// cai no personagem reserva, com aviso no console.
 import { useAnimations, useGLTF } from '@react-three/drei';
-import { useEffect, useMemo, useRef } from 'react';
-import { Box3, type Group } from 'three';
-import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
+import { Component, type ReactNode, Suspense, useEffect, useMemo, useRef } from 'react';
+import { Box3, type Group, type Object3D } from 'three';
+import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import type { AvatarId } from '@imperio/shared-types';
+import { type CharacterAsset, characterFiles, characterFor, fallbackCharacter } from './characterManifest';
+import { normalizePlacement } from './normalize';
 
-const MODELS: Record<AvatarId, string> = {
-  'avatar-1': 'character-female-a',
-  'avatar-2': 'character-male-a',
-  'avatar-3': 'character-female-b',
-  'avatar-4': 'character-male-d',
-  'avatar-5': 'character-male-b',
-};
-
-const urlOf = (avatarId: AvatarId) => `/models/characters/${MODELS[avatarId]}.glb`;
-
-/** Altura do personagem (sem a base), parecida com a do peão antigo. */
-const FIGURE_HEIGHT = 0.8;
 const BASE_HEIGHT = 0.06;
 
 export type AvatarMotion = 'idle' | 'walk';
 
-/** Peça com a base no chão (y = 0) e o rosto virado para +z. */
-export function AvatarFigure({ avatarId, color, motion = 'idle' }: { avatarId: AvatarId; color: string; motion?: AvatarMotion }) {
-  const { scene, animations } = useGLTF(urlOf(avatarId));
-  // Cada peão precisa da própria cópia do esqueleto para animar sozinho.
+function hasSkin(root: Object3D): boolean {
+  let skinned = false;
+  root.traverse((child) => {
+    if ((child as { isSkinnedMesh?: boolean }).isSkinnedMesh) skinned = true;
+  });
+  return skinned;
+}
+
+/** Modelo normalizado; animação só se o clip existir no arquivo. */
+function CharacterModel({ asset, motion }: { asset: CharacterAsset; motion: AvatarMotion }) {
+  const { scene, animations } = useGLTF(asset.file);
+  // Cada peão precisa da própria cópia; com esqueleto, a cópia precisa religar os ossos.
   const model = useMemo(() => {
-    const copy = clone(scene);
+    const copy = hasSkin(scene) ? cloneSkinned(scene) : scene.clone(true);
     copy.traverse((child) => {
       child.castShadow = true;
     });
     return copy;
   }, [scene]);
-  const scale = useMemo(() => {
+  const placement = useMemo(() => {
     const box = new Box3().setFromObject(scene);
-    return FIGURE_HEIGHT / Math.max(0.001, box.max.y - box.min.y);
-  }, [scene]);
+    return normalizePlacement({ min: box.min.toArray(), max: box.max.toArray() }, asset.height, asset.offset);
+  }, [scene, asset.height, asset.offset]);
 
   const root = useRef<Group>(null);
   const { actions } = useAnimations(animations, root);
   useEffect(() => {
-    const action = actions[motion] ?? actions.idle;
+    // Clip pedido, senão o de "parado" do manifesto, senão nenhum (modelo estático).
+    const action = actions[motion] ?? (asset.idleClip ? actions[asset.idleClip] : undefined);
     action?.reset().fadeIn(0.15).play();
     return () => {
       action?.fadeOut(0.15);
     };
-  }, [actions, motion]);
+  }, [actions, motion, asset.idleClip]);
 
+  return (
+    <group rotation={[0, asset.rotationY, 0]}>
+      <group ref={root} position={placement.position} scale={placement.scale}>
+        <primitive object={model} />
+      </group>
+    </group>
+  );
+}
+
+/** Troca um modelo que falhou ao carregar pelo personagem reserva, avisando a dependência. */
+class ModelFallback extends Component<{ asset: CharacterAsset; children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.warn(`[personagens] Modelo "${this.props.asset.id}" (${this.props.asset.file}) não carregou; usando o reserva.`, error);
+  }
+
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
+/** Peça com a base no chão (y = 0) e o rosto virado para +z. */
+export function AvatarFigure({ avatarId, color, motion = 'idle' }: { avatarId: AvatarId; color: string; motion?: AvatarMotion }) {
+  const asset = characterFor(avatarId);
+  const reserve = fallbackCharacter();
   return (
     <group>
       <mesh position={[0, BASE_HEIGHT / 2, 0]} castShadow receiveShadow>
@@ -58,14 +89,30 @@ export function AvatarFigure({ avatarId, color, motion = 'idle' }: { avatarId: A
         <ringGeometry args={[0.15, 0.2, 28]} />
         <meshStandardMaterial color="#ffffff" transparent opacity={0.6} />
       </mesh>
-      <group ref={root} position={[0, BASE_HEIGHT, 0]} scale={scale}>
-        <primitive object={model} />
+      <group position={[0, BASE_HEIGHT, 0]}>
+        <ModelFallback
+          key={asset.id}
+          asset={asset}
+          fallback={
+            asset.id === reserve.id ? null : (
+              <ModelFallback asset={reserve} fallback={null}>
+                <Suspense fallback={null}>
+                  <CharacterModel asset={reserve} motion={motion} />
+                </Suspense>
+              </ModelFallback>
+            )
+          }
+        >
+          <Suspense fallback={null}>
+            <CharacterModel asset={asset} motion={motion} />
+          </Suspense>
+        </ModelFallback>
       </group>
     </group>
   );
 }
 
-/** Baixa os modelos logo no início, para não piscar quando a partida ou a sala abrirem. */
+/** Baixa cada modelo uma vez logo no início, para não piscar quando a partida ou a sala abrirem. */
 export function preloadAvatars() {
-  (Object.keys(MODELS) as AvatarId[]).forEach((id) => useGLTF.preload(urlOf(id)));
+  characterFiles().forEach((file) => useGLTF.preload(file));
 }

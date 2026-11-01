@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "fallback": "kenney-male-a",
+  "characters": [
+    {
+      "id": "kenney-female-a",
+      "avatarId": "avatar-1",
+      "file": "/models/characters/character-female-a.glb",
+      "height": 0.8,
+      "rotationY": 0,
+      "offset": [0, 0, 0],
+      "idleClip": "idle",
+      "status": "published",
+      "license": "CC0 (Kenney Mini Characters)"
+    },
+    {
+      "id": "kenney-male-a",
+      "avatarId": "avatar-2",
+      "file": "/models/characters/character-male-a.glb",
+      "height": 0.8,
+      "rotationY": 0,
+      "offset": [0, 0, 0],
+      "idleClip": "idle",
+      "status": "published",
+      "license": "CC0 (Kenney Mini Characters)"
+    },
+    {
+      "id": "kenney-female-b",
+      "avatarId": "avatar-3",
+      "file": "/models/characters/character-female-b.glb",
+      "height": 0.8,
+      "rotationY": 0,
+      "offset": [0, 0, 0],
+      "idleClip": "idle",
+      "status": "published",
+      "license": "CC0 (Kenney Mini Characters)"
+    },
+    {
+      "id": "kenney-male-d",
+      "avatarId": "avatar-4",
+      "file": "/models/characters/character-male-d.glb",
+      "height": 0.8,
+      "rotationY": 0,
+      "offset": [0, 0, 0],
+      "idleClip": "idle",
+      "status": "published",
+      "license": "CC0 (Kenney Mini Characters)"
+    },
+    {
+      "id": "kenney-male-b",
+      "avatarId": "avatar-5",
+      "file": "/models/characters/character-male-b.glb",
+      "height": 0.8,
+      "rotationY": 0,
+      "offset": [0, 0, 0],
+      "idleClip": "idle",
+      "status": "published",
+      "license": "CC0 (Kenney Mini Characters)"
+    }
+  ]
+}
