@@ -1,4 +1,5 @@
-import { AVATARS, PAWN_COLORS } from '../game/presentation';
+import { PAWN_COLORS } from '../game/presentation';
+import { AvatarPortrait, LeaderCrown } from './AvatarPortrait';
 import { HOTEL_LEVEL, leaders, netWorth } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { useGameStore } from '../store/gameStore';
@@ -19,7 +20,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
   );
 
   return (
-    <ol className="flex gap-1.5 sm:w-56 sm:flex-col sm:gap-2" aria-label="Jogadores">
+    <ol className="hud-players flex gap-1.5 sm:w-56 sm:flex-col sm:gap-2" aria-label="Jogadores">
       {ranked.map((p, index) => {
         const owned = snapshot.properties.filter((prop) => prop.ownerId === p.id);
         const houses = owned.reduce((n, prop) => n + (prop.buildingLevel < HOTEL_LEVEL ? prop.buildingLevel : 0), 0);
@@ -42,7 +43,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
           <li
             key={p.id}
             title={details}
-            className={`hud-panel relative flex min-w-0 flex-1 items-center gap-2 rounded-xl px-1.5 py-1 sm:flex-none sm:gap-2.5 sm:px-2 sm:py-1.5 ${
+            className={`hud-player-row hud-panel relative flex min-w-0 flex-1 items-center gap-2 rounded-xl px-1.5 py-1 sm:flex-none sm:gap-2.5 sm:px-2 sm:py-1.5 ${
               p.bankrupt ? 'opacity-45 grayscale' : ''
             }`}
             style={{
@@ -51,29 +52,29 @@ export function PlayersPanel({ myId }: { myId: string }) {
             }}
             aria-current={isTurn ? 'true' : undefined}
           >
-            <span className="relative shrink-0">
+            <span className="hud-player-portrait relative shrink-0">
               <span
-                className="flex h-9 w-9 items-center justify-center rounded-full text-xl ring-2 sm:h-12 sm:w-12 sm:text-3xl"
+                className="hud-avatar-frame flex h-9 w-9 items-center justify-center rounded-full text-xl ring-2 sm:h-12 sm:w-12 sm:text-3xl"
                 style={{ background: `${color}55`, ['--tw-ring-color' as string]: color }}
                 aria-hidden
               >
-                {AVATARS[p.avatarId].emoji}
+                <AvatarPortrait avatarId={p.avatarId}/>
               </span>
-              <span className="absolute -bottom-1 -left-1 hidden h-5 w-5 items-center justify-center rounded-full border border-amber-200 bg-indigo-900 text-[10px] font-black text-amber-200 sm:flex">
+              <span className="hud-player-rank absolute -bottom-1 -left-1 hidden h-5 w-5 items-center justify-center rounded-full border border-amber-200 bg-indigo-900 text-[10px] font-black text-amber-200 sm:flex">
                 {index + 1}º
               </span>
               {crowned && (
-                <span className="absolute -top-2.5 -left-1 text-base sm:text-lg" aria-label="Líder">
-                  👑
+                <span className="absolute -top-2.5 -left-1 text-base sm:text-lg">
+                  <LeaderCrown/>
                 </span>
               )}
             </span>
             <div className="min-w-0 flex-1 leading-tight">
-              <p className="truncate text-xs font-bold text-white sm:text-base">
+              <p className="hud-player-name truncate text-xs font-bold text-white sm:text-base">
                 {p.nickname}
                 {p.id === myId && <span className="font-normal text-white/60"> (você)</span>}
               </p>
-              <p className="text-sm font-black text-amber-300 drop-shadow sm:text-lg">{formatCredits(p.credits)}</p>
+              <p className="hud-player-balance text-sm font-black text-amber-300 drop-shadow sm:text-lg">{formatCredits(p.credits)}</p>
             </div>
             {status && (
               <span className="text-base" aria-label={details}>

@@ -2,7 +2,7 @@
 // a Catedral de Brasília e coqueiros. Ficam nas laterais, sem cobrir o mapa, o logotipo, a pilha de
 // Eventos e o painel da partida (posições em CENTER_LAYOUT).
 import { useEffect, useMemo } from 'react';
-import { MeshStandardMaterial } from 'three';
+import { CanvasTexture, MeshStandardMaterial, SRGBColorSpace } from 'three';
 import { Palm, windowTexture } from './RioScene';
 
 function Tower({ position, size }: { position: [number, number, number]; size: [number, number, number] }) {
@@ -44,20 +44,32 @@ function ColonialHouse({ position, turn = 0 }: { position: [number, number, numb
 
 /** Maracanã: anel de arquibancada branco com o gramado no meio. */
 function Stadium({ position }: { position: [number, number, number] }) {
+  const pitch = useMemo(() => {
+    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 256;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#298249';ctx.fillRect(0,0,256,256);
+    for(let i=0;i<8;i++){ctx.fillStyle=i%2?'#429d55':'#35914c';ctx.fillRect(50,24+i*26,156,26);}
+    ctx.strokeStyle='#ebf4cd';ctx.lineWidth=2;ctx.strokeRect(50,24,156,208);ctx.beginPath();ctx.moveTo(50,128);ctx.lineTo(206,128);ctx.stroke();ctx.beginPath();ctx.arc(128,128,23,0,Math.PI*2);ctx.stroke();ctx.strokeRect(83,24,90,35);ctx.strokeRect(83,197,90,35);
+    const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace;return texture;
+  },[]);
+  useEffect(() => () => pitch.dispose(),[pitch]);
   return (
     <group position={position}>
       <mesh position={[0, 0.14, 0]} castShadow>
         <cylinderGeometry args={[0.8, 0.85, 0.28, 32, 1, true]} />
-        <meshStandardMaterial color="#eef2f7" side={2} />
+        <meshStandardMaterial color="#d6dce8" side={2} roughness={.55} />
       </mesh>
       <mesh position={[0, 0.27, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[0.55, 0.82, 32]} />
-        <meshStandardMaterial color="#cbd5e1" side={2} />
+        <ringGeometry args={[0.59, 0.82, 48]} />
+        <meshStandardMaterial color="#f0eef7" side={2} roughness={.45} />
       </mesh>
       <mesh position={[0, 0.03, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.55, 32]} />
-        <meshStandardMaterial color="#3f9b4a" />
+        <meshStandardMaterial map={pitch} />
       </mesh>
+      {[.58,.64,.7].map((radius,i)=><mesh key={radius} position={[0,.08+i*.045,0]} rotation={[-Math.PI/2,0,0]}><ringGeometry args={[radius-.04,radius,40]}/><meshStandardMaterial color={i%2?'#9b76ba':'#b6a8d0'} side={2}/></mesh>)}
+      {Array.from({length:24},(_,i)=><group key={i} rotation={[0,i/24*Math.PI*2,0]}><mesh position={[.825,.16,0]}><boxGeometry args={[.025,.3,.025]}/><meshStandardMaterial color="#e7e5ef" metalness={.3} roughness={.4}/></mesh></group>)}
+      <mesh position={[0,.285,0]} rotation={[-Math.PI/2,0,0]}><torusGeometry args={[.81,.018,6,48]}/><meshStandardMaterial color="#fff3d5"/></mesh>
     </group>
   );
 }

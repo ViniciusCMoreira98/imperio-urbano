@@ -6,9 +6,12 @@ import { Box3, Group } from 'three';
 import type { AvatarId } from '../../../packages/shared-types/src/index';
 import { AvatarPreview } from '../../../apps/web/src/avatars/AvatarPreview';
 import { AvatarFigure } from '../../../apps/web/src/avatars/AvatarFigure';
+import { BASE_HEIGHT, PlayerBase } from '../../../apps/web/src/avatars/PlayerBase';
 import { characterFor, characterManifest } from '../../../apps/web/src/avatars/characterManifest';
 
-const colors = ['#2e9e5b', '#f2c230', '#3d7dd8', '#e63946'];
+const colors = new URLSearchParams(location.search).has('extra-colors')
+  ? ['#9b5de5', '#f28c28', '#3d7dd8', '#e63946']
+  : ['#2e9e5b', '#f2c230', '#3d7dd8', '#e63946'];
 function Figures({ avatarId, motion }: { avatarId: AvatarId; motion: 'idle' | 'walk' }) {
   const figures = useRef<Group>(null);
   useFrame(() => {
@@ -21,9 +24,9 @@ function Figures({ avatarId, motion }: { avatarId: AvatarId; motion: 'idle' | 'w
       });
       return { minY: bounds.min.y, height: bounds.max.y - bounds.min.y, width: bounds.max.x - bounds.min.x, meshes };
     });
-    (window as any).manifestQA = { avatarId, modelId: characterFor(avatarId).id, motion, instances, loaded: instances.length === 4 && instances.every(i => i.meshes.length > 0) };
+    (window as any).manifestQA = { avatarId, modelId: characterFor(avatarId).id, motion, colors, instances, loaded: instances.length === 4 && instances.every(i => i.meshes.length > 0) };
   });
-  return <group ref={figures}>{colors.map((color, index) => <group key={index} position={[(index - 1.5) * 1.05, .1, 0]}><AvatarFigure avatarId={avatarId} color={color} motion={motion} /></group>)}</group>;
+  return <group ref={figures}>{colors.map((color, index) => <group key={index} position={[(index - 1.5) * 1.05, .1, 0]}><PlayerBase color={color} active={index === 0} /><group position={[0, BASE_HEIGHT, 0]}><AvatarFigure avatarId={avatarId} motion={motion} /></group></group>)}</group>;
 }
 
 function App() {

@@ -1,0 +1,14 @@
+{
+  "blenderVersion": "5.2.3 LTS",
+  "bytes": 84280,
+  "triangles": 2664,
+  "pipCounts": {
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6
+  },
+  "additionalCredits": 0
+}

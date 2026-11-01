@@ -3,36 +3,36 @@
 // ser refinada pela arte).
 import { useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
-import { Color, type Group, MeshBasicMaterial, MeshStandardMaterial } from 'three';
+import { AdditiveBlending, Color, type Group, MeshBasicMaterial } from 'three';
 
-/** Altura do disco da base; o personagem fica em pé em cima dele. */
-export const BASE_HEIGHT = 0.06;
+/** Sem pedestal físico: os pés apoiam diretamente na superfície da casa. */
+export const BASE_HEIGHT = 0;
 const BASE_RADIUS = 0.25;
 
 export function PlayerBase({ color, active }: { color: string; active: boolean }) {
-  const disc = useMemo(() => new MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.25 }), [color]);
-  const ring = useMemo(() => new MeshBasicMaterial({ color: new Color(color).multiplyScalar(1.6), transparent: true, opacity: 0.85, toneMapped: false }), [color]);
-  useEffect(() => () => { disc.dispose(); ring.dispose(); }, [disc, ring]);
+  const ring = useMemo(() => new MeshBasicMaterial({ color: new Color(color).multiplyScalar(1.6), transparent: true, opacity: 0.55, depthWrite: false, toneMapped: false }), [color]);
+  const halo = useMemo(() => new MeshBasicMaterial({ color, transparent: true, opacity: 0.06, depthWrite: false, blending: AdditiveBlending, toneMapped: false }), [color]);
+  useEffect(() => () => { ring.dispose(); halo.dispose(); }, [ring, halo]);
 
   // Na vez do jogador, a base pulsa; fora dela, fica com brilho fraco e fixo.
   useFrame(({ clock }) => {
     if (active) {
       const pulse = 0.5 + 0.5 * Math.sin(clock.elapsedTime * 4);
-      disc.emissiveIntensity = 0.45 + pulse * 0.6;
       ring.opacity = 0.6 + pulse * 0.4;
+      halo.opacity = 0.06 + pulse * 0.12;
     } else {
-      disc.emissiveIntensity = 0.25;
       ring.opacity = 0.55;
+      halo.opacity = 0.06;
     }
   });
 
   return (
     <group>
-      <mesh position={[0, BASE_HEIGHT / 2, 0]} material={disc} castShadow receiveShadow>
-        <cylinderGeometry args={[BASE_RADIUS * 0.9, BASE_RADIUS, BASE_HEIGHT, 32]} />
+      <mesh position={[0, 0.001, 0]} rotation={[-Math.PI / 2, 0, 0]} material={halo}>
+        <ringGeometry args={[BASE_RADIUS * 0.78, BASE_RADIUS, 48]} />
       </mesh>
-      <mesh position={[0, BASE_HEIGHT + 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} material={ring}>
-        <ringGeometry args={[BASE_RADIUS * 0.62, BASE_RADIUS * 0.82, 32]} />
+      <mesh position={[0, 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} material={ring}>
+        <ringGeometry args={[BASE_RADIUS * 0.90, BASE_RADIUS * 0.96, 48]} />
       </mesh>
     </group>
   );

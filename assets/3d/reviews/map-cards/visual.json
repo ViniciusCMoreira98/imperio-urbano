@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 1000
+      },
+      "states": 27,
+      "cards": 16,
+      "selectedTile": 0,
+      "noHorizontalOverflow": true,
+      "canvases": [
+        {
+          "name": "Mapa decorativo do Brasil com 27 UFs",
+          "width": 1024,
+          "height": 1049,
+          "bytes": 4296704
+        },
+        {
+          "name": "Verso de Eventos",
+          "width": 512,
+          "height": 640,
+          "bytes": 1310720
+        }
+      ],
+      "errors": [],
+      "apiCalls": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 1000
+      },
+      "states": 27,
+      "cards": 16,
+      "selectedTile": 0,
+      "noHorizontalOverflow": true,
+      "canvases": [
+        {
+          "name": "Mapa decorativo do Brasil com 27 UFs",
+          "width": 1024,
+          "height": 1049,
+          "bytes": 4296704
+        },
+        {
+          "name": "Verso de Eventos",
+          "width": 512,
+          "height": 640,
+          "bytes": 1310720
+        }
+      ],
+      "errors": [],
+      "apiCalls": []
+    }
+  ],
+  "hardwareBenchmark": false
+}

@@ -6,7 +6,8 @@ import assert from 'node:assert/strict';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const restPose = process.env.ASSET_QA_REVIEW === 'rest-pose';
-const output = new URL(restPose ? '../../assets/3d/reviews/rest-pose/' : '../../assets/3d/reviews/manifest-integration/', import.meta.url);
+const lightRing = process.env.ASSET_QA_REVIEW === 'light-ring';
+const output = new URL(lightRing ? '../../assets/3d/reviews/light-ring/' : restPose ? '../../assets/3d/reviews/rest-pose/' : '../../assets/3d/reviews/manifest-integration/', import.meta.url);
 const manifest = JSON.parse(await readFile(new URL('../../apps/web/src/avatars/characters.json', import.meta.url)));
 const asset = manifest.characters.find(c => c.avatarId === 'avatar-3');
 const reserve = manifest.characters.find(c => c.id === manifest.fallback);
@@ -22,11 +23,11 @@ try {
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
     page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
-    await page.goto('http://127.0.0.1:4175/scripts/assets/manifest-preview/');
-    await page.waitForFunction(() => window.manifestQA?.loaded, null, { timeout: 45000 });
+    await page.goto('http://127.0.0.1:4175/scripts/assets/manifest-preview/', { waitUntil: 'commit', timeout: 60000 });
+    await page.waitForFunction(() => window.manifestQA?.loaded, null, { timeout: 60000 });
     const loaded = await page.evaluate(() => window.manifestQA);
     assert.equal(loaded.modelId, 'steampunk-brasil-v01-textured');
-    assert.ok(loaded.instances.every(i => Math.abs(i.minY - .1) < .002 && Math.abs(i.height - .86) < .01));
+    assert.ok(loaded.instances.every(i => Math.abs(i.minY - .1) < .002 && Math.abs(i.height - .8) < .01));
     assert.ok(loaded.instances.every(i => i.meshes.some(m => m.triangles === 11900)));
     if (restPose) assert.ok(loaded.instances.every(i => i.width <= .51));
     await page.getByRole('button', { name: 'Solicitar caminhada' }).click();
@@ -39,6 +40,16 @@ try {
     assert.deepEqual(errors, []);
     await page.screenshot({ path: fileURLToPath(new URL(`manifest-${viewport.width}.png`, output)), fullPage: true });
     checks.push({ viewport, ...loaded, errors, avatarSwitchPassed: true, missingWalkClipHandled: true });
+    if (lightRing) {
+      await page.goto('http://127.0.0.1:4175/scripts/assets/manifest-preview/?extra-colors=1', { waitUntil: 'commit', timeout: 60000 });
+      await page.waitForFunction(() => window.manifestQA?.loaded, null, { timeout: 60000 });
+      const extra = await page.evaluate(() => window.manifestQA);
+      assert.ok(extra.colors.includes('#9b5de5') && extra.colors.includes('#f28c28'));
+      assert.ok(extra.instances.every(i => Math.abs(i.minY - .1) < .002 && Math.abs(i.height - .8) < .01));
+      assert.deepEqual(errors, []);
+      await page.screenshot({ path: fileURLToPath(new URL(`extra-colors-${viewport.width}.png`, output)), fullPage: true });
+      checks.push({ viewport, ...extra, errors, additionalPalette: true });
+    }
     await page.close();
   }
   const fallbackPage = await browser.newPage();
@@ -47,7 +58,7 @@ try {
   fallbackPage.on('response', r => { if (r.url().endsWith(reserve.file) && r.ok()) reserveLoaded = true; });
   fallbackPage.on('console', msg => { if (msg.type() === 'warning') warnings.push(msg.text()); });
   await fallbackPage.route(`**${asset.file}`, route => route.fulfill({ status: 404, body: 'Missing for fallback test' }));
-  await fallbackPage.goto('http://127.0.0.1:4175/scripts/assets/manifest-preview/');
+  await fallbackPage.goto('http://127.0.0.1:4175/scripts/assets/manifest-preview/', { waitUntil: 'commit', timeout: 60000 });
   await fallbackPage.waitForFunction(() => window.manifestQA?.loaded, null, { timeout: 30000 });
   assert.equal(reserveLoaded, true);
   assert.ok(warnings.some(w => w.includes('usando o reserva')));

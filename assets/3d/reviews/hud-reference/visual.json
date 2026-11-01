@@ -1,0 +1,36 @@
+{
+  "mockedWebSocket": true,
+  "realBackend": false,
+  "checks": [
+    {
+      "viewport": {
+        "width": 1671,
+        "height": 941
+      },
+      "officialDicePreserved": true,
+      "nullDiceHidden": true,
+      "rollCommandUnchanged": true,
+      "otherTurnNoRoll": true,
+      "propertyClose": true,
+      "keyboardRotation": true,
+      "fitsViewport": true,
+      "errors": [],
+      "apiCalls": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "officialDicePreserved": true,
+      "nullDiceHidden": true,
+      "rollCommandUnchanged": true,
+      "otherTurnNoRoll": true,
+      "propertyClose": true,
+      "keyboardRotation": true,
+      "fitsViewport": true,
+      "errors": [],
+      "apiCalls": []
+    }
+  ]
+}
