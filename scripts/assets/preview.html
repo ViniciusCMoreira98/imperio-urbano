@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Império Urbano — avaliação Meshy</title>
+<style>
+body{margin:0;background:#101628;color:#f4f1ff;font:16px system-ui}main{position:absolute;top:20px;left:24px;max-width:380px;pointer-events:none}h1{font-size:22px;margin:0 0 8px}p{line-height:1.45}canvas{display:block}#state{color:#c4afff}footer{position:absolute;bottom:18px;left:24px;font-size:14px;color:#c2cada}
+main,footer{z-index:1}
+</style>
+<main><h1>Império Urbano · Prévia Meshy</h1><p>Personagem em avaliação. Esta prévia experimental está separada da partida.</p><p id="state">Carregando…</p></main>
+<footer>Arraste para girar · role para aproximar · prévia local, sem integração à partida</footer>
+<script type="importmap">{"imports":{"three":"/vendor/build/three.module.js","three/addons/":"/vendor/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {clone} from 'three/addons/utils/SkeletonUtils.js';
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.85;
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));document.body.append(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#101628');
+const camera=new THREE.PerspectiveCamera(35,1,.01,100);camera.position.set(1.1,1.0,2.3);
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,.5,0);controls.update();
+scene.add(new THREE.HemisphereLight(0xc9dcff,0x5d426d,3));
+const light=new THREE.DirectionalLight(0xffdfbd,4);light.position.set(2,3,4);scene.add(light);
+const base=new THREE.Mesh(new THREE.CylinderGeometry(.25,.27,.06,48),new THREE.MeshStandardMaterial({color:0x403557}));base.position.y=.03;scene.add(base);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(.24,.009,8,64),new THREE.MeshBasicMaterial({color:0xb967ff}));ring.rotation.x=Math.PI/2;ring.position.y=.065;scene.add(ring);
+window.assetQA={loaded:false,errors:[]};
+try{
+ const gltf=await new GLTFLoader().loadAsync('/model.glb');
+ const model=clone(gltf.scene);
+ const originalBounds=new THREE.Box3().setFromObject(model),originalSize=originalBounds.getSize(new THREE.Vector3()),center=originalBounds.getCenter(new THREE.Vector3());
+ const normalized=new THREE.Group();normalized.add(model);const factor=1/Math.max(originalSize.y,.001);normalized.scale.setScalar(factor);normalized.position.set(-center.x*factor,-originalBounds.min.y*factor,-center.z*factor);
+ const bounds=new THREE.Box3().setFromObject(normalized),size=bounds.getSize(new THREE.Vector3());normalized.position.y+=.06;scene.add(normalized);
+ const textures=new Set();let skinnedMeshes=0;model.traverse(o=>{if(o.isSkinnedMesh)skinnedMeshes++;for(const m of (Array.isArray(o.material)?o.material:[o.material]))if(m)for(const value of Object.values(m))if(value?.isTexture)textures.add(value);});
+ window.assetQA={loaded:true,threeRevision:THREE.REVISION,textures:textures.size,textureSizes:[...textures].map(t=>[t.image.width,t.image.height]),skinnedMeshes,animations:gltf.animations.map(a=>a.name),bounds:{min:bounds.min.toArray(),max:bounds.max.toArray()},height:size.y,cloneSucceeded:true,errors:[]};
+ document.querySelector('#state').textContent=`Modelo carregado · ${textures.size} texturas · ${gltf.animations.length} animações`;
+}catch(error){window.assetQA.errors.push(String(error));document.querySelector('#state').textContent='Falha ao carregar a prévia.';}
+function resize(){const small=innerWidth<640;const height=small?Math.max(200,innerHeight-290):innerHeight;renderer.domElement.style.position='absolute';renderer.domElement.style.top=small?'210px':'0';renderer.setSize(innerWidth,height);camera.aspect=innerWidth/height;camera.updateProjectionMatrix();}addEventListener('resize',resize);resize();
+renderer.setAnimationLoop(()=>renderer.render(scene,camera));
+</script>
+</html>

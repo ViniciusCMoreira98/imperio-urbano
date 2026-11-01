@@ -55,7 +55,7 @@ test('CLI lista catálogo e recusa ID inválido sem rede', () => {
   const cli = fileURLToPath(new URL('./pipeline.mjs', import.meta.url));
   const listed = spawnSync(process.execPath, [cli, 'catalog'], { encoding: 'utf8' });
   assert.equal(listed.status, 0, listed.stderr);
-  assert.equal(JSON.parse(listed.stdout).models.length, 4);
+  assert.deepEqual(JSON.parse(listed.stdout), JSON.parse(readFileSync(new URL('../../assets/3d/catalog.json', import.meta.url))));
   const rejected = spawnSync(process.execPath, [cli, 'download', '../invalid'], { encoding: 'utf8' });
   assert.equal(rejected.status, 1);
   assert.equal(rejected.stdout, '');

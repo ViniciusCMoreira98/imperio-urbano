@@ -1,0 +1,22 @@
+{
+  "blenderVersion": "5.2.3 LTS",
+  "sourceBoundsBlenderZUp": {
+    "min": [
+      -0.4090830087661743,
+      -0.27346599102020264,
+      -0.9516199827194214
+    ],
+    "max": [
+      0.40912699699401855,
+      0.27507200837135315,
+      0.949999988079071
+    ]
+  },
+  "normalizationHeightMeters": 1,
+  "sourceFaces": 2322916,
+  "reducedTriangles": 10000,
+  "staticPreviewOnly": true,
+  "approvedForRuntime": false,
+  "rig": false,
+  "animations": []
+}

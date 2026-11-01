@@ -77,3 +77,6 @@ Dois navegadores criam a sala, entram pelo código, iniciam a partida e jogam um
 5. [Direção visual](docs/05-direcao-visual.md)
 6. [Guideline de assets 3D](docs/06-guideline-assets-3d.md)
 7. [Meshy: catálogo, pipeline e padrões de otimização](docs/07-meshy-pipeline.md)
+8. [Meshy: avaliação do primeiro modelo (Fase C)](docs/08-meshy-primeiro-modelo.md)
+9. [Meshy: versão texturizada e proposta de animação](docs/09-meshy-versao-texturizada.md)
+10. [Meshy: recriação aprovada e restauração de credenciais](docs/10-meshy-recriacao-aprovada.md)

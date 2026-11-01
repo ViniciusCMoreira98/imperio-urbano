@@ -1,5 +1,7 @@
 # 07 — Meshy: catálogo e pipeline de assets (Fase B)
 
+Atualização: Fase B registrada no commit `d7ff3d8`. A Fase C foi posteriormente autorizada; resultados em [08 — avaliação do primeiro modelo](08-meshy-primeiro-modelo.md). O restante deste registro descreve a entrega original da Fase B.
+
 ## Estado e escopo
 
 Fase B preparada em 2026-10-31. Fase C aguarda aprovação explícita. Registro da Fase A consultado em `C:/Users/Plust/.codex/integrations/meshy/SETUP.md` (o caminho informado sem a barra antes de `.codex` não existia). `RTK.md` não foi localizado no projeto nem nos diretórios ancestrais; nenhuma instrução dele foi presumida.
@@ -30,7 +32,7 @@ Executar na raiz desta worktree:
 
 ```powershell
 node scripts/assets/pipeline.mjs catalog
-node --test scripts/assets/glb.test.mjs
+node --test scripts/assets/glb.node-test.mjs
 node scripts/assets/pipeline.mjs validate steampunk-girl-no-base-v2 C:/caminho/modelo.glb
 node scripts/assets/pipeline.mjs import steampunk-girl-no-base-v2 C:/caminho/modelo.glb
 ```
@@ -73,6 +75,6 @@ Após aprovação: obter o GLB existente gratuitamente, importar, validar, revis
 
 ## Verificação da entrega
 
-`node --test scripts/assets/glb.test.mjs`: 7 testes aprovados, cobrindo GLB mínimo, assinatura/truncamento/chunks, recursos externos, bufferViews, orçamento/extensões, allowlist de download, catálogo e ID inválido no CLI. `git diff --check`: sem erros. O GLB Kenney existente foi recusado corretamente por usar textura externa; não foi convertido nem modificado. A inspeção deste arquivo não comprova compatibilidade dos modelos Meshy. O download remoto, a otimização, a validação Khronos e a prévia no navegador ficam pendentes para o primeiro modelo na Fase C.
+`node --test scripts/assets/glb.node-test.mjs`: 7 testes aprovados, cobrindo GLB mínimo, assinatura/truncamento/chunks, recursos externos, bufferViews, orçamento/extensões, allowlist de download, catálogo e ID inválido no CLI. `git diff --check`: sem erros. O GLB Kenney existente foi recusado corretamente por usar textura externa; não foi convertido nem modificado. A inspeção deste arquivo não comprova compatibilidade dos modelos Meshy. O download remoto, a otimização, a validação Khronos e a prévia no navegador ficam pendentes para o primeiro modelo na Fase C.
 
 A exclusão local `/.worktrees/` foi adicionada em `.git/info/exclude` da área original, e a entrada auxiliar da worktree foi retirada do índice sem apagar arquivos. Isso evita incorporar a worktree como submódulo; as três alterações existentes do Claude permanecem preservadas. Ao reunir esta entrega com `develop`, conservar também a exclusão de `variable.env` já existente na alteração local do Claude.

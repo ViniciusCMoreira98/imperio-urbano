@@ -2,7 +2,11 @@
   "schemaVersion": 1,
   "reviewedOn": "2026-10-31",
   "provider": "meshy",
-  "scope": ["text-to-3d", "image-to-3d", "multi-image-to-3d"],
+  "scope": [
+    "text-to-3d",
+    "image-to-3d",
+    "multi-image-to-3d"
+  ],
   "artReference": "docs/referencias/visual-alvo.webp",
   "models": [
     {
@@ -11,16 +15,45 @@
       "taskType": "image-to-3d",
       "sourceName": "steampunk_girl_no_base_model",
       "category": "characters",
-      "formats": ["glb"],
-      "status": "candidate",
+      "formats": [
+        "glb"
+      ],
+      "status": "downloaded",
       "proposedForPhaseC": true,
       "reason": "Nome sugere personagem sem base, adequado para avaliar a base colorida separada do jogo. Aparência e geometria ainda não inspecionadas.",
       "license": "pending-verification",
-      "sourceSha256": null,
+      "sourceSha256": "bc942e966436fcb9307e39aa7a9d08ca3280adbf9c23aaca36f83bc85a1f1e23",
       "optimizedPath": null,
-      "validationReport": null,
-      "rig": "unknown",
-      "animations": null
+      "validationReport": "assets/3d/reviews/phase-c/khronos-source.json",
+      "rig": "absent",
+      "animations": [],
+      "sourcePath": "assets/3d/source/steampunk-girl-no-base-v2-bc942e966436.glb",
+      "evaluation": {
+        "phase": "C",
+        "date": "2026-10-31",
+        "source": {
+          "bytes": 55743356,
+          "triangles": 2322916,
+          "textures": 0,
+          "khronosErrors": 0,
+          "khronosWarnings": 0
+        },
+        "staticPreview": {
+          "path": "assets/3d/optimized/characters/steampunk-girl-no-base-v2-static-preview-v01.glb",
+          "sha256": "3eedefa4545c33d4c8eeb2b6a599399099a321b7e18e7d4d594f7360f536c87f",
+          "bytes": 173520,
+          "triangles": 10000,
+          "khronosErrors": 0,
+          "khronosWarnings": 0
+        },
+        "approvedForRuntime": false,
+        "blockers": [
+          "Sem texturas, rig e clips",
+          "Detalhes perdidos na decimação experimental",
+          "Licença sem evidência",
+          "Desempenho em aparelho móvel não medido"
+        ]
+      }
     },
     {
       "id": "steampunk-girl-no-base-v1",
@@ -28,14 +61,67 @@
       "taskType": "image-to-3d",
       "sourceName": "steampunk_girl_no_base_model",
       "category": "characters",
-      "formats": ["glb"],
-      "status": "candidate",
+      "formats": [
+        "glb"
+      ],
+      "status": "downloaded",
       "license": "pending-verification",
-      "sourceSha256": null,
+      "sourceSha256": "090c1c21b99cfbe0263cc1404e65b1b8959c4c119c7da7b6b2533c28eb31abd6",
       "optimizedPath": null,
-      "validationReport": null,
-      "rig": "unknown",
-      "animations": null
+      "validationReport": "assets/3d/reviews/textured-review/khronos-source.json",
+      "rig": "absent",
+      "animations": [],
+      "sourcePath": "assets/3d/source/steampunk-girl-no-base-v1-090c1c21b99c.glb",
+      "evaluation": {
+        "phase": "C-follow-up",
+        "source": {
+          "bytes": 88642052,
+          "triangles": 2322916,
+          "meshPrimitives": 1,
+          "materials": 1,
+          "textures": 3,
+          "images": 3,
+          "skins": 0,
+          "animations": []
+        },
+        "approvedForRuntime": false,
+        "recommendedForRigTest": false,
+        "staticPreview": {
+          "path": "assets/3d/optimized/characters/steampunk-girl-no-base-v1-textured-preview-v02.glb",
+          "sha256": "7fef272982154b03363c28dd473ec7b717b38e5656fe5dc7077d036ccba544bd",
+          "bytes": 1074928,
+          "triangles": 10000,
+          "meshPrimitives": 1,
+          "materials": 1,
+          "textures": 3,
+          "images": 3,
+          "skins": 0,
+          "animations": [],
+          "khronosErrors": 0,
+          "khronosWarnings": 0
+        },
+        "pending": [
+          "Rig e animações",
+          "Licença",
+          "Benchmark móvel real"
+        ],
+        "previousPreviewArtisticallyAccepted": false,
+        "qualityReference": {
+          "path": "assets/3d/reviews/quality-review/textured-quality-v03.glb",
+          "sha256": "72ac7ee38170abed58329356689006442e77658e15c43f66eb90213198c0d501",
+          "metrics": {
+            "bytes": 3386788,
+            "triangles": 50000,
+            "meshPrimitives": 1,
+            "materials": 1,
+            "textures": 1,
+            "images": 1,
+            "skins": 0,
+            "animations": []
+          },
+          "approvedForRuntime": false
+        }
+      }
     },
     {
       "id": "steampunk-girl-turnaround-v2",
@@ -43,14 +129,31 @@
       "taskType": "multi-image-to-3d",
       "sourceName": "steampunk_girl_turnaround_model",
       "category": "characters",
-      "formats": ["glb"],
-      "status": "candidate",
+      "formats": [
+        "glb"
+      ],
+      "status": "downloaded",
       "license": "pending-verification",
-      "sourceSha256": null,
+      "sourceSha256": "699508aeaab17073b7386183e310d1c401a0870bd7a101c77e6f91c4a8b1b316",
       "optimizedPath": null,
       "validationReport": null,
-      "rig": "unknown",
-      "animations": null
+      "rig": "absent",
+      "animations": [],
+      "sourcePath": "assets/3d/source/steampunk-girl-turnaround-v2-699508aeaab1.glb",
+      "evaluation": {
+        "phase": "C-follow-up",
+        "source": {
+          "bytes": 74674604,
+          "triangles": 3111924,
+          "meshPrimitives": 1,
+          "materials": 1,
+          "textures": 0,
+          "images": 0,
+          "skins": 0,
+          "animations": []
+        },
+        "approvedForRuntime": false
+      }
     },
     {
       "id": "steampunk-girl-turnaround-v1",
@@ -58,14 +161,148 @@
       "taskType": "multi-image-to-3d",
       "sourceName": "steampunk_girl_turnaround_model",
       "category": "characters",
-      "formats": ["glb"],
+      "formats": [
+        "glb"
+      ],
       "status": "candidate",
       "license": "pending-verification",
       "sourceSha256": null,
       "optimizedPath": null,
       "validationReport": null,
       "rig": "unknown",
-      "animations": null
+      "animations": null,
+      "downloadStatus": "attempt-failed-no-file-saved"
+    },
+    {
+      "id": "steampunk-brasil-v01",
+      "taskId": "01a1951d-cac3-724c-b2a6-5cfdc969d18f",
+      "taskType": "text-to-3d",
+      "sourceName": "steampunk-brasil-v01-preview",
+      "category": "characters",
+      "formats": [
+        "glb"
+      ],
+      "status": "downloaded",
+      "license": "pending-verification",
+      "sourceSha256": "cd6199d107d0fccef1b744713a583db177eec410680db254964f234f98546100",
+      "optimizedPath": null,
+      "validationReport": "assets/3d/reviews/steampunk-brasil-v01/khronos.json",
+      "rig": "absent",
+      "animations": [],
+      "generation": {
+        "aiModel": "meshy-7.1",
+        "previewCredits": 20,
+        "approvedBudget": 35,
+        "rigApproved": false,
+        "requestPath": "assets/3d/requests/steampunk-brasil-v01-preview.json",
+        "balanceBefore": 1030,
+        "balanceAfter": 1010,
+        "remainingBudget": 15,
+        "textureCreditsSpent": 0,
+        "remeshCreditsSpent": 0
+      },
+      "sourcePath": "assets/3d/source/steampunk-brasil-v01-cd6199d107d0.glb",
+      "evaluation": {
+        "metrics": {
+          "bytes": 682920,
+          "triangles": 12194,
+          "meshPrimitives": 1,
+          "materials": 0,
+          "textures": 0,
+          "images": 0,
+          "skins": 0,
+          "animations": []
+        },
+        "approvedForRuntime": false,
+        "artisticApproval": "geometry-approved-by-user",
+        "khronosErrors": 0,
+        "khronosWarnings": 0,
+        "screeningPassed": false,
+        "pending": [
+          "Aprovação visual antes de texturizar",
+          "194 triângulos acima do limite atual de 12000",
+          "Texturas",
+          "Rig/animações",
+          "Licença e desempenho móvel"
+        ]
+      }
+    },
+    {
+      "id": "steampunk-brasil-v01-textured",
+      "taskId": "01a19523-8666-73a6-b5b8-2e223bae5555",
+      "taskType": "text-to-3d",
+      "sourceName": "steampunk-brasil-v01-refine",
+      "category": "characters",
+      "formats": [
+        "glb"
+      ],
+      "status": "downloaded",
+      "license": "pending-verification",
+      "sourceSha256": "e4b1de4f65a93fe6e88e748aaa6ade30fca21383e74023b2849480fa7f67931b",
+      "optimizedPath": null,
+      "validationReport": "assets/3d/reviews/steampunk-brasil-v01-textured/khronos-web.json",
+      "rig": "absent",
+      "animations": [],
+      "generation": {
+        "aiModel": "meshy-7.1",
+        "parentTaskId": "01a1951d-cac3-724c-b2a6-5cfdc969d18f",
+        "textureCredits": 10,
+        "totalCredits": 30,
+        "approvedBudget": 35,
+        "rigApproved": false,
+        "requestPath": "assets/3d/requests/steampunk-brasil-v01-refine.json",
+        "balanceBeforeTexturing": 1010,
+        "balanceAfterTexturing": 1000,
+        "remainingOptimizationBudget": 5,
+        "rigCreditsSpent": 0,
+        "remeshCreditsSpent": 0
+      },
+      "sourcePath": "assets/3d/source/steampunk-brasil-v01-textured-e4b1de4f65a9.glb",
+      "evaluation": {
+        "approvedForRuntime": false,
+        "artisticApproval": "texturing-executed-after-geometry-approval",
+        "sourceMetrics": {
+          "bytes": 9833664,
+          "triangles": 12194,
+          "meshPrimitives": 1,
+          "materials": 1,
+          "textures": 1,
+          "images": 1,
+          "skins": 0,
+          "animations": []
+        },
+        "webCandidate": {
+          "path": "assets/3d/optimized/characters/steampunk-brasil-v01-textured-web-v01.glb",
+          "sha256": "ba12572c5e010a46860e81b5f6380f222676774119e890c1ab42cf68d076e346",
+          "metrics": {
+            "bytes": 2026948,
+            "triangles": 12194,
+            "meshPrimitives": 1,
+            "materials": 1,
+            "textures": 1,
+            "images": 1,
+            "skins": 0,
+            "animations": []
+          },
+          "textureSize": [
+            4096,
+            4096
+          ],
+          "jpegQuality": 90
+        },
+        "khronosErrors": 0,
+        "khronosWarnings": 0,
+        "browserChecks": [
+          "1280x900",
+          "390x844"
+        ],
+        "pending": [
+          "194 triângulos acima do limite de 12000",
+          "Textura 4K acima do limite inicial de 1024; sem aprovação de orçamento GPU",
+          "Rig e animações",
+          "Licença e benchmark móvel real"
+        ]
+      }
     }
   ]
 }
