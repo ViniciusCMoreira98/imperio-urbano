@@ -1,0 +1,12 @@
+{
+  "blenderVersion": "5.2.3 LTS",
+  "armRotationDegrees": 60,
+  "triangles": 11900,
+  "sourceVertices": 18890,
+  "modifiedVertices": 2339,
+  "unchangedProtectedVertices": 16547,
+  "textureReencoded": false,
+  "temporaryRigAppliedAndRemoved": true,
+  "exportedRig": false,
+  "animations": []
+}

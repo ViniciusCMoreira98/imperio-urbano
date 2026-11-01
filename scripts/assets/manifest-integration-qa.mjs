@@ -1,11 +1,15 @@
 import { createServer } from 'vite';
 import { chromium } from '@playwright/test';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const output = new URL('../../assets/3d/reviews/manifest-integration/', import.meta.url);
+const restPose = process.env.ASSET_QA_REVIEW === 'rest-pose';
+const output = new URL(restPose ? '../../assets/3d/reviews/rest-pose/' : '../../assets/3d/reviews/manifest-integration/', import.meta.url);
+const manifest = JSON.parse(await readFile(new URL('../../apps/web/src/avatars/characters.json', import.meta.url)));
+const asset = manifest.characters.find(c => c.avatarId === 'avatar-3');
+const reserve = manifest.characters.find(c => c.id === manifest.fallback);
 await mkdir(output, { recursive: true });
 const server = await createServer({ root, configFile: false, esbuild: { jsx: 'automatic' }, publicDir: fileURLToPath(new URL('../../apps/web/public/', import.meta.url)), server: { host: '127.0.0.1', port: 4175, strictPort: true }, optimizeDeps: { include: ['react', 'react-dom/client', 'three', '@react-three/fiber', '@react-three/drei'] } });
 await server.listen();
@@ -24,6 +28,7 @@ try {
     assert.equal(loaded.modelId, 'steampunk-brasil-v01-textured');
     assert.ok(loaded.instances.every(i => Math.abs(i.minY - .1) < .002 && Math.abs(i.height - .86) < .01));
     assert.ok(loaded.instances.every(i => i.meshes.some(m => m.triangles === 11900)));
+    if (restPose) assert.ok(loaded.instances.every(i => i.width <= .51));
     await page.getByRole('button', { name: 'Solicitar caminhada' }).click();
     await page.waitForFunction(() => window.manifestQA?.motion === 'walk');
     await page.getByRole('combobox', { name: 'Avatar' }).selectOption('avatar-2');
@@ -39,9 +44,9 @@ try {
   const fallbackPage = await browser.newPage();
   let reserveLoaded = false;
   const warnings = [];
-  fallbackPage.on('response', r => { if (r.url().endsWith('/character-male-a.glb') && r.ok()) reserveLoaded = true; });
+  fallbackPage.on('response', r => { if (r.url().endsWith(reserve.file) && r.ok()) reserveLoaded = true; });
   fallbackPage.on('console', msg => { if (msg.type() === 'warning') warnings.push(msg.text()); });
-  await fallbackPage.route('**/steampunk-brasil-v01.glb', route => route.fulfill({ status: 404, body: 'Missing for fallback test' }));
+  await fallbackPage.route(`**${asset.file}`, route => route.fulfill({ status: 404, body: 'Missing for fallback test' }));
   await fallbackPage.goto('http://127.0.0.1:4175/scripts/assets/manifest-preview/');
   await fallbackPage.waitForFunction(() => window.manifestQA?.loaded, null, { timeout: 30000 });
   assert.equal(reserveLoaded, true);

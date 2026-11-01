@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "sha256": "21636805b6a0f2d9ee2c788343aa5db362f58e13fccfd851f11185b361ca40bd",
+  "screeningPassed": true,
+  "approvedForRuntime": false,
+  "metrics": {
+    "bytes": 2020832,
+    "triangles": 11900,
+    "meshPrimitives": 1,
+    "materials": 1,
+    "textures": 1,
+    "images": 1,
+    "skins": 0,
+    "animations": []
+  },
+  "errors": [],
+  "pendingChecks": [
+    "Khronos glTF Validator sem erros",
+    "Texturas até 1024px e memória GPU",
+    "Geometria em instâncias, escala, pivô e orientação",
+    "Licença e revisão artística",
+    "Rig e clips idle/walk/celebrate/defeat",
+    "Carga no navegador e desempenho mobile"
+  ]
+}
