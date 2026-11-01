@@ -1,0 +1,268 @@
+{
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "avatarId": "avatar-3",
+      "modelId": "steampunk-brasil-v01-textured",
+      "motion": "idle",
+      "colors": [
+        "#2e9e5b",
+        "#f2c230",
+        "#3d7dd8",
+        "#e63946"
+      ],
+      "instances": [
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        }
+      ],
+      "loaded": true,
+      "errors": [],
+      "avatarSwitchPassed": true,
+      "missingWalkClipHandled": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "avatarId": "avatar-3",
+      "modelId": "steampunk-brasil-v01-textured",
+      "motion": "idle",
+      "colors": [
+        "#9b5de5",
+        "#f28c28",
+        "#3d7dd8",
+        "#e63946"
+      ],
+      "instances": [
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        }
+      ],
+      "loaded": true,
+      "errors": [],
+      "additionalPalette": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 1000
+      },
+      "avatarId": "avatar-3",
+      "modelId": "steampunk-brasil-v01-textured",
+      "motion": "idle",
+      "colors": [
+        "#2e9e5b",
+        "#f2c230",
+        "#3d7dd8",
+        "#e63946"
+      ],
+      "instances": [
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        }
+      ],
+      "loaded": true,
+      "errors": [],
+      "avatarSwitchPassed": true,
+      "missingWalkClipHandled": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 1000
+      },
+      "avatarId": "avatar-3",
+      "modelId": "steampunk-brasil-v01-textured",
+      "motion": "idle",
+      "colors": [
+        "#9b5de5",
+        "#f28c28",
+        "#3d7dd8",
+        "#e63946"
+      ],
+      "instances": [
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        },
+        {
+          "minY": 0.10000000000000003,
+          "height": 0.8,
+          "width": 0.5,
+          "meshes": [
+            {
+              "name": "Mesh_0",
+              "triangles": 11900
+            }
+          ]
+        }
+      ],
+      "loaded": true,
+      "errors": [],
+      "additionalPalette": true
+    }
+  ],
+  "fallback": {
+    "passed": true,
+    "reserveLoaded": true,
+    "expectedWarnings": 10
+  },
+  "mobileHardwareBenchmark": false
+}

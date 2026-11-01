@@ -50,7 +50,7 @@ A espessura das casas (`TILE_HEIGHT`) mora em `layout.ts`; `Tile.tsx` a importa 
 
 ## 3. Base iluminada do jogador (implementado na Etapa 3)
 
-`avatars/PlayerBase.tsx`: `PlayerBase { color, active }` (disco + anel; pulsa na vez do jogador) e `ActiveMarker { color, height }` (seta sobre a cabeça de quem joga). Independentes do GLB; a base fica na superfície da casa e não sobe no salto. **Posição, cor e estado ativo: Claude. Aparência (material, brilho, forma): Codex**, sem mudar as props e mantendo `BASE_HEIGHT` como a altura onde o personagem pisa.
+`avatars/PlayerBase.tsx`: `PlayerBase { color, active }` (somente anel de luz, sem disco/pedestal; pulsa na vez do jogador) e `ActiveMarker { color, height }` (seta sobre a cabeça de quem joga). Independentes do GLB; o anel fica na superfície da casa e não sobe no salto. A pedido do usuário, `BASE_HEIGHT = 0`: os pés apoiam diretamente na superfície da casa, sem uma plataforma física. **Posição, cor e estado ativo: Claude. Aparência (material, brilho, forma): Codex**, sem mudar as props e mantendo `BASE_HEIGHT` como a altura onde o personagem pisa. O chão circular da prévia de seleção também foi removido; a engenharia mantém os deslocamentos/saltos relativos à altura de apoio.
 
 ## 4. Cor do uniforme — proposta para a engenharia
 
