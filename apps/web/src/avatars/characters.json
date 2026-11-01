@@ -25,8 +25,19 @@
       "license": "CC0 (Kenney Mini Characters)"
     },
     {
-      "id": "kenney-female-b",
+      "id": "steampunk-brasil-v01-textured",
       "avatarId": "avatar-3",
+      "file": "/models/characters/steampunk-brasil-v01.glb",
+      "height": 0.8,
+      "rotationY": 0,
+      "offset": [0, 0, 0],
+      "idleClip": null,
+      "status": "candidate",
+      "license": "Gerado no Meshy 7.1 para o projeto; termos de distribuição a confirmar"
+    },
+    {
+      "id": "kenney-female-b",
+      "avatarId": null,
       "file": "/models/characters/character-female-b.glb",
       "height": 0.8,
       "rotationY": 0,
