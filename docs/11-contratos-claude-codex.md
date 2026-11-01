@@ -54,7 +54,7 @@ A espessura das casas (`TILE_HEIGHT`) mora em `layout.ts`; `Tile.tsx` a importa 
 
 ## 4. Cor do uniforme — proposta para a engenharia
 
-**Arte (Codex):** máscara UV em PNG, sem alterar a textura original, e dados de referência por asset. **Engenharia (Claude):** campos opcionais do manifesto, carregamento da máscara e aplicação da cor recebida pelo avatar. A proposta não está implementada no carregador atual.
+**Arte (Codex):** máscara UV em PNG, sem alterar a textura original, e dados de referência por asset. **Engenharia (Claude):** campos opcionais do manifesto, carregamento da máscara e aplicação da cor recebida pelo avatar. Implementado pela engenharia: campo `uniform` no manifesto (tipo e validação em `characterManifest.ts`), aplicação em `apps/web/src/avatars/uniformTint.ts` (material próprio por cópia, cor por uniforme, texturas compartilhadas, cache intacto) e uso no tabuleiro e na prévia da sala.
 
 Campo proposto no manifesto: `uniform?: { mask: string; referenceLuminance: number; localYRange?: [number, number] }`. `mask` usa caminho público `/models/...png`; `referenceLuminance` é um número positivo no espaço linear. Na Luana, o material 0 é o único material; a máscara controla somente o casaco e suas mangas. Capacete, pele, cabelo, olhos, botas, luvas, bolsas, camisa e detalhes dourados devem preservar a cor original.
 
