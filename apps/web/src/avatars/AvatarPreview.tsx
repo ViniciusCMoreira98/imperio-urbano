@@ -1,4 +1,4 @@
-// Prévia 3D do avatar escolhido na sala de espera, balançando sobre um pedestal sem dar as costas.
+// Prévia 3D do avatar escolhido na sala de espera, balançando sem dar as costas, sem pedestal.
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Suspense, useRef } from 'react';
 import type { Group } from 'three';
@@ -31,10 +31,6 @@ export function AvatarPreview({ avatarId, color, label }: { avatarId: AvatarId; 
           <Suspense fallback={null}>
             <Turntable avatarId={avatarId} color={color} />
           </Suspense>
-          <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-            <circleGeometry args={[0.45, 32]} />
-            <meshStandardMaterial color="#1e293b" />
-          </mesh>
         </group>
       </Canvas>
     </div>
