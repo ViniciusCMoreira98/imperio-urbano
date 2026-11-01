@@ -1,0 +1,53 @@
+{
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "loaded": true,
+      "threeRevision": "187",
+      "animations": [],
+      "bounds": {
+        "min": [
+          -0.2156293419056965,
+          0.0002866387367248535,
+          -0.14184664978529327
+        ],
+        "max": [
+          0.21533180504502525,
+          1.0011297464370728,
+          0.14424572096322663
+        ]
+      },
+      "height": 1.000843107700348,
+      "cloneSucceeded": true,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "loaded": true,
+      "threeRevision": "187",
+      "animations": [],
+      "bounds": {
+        "min": [
+          -0.2156293419056965,
+          0.0002866387367248535,
+          -0.14184664978529327
+        ],
+        "max": [
+          0.21533180504502525,
+          1.0011297464370728,
+          0.14424572096322663
+        ]
+      },
+      "height": 1.000843107700348,
+      "cloneSucceeded": true,
+      "errors": []
+    }
+  ],
+  "mobileHardwareBenchmark": false
+}

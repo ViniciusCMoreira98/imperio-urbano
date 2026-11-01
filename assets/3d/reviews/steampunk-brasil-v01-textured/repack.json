@@ -1,0 +1,15 @@
+{
+  "blenderVersion": "5.2.3 LTS",
+  "triangles": 12194,
+  "textureSizes": [
+    {
+      "name": "Image_0",
+      "width": 4096,
+      "height": 4096
+    }
+  ],
+  "jpegQuality": 90,
+  "geometryDecimated": false,
+  "textureDownscaled": false,
+  "approvedForRuntime": false
+}

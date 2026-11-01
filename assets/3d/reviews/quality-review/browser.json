@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "loaded": true,
+      "threeRevision": "187",
+      "textures": 1,
+      "textureSizes": [
+        [
+          2048,
+          2048
+        ]
+      ],
+      "skinnedMeshes": 0,
+      "animations": [],
+      "bounds": {
+        "min": [
+          -0.2151562124490738,
+          0,
+          -0.1435433104634285
+        ],
+        "max": [
+          0.2151562124490738,
+          1.0007116794586182,
+          0.1435433104634285
+        ]
+      },
+      "height": 1.0007116794586182,
+      "cloneSucceeded": true,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "loaded": true,
+      "threeRevision": "187",
+      "textures": 1,
+      "textureSizes": [
+        [
+          2048,
+          2048
+        ]
+      ],
+      "skinnedMeshes": 0,
+      "animations": [],
+      "bounds": {
+        "min": [
+          -0.2151562124490738,
+          0,
+          -0.1435433104634285
+        ],
+        "max": [
+          0.2151562124490738,
+          1.0007116794586182,
+          0.1435433104634285
+        ]
+      },
+      "height": 1.0007116794586182,
+      "cloneSucceeded": true,
+      "errors": []
+    }
+  ],
+  "mobileHardwareBenchmark": false
+}

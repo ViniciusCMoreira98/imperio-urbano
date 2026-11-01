@@ -1,0 +1,13 @@
+{
+  "prompt": "Original adult female chibi steampunk explorer for a Brazilian casual board game, three-head-tall proportions, large readable face, big eyes, compact blonde twin curls formed as broad solid shapes, simple small top hat with goggles. Short fitted jacket, simple knee-length split skirt, visible separate legs, sturdy ankle boots, gloves. Clean cartoon silhouettes, rounded surfaces, broad garment panels, few large ornaments, no tiny lace, no thin floating parts, no attached props. Symmetric full-body T-pose, arms straight sideways, fingers relaxed and separated, feet apart, front facing +Z, neutral expression, flat soles on ground. Animation-friendly humanoid anatomy. Single character only, no base, no pedestal, no floor, no text, no scenery. Preserve face and hands in game-ready topology.",
+  "ai_model": "meshy-7.1",
+  "model_type": "standard",
+  "geometry_resolution": "standard",
+  "should_remesh": true,
+  "target_polycount": 12000,
+  "topology": "triangle",
+  "pose_mode": "t-pose",
+  "target_formats": ["glb"],
+  "origin_at": "bottom",
+  "response_format": "json"
+}
