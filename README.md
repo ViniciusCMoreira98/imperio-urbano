@@ -76,3 +76,4 @@ Dois navegadores criam a sala, entram pelo código, iniciam a partida e jogam um
 4. [Backlog](docs/04-backlog.md)
 5. [Direção visual](docs/05-direcao-visual.md)
 6. [Guideline de assets 3D](docs/06-guideline-assets-3d.md)
+7. [Meshy: catálogo, pipeline e padrões de otimização](docs/07-meshy-pipeline.md)

@@ -11,3 +11,13 @@ test-results/
 !.env.example
 .idea/
 *.log
+
+# Credenciais locais e arquivos intermediários do pipeline 3D
+variable.env
+.worktrees/
+assets/3d/source/*
+!assets/3d/source/.gitkeep
+assets/3d/staging/*
+!assets/3d/staging/.gitkeep
+assets/3d/reports/*
+!assets/3d/reports/.gitkeep

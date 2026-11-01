@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-10-31",
+  "provider": "meshy",
+  "scope": ["text-to-3d", "image-to-3d", "multi-image-to-3d"],
+  "artReference": "docs/referencias/visual-alvo.webp",
+  "models": [
+    {
+      "id": "steampunk-girl-no-base-v2",
+      "taskId": "af7d43b2-33d8-5397-b940-6e727f3f3c10",
+      "taskType": "image-to-3d",
+      "sourceName": "steampunk_girl_no_base_model",
+      "category": "characters",
+      "formats": ["glb"],
+      "status": "candidate",
+      "proposedForPhaseC": true,
+      "reason": "Nome sugere personagem sem base, adequado para avaliar a base colorida separada do jogo. Aparência e geometria ainda não inspecionadas.",
+      "license": "pending-verification",
+      "sourceSha256": null,
+      "optimizedPath": null,
+      "validationReport": null,
+      "rig": "unknown",
+      "animations": null
+    },
+    {
+      "id": "steampunk-girl-no-base-v1",
+      "taskId": "8260b211-f1f5-4631-b52a-af9c65a6bd23",
+      "taskType": "image-to-3d",
+      "sourceName": "steampunk_girl_no_base_model",
+      "category": "characters",
+      "formats": ["glb"],
+      "status": "candidate",
+      "license": "pending-verification",
+      "sourceSha256": null,
+      "optimizedPath": null,
+      "validationReport": null,
+      "rig": "unknown",
+      "animations": null
+    },
+    {
+      "id": "steampunk-girl-turnaround-v2",
+      "taskId": "9ce2306e-fb21-5d15-8080-77e74bd01a21",
+      "taskType": "multi-image-to-3d",
+      "sourceName": "steampunk_girl_turnaround_model",
+      "category": "characters",
+      "formats": ["glb"],
+      "status": "candidate",
+      "license": "pending-verification",
+      "sourceSha256": null,
+      "optimizedPath": null,
+      "validationReport": null,
+      "rig": "unknown",
+      "animations": null
+    },
+    {
+      "id": "steampunk-girl-turnaround-v1",
+      "taskId": "e1692657-446d-43d8-b2b2-a5c90dab3548",
+      "taskType": "multi-image-to-3d",
+      "sourceName": "steampunk_girl_turnaround_model",
+      "category": "characters",
+      "formats": ["glb"],
+      "status": "candidate",
+      "license": "pending-verification",
+      "sourceSha256": null,
+      "optimizedPath": null,
+      "validationReport": null,
+      "rig": "unknown",
+      "animations": null
+    }
+  ]
+}
