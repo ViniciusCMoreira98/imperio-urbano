@@ -4,6 +4,7 @@ import { Suspense, useRef } from 'react';
 import type { Group } from 'three';
 import type { AvatarId } from '@imperio/shared-types';
 import { AvatarFigure } from './AvatarFigure';
+import { BASE_HEIGHT, PlayerBase } from './PlayerBase';
 
 function Turntable({ avatarId, color }: { avatarId: AvatarId; color: string }) {
   const ref = useRef<Group>(null);
@@ -12,7 +13,10 @@ function Turntable({ avatarId, color }: { avatarId: AvatarId; color: string }) {
   });
   return (
     <group ref={ref}>
-      <AvatarFigure avatarId={avatarId} color={color} />
+      <PlayerBase color={color} active={false} />
+      <group position={[0, BASE_HEIGHT, 0]}>
+        <AvatarFigure avatarId={avatarId} />
+      </group>
     </group>
   );
 }

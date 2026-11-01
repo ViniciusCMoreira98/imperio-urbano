@@ -6,10 +6,11 @@ import { currentRent } from '../game/rules';
 import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { useBoardArt } from './boardArt';
-import type { TilePlacement } from './layout';
+import { TILE_HEIGHT, type TilePlacement } from './layout';
 import { createTileTexture } from './tileTexture';
 
-export const TILE_HEIGHT = 0.08;
+// A altura das casas mora em layout.ts (contrato com quem fica em cima delas).
+export { TILE_HEIGHT };
 const SELECTED_LIFT = 0.06;
 
 interface TileProps {

@@ -1,6 +1,7 @@
 // Peão com o personagem do jogador. Recebe a casa final vinda do servidor e anima até ela: anda casa a
 // casa num lance de dados (virado para onde vai); num salto só quando é viagem, carta ou ida ao Descanso.
-// Parado, fica de frente para a câmera.
+// Parado, fica de frente para a câmera. A base colorida fica sempre na superfície da casa; só o
+// personagem (e a seta de vez) sobe no salto.
 import { useFrame } from '@react-three/fiber';
 import gsap from 'gsap';
 import { Suspense, useLayoutEffect, useRef, useState } from 'react';
@@ -8,9 +9,11 @@ import type { Group } from 'three';
 import { board } from '@imperio/game-data';
 import type { AvatarId } from '@imperio/shared-types';
 import { AvatarFigure } from '../avatars/AvatarFigure';
-import { tilePlacement } from './layout';
+import { characterFor } from '../avatars/characterManifest';
+import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
+import { tileAnchor } from './layout';
 import { movePath } from './movement';
-import { TILE_HEIGHT } from './Tile';
+import type { PawnSpot } from './pawnLayout';
 
 const TILE_COUNT = board.tiles.length;
 const HOP_DURATION = 0.2;
@@ -21,24 +24,25 @@ const JUMP_HEIGHT = 1.2;
 const TURN_SPEED = 10;
 /** Acima disso não foi um lance de dados (2d6 anda no máximo 12). */
 const MAX_WALK_STEPS = 12;
+/** Deslize até o novo lugar dentro da mesma casa (alguém entrou ou saiu dela). */
+const SHIFT_DURATION = 0.3;
 
 interface PawnProps {
   position: number;
+  /** Lugar oficial dentro da casa (pawnLayout), derivado do snapshot. */
+  spot: PawnSpot;
   avatarId: AvatarId;
   color: string;
-  /** Deslocamento dentro da casa, para vários peões caberem lado a lado. */
-  offset: [number, number];
+  /** É a vez deste jogador: base pulsando e seta sobre a cabeça. */
+  active: boolean;
   onArrive?: (position: number) => void;
 }
 
-function spotOn(index: number, offset: [number, number]) {
-  const p = tilePlacement(index, board.tilesPerSide);
-  return { x: p.x + offset[0], z: p.z + offset[1] };
-}
-
-export function Pawn({ position, avatarId, color, offset, onArrive }: PawnProps) {
+export function Pawn({ position, spot, avatarId, color, active, onArrive }: PawnProps) {
   const groupRef = useRef<Group>(null);
+  const bodyRef = useRef<Group>(null);
   const faceRef = useRef<Group>(null);
+  const placed = useRef(false);
   const shownAt = useRef(position);
   const [walking, setWalking] = useState(false);
   const onArriveRef = useRef(onArrive);
@@ -46,15 +50,25 @@ export function Pawn({ position, avatarId, color, offset, onArrive }: PawnProps)
 
   useLayoutEffect(() => {
     const group = groupRef.current;
-    if (!group) return;
+    const body = bodyRef.current;
+    if (!group || !body) return;
 
     const from = shownAt.current;
     const steps = (position - from + TILE_COUNT) % TILE_COUNT;
     if (steps === 0) {
-      const { x, z } = spotOn(position, offset);
-      group.position.set(x, TILE_HEIGHT, z);
-      return;
+      body.position.y = BASE_HEIGHT;
+      if (!placed.current) {
+        // Primeira vez (entrou na partida ou reconectou): já no lugar, sem animar.
+        group.position.set(spot.x, spot.y, spot.z);
+        placed.current = true;
+        return;
+      }
+      const shift = gsap.to(group.position, { x: spot.x, y: spot.y, z: spot.z, duration: SHIFT_DURATION, ease: 'power2.out' });
+      return () => {
+        shift.kill();
+      };
     }
+    placed.current = true;
 
     const path = steps <= MAX_WALK_STEPS ? movePath(from, steps, TILE_COUNT) : [position];
     const hop = path.length === 1 ? HOP_DURATION * 3 : HOP_DURATION;
@@ -67,21 +81,23 @@ export function Pawn({ position, avatarId, color, offset, onArrive }: PawnProps)
       },
     });
     path.forEach((index, i) => {
-      const { x, z } = spotOn(index, offset);
+      // Casas do caminho: pelo centro; a última: o lugar oficial dentro dela.
+      const target = i === path.length - 1 ? spot : { ...tileAnchor(index), y: tileAnchor(index).surfaceY };
       const at = i * hop;
       const height = path.length === 1 ? JUMP_HEIGHT : HOP_HEIGHT;
       timeline
-        .to(group.position, { x, z, duration: hop, ease: 'power1.inOut' }, at)
-        .to(group.position, { y: TILE_HEIGHT + height, duration: hop / 2, ease: 'power2.out' }, at)
-        .to(group.position, { y: TILE_HEIGHT, duration: hop / 2, ease: 'power2.in' }, at + hop / 2);
+        .to(group.position, { x: target.x, y: target.y, z: target.z, duration: hop, ease: 'power1.inOut' }, at)
+        .to(body.position, { y: BASE_HEIGHT + height, duration: hop / 2, ease: 'power2.out' }, at)
+        .to(body.position, { y: BASE_HEIGHT, duration: hop / 2, ease: 'power2.in' }, at + hop / 2);
     });
 
     return () => {
       // Movimento interrompido (nova posição chegou antes do fim): volta a parado; o próximo recomeça.
       timeline.kill();
+      body.position.y = BASE_HEIGHT;
       setWalking(false);
     };
-  }, [position, offset]);
+  }, [position, spot.x, spot.y, spot.z]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Andando: olha para onde vai. Parado: vira para a câmera. Sempre só no eixo vertical, girando suave.
   const last = useRef<[number, number] | null>(null);
@@ -105,10 +121,14 @@ export function Pawn({ position, avatarId, color, offset, onArrive }: PawnProps)
 
   return (
     <group ref={groupRef} scale={0.95}>
-      <group ref={faceRef}>
-        <Suspense fallback={null}>
-          <AvatarFigure avatarId={avatarId} color={color} motion={walking ? 'walk' : 'idle'} />
-        </Suspense>
+      <PlayerBase color={color} active={active} />
+      <group ref={bodyRef} position={[0, BASE_HEIGHT, 0]}>
+        <group ref={faceRef}>
+          <Suspense fallback={null}>
+            <AvatarFigure avatarId={avatarId} motion={walking ? 'walk' : 'idle'} />
+          </Suspense>
+        </group>
+        {active && <ActiveMarker color={color} height={characterFor(avatarId).height + 0.25} />}
       </group>
     </group>
   );

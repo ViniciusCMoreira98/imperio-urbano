@@ -1,5 +1,5 @@
 // Personagem do jogador carregado do manifesto (characters.json; contrato em
-// docs/11-contratos-claude-codex.md), sobre uma base na cor do peão. Esqueleto e animações são
+// docs/11-contratos-claude-codex.md); a base colorida é outro componente (PlayerBase). Esqueleto e animações são
 // opcionais: modelos estáticos (ex.: Meshy sem rig) funcionam igual. Um modelo ausente ou com erro
 // cai no personagem reserva, com aviso no console.
 import { useAnimations, useGLTF } from '@react-three/drei';
@@ -9,8 +9,6 @@ import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js
 import type { AvatarId } from '@imperio/shared-types';
 import { type CharacterAsset, characterFiles, characterFor, fallbackCharacter } from './characterManifest';
 import { normalizePlacement } from './normalize';
-
-const BASE_HEIGHT = 0.06;
 
 export type AvatarMotion = 'idle' | 'walk';
 
@@ -75,40 +73,28 @@ class ModelFallback extends Component<{ asset: CharacterAsset; children: ReactNo
   }
 }
 
-/** Peça com a base no chão (y = 0) e o rosto virado para +z. */
-export function AvatarFigure({ avatarId, color, motion = 'idle' }: { avatarId: AvatarId; color: string; motion?: AvatarMotion }) {
+/** Só o personagem, com os pés em y = 0 e o rosto virado para +z. */
+export function AvatarFigure({ avatarId, motion = 'idle' }: { avatarId: AvatarId; motion?: AvatarMotion }) {
   const asset = characterFor(avatarId);
   const reserve = fallbackCharacter();
   return (
-    <group>
-      <mesh position={[0, BASE_HEIGHT / 2, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.22, 0.25, BASE_HEIGHT, 28]} />
-        <meshStandardMaterial color={color} />
-      </mesh>
-      <mesh position={[0, BASE_HEIGHT + 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[0.15, 0.2, 28]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.6} />
-      </mesh>
-      <group position={[0, BASE_HEIGHT, 0]}>
-        <ModelFallback
-          key={asset.id}
-          asset={asset}
-          fallback={
-            asset.id === reserve.id ? null : (
-              <ModelFallback asset={reserve} fallback={null}>
-                <Suspense fallback={null}>
-                  <CharacterModel asset={reserve} motion={motion} />
-                </Suspense>
-              </ModelFallback>
-            )
-          }
-        >
-          <Suspense fallback={null}>
-            <CharacterModel asset={asset} motion={motion} />
-          </Suspense>
-        </ModelFallback>
-      </group>
-    </group>
+    <ModelFallback
+      key={asset.id}
+      asset={asset}
+      fallback={
+        asset.id === reserve.id ? null : (
+          <ModelFallback asset={reserve} fallback={null}>
+            <Suspense fallback={null}>
+              <CharacterModel asset={reserve} motion={motion} />
+            </Suspense>
+          </ModelFallback>
+        )
+      }
+    >
+      <Suspense fallback={null}>
+        <CharacterModel asset={asset} motion={motion} />
+      </Suspense>
+    </ModelFallback>
   );
 }
 

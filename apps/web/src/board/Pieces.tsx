@@ -1,4 +1,5 @@
-// Peões, construções e marcadores desenhados a partir do snapshot do servidor.
+// Construções e marcadores desenhados a partir do snapshot do servidor (arte: Codex).
+// Os personagens moram em Pawns.tsx (engenharia); a reexportação mantém o import do BoardScene.
 import { useMemo } from 'react';
 import { board } from '@imperio/game-data';
 import { PAWN_COLORS } from '../game/presentation';
@@ -6,36 +7,9 @@ import { useGameStore } from '../store/gameStore';
 import { tilePlacement } from './layout';
 import { HotelModel, HouseModel } from './BuildingModels';
 import { OlympicHost } from './OlympicHost';
-import { Pawn } from './Pawn';
 import { TILE_HEIGHT } from './Tile';
 
-/** Cantos da casa para até 4 peões, conforme o assento. */
-const SEAT_OFFSETS: [number, number][] = [
-  [-0.22, -0.22],
-  [0.22, -0.22],
-  [-0.22, 0.22],
-  [0.22, 0.22],
-];
-
-export function Pawns() {
-  const players = useGameStore((s) => s.snapshot?.players);
-  if (!players) return null;
-  return (
-    <>
-      {players
-        .filter((p) => !p.bankrupt)
-        .map((p) => (
-          <Pawn
-            key={p.id}
-            position={p.position}
-            avatarId={p.avatarId}
-            color={PAWN_COLORS[p.pawnColor].hex}
-            offset={SEAT_OFFSETS[p.seat % SEAT_OFFSETS.length]}
-          />
-        ))}
-    </>
-  );
-}
+export { Pawns } from './Pawns';
 
 export function Buildings() {
   const snapshot = useGameStore((s) => s.snapshot);

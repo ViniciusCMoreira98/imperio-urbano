@@ -2,8 +2,12 @@
 // Eixos: x para a direita, z em direção à câmera. A casa 0 (Início) fica no canto inferior direito
 // e o percurso segue no sentido horário visto de cima: inferior → esquerdo → superior → direito.
 
+import { board } from '@imperio/game-data';
+
 export const TILE_WIDTH = 1;
 export const CORNER_SIZE = 1.6;
+/** Espessura das casas: o topo delas fica em y = TILE_HEIGHT (contrato em docs/11-contratos-claude-codex.md). */
+export const TILE_HEIGHT = 0.08;
 
 export interface TilePlacement {
   index: number;
@@ -50,4 +54,25 @@ export function tilePlacement(index: number, tilesPerSide: number): TilePlacemen
     depth: CORNER_SIZE,
     isCorner,
   };
+}
+
+/**
+ * Âncora de uma casa para quem fica em cima dela (personagens, bases): centro, altura do topo e
+ * orientação. Fonte única de posição e altura das casas; a arte mantém surfaceY igual ao topo real.
+ */
+export interface TileAnchor {
+  index: number;
+  x: number;
+  z: number;
+  surfaceY: number;
+  /** Mesmo sentido de TilePlacement.rotationY: leva o +z local para fora do tabuleiro. */
+  rotationY: number;
+  width: number;
+  depth: number;
+  isCorner: boolean;
+}
+
+export function tileAnchor(index: number, tilesPerSide: number = board.tilesPerSide): TileAnchor {
+  const { x, z, rotationY, width, depth, isCorner } = tilePlacement(index, tilesPerSide);
+  return { index, x, z, surfaceY: TILE_HEIGHT, rotationY, width, depth, isCorner };
 }

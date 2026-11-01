@@ -37,7 +37,7 @@ Esqueleto e animações são **opcionais**: com `SkinnedMesh` o modelo é clonad
 
 Requisitos do GLB (alinhados a `docs/07-meshy-pipeline.md` do Codex): glTF 2.0 autocontido ou com texturas ao lado, Y para cima, frente +Z, **sem pedestal/base**, até 12 mil triângulos e 3 MiB.
 
-## 2. Superfície das casas (a implementar na Etapa 3)
+## 2. Superfície das casas (implementado na Etapa 3)
 
 Interface compartilhada em `apps/web/src/board/layout.ts`, para os personagens pisarem certo mesmo se o Codex mudar a geometria do tabuleiro:
 
@@ -46,8 +46,8 @@ interface TileAnchor { x: number; z: number; surfaceY: number; rotationY: number
 function tileAnchor(index: number): TileAnchor   // fonte única de posição e altura da casa
 ```
 
-O Codex mantém `surfaceY` igual à altura real do topo da casa que ele desenha; o Claude só lê essa função (sem constantes de altura espalhadas).
+A espessura das casas (`TILE_HEIGHT`) mora em `layout.ts`; `Tile.tsx` a importa de lá (e reexporta para quem já usava). Se a arte mudar a geometria das casas, ajusta `TILE_HEIGHT`/`tileAnchor` para `surfaceY` continuar igual ao topo real. Personagens e bases só leem `tileAnchor`; a distribuição de até 4 jogadores na mesma casa fica em `board/pawnLayout.ts`.
 
-## 3. Base iluminada do jogador (Etapa 3)
+## 3. Base iluminada do jogador (implementado na Etapa 3)
 
-Componente independente do GLB. **Posição, cor e estado ativo: Claude. Aparência (material, brilho): Codex**, sem mudar as props `{ color, active }`.
+`avatars/PlayerBase.tsx`: `PlayerBase { color, active }` (disco + anel; pulsa na vez do jogador) e `ActiveMarker { color, height }` (seta sobre a cabeça de quem joga). Independentes do GLB; a base fica na superfície da casa e não sobe no salto. **Posição, cor e estado ativo: Claude. Aparência (material, brilho, forma): Codex**, sem mudar as props e mantendo `BASE_HEIGHT` como a altura onde o personagem pisa.
