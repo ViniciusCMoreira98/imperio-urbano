@@ -1,0 +1,23 @@
+import { readFile, writeFile } from 'node:fs/promises';
+
+const [input, output] = process.argv.slice(2);
+if (!input || !output) throw new Error('Uso: ground-static-glb.mjs entrada.glb nova-revisao.glb');
+const bytes = await readFile(input);
+if (bytes.readUInt32LE(0) !== 0x46546c67 || bytes.readUInt32LE(4) !== 2 || bytes.readUInt32LE(16) !== 0x4e4f534a) throw new Error('GLB 2.0 exigido');
+const jsonLength = bytes.readUInt32LE(12);
+const doc = JSON.parse(bytes.subarray(20, 20 + jsonLength).toString());
+const node = doc.nodes?.[0];
+if (doc.nodes?.length !== 1 || node.mesh !== 0 || node.rotation || node.scale || node.matrix || doc.skins?.length || doc.animations?.length || doc.meshes?.length !== 1 || doc.meshes[0].primitives.length !== 1) throw new Error('Exigida uma malha estática simples, sem rotação/escala');
+const position = doc.accessors[doc.meshes[0].primitives[0].attributes.POSITION];
+if (!position.min?.every(Number.isFinite) || !position.max?.every(Number.isFinite)) throw new Error('Bounds ausentes');
+node.translation = [-(position.min[0] + position.max[0]) / 2, -position.min[1], -(position.min[2] + position.max[2]) / 2];
+const primitive = doc.meshes[0].primitives[0];
+if (!doc.materials?.[primitive.material]?.normalTexture) delete primitive.attributes.TANGENT;
+const json = Buffer.from(JSON.stringify(doc));
+const padded = Buffer.alloc(Math.ceil(json.length / 4) * 4, 0x20); json.copy(padded);
+const rest = bytes.subarray(20 + jsonLength);
+const header = Buffer.from(bytes.subarray(0, 20));
+header.writeUInt32LE(20 + padded.length + rest.length, 8);
+header.writeUInt32LE(padded.length, 12);
+await writeFile(output, Buffer.concat([header, padded, rest]), { flag: 'wx' });
+console.log('Pivô centralizado nos pés em nova revisão; geometria e texturas preservadas.');

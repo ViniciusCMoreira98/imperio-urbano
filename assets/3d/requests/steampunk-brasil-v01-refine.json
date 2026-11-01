@@ -1,0 +1,8 @@
+{
+  "preview_task_id": "01a1951d-cac3-724c-b2a6-5cfdc969d18f",
+  "texture_prompt": "Original vibrant chibi steampunk explorer for Imperio Urbano Edicao Brasil. Clean high-resolution hand-painted cartoon colors, crisp readable face with large bright blue eyes and natural warm skin, golden blonde hair. Burgundy red explorer coat and helmet, ivory blouse and scarf, deep brown leather boots and gloves, restrained brass gold trim and buckles, turquoise blue glass goggles. Follow the existing geometry exactly. Broad clean color regions, sharp clothing boundaries and expressive face, no pixel art, no blur, no text or logos. Matte painted surfaces, consistent front/back colors, soft minimal ambient shading, avoid baked directional highlights, no metallic noise or photorealistic grime.",
+  "enable_pbr": false,
+  "texture_resolution": "4k",
+  "target_formats": ["glb"],
+  "response_format": "json"
+}

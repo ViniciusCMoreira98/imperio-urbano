@@ -1,0 +1,5 @@
+{
+  "characters": { "maxBytes": 3145728, "maxTriangles": 12000, "maxMaterials": 2, "maxTextures": 4, "maxTextureSize": 1024 },
+  "buildings": { "maxBytes": 1048576, "maxTriangles": 1999, "maxMaterials": 1, "maxTextures": 2, "maxTextureSize": 1024 },
+  "scenery": { "maxBytes": 2097152, "maxTriangles": 5000, "maxMaterials": 2, "maxTextures": 4, "maxTextureSize": 1024 }
+}
