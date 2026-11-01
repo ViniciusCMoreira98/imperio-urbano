@@ -1,0 +1,424 @@
+{
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 1150
+      },
+      "ready": true,
+      "pixelChecks": [
+        {
+          "color": "Verde",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 139,
+            "changed": 6464,
+            "first": 41,
+            "last": 16610
+          }
+        },
+        {
+          "color": "Amarelo",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 179,
+            "changed": 6476,
+            "first": 41,
+            "last": 16610
+          }
+        },
+        {
+          "color": "Azul",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 185,
+            "changed": 6484,
+            "first": 41,
+            "last": 16610
+          }
+        },
+        {
+          "color": "Vermelho",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 161,
+            "changed": 6473,
+            "first": 41,
+            "last": 16610
+          }
+        },
+        {
+          "color": "Roxo",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 194,
+            "changed": 6491,
+            "first": 41,
+            "last": 16610
+          }
+        },
+        {
+          "color": "Laranja",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 169,
+            "changed": 6475,
+            "first": 41,
+            "last": 16610
+          }
+        }
+      ],
+      "colors": [
+        {
+          "name": "Verde",
+          "hex": "#2e9e5b"
+        },
+        {
+          "name": "Amarelo",
+          "hex": "#f2c230"
+        },
+        {
+          "name": "Azul",
+          "hex": "#3d7dd8"
+        },
+        {
+          "name": "Vermelho",
+          "hex": "#e63946"
+        },
+        {
+          "name": "Roxo",
+          "hex": "#9b5de5"
+        },
+        {
+          "name": "Laranja",
+          "hex": "#f28c28"
+        }
+      ],
+      "maskSize": [
+        1024,
+        1024
+      ],
+      "maskColorSpace": "",
+      "maskFlipY": false,
+      "uniqueMaterials": 6,
+      "sharedMask": true,
+      "sourceMaterialUnchanged": true,
+      "maskedTexelsAboveHalf": 102942,
+      "referenceLuminance": 0.02695356,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 430,
+        "height": 1400
+      },
+      "ready": true,
+      "pixelChecks": [
+        {
+          "color": "Verde",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 135,
+            "changed": 3164,
+            "first": 5,
+            "last": 6803
+          }
+        },
+        {
+          "color": "Amarelo",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 176,
+            "changed": 3170,
+            "first": 5,
+            "last": 6803
+          }
+        },
+        {
+          "color": "Azul",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 192,
+            "changed": 3175,
+            "first": 5,
+            "last": 6803
+          }
+        },
+        {
+          "color": "Vermelho",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 166,
+            "changed": 3170,
+            "first": 5,
+            "last": 6803
+          }
+        },
+        {
+          "color": "Roxo",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 191,
+            "changed": 3177,
+            "first": 5,
+            "last": 6803
+          }
+        },
+        {
+          "color": "Laranja",
+          "head": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "face": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "boots": {
+            "max": 0,
+            "changed": 0,
+            "first": -1,
+            "last": -1
+          },
+          "coat": {
+            "max": 167,
+            "changed": 3170,
+            "first": 5,
+            "last": 6803
+          }
+        }
+      ],
+      "colors": [
+        {
+          "name": "Verde",
+          "hex": "#2e9e5b"
+        },
+        {
+          "name": "Amarelo",
+          "hex": "#f2c230"
+        },
+        {
+          "name": "Azul",
+          "hex": "#3d7dd8"
+        },
+        {
+          "name": "Vermelho",
+          "hex": "#e63946"
+        },
+        {
+          "name": "Roxo",
+          "hex": "#9b5de5"
+        },
+        {
+          "name": "Laranja",
+          "hex": "#f28c28"
+        }
+      ],
+      "maskSize": [
+        1024,
+        1024
+      ],
+      "maskColorSpace": "",
+      "maskFlipY": false,
+      "uniqueMaterials": 6,
+      "sharedMask": true,
+      "sourceMaterialUnchanged": true,
+      "maskedTexelsAboveHalf": 102942,
+      "referenceLuminance": 0.02695356,
+      "errors": []
+    }
+  ],
+  "productionLoaderChanged": false,
+  "mobileHardwareBenchmark": false
+}
