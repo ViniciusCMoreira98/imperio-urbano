@@ -1,0 +1,33 @@
+{
+  "demoOnly": true,
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 1000
+      },
+      "multiplier": 10,
+      "confettiCount": 24,
+      "badgePersists": true,
+      "reducedMotionProp": true,
+      "reducedMotionMedia": true,
+      "fitsViewport": true,
+      "errors": [],
+      "apiCalls": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 1000
+      },
+      "multiplier": 10,
+      "confettiCount": 24,
+      "badgePersists": true,
+      "reducedMotionProp": true,
+      "reducedMotionMedia": true,
+      "fitsViewport": true,
+      "errors": [],
+      "apiCalls": []
+    }
+  ]
+}

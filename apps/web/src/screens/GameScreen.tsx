@@ -50,10 +50,10 @@ export function GameScreen() {
   }, [myTurn, phase, me?.position]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="game-viewport relative h-full w-full overflow-hidden">
       <BoardScene />
 
-      <header className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 p-2 sm:p-3">
+      <header className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
         <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
           ←<span className="hidden sm:inline"> Menu</span>
         </Button>
@@ -68,7 +68,7 @@ export function GameScreen() {
       ) : (
         <>
           {/* Celular: faixa no topo. Computador: coluna à esquerda. Rodada e sala ficam no centro do tabuleiro. */}
-          <aside className="absolute inset-x-2 top-12 flex flex-col gap-2 sm:inset-x-auto sm:left-3 sm:top-16 sm:max-h-[calc(100%-7rem)] sm:overflow-y-auto">
+          <aside className="game-hud-players absolute inset-x-2 top-12 flex flex-col gap-2 sm:inset-x-auto sm:left-3 sm:top-5 sm:max-h-[calc(100%-7rem)] sm:overflow-y-auto">
             <PlayersPanel myId={session.playerId} />
             <EventLog />
           </aside>

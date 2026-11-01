@@ -1,5 +1,7 @@
 # 05 — Direção visual
 
+**Nova referência principal do tabuleiro (pedido mais recente do usuário):** `assets/board/tabuleiro-brasil-alvo.png`, imagem fornecida na conversa: centro com paisagem ilustrada do Rio e logotipo grande, casas com moldura dourada e mesa de madeira. Substitui a grade/mapa vetorial e o cenário externo anteriores. Preservar as 36 casas, UFs, tipos e regras do catálogo; não acrescentar Taxa nem renomear Viagem Nacional para Aeroporto. HUD/personagens continuam independentes. O PNG recebido permanece intacto; janelas de aplicação e adaptação estão em `illustratedBoard.ts` e no contrato 9.
+
 **Alvo visual atual (substitui as referências abaixo onde divergirem):** [visual-alvo.webp](referencias/visual-alvo.webp). O usuário quer personagens, tabuleiro, HUD e ambiente assim: personagens chibi estilo anime sobre bases com anel de luz na cor do jogador; tabuleiro escuro com borda em neon (roxo, azul, amarelo), casas brancas com ilustração e faixa de cor, centro azul-escuro em grade com logotipo, mapa do Brasil e miniaturas 3D (prédios, estádio, Catedral de Brasília, coqueiros); ambiente do Rio ao entardecer (prédios iluminados, Cristo Redentor, Pão de Açúcar, mar com barcos); HUD em painéis roxos com borda neon, retrato, posição (1º–4º) e coroa no líder, barra inferior com botão laranja "Rolar dados". Continuam valendo: moeda "$", preços do catálogo, regras aprovadas e tela limpa no celular.
 
 Referência: [arte-conceito.webp](referencias/arte-conceito.webp). Ela define o **estilo**; regras e valores continuam vindo de `packages/game-data`.

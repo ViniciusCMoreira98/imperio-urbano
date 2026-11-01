@@ -7,6 +7,7 @@ import type { GameSnapshot } from '@imperio/shared-types';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
 import { centerSlots } from './BoardCenter';
+import { createEventCardBack } from '../cards/eventCardBack';
 
 const PX_PER_UNIT = 256;
 /** Logo acima do centro ilustrado. */
@@ -117,7 +118,12 @@ export function CenterInfo({ size }: { size: number }) {
 
   const card = useMemo(() => ({ x: deck.x, z: deck.z, w: deck.w * 0.9, d: deck.d * 0.9 }), [deck]);
   const deckTexture = useMemo(
-    () => drawPanel(card.w, card.d, ['#7c3aed', '#4c1d95'], '#c4b5fd', [{ text: '❓', size: 70 }, { text: 'EVENTOS', size: 40, weight: 900 }]),
+    () => {
+      const texture = new CanvasTexture(createEventCardBack(512, Math.round(512 * card.d / card.w)));
+      texture.colorSpace = SRGBColorSpace;
+      texture.anisotropy = 4;
+      return texture;
+    },
     [card],
   );
   const gameKey = snapshot ? JSON.stringify([snapshot.round, snapshot.mode, snapshot.status, snapshot.currentPlayerId]) : '';

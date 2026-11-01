@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "source": "Imagem fornecida pelo usuário nesta conversa",
+  "file": "assets/board/tabuleiro-brasil-alvo.png",
+  "width": 1536,
+  "height": 1024,
+  "bytes": 3479266,
+  "sha256": "9f1c1dbbd22171a47e2522585c9236ffe7f331eb7dff282b25960d27f5fa330b",
+  "paidCredits": 0,
+  "notes": [
+    "Fonte original preservada sem reamostragem ou regeneração",
+    "Aplicação jogável mantém 36 casas do catálogo",
+    "Tocantins e Visita adaptados; Taxa não adicionada; Viagem Nacional mantém nome oficial"
+  ]
+}
