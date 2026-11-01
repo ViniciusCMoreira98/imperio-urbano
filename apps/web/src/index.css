@@ -27,3 +27,50 @@ body {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
   box-shadow: 0 0 14px rgba(255, 159, 28, 0.6), inset 0 -3px 0 rgba(0, 0, 0, 0.18);
 }
+
+/* Acabamento da referência, sem mudar as condições/ações dos componentes. */
+.hud-panel {
+  background: linear-gradient(145deg, rgba(58, 30, 104, .96), rgba(17, 15, 47, .97) 75%);
+  border-color: #b393f0;
+  box-shadow: 0 0 0 1px #4d2e78, 0 0 12px #a66aff70, inset 0 0 12px #b08bff25;
+}
+.hud-avatar-frame { overflow: hidden; box-shadow: inset 0 0 10px #d9bdff55; }
+.hud-avatar-art { display: block; width: 100%; height: 100%; border-radius: inherit; }
+.hud-leader-crown { width: 32px; height: 26px; filter: drop-shadow(0 2px 2px #6b3a00); transform: rotate(-12deg); }
+.hud-player-row { border-width: 2px; border-radius: 15px; }
+.hud-player-name { text-shadow: 0 2px 2px #0c0920; }
+.hud-player-balance { color: #ffe42e; font-variant-numeric: tabular-nums; letter-spacing: -.025em; text-shadow: 0 2px 2px #5d3200; }
+.hud-player-rank { z-index: 1; width: 27px; height: 27px; font-size: 13px; border: 2px solid #d9b5ff; color: #ffec78; background: linear-gradient(#3e1f7e, #171b44); box-shadow: 0 0 8px #a855f780; }
+.hud-roll { color: #fff8df; background: linear-gradient(#ffd65c 0%, #ffad27 22%, #f8940c 75%, #e57505 100%); border: 2px solid #ffdf84; box-shadow: 0 0 0 2px #9f550b, 0 0 16px #ffb22975, inset 0 2px 2px #fff3bd, inset 0 -4px 0 #bc5d12; text-shadow: 0 2px 1px #8d3b00; }
+.hud-action-tray { min-height: 68px; border-color: #c9b0ff; gap: 14px; box-shadow: 0 0 0 3px #472a79, 0 0 20px #9359ff80, inset 0 0 14px #c7a8ff35; }
+.hud-action-tray .hud-roll { min-height: 48px; font-size: 21px; letter-spacing: -.02em; border-radius: 11px; }
+.hud-dice { display: inline-flex; align-items: center; gap: 5px; padding: 0 6px; filter: drop-shadow(0 4px 3px #08051c80); }
+.hud-dice svg { width: 42px; height: 47px; transform: rotate(-12deg); }
+.hud-dice svg + svg { transform: translateY(3px) rotate(13deg); }
+.hud-turn-badge { min-width: 215px; min-height: 78px; box-shadow: 0 0 0 2px #5d3590, 0 0 18px #b076ff88, inset 0 0 13px #a778f333; }
+.hud-turn-badge .hud-avatar-frame { width: 60px; height: 60px; }
+.hud-turn-badge p:last-child { color: #ffdf36; font-size: 23px; }
+.game-hud-header button { min-height: 40px; }
+@media (min-width: 640px) {
+  .hud-players { width: clamp(220px, 17vw, 260px); gap: 12px; padding-top: 10px; padding-left: 4px; padding-right: 6px; padding-bottom: 6px; }
+  .hud-player-row { min-height: 85px; padding: 5px 10px 5px 6px; gap: 12px; }
+  .hud-player-row .hud-avatar-frame { width: 65px; height: 65px; }
+  .hud-player-name { font-size: 17px; font-weight: 850; }
+  .hud-player-name > span { font-size: 10px; }
+  .hud-player-balance { font-size: 23px; }
+  .game-hud-players { scrollbar-width: thin; scrollbar-color: #a78bfa transparent; }
+}
+@media (max-width: 639px) {
+  .hud-players { gap: 5px; padding: 6px 0; }
+  .hud-player-row { flex-direction: column; gap: 3px; padding: 5px 3px; text-align: center; border-radius: 12px; }
+  .hud-player-row .hud-avatar-frame { width: 38px; height: 38px; }
+  .hud-player-name { font-size: 10px; max-width: 76px; }
+  .hud-player-name > span { display: none; }
+  .hud-player-balance { font-size: 13px; white-space: nowrap; }
+  .hud-player-row > div { width: 100%; }
+  .hud-leader-crown { width: 22px; height: 19px; }
+  .hud-action-tray { gap: 8px; min-height: 58px; }
+  .hud-action-tray .hud-roll { font-size: 16px; min-height: 42px; padding: 8px 14px; }
+  .hud-dice { gap: 2px; padding: 0 2px; }
+  .hud-dice svg { width: 27px; height: 32px; }
+}

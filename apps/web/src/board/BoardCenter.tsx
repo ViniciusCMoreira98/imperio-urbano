@@ -1,10 +1,7 @@
-// Centro do tabuleiro (alvo visual: docs/referencias/visual-alvo.webp): piso azul-escuro em grade com o
-// logotipo e o mapa do Brasil recortados da arte, miniaturas 3D em volta, a pilha 3D de Eventos e o
-// painel da partida. O topo da textura fica no lado -z (o fundo, visto da câmera).
+// Centro ilustrado da imagem fornecida pelo usuário, com a perspectiva original retificada.
 import { useEffect, useMemo } from 'react';
 import { CanvasTexture, SRGBColorSpace } from 'three';
-import { brazilMap, logo, useBoardArt } from './boardArt';
-import { CenterMiniatures } from './CenterMiniatures';
+import { CENTER_ART, drawArtwork, useIllustratedBoardArt } from './illustratedBoard';
 
 export type CenterSlot = 'Eventos' | 'Partida';
 
@@ -26,48 +23,16 @@ export function centerSlots(size: number): { label: CenterSlot; x: number; z: nu
   ];
 }
 
-const TEXTURE_SIZE = 1024;
-
-function drawFloor(ctx: CanvasRenderingContext2D) {
-  const g = ctx.createRadialGradient(512, 512, 80, 512, 512, 760);
-  g.addColorStop(0, '#2c4a86');
-  g.addColorStop(1, '#16244a');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
-  // Grade de placas, como o piso da referência.
-  ctx.strokeStyle = 'rgba(160, 200, 255, 0.12)';
-  ctx.lineWidth = 2;
-  for (let i = 0; i <= TEXTURE_SIZE; i += 64) {
-    ctx.beginPath();
-    ctx.moveTo(i, 0);
-    ctx.lineTo(i, TEXTURE_SIZE);
-    ctx.moveTo(0, i);
-    ctx.lineTo(TEXTURE_SIZE, i);
-    ctx.stroke();
-  }
-}
-
-/** Desenha a figura centrada em (u, v) com a largura relativa pedida, mantendo a proporção. */
-function place(ctx: CanvasRenderingContext2D, figure: HTMLCanvasElement, { u, v, width }: { u: number; v: number; width: number }) {
-  const w = width * TEXTURE_SIZE;
-  const h = (figure.height / figure.width) * w;
-  ctx.drawImage(figure, u * TEXTURE_SIZE - w / 2, v * TEXTURE_SIZE - h / 2, w, h);
-}
+const TEXTURE_SIZE = 1536;
 
 export function BoardCenter({ size }: { size: number }) {
-  const art = useBoardArt();
+  const art = useIllustratedBoardArt();
   const texture = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = canvas.height = TEXTURE_SIZE;
     const ctx = canvas.getContext('2d')!;
-    drawFloor(ctx);
-    if (art) {
-      // Sombra suave sob o mapa e o logotipo, como se estivessem impressos sobre o piso.
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
-      ctx.shadowBlur = 18;
-      place(ctx, brazilMap(art), CENTER_LAYOUT.map);
-      place(ctx, logo(art), CENTER_LAYOUT.logo);
-    }
+    ctx.fillStyle='#176f8d';ctx.fillRect(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
+    if(art) drawArtwork(ctx,art,CENTER_ART,0,0,TEXTURE_SIZE,TEXTURE_SIZE,24);
     const result = new CanvasTexture(canvas);
     result.colorSpace = SRGBColorSpace;
     result.anisotropy = 8;
@@ -77,12 +42,9 @@ export function BoardCenter({ size }: { size: number }) {
   useEffect(() => () => texture.dispose(), [texture]);
 
   return (
-    <>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]} receiveShadow>
         <planeGeometry args={[size, size]} />
-        <meshStandardMaterial map={texture} />
+        <meshBasicMaterial map={texture} toneMapped={false} />
       </mesh>
-      <CenterMiniatures size={size} />
-    </>
   );
 }

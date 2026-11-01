@@ -1,0 +1,38 @@
+{
+  "sourceHashesVerified": true,
+  "previewOnly": true,
+  "checks": [
+    {
+      "viewport": {
+        "width": 1536,
+        "height": 1100
+      },
+      "states": 27,
+      "specials": 6,
+      "proportionsPreserved": true,
+      "center": {
+        "naturalWidth": 1536,
+        "naturalHeight": 1024,
+        "ratio": 1.500751879699248
+      },
+      "errors": [],
+      "apiCalls": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "states": 27,
+      "specials": 6,
+      "proportionsPreserved": true,
+      "center": {
+        "naturalWidth": 1536,
+        "naturalHeight": 1024,
+        "ratio": 1.5021097046413503
+      },
+      "errors": [],
+      "apiCalls": []
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+.iu-event-card{box-sizing:border-box;width:280px;max-width:100%;padding:18px;border:1px solid #cfb1f1;border-radius:22px;background:linear-gradient(145deg,#44335e,#211c36 80%);box-shadow:inset 0 0 0 4px #e4c68810,0 12px 28px #080b2440;color:#fff7e4;font-family:system-ui,sans-serif;text-align:left}
+.iu-event-card>header{display:flex;align-items:center;justify-content:space-between;color:#e8d4af;font-size:9px;letter-spacing:.14em;font-weight:800;gap:6px;margin-bottom:14px}
+.iu-event-card__spark{font-size:17px;color:#ffd675}
+.iu-event-card__illustration{display:block;width:100%;height:auto;margin-bottom:16px}
+.iu-event-card h3{font-size:21px;line-height:1.2;letter-spacing:-.025em;margin:0 0 12px;font-weight:850;overflow-wrap:anywhere}
+.iu-event-card__who{color:#d4c6e6;font-size:11px;margin:0 0 7px;overflow-wrap:anywhere}
+.iu-event-card__text{font-size:14px;line-height:1.65;color:#f5edf9;margin:0;overflow-wrap:anywhere}
+.iu-event-card>footer{display:flex;align-items:center;gap:8px;color:#c4accf;font-size:8px;letter-spacing:.13em;font-weight:700;margin-top:22px}
+.iu-event-card>footer span{flex:1;height:1px;background:#d2bc783d}

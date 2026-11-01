@@ -1,4 +1,5 @@
-import { AVATARS, PAWN_COLORS } from '../game/presentation';
+import { PAWN_COLORS } from '../game/presentation';
+import { AvatarPortrait } from './AvatarPortrait';
 import { useGameStore } from '../store/gameStore';
 
 /** "Turno de" com o retrato de quem joga, no canto inferior esquerdo (só no computador). */
@@ -9,13 +10,13 @@ export function TurnBadge({ myId }: { myId: string }) {
   const color = PAWN_COLORS[current.pawnColor].hex;
   const name = current.id === myId ? 'Você' : current.nickname;
   return (
-    <div role="status" aria-label={'Turno de: ' + name} className="hud-panel flex items-center gap-3 rounded-2xl px-3 py-2" style={{ borderColor: color }}>
+    <div role="status" aria-label={'Turno de: ' + name} className="hud-turn-badge hud-panel flex items-center gap-3 rounded-2xl px-3 py-2" style={{ borderColor: color }}>
       <span
-        className="flex h-11 w-11 items-center justify-center rounded-full text-3xl ring-2"
+        className="hud-avatar-frame flex h-11 w-11 items-center justify-center rounded-full text-3xl ring-2"
         style={{ background: `${color}55`, ['--tw-ring-color' as string]: color }}
         aria-hidden
       >
-        {AVATARS[current.avatarId].emoji}
+        <AvatarPortrait avatarId={current.avatarId}/>
       </span>
       <div className="leading-tight">
         <p className="text-xs text-white/80">Turno de:</p>

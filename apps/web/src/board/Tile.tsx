@@ -5,7 +5,7 @@ import { PAWN_COLORS } from '../game/presentation';
 import { currentRent } from '../game/rules';
 import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
-import { useBoardArt } from './boardArt';
+import { useIllustratedBoardArt } from './illustratedBoard';
 import { TILE_HEIGHT, type TilePlacement } from './layout';
 import { createTileTexture } from './tileTexture';
 
@@ -32,9 +32,9 @@ export function Tile({ tile, placement, state, group }: TileProps) {
     const owner = s.snapshot?.players.find((p) => p.id === ownerId);
     return owner ? PAWN_COLORS[owner.pawnColor].hex : null;
   });
-  const art = useBoardArt();
+  const art = useIllustratedBoardArt();
   const materials = useMemo(() => {
-    const side = new MeshStandardMaterial({ color: '#d9cba8' });
+    const side = new MeshStandardMaterial({ color: '#c88d2c', metalness: .45, roughness: .38 });
     const owned = ownerColor ? { rent, ownerColor } : undefined;
     const top = new MeshStandardMaterial({
       map: createTileTexture({ tile, state, group, width: placement.width, depth: placement.depth, owned, art }),

@@ -1,0 +1,23 @@
+.iu-olympic{position:relative;width:max-content;max-width:min(19rem,calc(100vw - 32px));font-family:system-ui,sans-serif;color:#fff7db;pointer-events:none;isolation:isolate}
+.iu-olympic__badge{position:relative;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #ffd36e;border-radius:16px;background:linear-gradient(135deg,#34305c,#151a36 75%);box-shadow:0 0 0 3px #ffc85b18,0 5px 20px #040b2580;min-width:0}
+.iu-olympic__badge:after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:#191d3b;border-right:1px solid #ffd36e;border-bottom:1px solid #ffd36e;transform:translateX(-50%) rotate(45deg)}
+.iu-olympic__torch{width:28px;height:40px;flex-shrink:0}
+.iu-olympic__copy{min-width:0;display:flex;flex-direction:column;gap:3px}
+.iu-olympic__eyebrow{font-size:9px;font-weight:800;letter-spacing:.15em;color:#ffe0a1}
+.iu-olympic__state{font-size:16px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:155px}
+.iu-olympic__multiplier{display:grid;place-items:center;min-width:46px;height:46px;padding:0 6px;box-sizing:border-box;border:1px solid #fff0a1;border-radius:12px;background:linear-gradient(145deg,#ffe7a0,#f5b940);color:#342444;font-size:27px;font-weight:950;letter-spacing:-.05em;font-variant-numeric:tabular-nums;flex-shrink:0}
+.iu-olympic__celebration{position:absolute;inset:0;z-index:-1}
+.iu-olympic__headline{position:absolute;bottom:calc(100% + 13px);left:50%;width:max-content;max-width:calc(100vw - 32px);text-align:center;transform:translateX(-50%);padding:7px 12px;border-radius:20px;background:#252044;color:#fff0b5;font-size:12px;font-weight:750;box-shadow:0 3px 14px #050a2240;animation:iu-olympic-caption 3.2s both}
+.iu-olympic__confetti{position:absolute;left:50%;top:45%}
+.iu-olympic__confetti i{position:absolute;display:block;width:5px;height:10px;border-radius:1px;background:var(--confetti-color);opacity:0;animation:iu-olympic-confetti 1.65s var(--delay) both}
+.iu-olympic__confetti i:nth-child(3n){height:5px;border-radius:50%}
+.iu-olympic--celebrate .iu-olympic__badge{animation:iu-olympic-arrive .65s cubic-bezier(.2,.8,.3,1.15) both}
+@keyframes iu-olympic-arrive{from{opacity:0;transform:translateY(12px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes iu-olympic-confetti{0%{opacity:0;transform:translate(0,0) rotate(0)}12%{opacity:1}75%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),calc(var(--dy) + 95px)) rotate(var(--spin))}}
+@keyframes iu-olympic-caption{0%{opacity:0;translate:0 6px}15%,80%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -5px;visibility:hidden}}
+.iu-olympic--still .iu-olympic__confetti{display:none}
+.iu-olympic--still .iu-olympic__badge{animation:none}
+.iu-olympic--still .iu-olympic__headline{animation:iu-olympic-caption-still 3.2s both}
+@keyframes iu-olympic-caption-still{0%,99%{opacity:1}100%{opacity:0;visibility:hidden}}
+@media(prefers-reduced-motion:reduce){.iu-olympic .iu-olympic__confetti{display:none}.iu-olympic .iu-olympic__badge{animation:none}.iu-olympic .iu-olympic__headline{animation:iu-olympic-caption-still 3.2s both}}
+@media(max-width:420px){.iu-olympic__badge{gap:8px;padding:8px 10px}.iu-olympic__state{font-size:14px;max-width:140px}.iu-olympic__multiplier{font-size:24px;min-width:42px;height:42px}}

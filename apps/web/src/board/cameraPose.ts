@@ -19,7 +19,7 @@ const FOCUS_AZIMUTH_OFFSET = Math.PI / 8;
 export function overviewPose(quarterTurns: number): CameraPose {
   return {
     target: [0, 0, 0],
-    azimuth: Math.PI / 4 + (quarterTurns * Math.PI) / 2,
+    azimuth: 0.08 + (quarterTurns * Math.PI) / 2,
     polar: OVERVIEW_POLAR,
     distance: null,
   };

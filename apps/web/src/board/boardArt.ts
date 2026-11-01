@@ -2,6 +2,7 @@
 // recortada da imagem; nomes, siglas e valores continuam vindo do catálogo (a arte tem preços em "C").
 import { useEffect, useState } from 'react';
 import artUrl from '../../../../assets/board/tabuleiro-arte.webp?url';
+import targetUrl from '../../../../docs/referencias/visual-alvo.webp?url';
 import type { TileType } from '@imperio/shared-types';
 
 /** Retângulo na imagem: x, y, largura, altura (px). */
@@ -71,6 +72,29 @@ export function useBoardArt(): HTMLImageElement | null {
     };
   }, []);
   return image;
+}
+
+let targetLoading: Promise<HTMLImageElement> | null = null;
+export function useTargetArt(): HTMLImageElement | null {
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  useEffect(() => {
+    let active = true;
+    targetLoading ??= new Promise((resolve,reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = targetUrl; });
+    targetLoading.then(img => { if (active) setImage(img); }, () => undefined);
+    return () => { active = false; };
+  }, []);
+  return image;
+}
+
+/** Logotipo da referência-alvo. Janela e máscara no espaço normalizado 1671×941. */
+export function targetLogo(image: HTMLImageElement): HTMLCanvasElement {
+  const canvas = document.createElement('canvas'); canvas.width = 720; canvas.height = 440;
+  const ctx = canvas.getContext('2d')!;
+  ctx.scale(2,2); ctx.translate(-675,-235);
+  const outline = [[828,278],[830,258],[847,264],[866,239],[883,258],[901,255],[897,278],[954,285],[989,308],[1018,401],[1003,419],[1005,435],[948,430],[920,435],[775,431],[694,434],[703,417],[682,401],[706,320],[731,294]];
+  ctx.beginPath();outline.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));ctx.closePath();ctx.clip();
+  ctx.drawImage(image,0,0,1671,941);
+  return canvas;
 }
 
 /** Desenha o recorte cobrindo o retângulo de destino (corta o excesso, sem distorcer). */

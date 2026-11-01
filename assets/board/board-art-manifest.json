@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "sources": {
+    "center": {
+      "file": "rio-em-cores.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2937942,
+      "sha256": "888fb8dde41cfcc54ff178f5916430ac38ea0fdef447441f7375661d56441d5b",
+      "origin": "Imagem fornecida pelo usuário; original sem alterações"
+    },
+    "atlas": {
+      "file": "estados-brasileiros-atlas.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2491435,
+      "sha256": "188d24f192d8869d17e0d30b40bef7039f1cb2fec48b40115ba484d67cb35e07",
+      "origin": "Imagem fornecida pelo usuário; original sem alterações"
+    }
+  },
+  "center": {
+    "aspectRatio": 1.5,
+    "fit": "contain"
+  },
+  "states": {
+    "AC": {
+      "rect": [
+        17,
+        21,
+        240,
+        183
+      ],
+      "aspectRatio": 1.3114754098360655
+    },
+    "AL": {
+      "rect": [
+        263,
+        21,
+        216,
+        183
+      ],
+      "aspectRatio": 1.180327868852459
+    },
+    "AP": {
+      "rect": [
+        482,
+        21,
+        211,
+        183
+      ],
+      "aspectRatio": 1.1530054644808743
+    },
+    "AM": {
+      "rect": [
+        697,
+        21,
+        207,
+        183
+      ],
+      "aspectRatio": 1.1311475409836065
+    },
+    "BA": {
+      "rect": [
+        909,
+        21,
+        205,
+        183
+      ],
+      "aspectRatio": 1.1202185792349726
+    },
+    "CE": {
+      "rect": [
+        1117,
+        21,
+        204,
+        183
+      ],
+      "aspectRatio": 1.1147540983606556
+    },
+    "DF": {
+      "rect": [
+        1323,
+        21,
+        204,
+        183
+      ],
+      "aspectRatio": 1.1147540983606556
+    },
+    "ES": {
+      "rect": [
+        16,
+        216,
+        237,
+        185
+      ],
+      "aspectRatio": 1.281081081081081
+    },
+    "GO": {
+      "rect": [
+        257,
+        216,
+        218,
+        185
+      ],
+      "aspectRatio": 1.1783783783783783
+    },
+    "MA": {
+      "rect": [
+        479,
+        216,
+        212,
+        185
+      ],
+      "aspectRatio": 1.145945945945946
+    },
+    "MT": {
+      "rect": [
+        695,
+        216,
+        211,
+        185
+      ],
+      "aspectRatio": 1.1405405405405404
+    },
+    "MS": {
+      "rect": [
+        910,
+        216,
+        204,
+        185
+      ],
+      "aspectRatio": 1.1027027027027028
+    },
+    "MG": {
+      "rect": [
+        1117,
+        216,
+        204,
+        185
+      ],
+      "aspectRatio": 1.1027027027027028
+    },
+    "PA": {
+      "rect": [
+        1325,
+        216,
+        201,
+        185
+      ],
+      "aspectRatio": 1.0864864864864865
+    },
+    "PB": {
+      "rect": [
+        9,
+        411,
+        241,
+        181
+      ],
+      "aspectRatio": 1.3314917127071824
+    },
+    "PR": {
+      "rect": [
+        254,
+        411,
+        217,
+        181
+      ],
+      "aspectRatio": 1.1988950276243093
+    },
+    "PE": {
+      "rect": [
+        475,
+        411,
+        215,
+        181
+      ],
+      "aspectRatio": 1.1878453038674033
+    },
+    "PI": {
+      "rect": [
+        696,
+        411,
+        205,
+        181
+      ],
+      "aspectRatio": 1.132596685082873
+    },
+    "RJ": {
+      "rect": [
+        905,
+        411,
+        208,
+        181
+      ],
+      "aspectRatio": 1.149171270718232
+    },
+    "RN": {
+      "rect": [
+        1117,
+        411,
+        204,
+        181
+      ],
+      "aspectRatio": 1.12707182320442
+    },
+    "RS": {
+      "rect": [
+        1324,
+        411,
+        202,
+        181
+      ],
+      "aspectRatio": 1.1160220994475138
+    },
+    "RO": {
+      "rect": [
+        6,
+        604,
+        246,
+        183
+      ],
+      "aspectRatio": 1.3442622950819672
+    },
+    "RR": {
+      "rect": [
+        255,
+        604,
+        252,
+        183
+      ],
+      "aspectRatio": 1.3770491803278688
+    },
+    "SC": {
+      "rect": [
+        510,
+        604,
+        255,
+        183
+      ],
+      "aspectRatio": 1.3934426229508197
+    },
+    "SP": {
+      "rect": [
+        769,
+        604,
+        244,
+        183
+      ],
+      "aspectRatio": 1.3333333333333333
+    },
+    "SE": {
+      "rect": [
+        1018,
+        604,
+        254,
+        183
+      ],
+      "aspectRatio": 1.3879781420765027
+    },
+    "TO": {
+      "rect": [
+        1277,
+        604,
+        253,
+        183
+      ],
+      "aspectRatio": 1.3825136612021858
+    }
+  },
+  "specials": {
+    "START": {
+      "rect": [
+        237,
+        802,
+        207,
+        193
+      ],
+      "aspectRatio": 1.072538860103627
+    },
+    "EVENT": {
+      "rect": [
+        446,
+        802,
+        202,
+        193
+      ],
+      "aspectRatio": 1.0466321243523315
+    },
+    "AIRPORT": {
+      "rect": [
+        650,
+        802,
+        210,
+        193
+      ],
+      "aspectRatio": 1.0880829015544042
+    },
+    "TAX": {
+      "rect": [
+        865,
+        802,
+        202,
+        193
+      ],
+      "aspectRatio": 1.0466321243523315
+    },
+    "REST": {
+      "rect": [
+        1070,
+        802,
+        217,
+        193
+      ],
+      "aspectRatio": 1.1243523316062176
+    },
+    "OLYMPICS": {
+      "rect": [
+        1290,
+        802,
+        237,
+        193
+      ],
+      "aspectRatio": 1.2279792746113989
+    }
+  },
+  "logo": {
+    "rect": [
+      8,
+      796,
+      226,
+      192
+    ],
+    "aspectRatio": 1.1770833333333333
+  },
+  "integration": {
+    "status": "awaiting-engineering-layout",
+    "preserveArtworkAspect": true,
+    "artworkIdsAreNotRuleTypes": true,
+    "notes": [
+      "27 UFs: nenhuma exclusão indicada pela prancha",
+      "AIRPORT/TAX são IDs de arte; regra e associação ao percurso ficam com Claude",
+      "Quantidade de sprites não determina número de casas ou repetições de Evento"
+    ]
+  },
+  "paidCredits": 0
+}
