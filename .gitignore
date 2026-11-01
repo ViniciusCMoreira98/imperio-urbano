@@ -11,3 +11,6 @@ test-results/
 !.env.example
 .idea/
 *.log
+
+# Credencial local Meshy
+variable.env
