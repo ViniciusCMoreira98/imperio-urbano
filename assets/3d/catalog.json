@@ -336,6 +336,23 @@
           "exportedRig": false,
           "additionalCredits": 0,
           "report": "assets/3d/reviews/rest-pose/pose.json"
+        },
+        "uniformColor": {
+          "descriptorPath": "apps/web/public/models/characters/steampunk-brasil-v01-uniform-v04.json",
+          "maskPath": "apps/web/public/models/characters/steampunk-brasil-v01-uniform-mask-v04.png",
+          "maskSha256": "e6ae154894f63617941ac2b57775771accd43a445a7c40995b5e990ef92656fd",
+          "uniform": {
+            "mask": "/models/characters/steampunk-brasil-v01-uniform-mask-v04.png",
+            "referenceLuminance": 0.02695356,
+            "localYRange": [
+              -0.57,
+              0.07
+            ]
+          },
+          "productionIntegration": "pending-Claude",
+          "glbUnchanged": true,
+          "additionalCredits": 0,
+          "previewReport": "assets/3d/reviews/uniform-mask/preview.json"
         }
       },
       "publicPath": "/models/characters/steampunk-brasil-v01-rest-v01.glb"
