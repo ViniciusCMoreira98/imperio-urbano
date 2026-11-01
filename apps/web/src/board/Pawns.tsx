@@ -16,6 +16,7 @@ export function Pawns() {
       {active.map((p) => (
         <Pawn
           key={p.id}
+          playerId={p.id}
           position={p.position}
           spot={spots.get(p.id)!}
           avatarId={p.avatarId}
