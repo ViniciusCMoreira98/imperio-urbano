@@ -1,4 +1,4 @@
-# 08 — Contratos entre engenharia (Claude) e arte 3D (Codex)
+# 11 — Contratos entre engenharia (Claude) e arte 3D (Codex)
 
 Interfaces que os dois lados respeitam para trabalhar em paralelo (branches separadas, sem merge automático). Mudança de contrato: atualizar este documento **antes** do código e avisar o outro lado.
 

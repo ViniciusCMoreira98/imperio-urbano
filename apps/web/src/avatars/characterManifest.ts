@@ -1,4 +1,4 @@
-// Manifesto dos personagens (contrato com a arte 3D: docs/08-contratos-claude-codex.md).
+// Manifesto dos personagens (contrato com a arte 3D: docs/11-contratos-claude-codex.md).
 // Único lugar com caminhos e ajustes de modelo; o resto do jogo pede o personagem pelo avatar.
 import type { AvatarId } from '@imperio/shared-types';
 import raw from './characters.json';

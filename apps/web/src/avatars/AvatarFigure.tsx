@@ -1,5 +1,5 @@
 // Personagem do jogador carregado do manifesto (characters.json; contrato em
-// docs/08-contratos-claude-codex.md), sobre uma base na cor do peão. Esqueleto e animações são
+// docs/11-contratos-claude-codex.md), sobre uma base na cor do peão. Esqueleto e animações são
 // opcionais: modelos estáticos (ex.: Meshy sem rig) funcionam igual. Um modelo ausente ou com erro
 // cai no personagem reserva, com aviso no console.
 import { useAnimations, useGLTF } from '@react-three/drei';
