@@ -6,6 +6,8 @@ import { CameraRig } from './CameraRig';
 import { CORNER_SIZE, boardLength, tilePlacement } from './layout';
 import { WoodenTableScene } from './WoodenTableScene';
 import { Tile } from './Tile';
+import { FixedBoardViewport } from './camera/FixedBoardViewport';
+import { FIXED_CAMERA } from './camera/fixedCamera';
 
 const LENGTH = boardLength(board.tilesPerSide);
 const FRAME_WIDTH = 0.35;
@@ -36,7 +38,7 @@ const NEON_WIDTH = 0.07;
 
 export function BoardScene() {
   return (
-    <Canvas shadows camera={{ position: [13, 18, 13], fov: 35, far: 500 }} dpr={[1, 2]}>
+    <FixedBoardViewport><Canvas shadows camera={{ position: FIXED_CAMERA.position as [number,number,number], fov: FIXED_CAMERA.fov, far: FIXED_CAMERA.far }} dpr={[1, 2]}>
       <color attach="background" args={['#492a1d']} />
       <hemisphereLight args={['#fff4df', '#533023', 1.1]} />
       <WoodenTableScene />
@@ -83,7 +85,7 @@ export function BoardScene() {
       <Buildings />
       <Pawns />
 
-      <CameraRig fitRadius={OUTER * 0.55} />
-    </Canvas>
+      <CameraRig />
+    </Canvas></FixedBoardViewport>
   );
 }

@@ -4,6 +4,7 @@ import { CanvasTexture, SRGBColorSpace } from 'three';
 import type { ColorGroup, StateDefinition, TileDefinition, TileType } from '@imperio/shared-types';
 import { STATE_ART, SPECIAL_ART, drawArtwork, projectArtwork, type Quad } from './illustratedBoard';
 import { board } from '@imperio/game-data';
+import { drawCompleteStateArtwork, loadedStateArtwork, type StateArtworkFit } from './art/stateArtwork';
 
 const PX_PER_UNIT = 256;
 const INK = '#1f2a3a';
@@ -47,6 +48,7 @@ export function createTileTexture({ tile, state, group, width, depth, owned, art
   const ctx = canvas.getContext('2d')!;
   const w = canvas.width;
   const h = canvas.height;
+  let stateArtworkFit:StateArtworkFit|undefined;
 
   const side=Math.floor(tile.index/board.tilesPerSide);
   const pw=side%2?h:w,ph=side%2?w:h;
@@ -57,6 +59,13 @@ export function createTileTexture({ tile, state, group, width, depth, owned, art
   ctx.textBaseline = 'middle';
 
   if (tile.type === 'PROPERTY' && state && group) {
+    const atlas=loadedStateArtwork();
+    if(atlas){
+      ctx.fillStyle='#72411f';ctx.fillRect(0,0,pw,ph);
+      const padding=Math.max(14,Math.min(pw,ph)*.055);
+      const bottom=ph*(owned?.76:.92);
+      stateArtworkFit=drawCompleteStateArtwork(ctx,atlas,state.id,{x:padding,y:padding,width:pw-2*padding,height:bottom-padding});
+    }else{
     ctx.fillStyle='#eefaff';ctx.fillRect(0,0,pw,ph);
     const horizontal=pw>ph;
     const ix=horizontal?pw*.38:pw*.025,iy=horizontal?ph*.035:ph*.35;
@@ -68,6 +77,7 @@ export function createTileTexture({ tile, state, group, width, depth, owned, art
     const hx=horizontal?pw*.205:pw/2;
     ctx.font=`950 ${Math.min(pw,ph)*(horizontal?.23:.205)}px system-ui,sans-serif`;ctx.fillText(state.abbreviation,hx,ph*(horizontal?.31:.12));
     drawWrapped(ctx,state.name,hx,ph*(horizontal?.58:.245),pw*(horizontal?.34:.88),Math.min(pw,ph)*(horizontal?.105:.09),850);
+    }
     // Discreta faixa do grupo oficial; não deriva grupos das cores arbitrárias da imagem.
     ctx.fillStyle=group.color;ctx.fillRect(pw*.06,ph*.94,pw*.88,ph*.035);
     // Estado livre não mostra valor; comprado mostra o aluguel numa faixa na cor do dono.
@@ -110,6 +120,7 @@ export function createTileTexture({ tile, state, group, width, depth, owned, art
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = 4;
+  if(stateArtworkFit)texture.userData.stateArtworkFit=stateArtworkFit;
   return texture;
 }
 

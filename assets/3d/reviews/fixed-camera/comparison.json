@@ -1,0 +1,89 @@
+{
+  "reference": {
+    "file": "assets/board/tabuleiro-brasil-alvo.png",
+    "sha256": "9f1c1dbbd22171a47e2522585c9236ffe7f331eb7dff282b25960d27f5fa330b",
+    "width": 1536,
+    "height": 1024
+  },
+  "actualBrowserScreenshot": "render-1536.png",
+  "source": "GameScreen real com WebSocket interceptado e snapshot de teste; não usa backend real.",
+  "staticCapture": "HUD oculto e peças removidas apenas do snapshot de teste para a comparação estática; game-1536.png registra a tela completa.",
+  "postCaptureWarp": false,
+  "projectedPixels": [
+    [
+      252.99999999999994,
+      42.999999999999204
+    ],
+    [
+      1328,
+      46.99999999999915
+    ],
+    [
+      1513,
+      901.9999999999993
+    ],
+    [
+      21.999999999999858,
+      900.9999999999995
+    ]
+  ],
+  "errorsPixels": [
+    7.978354032967559e-13,
+    8.526512829121202e-13,
+    6.821210263296962e-13,
+    4.764346674119284e-13
+  ],
+  "maxErrorPixels": 8.526512829121202e-13,
+  "metrics": {
+    "all": {
+      "maeRgb255": 72.47141944037543,
+      "rmseRgb255": 100.16284933872055
+    },
+    "center": {
+      "maeRgb255": 56.22845393643195,
+      "rmseRgb255": 86.59118338370823
+    },
+    "tilesAndFrame": {
+      "maeRgb255": 98.72958531443135,
+      "rmseRgb255": 123.45193147069617
+    },
+    "tableAndDecor": {
+      "maeRgb255": 54.739698489634655,
+      "rmseRgb255": 76.27786460945103
+    }
+  },
+  "cameraInvariant": {
+    "wheel": true,
+    "drag": true,
+    "keyboardQE": true,
+    "doubleClickFocus": true,
+    "turnChange": true,
+    "resize": true,
+    "touchPinch": true
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "composition": {
+      "x": 0,
+      "y": 292,
+      "width": 390,
+      "height": 260
+    },
+    "aspectPreserved": true
+  },
+  "legacyCameraUi": "Botões/atalhos legados nos componentes do Claude ainda precisam ser retirados por ele; não alteram mais a câmera.",
+  "fidelityAccepted": false,
+  "remainingDifferences": [
+    "Contorno arredondado e espessura da moldura ainda não reconstruídos no Blender.",
+    "Percurso/ordem e composição das casas ainda refletem o catálogo atual.",
+    "Texturas centrais e recortes ainda são a implementação anterior; integrar as artes separadas mantendo enquadramento.",
+    "Vegetação, caneca, moedas e acabamento da mesa ainda divergem.",
+    "Iluminação, sombras e escala de personagens/construções exigem próximas etapas."
+  ],
+  "errors": [],
+  "apiCalls": [],
+  "paidCredits": 0
+}

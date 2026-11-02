@@ -1,0 +1,36 @@
+{
+  "landmarkMethod": "Interseções estimadas manualmente dos trechos retos; validação de câmera, não contorno final arredondado.",
+  "projectedPixels": [
+    [
+      253.0004425048828,
+      42.9996337890625
+    ],
+    [
+      1328.0004272460938,
+      46.9996337890625
+    ],
+    [
+      1513.0003967285156,
+      901.9997024536133
+    ],
+    [
+      22.000383853912354,
+      900.9996490478516
+    ]
+  ],
+  "errorsPixels": [
+    0.000574387519064902,
+    0.0005627163365046928,
+    0.00049591064453125,
+    0.0005201069471964372
+  ],
+  "maxErrorPixels": 0.000574387519064902,
+  "rmsPixels": 0.000539214544802946,
+  "blenderVersion": "5.2.3 LTS",
+  "nativeCamera": {
+    "lensMm": 67.31491088867188,
+    "shiftX": -0.06744255125522614,
+    "shiftY": -0.07348451018333435
+  },
+  "paidCredits": 0
+}

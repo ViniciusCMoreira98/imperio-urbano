@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "reference": {
+    "file": "assets/board/tabuleiro-brasil-alvo.png",
+    "sha256": "9f1c1dbbd22171a47e2522585c9236ffe7f331eb7dff282b25960d27f5fa330b",
+    "width": 1536,
+    "height": 1024
+  },
+  "aspect": 1.5,
+  "position": [
+    0.5707362033272436,
+    18.579599872994663,
+    20.374700351298902
+  ],
+  "up": [
+    -0.0024603765860829706,
+    0.7454667860355835,
+    -0.6665382340607567
+  ],
+  "target": [
+    0.8508369698834435,
+    0.3320057226426023,
+    -0.03472827912597154
+  ],
+  "fov": 20.21549031124974,
+  "near": 0.1,
+  "far": 250,
+  "principalPoint": [
+    871.5913459159198,
+    399.1281278542262
+  ],
+  "viewOffset": [
+    -103.59134591591976,
+    112.8718721457738
+  ],
+  "envelope": {
+    "width": 11.9,
+    "depth": 11.9,
+    "surfaceY": 0.3
+  },
+  "landmarks": {
+    "labels": [
+      "NW",
+      "NE",
+      "SE",
+      "SW"
+    ],
+    "referencePixels": [
+      [
+        253.0,
+        43.0
+      ],
+      [
+        1328.0,
+        47.0
+      ],
+      [
+        1513.0,
+        902.0
+      ],
+      [
+        22.0,
+        901.0
+      ]
+    ],
+    "worldPoints": [
+      [
+        -5.95,
+        0.3,
+        -5.95
+      ],
+      [
+        5.95,
+        0.3,
+        -5.95
+      ],
+      [
+        5.95,
+        0.3,
+        5.95
+      ],
+      [
+        -5.95,
+        0.3,
+        5.95
+      ]
+    ]
+  },
+  "scope": "Calibração do envelope atual; não certifica fidelidade de arte, geometria ou percurso completo."
+}
