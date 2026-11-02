@@ -5,7 +5,7 @@ export const ALL_STATE_IDS = [
   'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 ] as const;
 
-const REQUIRED_SPECIALS = ['START', 'OLYMPICS', 'VISIT', 'REST', 'EVENT', 'NATIONAL_TRAVEL'] as const;
+const REQUIRED_SPECIALS = ['START', 'OLYMPICS', 'REST', 'EVENT', 'NATIONAL_TRAVEL', 'TAX'] as const;
 
 /** Retorna a lista de erros; vazia quando o catálogo é consistente. */
 export function validateCatalog(
@@ -62,6 +62,7 @@ export function validateCatalog(
   if (m[0] !== 2 || m[m.length - 1] !== 10 || m.some((v, i) => i > 0 && v <= m[i - 1])) {
     errors.push('Multiplicadores olímpicos devem crescer de ×2 a ×10');
   }
+  if (!(rules.tax.amount > 0)) errors.push('Valor da Taxa deve ser positivo');
   if (rules.construction.firstVisitMaxHouses > rules.construction.maxHouses) {
     errors.push('Casas da primeira visita excedem o máximo');
   }

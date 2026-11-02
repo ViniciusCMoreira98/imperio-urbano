@@ -15,19 +15,21 @@ Tudo que é número está em `packages/game-data/data/*.json`, não no código.
 
 36 favorece a mecânica de construção por visitas (o jogador volta mais vezes aos próprios estados) e dá casas maiores para a arte.
 
-| Lado | Casas | Grupos (preço) |
-|---|---|---|
-| 0 | **Início** | — |
-| 1–8 | AC RR AP · *Eventos* · RO TO AM PA | Norte I (100–120), Norte II (135–170) |
-| 9 | **Descanso** | — |
-| 10–17 | PI MA SE · *Eventos* · AL PB RN CE | Nordeste I (185–205), Nordeste II (215–250) |
-| 18 | **Olimpíadas** | — |
-| 19–26 | PE BA · *Eventos* · MS MT GO DF · *Visita* | Nordeste III (265–280), Centro-Oeste (295–340) |
-| 27 | **Viagem Nacional** | — |
-| 28–35 | SC PR RS · *Eventos* · ES MG RJ SP | Sul (355–385), Sudeste (400–500) |
+Percurso definitivo (aprovado em 2026-11-01), sentido horário, seguindo a arte `assets/board/tabuleiro-brasil-alvo.png` com TO e dois Eventos acrescentados para fechar 8 casas por lado:
+
+| Índice | Casas |
+|---|---|
+| 0 | **Início** (canto) |
+| 1–8 | AM RR · *Eventos* · AP PA RO TO · *Eventos* |
+| 9 | **Olimpíadas** (canto) |
+| 10–17 | AC MT MS GO · *Eventos* · DF MG ES |
+| 18 | **Descanso** (canto) |
+| 19–26 | RJ PR SP · *Taxa* · RS SC PE PB |
+| 27 | **Aeroporto** (canto; regra da Viagem Nacional, D3) |
+| 28–35 | BA SE AL · *Eventos* · RN CE PI MA |
 
 - 8 grupos de cor seguindo as regiões geográficas; Nordeste (9 UFs) dividido em 3 grupos.
-- 27 preços distintos entre 100 e 500, crescentes no sentido do percurso.
+- 27 preços distintos entre 100 e 500, definidos por estado (não crescem ao longo do percurso).
 - Validação automática (`packages/game-data/src/catalog.test.ts`): sem UF ausente/duplicada, preços únicos, cada UF exatamente uma vez no tabuleiro, todas as casas especiais presentes.
 
 ## 2. Balanceamento inicial (PROPOSTA)
@@ -49,9 +51,9 @@ Patrimônio (modo Rápido) = saldo + preço dos estados + valor investido em con
 
 | # | Tema | Problema | Proposta |
 |---|---|---|---|
-| D1 | **Visita** | Não há regra; sem prisão, "visita" não tem significado. | Casa neutra (nada acontece). Pode virar destino de cartas. |
+| D1 | **Visita** | Não há regra; sem prisão, "visita" não tem significado. | **Removida** do percurso (2026-11-01): a arte do tabuleiro não tem Visita; o canto 27 passou a ser o Aeroporto. |
 | D2 | **Descanso** | Efeito não definido. | Canto: jogador perde a próxima jogada, mas continua recebendo aluguéis. Sai antes se tirar dupla. |
-| D3 | **Viagem Nacional** | Efeito não definido. | No turno seguinte, em vez de rolar, escolhe qualquer casa e viaja até ela pagando 50 (recebe 200 se passar pelo Início). Pode recusar e rolar normalmente. |
+| D3 | **Viagem Nacional (Aeroporto)** | Efeito não definido. | No turno seguinte, em vez de rolar, escolhe qualquer casa e viaja até ela pagando 50 (recebe 200 se passar pelo Início). Pode recusar e rolar normalmente. |
 | D4 | **Construção por visitas** | "Primeira visita" e "completar até três casas" se sobrepõem: comprar e voltar depois sem ter 3 casas conta como 2ª visita? | Regra por **etapa**, no máximo uma etapa por visita: etapa 1 (0–3 casas) pode ser completada em qualquer visita do dono; 4ª casa exige uma visita posterior àquela em que chegou a 3; hotel exige visita posterior à 4ª casa. A compra conta como 1ª visita. Só conta **parar** na casa (passar não conta). |
 | D5 | **Grupos de cor** | Construção não exige o grupo completo → cor fica só decorativa. | MVP: decorativa. Opção configurável `fullGroupBaseRentMultiplier` (ex.: ×2 no aluguel sem construção com grupo completo), hoje 1. |
 | D6 | **Olimpíadas sem estados** | Jogador sem propriedades não tem o que escolher. | Opção indisponível; não paga a taxa. |
@@ -71,3 +73,4 @@ Patrimônio (modo Rápido) = saldo + preço dos estados + valor investido em con
 | D22 | **Onde mostrar as Olimpíadas** (pedido do usuário) | A seção 8 pede edição, multiplicador, sede e responsável no centro do tabuleiro. | O destaque fica **no próprio estado-sede**: moldura dourada pulsando, tocha e selo "🔥×N" virado para a câmera; o centro não tem mais painel olímpico. A carta do estado mostra o multiplicador e quem é o dono. |
 | D21 | **Ritmo do turno** (pedido do usuário) | Jogador parado trava a partida. | Prazos no servidor (`rules.turnTimers`): 10 s para rolar/escolher a viagem → rola sozinho; 15 s para comprar/construir/sediar → recusa. Sem decisão restante, a vez passa sozinha (inclusive logo após comprar). Dívida não tem prazo para quem está conectado. Jogador desconectado entra no **modo automático** (a cada 2 s o servidor joga a ação padrão; na dívida, vende construção → estado → falência) até voltar; com ninguém conectado a partida pausa e, se ninguém voltar em 2 minutos (`rules.abandonment.seconds`), é encerrada sem vencedor. A câmera não se move sozinha. |
 | D20 | **Ações no turno** | Construir só é possível ao parar no estado? | Sim: compra/construção só no estado onde o peão parou; venda ao banco só com dívida (D10). Não há negociação (D12). |
+| D23 | **Taxa** | Casa nova da arte do tabuleiro (2026-11-01). | Paga `rules.tax.amount` (100) ao banco ao parar; sem saldo, vira dívida com o banco (fluxo de D10/D11). Passar pela casa não cobra. |

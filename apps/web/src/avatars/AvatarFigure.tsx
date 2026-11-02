@@ -13,7 +13,11 @@ import { type CharacterAsset, type CharacterUniform, characterFiles, characterFo
 import { normalizePlacement } from './normalize';
 import { type UniformTint, applyUniformTint, prepareUniformMask } from './uniformTint';
 
-export type AvatarMotion = 'idle' | 'walk';
+/** Clips procurados por nome no GLB (contrato 1 em docs/11); todos opcionais. */
+export type AvatarMotion = 'idle' | 'walk' | 'celebrate' | 'defeat';
+
+/** Avisa se o modelo tem o clip pedido (sem ele, quem chamou faz a versão procedural). */
+export type MotionReport = (motion: AvatarMotion, hasClip: boolean) => void;
 
 function hasSkin(root: Object3D): boolean {
   let skinned = false;
@@ -76,7 +80,7 @@ class MaskBoundary extends Component<{ mask: string; children: ReactNode }, { fa
 }
 
 /** Modelo normalizado; animação só se o clip existir no arquivo. */
-function CharacterModel({ asset, motion, color }: { asset: CharacterAsset; motion: AvatarMotion; color: string }) {
+function CharacterModel({ asset, motion, color, onMotion }: { asset: CharacterAsset; motion: AvatarMotion; color: string; onMotion?: MotionReport }) {
   const { scene, animations } = useGLTF(asset.file);
   // Cada peão precisa da própria cópia; com esqueleto, a cópia precisa religar os ossos.
   const model = useMemo(() => {
@@ -95,12 +99,14 @@ function CharacterModel({ asset, motion, color }: { asset: CharacterAsset; motio
   const { actions } = useAnimations(animations, root);
   useEffect(() => {
     // Clip pedido, senão o de "parado" do manifesto, senão nenhum (modelo estático).
-    const action = actions[motion] ?? (asset.idleClip ? actions[asset.idleClip] : undefined);
+    const own = actions[motion];
+    onMotion?.(motion, Boolean(own));
+    const action = own ?? (asset.idleClip ? actions[asset.idleClip] : undefined);
     action?.reset().fadeIn(0.15).play();
     return () => {
       action?.fadeOut(0.15);
     };
-  }, [actions, motion, asset.idleClip]);
+  }, [actions, motion, asset.idleClip]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <group rotation={[0, asset.rotationY, 0]}>
@@ -134,7 +140,17 @@ class ModelFallback extends Component<{ asset: CharacterAsset; children: ReactNo
 }
 
 /** Só o personagem, com os pés em y = 0 e o rosto virado para +z. */
-export function AvatarFigure({ avatarId, color, motion = 'idle' }: { avatarId: AvatarId; color: string; motion?: AvatarMotion }) {
+export function AvatarFigure({
+  avatarId,
+  color,
+  motion = 'idle',
+  onMotion,
+}: {
+  avatarId: AvatarId;
+  color: string;
+  motion?: AvatarMotion;
+  onMotion?: MotionReport;
+}) {
   const asset = characterFor(avatarId);
   const reserve = fallbackCharacter();
   return (
@@ -145,14 +161,14 @@ export function AvatarFigure({ avatarId, color, motion = 'idle' }: { avatarId: A
         asset.id === reserve.id ? null : (
           <ModelFallback asset={reserve} fallback={null}>
             <Suspense fallback={null}>
-              <CharacterModel asset={reserve} motion={motion} color={color} />
+              <CharacterModel asset={reserve} motion={motion} color={color} onMotion={onMotion} />
             </Suspense>
           </ModelFallback>
         )
       }
     >
       <Suspense fallback={null}>
-        <CharacterModel asset={asset} motion={motion} color={color} />
+        <CharacterModel asset={asset} motion={motion} color={color} onMotion={onMotion} />
       </Suspense>
     </ModelFallback>
   );

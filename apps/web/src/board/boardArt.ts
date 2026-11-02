@@ -40,10 +40,9 @@ function stateCrops(): Record<string, Crop> {
 
 export const STATE_CROPS = stateCrops();
 
-export const SPECIAL_CROPS: Record<Exclude<TileType, 'PROPERTY'>, Crop> = {
+export const SPECIAL_CROPS: Partial<Record<Exclude<TileType, 'PROPERTY'>, Crop>> = {
   START: [30, 58, 130, 55],
   OLYMPICS: [1165, 18, 115, 88],
-  VISIT: [45, 1008, 100, 72],
   REST: [1148, 1008, 140, 100],
   EVENT: [612, 20, 100, 95],
   NATIONAL_TRAVEL: [1011, 1012, 107, 108],

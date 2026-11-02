@@ -1,18 +1,18 @@
-// Estado de visualização (somente cliente). A câmera fica parada na vista geral: só se aproxima
-// quando o jogador pede (duplo clique numa casa). Selecionar uma casa apenas abre o painel.
+// Estado de visualização (somente cliente). A câmera é estática: selecionar uma casa só abre o
+// painel, sem mover a câmera (contrato em docs/11-contratos-claude-codex.md, seção 10).
 import { create } from 'zustand';
 
 interface ViewState {
   /** Casa mostrada no painel lateral. */
   selectedTile: number | null;
-  /** Casa em que a câmera está aproximada; null = vista geral. */
-  focusedTile: number | null;
-  /** Quartos de volta da vista geral; inteiro sem limite, para girar sempre no sentido pedido. */
-  quarterTurns: number;
+  /**
+   * Fixos (sem foco nem giro): só ficam enquanto o CameraRig atual ainda os lê. Saem quando a
+   * câmera estática do Codex chegar.
+   */
+  focusedTile: null;
+  quarterTurns: 0;
   selectTile: (index: number) => void;
-  focusTile: (index: number) => void;
-  clearFocus: () => void;
-  rotate: (direction: 1 | -1) => void;
+  clearSelection: () => void;
 }
 
 export const useViewStore = create<ViewState>()((set) => ({
@@ -20,7 +20,5 @@ export const useViewStore = create<ViewState>()((set) => ({
   focusedTile: null,
   quarterTurns: 0,
   selectTile: (index) => set({ selectedTile: index }),
-  focusTile: (index) => set({ selectedTile: index, focusedTile: index }),
-  clearFocus: () => set({ selectedTile: null, focusedTile: null }),
-  rotate: (direction) => set((s) => ({ quarterTurns: s.quarterTurns + direction, focusedTile: null })),
+  clearSelection: () => set({ selectedTile: null }),
 }));

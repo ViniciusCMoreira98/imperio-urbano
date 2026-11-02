@@ -349,7 +349,7 @@ public final class GameEngine {
         moveForward(d, Math.floorMod(tileIndex - player.position(), tileCount), 0);
     }
 
-    /** Efeitos de chegar a uma casa: Descanso faz perder jogadas; Viagem Nacional libera a viagem seguinte. */
+    /** Efeitos de chegar a uma casa: Descanso faz perder jogadas; o Aeroporto (Viagem Nacional) libera a viagem seguinte. */
     private PlayerState arrive(PlayerState player) {
         return switch (catalog.tile(player.position()).type()) {
             case REST -> player.withSkipTurns(rules.rest().turnsLost());
@@ -385,6 +385,7 @@ public final class GameEngine {
             case EVENT -> {
                 if (depth < MAX_CHAINED_LANDINGS) drawEventCard(d, depth);
             }
+            case TAX -> payBank(d, player, rules.tax().amount());
             default -> {
             }
         }

@@ -1,0 +1,3 @@
+# Arquivos de origem com hash registrado (ex.: IBGE em assets/board/sources): guardados e
+# extraídos byte a byte, sem conversão de quebra de linha no Windows.
+assets/board/sources/** -text

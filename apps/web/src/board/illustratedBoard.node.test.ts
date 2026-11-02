@@ -11,10 +11,10 @@ describe('Arte original aplicada ao tabuleiro aprovado',()=>{
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(metadata.sha256);
     expect(bytes.readUInt32BE(16)).toBe(1536);expect(bytes.readUInt32BE(20)).toBe(1024);
   });
-  it('cobre as 27 UFs e todos os tipos das 36 casas sem acrescentar Taxa',()=>{
+  it('cobre as 27 UFs e as casas do percurso; a Taxa usa o desenho reserva até a integração do atlas',()=>{
     expect(Object.keys(STATE_ART).sort()).toEqual(states.map(s=>s.id).sort());
     expect(board.tiles).toHaveLength(36);
-    for(const tile of board.tiles)expect(tile.stateId?STATE_ART[tile.stateId]:SPECIAL_ART[tile.type]).toBeDefined();
+    for(const tile of board.tiles.filter(t=>t.type!=='TAX'))expect(tile.stateId?STATE_ART[tile.stateId]:SPECIAL_ART[tile.type]).toBeDefined();
     expect(SPECIAL_ART.TAX).toBeUndefined();
   });
   it('retifica as janelas sem inverter cantos nem sair da imagem',()=>{

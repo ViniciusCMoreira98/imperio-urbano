@@ -9,14 +9,13 @@ import { Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { Color, type Group, type Mesh, MeshBasicMaterial } from 'three';
 import { board } from '@imperio/game-data';
 import type { AvatarId } from '@imperio/shared-types';
-import { AvatarFigure } from '../avatars/AvatarFigure';
+import { type AvatarMotion, AvatarFigure } from '../avatars/AvatarFigure';
 import { characterFor } from '../avatars/characterManifest';
 import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
 import { type PawnMove, enqueueMoves, hopTiles } from '../game/moves';
 import { useGameStore } from '../store/gameStore';
-import { tileAnchor } from './layout';
 import { forgetPawn, reportPawn } from './pawnDebug';
-import type { PawnSpot } from './pawnLayout';
+import { type PawnSpot, pawnCenter } from './pawnLayout';
 
 const TILE_COUNT = board.tiles.length;
 
@@ -40,19 +39,23 @@ interface PawnProps {
   color: string;
   /** É a vez deste jogador: base pulsando e seta sobre a cabeça. */
   active: boolean;
+  /** Faliu: toca a saída (clip defeat, se houver) e some do tabuleiro. */
+  leaving: boolean;
+  /** Venceu: comemora parado (clip celebrate ou saltinhos procedurais). */
+  celebrating: boolean;
 }
+
+/** Comemoração procedural (sem clip): saltinho e meia-volta, repetidos. */
+const CHEER = { height: 0.3, up: 0.22, down: 0.2, spin: Math.PI };
+/** Saída de quem faliu: pausa (ou o clip defeat), depois encolhe e afunda. */
+const EXIT = { pause: 0.3, clipPause: 1.2, duration: 0.6, sink: 0.3 };
 
 /** Ângulo equivalente a `target` mais próximo de `current` (gira pelo lado mais curto). */
 function nearest(current: number, target: number): number {
   return current + Math.atan2(Math.sin(target - current), Math.cos(target - current));
 }
 
-function centerOf(tile: number): PawnSpot {
-  const anchor = tileAnchor(tile);
-  return { x: anchor.x, y: anchor.surfaceY, z: anchor.z };
-}
-
-export function Pawn({ playerId, position, spot, avatarId, color, active }: PawnProps) {
+export function Pawn({ playerId, position, spot, avatarId, color, active, leaving, celebrating }: PawnProps) {
   const rootRef = useRef<Group>(null);
   const bodyRef = useRef<Group>(null);
   const faceRef = useRef<Group>(null);
@@ -133,7 +136,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
       // Decidido na hora do salto (o snapshot chega logo depois dos eventos): a última casa do último
       // movimento pendente pousa direto no lugar oficial dentro dela; as outras, no centro.
       const target = () =>
-        i === tiles.length - 1 && queue.current.length === 0 && move.to === latest.current.position ? latest.current.spot : centerOf(tile);
+        i === tiles.length - 1 && queue.current.length === 0 && move.to === latest.current.position ? latest.current.spot : pawnCenter(tile);
       const angle = () => Math.atan2(target().x - root.position.x, target().z - root.position.z);
       const label = `salto${i}`;
       tl.to(face.rotation, { y: () => nearest(face.rotation.y, angle()), duration: style.turn, ease: 'power2.out' })
@@ -191,11 +194,55 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
     else snap();
   }, [position, spot.x, spot.y, spot.z]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Clips opcionais do modelo: com eles, a comemoração/saída usa o clip; sem eles, a versão procedural.
+  const motion: AvatarMotion = celebrating ? 'celebrate' : leaving ? 'defeat' : 'idle';
+  const clips = useRef<Partial<Record<AvatarMotion, boolean>>>({});
+  const cheer = useRef<gsap.core.Timeline | null>(null);
+  const onMotion = (name: AvatarMotion, hasClip: boolean) => {
+    clips.current[name] = hasClip;
+    if (name === 'celebrate' && hasClip) cheer.current?.kill();
+  };
+
+  useEffect(() => {
+    const body = bodyRef.current;
+    const face = faceRef.current;
+    if (!celebrating || !body || !face || clips.current.celebrate) return;
+    cheer.current = gsap
+      .timeline({ repeat: -1, repeatDelay: 0.25 })
+      .to(body.position, { y: BASE_HEIGHT + CHEER.height, duration: CHEER.up, ease: 'power2.out' })
+      .to(face.rotation, { y: `+=${CHEER.spin}`, duration: CHEER.up + CHEER.down, ease: 'power1.inOut' }, '<')
+      .to(body.position, { y: BASE_HEIGHT, duration: CHEER.down, ease: 'power2.in' });
+    return () => {
+      cheer.current?.kill();
+      cheer.current = null;
+      body.position.y = BASE_HEIGHT;
+    };
+  }, [celebrating]);
+
+  // Já falido ao montar (entrou ou reconectou depois): não aparece. Falindo agora: sai com transição.
+  const leftAtMount = useRef(leaving);
+  useLayoutEffect(() => {
+    if (leftAtMount.current && rootRef.current) rootRef.current.visible = false;
+  }, []);
+  // Efeito comum (não de layout): roda depois do modelo avisar se tem o clip defeat.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || !leaving || leftAtMount.current) return;
+    snap();
+    const exit = gsap
+      .timeline({ delay: clips.current.defeat ? EXIT.clipPause : EXIT.pause, onComplete: () => void (root.visible = false) })
+      .to(root.scale, { x: 0.01, y: 0.01, z: 0.01, duration: EXIT.duration, ease: 'back.in(1.6)' })
+      .to(root.position, { y: root.position.y - EXIT.sink, duration: EXIT.duration, ease: 'power2.in' }, '<');
+    return () => {
+      exit.kill();
+    };
+  }, [leaving]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Parado, vira devagar para a câmera (só no eixo vertical). Durante os saltos, o giro é do timeline.
   useFrame(({ camera }, delta) => {
     const root = rootRef.current;
     const face = faceRef.current;
-    if (!root || !face || timeline.current) return;
+    if (!root || !face || timeline.current || cheer.current) return;
     const target = Math.atan2(camera.position.x - root.position.x, camera.position.z - root.position.z);
     face.rotation.y += (nearest(face.rotation.y, target) - face.rotation.y) * Math.min(1, delta * TURN_SPEED);
   });
@@ -209,7 +256,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active }: Pawn
       <group ref={bodyRef} position={[0, BASE_HEIGHT, 0]}>
         <group ref={faceRef}>
           <Suspense fallback={null}>
-            <AvatarFigure avatarId={avatarId} color={color} />
+            <AvatarFigure avatarId={avatarId} color={color} motion={motion} onMotion={onMotion} />
           </Suspense>
         </group>
         {active && <ActiveMarker color={color} height={characterFor(avatarId).height + 0.25} />}

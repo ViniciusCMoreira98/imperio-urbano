@@ -87,6 +87,16 @@ Normalização feita pelo carregador (não alterar a geometria original):
 
 Esqueleto e animações são **opcionais**: com `SkinnedMesh` o modelo é clonado com `SkeletonUtils.clone`; sem, com `clone()` comum. O movimento entre casas é procedural (saltos), sem depender de clip de caminhada.
 
+Clips opcionais por nome (procurados no GLB; não precisam de campo no manifesto):
+
+| Clip | Quando toca | Sem o clip |
+|---|---|---|
+| `idle` (ou o `idleClip` do manifesto) | parado na casa | personagem estático |
+| `celebrate` | vencedor, no fim da partida, parado na casa | saltinhos procedurais no lugar |
+| `defeat` | jogador que faliu, antes de sair do tabuleiro | só a saída procedural (encolhe e afunda) |
+
+O clip só é usado se existir; nada no jogo depende dele. Animações de esqueleto devem ficar no lugar (sem deslocar a raiz), porque posição e saltos são do jogo.
+
 Requisitos do GLB (alinhados a `docs/07-meshy-pipeline.md` do Codex): glTF 2.0 autocontido ou com texturas ao lado, Y para cima, frente +Z, **sem pedestal/base**, até 12 mil triângulos e 3 MiB.
 
 ## 2. Superfície das casas (implementado na Etapa 3)
@@ -202,3 +212,47 @@ Entrega aplicada em `BoardScene`, `BoardCenter`, `Tile`, `tileTexture` e `Wooden
 As paisagens das casas vêm da fonte; nomes e siglas são redesenhados do catálogo para preservar proporções e grafia, com moldura dourada e faixa discreta do grupo oficial. As casas laterais ficam legíveis na vista inicial. Aluguel/cor do dono, seleção, foco e eventos de ponteiro continuam os mesmos. Texturas liberadas ao desmontar. O antigo painel central de rodada/modo foi substituído por uma indicação na barra de ações; não há perda desses dados nem de comandos. HUD e GLBs dos jogadores não foram substituídos.
 
 Conferência da nova arte: `$env:IMPERIO_ART_REVIEW='board-illustrated'; node scripts/assets/hud-visual-qa.mjs` em PowerShell. Capturas e relatório em `assets/3d/reviews/board-illustrated/`, usando tela real e WebSocket simulado em 1671×941 e 390×844. Testes verificam hash/dimensões do original, 27 UFs, seis tipos especiais, 36 casas e projeção das janelas. Total de 63 testes e build aprovados. Nenhum crédito pago ou alteração de backend, catálogo, regras ou movimentos. A composição original completa (inclusive seus objetos de mesa e casas divergentes) é preservada no PNG de origem, não reproduzida integralmente pela geometria jogável.
+
+## 10. Tabuleiro com câmera estática — percurso, âncoras e interação (aprovado em 2026-11-01)
+
+Substitui, para o percurso, a restrição da seção 9 ("não criar Taxa, não renomear Viagem Nacional para Aeroporto, não remover Visita, não reordenar UFs"): o usuário aprovou a nova ordem. A arte continua com o Codex; a engenharia já entregou catálogo, regras, âncoras e interação.
+
+**Percurso (36 casas, sentido horário; fonte `packages/game-data/data/board.json`):**
+
+| Índice | Casas | ID de arte (manifesto) |
+|---|---|---|
+| 0 | Início | `START` |
+| 1–8 | AM, RR, Eventos, AP, PA, RO, TO, Eventos | UFs, `EVENT` |
+| 9 | Olimpíadas | `OLYMPICS` |
+| 10–17 | AC, MT, MS, GO, Eventos, DF, MG, ES | UFs, `EVENT` |
+| 18 | Descanso | `REST` |
+| 19–26 | RJ, PR, SP, Taxa, RS, SC, PE, PB | UFs, `TAX` |
+| 27 | Aeroporto | `AIRPORT` |
+| 28–35 | BA, SE, AL, Eventos, RN, CE, PI, MA | UFs, `EVENT` |
+
+Tipos do motor → ID de arte: `START`→`START`, `EVENT`→`EVENT`, `OLYMPICS`→`OLYMPICS`, `REST`→`REST`, `TAX`→`TAX`, `NATIONAL_TRAVEL` (nome "Aeroporto")→`AIRPORT`. O tipo `VISIT` deixou de existir. Regras: Aeroporto = Viagem Nacional (D3); Taxa paga `rules.tax.amount` (100) ao banco, sem saldo vira dívida (D23).
+
+Adaptação mínima feita pela engenharia em arquivos do Codex, só para compilar: `tileTexture.ts` (estilo reserva de `TAX` no lugar de `VISIT`), `boardArt.ts` (`SPECIAL_CROPS` parcial, sem `VISIT`) e `illustratedBoard.node.test.ts` (a Taxa usa o desenho reserva até a integração do atlas). `SPECIAL_ART.VISIT` em `illustratedBoard.ts` ficou sem uso. A troca para `estados-brasileiros-atlas.png` / `BoardArtwork.tsx` é do Codex.
+
+**Âncoras — `tileAnchor(index)` em `apps/web/src/board/layout.ts` continua o acesso único:**
+
+```ts
+interface TileArea { x: number; z: number; width: number; depth: number } // sistema da casa
+interface TileAnchor {
+  index; x; z; surfaceY; rotationY; width; depth; isCorner; // como antes
+  pawnArea: TileArea;            // onde até 4 personagens se distribuem
+  buildingArea: TileArea | null; // faixa de casas/hotel; null onde não há construção (não-PROPERTY)
+  selectedLift: number;          // quanto a casa sobe ao ser selecionada (0 se a arte não sobe)
+}
+anchorToWorld(anchor, lx, lz) // ponto local da casa → mundo, mesma rotação da casa
+```
+
+- Sistema da casa: origem no centro, x ao longo da largura, +z para fora do tabuleiro (−z para o centro), igual a `rotationY`.
+- Valores atuais (provisórios, coerentes com a geometria de hoje): margem 0,01; em estados, `buildingArea` é a faixa de 0,5 do lado interno e `pawnArea` o restante; nas demais casas, `pawnArea` ocupa a casa inteira menos a margem.
+- **Codex:** ao reconstruir a geometria estática, ajusta os números dentro de `layout.ts` (ou num módulo de geometria que `tileAnchor` leia), mantendo a interface; posiciona casas/hotel dentro de `buildingArea`; mantém `surfaceY` igual ao topo real da arte.
+- **Engenharia:** personagens usam `pawnArea` (`pawnSpots`, `pawnCenter`), a seleção usa `selectedLift`, os saltos usam `surfaceY`.
+- Testes de contrato (`layout.test.ts`, `pawnLayout.test.ts`): nas 36 casas as áreas ficam dentro da casa, construções não sobrepõem personagens, só estados têm `buildingArea`, 4 personagens cabem separados na `pawnArea`.
+
+**Interação sem câmera móvel (feito):** saíram `ViewControls` (botões ⟲ ⌂ ⟳ e teclas Q/E/Esc) e o duplo clique de foco em `Tile`. Clicar numa casa continua abrindo o painel; o "×" do painel só limpa a seleção. `viewStore` ficou com `selectedTile`, `selectTile` e `clearSelection`; `focusedTile` e `quarterTurns` ficam fixos (`null` e `0`) só enquanto `CameraRig.tsx`/`cameraPose.ts` ainda os leem.
+
+**Próximo passo do Codex (aguarda aprovação do usuário):** câmera estática sem ler `focusedTile`/`quarterTurns` (e sem arrastar/girar/zoom). Depois disso a engenharia remove os dois campos do `viewStore`. `scripts/assets/hud-visual-qa.mjs` ainda verifica a rotação por teclado e precisa ser atualizado pelo Codex.

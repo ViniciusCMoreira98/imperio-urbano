@@ -8,6 +8,8 @@ export const TILE_WIDTH = 1;
 export const CORNER_SIZE = 1.6;
 /** Espessura das casas: o topo delas fica em y = TILE_HEIGHT (contrato em docs/11-contratos-claude-codex.md). */
 export const TILE_HEIGHT = 0.08;
+/** Quanto a casa selecionada sobe; quem está em cima dela sobe junto. */
+export const SELECTED_TILE_LIFT = 0.06;
 
 export interface TilePlacement {
   index: number;
@@ -57,8 +59,20 @@ export function tilePlacement(index: number, tilesPerSide: number): TilePlacemen
 }
 
 /**
- * Âncora de uma casa para quem fica em cima dela (personagens, bases): centro, altura do topo e
- * orientação. Fonte única de posição e altura das casas; a arte mantém surfaceY igual ao topo real.
+ * Retângulo no sistema da casa: x ao longo da largura, z ao longo da profundidade (+z para fora do
+ * tabuleiro, -z para o centro), origem no centro da casa.
+ */
+export interface TileArea {
+  x: number;
+  z: number;
+  width: number;
+  depth: number;
+}
+
+/**
+ * Âncora de uma casa para quem fica em cima dela (personagens, bases, construções): centro, altura
+ * do topo, orientação e áreas. Fonte única de posição e altura das casas; a arte mantém surfaceY
+ * igual ao topo real (contrato em docs/11-contratos-claude-codex.md, seção 10).
  */
 export interface TileAnchor {
   index: number;
@@ -70,9 +84,45 @@ export interface TileAnchor {
   width: number;
   depth: number;
   isCorner: boolean;
+  /** Onde até 4 personagens se distribuem. */
+  pawnArea: TileArea;
+  /** Faixa de casas e hotel, sem sobrepor pawnArea; null onde não há construção. */
+  buildingArea: TileArea | null;
+  /** Quanto a casa sobe ao ser selecionada (0 se a arte não sobe); quem está nela sobe junto. */
+  selectedLift: number;
+}
+
+/** Margem entre as áreas e a borda da casa. */
+const AREA_MARGIN = 0.01;
+/** Profundidade da faixa de construções, no lado interno da casa (perto do centro do tabuleiro). */
+const BUILDING_BAND = 0.5;
+
+function areas(index: number, width: number, depth: number): Pick<TileAnchor, 'pawnArea' | 'buildingArea'> {
+  const inner = -depth / 2 + AREA_MARGIN;
+  const outer = depth / 2 - AREA_MARGIN;
+  const usableWidth = width - 2 * AREA_MARGIN;
+  if (board.tiles[index]?.type !== 'PROPERTY') {
+    return { pawnArea: { x: 0, z: 0, width: usableWidth, depth: outer - inner }, buildingArea: null };
+  }
+  const split = inner + BUILDING_BAND;
+  return {
+    buildingArea: { x: 0, z: (inner + split) / 2, width: usableWidth, depth: BUILDING_BAND },
+    pawnArea: { x: 0, z: (split + outer) / 2, width: usableWidth, depth: outer - split },
+  };
 }
 
 export function tileAnchor(index: number, tilesPerSide: number = board.tilesPerSide): TileAnchor {
   const { x, z, rotationY, width, depth, isCorner } = tilePlacement(index, tilesPerSide);
-  return { index, x, z, surfaceY: TILE_HEIGHT, rotationY, width, depth, isCorner };
+  return {
+    index, x, z, surfaceY: TILE_HEIGHT, rotationY, width, depth, isCorner,
+    ...areas(index, width, depth),
+    selectedLift: SELECTED_TILE_LIFT,
+  };
+}
+
+/** Ponto do sistema da casa (x, z locais) no mundo, com a mesma rotação em Y que a casa usa. */
+export function anchorToWorld(anchor: TileAnchor, lx: number, lz: number): { x: number; z: number } {
+  const cos = Math.cos(anchor.rotationY);
+  const sin = Math.sin(anchor.rotationY);
+  return { x: anchor.x + lx * cos + lz * sin, z: anchor.z - lx * sin + lz * cos };
 }

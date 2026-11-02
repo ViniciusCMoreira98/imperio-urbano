@@ -20,7 +20,7 @@ import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/** Rolar 1 + 4 a partir do Início leva à casa 5 (Eventos). */
+/** Rolar 1 + 2 a partir do Início leva à casa 3 (Eventos). */
 class EventCardsTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
@@ -54,7 +54,7 @@ class EventCardsTest {
 
     private GameEngine.Result anaDraws(String cardId) {
         nextCard(cardId);
-        return run("ana", new RollDice(), 1, 4);
+        return run("ana", new RollDice(), 1, 2);
     }
 
     private int credits(String playerId) {
@@ -76,7 +76,7 @@ class EventCardsTest {
         GameState before = state;
         String top = before.eventDeck().peek();
 
-        GameEngine.Result result = engine.execute(before, "ana", new RollDice(), FixedDice.of(1, 4));
+        GameEngine.Result result = engine.execute(before, "ana", new RollDice(), FixedDice.of(1, 2));
 
         assertThat(result.events()).contains(new EventCardDrawn("ana", top));
         assertThat(result.state().eventDeck().next()).isEqualTo(1);
@@ -87,7 +87,7 @@ class EventCardsTest {
         List<String> order = CATALOG.eventCards().stream().map(EventCard::id).toList();
         state = state.withEventDeck(new EventDeck(order, order.size() - 1));
 
-        run("ana", new RollDice(), 1, 4);
+        run("ana", new RollDice(), 1, 2);
 
         assertThat(state.eventDeck().next()).isZero();
     }
@@ -154,7 +154,7 @@ class EventCardsTest {
     void moveToStateResolvesTheNewTile() {
         anaDraws("voo-sao-paulo");
 
-        assertThat(state.player("ana").position()).isEqualTo(26);
+        assertThat(state.player("ana").position()).isEqualTo(21);
         assertThat(credits("ana")).isEqualTo(1500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
     }
@@ -172,27 +172,29 @@ class EventCardsTest {
 
     @Test
     void moveBackChargesRentAtTheNewTileWithoutBonus() {
-        state = state.withProperty(PropertyState.purchased("AM", "bia"));
+        // Da casa 5, 1 + 2 cai em Eventos (casa 8); voltar 3 leva ao Pará (casa 5).
+        state = state.withProperty(PropertyState.purchased("PA", "bia"))
+                .updatePlayer("ana", p -> p.withPosition(5));
 
         anaDraws("estrada-interditada");
 
-        assertThat(state.player("ana").position()).isEqualTo(2);
-        assertThat(credits("ana")).isEqualTo(1500 - CATALOG.state("AM").rent().base());
+        assertThat(state.player("ana").position()).isEqualTo(5);
+        assertThat(credits("ana")).isEqualTo(1500 - CATALOG.state("PA").rent().base());
     }
 
     @Test
     void moveForwardByThree() {
         anaDraws("carona");
 
-        assertThat(state.player("ana").position()).isEqualTo(8);
+        assertThat(state.player("ana").position()).isEqualTo(6);
     }
 
     @Test
     void restCardEndsTheDoublesSequence() {
-        // Da casa 1, a dupla 2 + 2 cai em Eventos (casa 5).
+        // Da casa 1, a dupla 1 + 1 cai em Eventos (casa 3).
         state = state.updatePlayer("ana", p -> p.withPosition(1));
         nextCard("feriado-prolongado");
-        run("ana", new RollDice(), 2, 2);
+        run("ana", new RollDice(), 1, 1);
 
         assertThat(state.player("ana").position()).isEqualTo(REST_TILE);
         run("ana", new EndTurn());

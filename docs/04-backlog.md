@@ -58,6 +58,7 @@ Alvo visual: [visual-alvo.webp](referencias/visual-alvo.webp). Desde 2026-10-31 
 | P3 | Personagens: saltos procedurais | Etapa 4: um salto por casa, giro, preparação e aterrissagem | — |
 | P4 | Personagens: multiplayer e estabilidade | Etapa 5: fila de movimentos, versões/ordem dos eventos, reconexão, testes | — |
 | P5 | Personagens: polimento | Etapa 6: transições e validação com a arte | Validação visual conjunta |
+| T1 | Tabuleiro com câmera estática | ✅ Percurso definitivo (Taxa, Aeroporto, sem Visita), áreas em `tileAnchor`, retirada de foco/giro | Geometria, câmera estática, materiais, atlas das casas |
 | E25 | Dados 3D | Rolagem ligada ao resultado do servidor, sempre parando no valor oficial, reconexão no meio da rolagem | Modelo, material e animação visual |
 | E26 | Anúncio olímpico | Disparo pelo evento do servidor, sem repetir após reconexão | Confete, selo ×N e visual da chamada |
 | E27 | Cartas e mapa | Destaque do estado ao selecionar a casa (lógica) e fluxo da carta revelada | Arte das cartas de Evento e do verso da pilha |

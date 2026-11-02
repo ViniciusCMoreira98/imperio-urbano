@@ -66,7 +66,7 @@ class GameJsonTest {
         GameEngine engine = new GameEngine(CATALOG, new Random(7));
         GameState state = engine.apply(null, engine.start("g1", GameMode.CLASSIC, List.of(
                 new StartingPlayer("ana", "Ana"), new StartingPlayer("bia", "Bia"))));
-        state = engine.execute(state, "ana", new GameCommand.RollDice(), () -> new DiceRoll(1, 2)).state();
+        state = engine.execute(state, "ana", new GameCommand.RollDice(), () -> new DiceRoll(4, 6)).state();
         state = engine.execute(state, "ana", new GameCommand.BuyProperty(2), () -> null).state();
 
         assertThat(GameJson.readState(GameJson.write(state))).isEqualTo(state);

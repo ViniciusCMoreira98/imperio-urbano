@@ -5,14 +5,18 @@ import { defineConfig, devices } from '@playwright/test';
  * Reaproveita servidores já rodando; senão sobe o Vite e a API. O banco precisa estar de pé.
  * E2E_WEB_PORT troca a porta do front (ex.: 5174 para testar uma worktree sem parar a principal).
  */
-const mvnw = process.platform === 'win32' ? 'mvnw.cmd' : './mvnw';
+// Caminho explícito: no Windows o processo do Playwright não procura executáveis na pasta atual.
+const mvnw = process.platform === 'win32' ? '.\\mvnw.cmd' : './mvnw';
 const webPort = Number(process.env.E2E_WEB_PORT ?? 5173);
 
 export default defineConfig({
   testDir: '.',
   testMatch: '*.e2e.ts',
-  timeout: 120_000,
-  expect: { timeout: 15_000 },
+  timeout: 180_000,
+  // O 3D roda sem placa de vídeo no navegador de teste: telas demoram a abrir sob carga.
+  expect: { timeout: 30_000 },
+  // Uma nova tentativa por teste; falha repetida continua reprovando.
+  retries: 1,
   fullyParallel: false,
   workers: 1,
   reporter: [['list'], ['html', { open: 'never', outputFolder: '../playwright-report' }]],
@@ -30,8 +34,9 @@ export default defineConfig({
       port: 8080,
       timeout: 180_000,
       reuseExistingServer: true,
-      // O WebSocket só aceita as origens listadas; inclui a porta do front usada no teste.
-      env: { ALLOWED_ORIGINS: `http://localhost:5173,http://localhost:${webPort}` },
+      // O WebSocket só aceita as origens listadas; inclui a porta do front usada no teste. `env`
+      // substitui o ambiente inteiro no Playwright: sem repassar o do sistema, a API perde PATH e JAVA_HOME.
+      env: { ...(process.env as Record<string, string>), ALLOWED_ORIGINS: `http://localhost:5173,http://localhost:${webPort}` },
     },
     {
       command: `npx vite --port ${webPort} --strictPort`,

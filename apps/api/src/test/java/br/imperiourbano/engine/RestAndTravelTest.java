@@ -10,6 +10,8 @@ import br.imperiourbano.engine.GameCommand.ChooseTravel;
 import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.RollDice;
+import br.imperiourbano.engine.GameEvent.CreditsToBank;
+import br.imperiourbano.engine.GameEvent.DebtIncurred;
 import br.imperiourbano.engine.GameEvent.RestLeft;
 import br.imperiourbano.engine.GameEvent.RestTurnLost;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
@@ -23,8 +25,10 @@ class RestAndTravelTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
     private static final int REST_TILE = 18;
-    private static final int TRAVEL_TILE = 20;
+    private static final int TRAVEL_TILE = 27;
     private static final int TRAVEL_FEE = CATALOG.rules().nationalTravel().fee();
+    private static final int TAX_TILE = 22;
+    private static final int TAX = CATALOG.rules().tax().amount();
 
     private final GameEngine engine = new GameEngine(CATALOG);
     private GameState state;
@@ -107,7 +111,7 @@ class RestAndTravelTest {
         state = state.withProperty(PropertyState.purchased("AC", "ana"))
                 .withTurn(1, 1, TurnPhase.AWAITING_ROLL, 0);
 
-        run("bia", new RollDice(), 1, 2);
+        run("bia", new RollDice(), 4, 6);
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 + CATALOG.state("AC").rent().base());
     }
@@ -154,7 +158,7 @@ class RestAndTravelTest {
     void travelPastStartPaysTheBonus() {
         anaChoosingTravel();
 
-        run("ana", new ChooseTravel(3));
+        run("ana", new ChooseTravel(1));
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 - TRAVEL_FEE + 200);
     }
@@ -179,6 +183,28 @@ class RestAndTravelTest {
         assertThat(state.player("ana").position()).isEqualTo(TRAVEL_TILE + 3);
         assertThat(state.player("ana").travelPending()).isFalse();
         assertThat(state.player("ana").credits()).isEqualTo(1500);
+    }
+
+    @Test
+    void landingOnTaxPaysTheBank() {
+        placeAna(TAX_TILE - 3);
+
+        GameEngine.Result result = run("ana", new RollDice(), 1, 2);
+
+        assertThat(result.events()).last().isEqualTo(new CreditsToBank("ana", TAX));
+        assertThat(state.player("ana").credits()).isEqualTo(1500 - TAX);
+        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
+    }
+
+    @Test
+    void taxWithoutBalanceBecomesDebtToTheBank() {
+        placeAna(TAX_TILE - 3);
+        state = state.updatePlayer("ana", p -> p.withCredits(TAX - 1));
+
+        GameEngine.Result result = run("ana", new RollDice(), 1, 2);
+
+        assertThat(result.events()).last().isEqualTo(new DebtIncurred("ana", null, TAX));
+        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_DEBT_RESOLUTION);
     }
 
     @Test

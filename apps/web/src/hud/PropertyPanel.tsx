@@ -21,7 +21,7 @@ function readableTextColor(hex: string): string {
 
 export function PropertyPanel({ myId }: { myId: string }) {
   const index = useViewStore((s) => s.selectedTile);
-  const clearFocus = useViewStore((s) => s.clearFocus);
+  const clearSelection = useViewStore((s) => s.clearSelection);
   const snapshot = useGameStore((s) => s.snapshot);
 
   if (index === null) return null;
@@ -30,7 +30,7 @@ export function PropertyPanel({ myId }: { myId: string }) {
   const closeButton = (
     <button
       type="button"
-      onClick={clearFocus}
+      onClick={clearSelection}
       className="rounded px-2 text-xl leading-none opacity-80 hover:opacity-100"
       aria-label="Fechar"
     >

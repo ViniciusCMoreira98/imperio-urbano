@@ -6,12 +6,12 @@ import { currentRent } from '../game/rules';
 import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { useIllustratedBoardArt } from './illustratedBoard';
-import { TILE_HEIGHT, type TilePlacement } from './layout';
+import { SELECTED_TILE_LIFT, TILE_HEIGHT, type TilePlacement } from './layout';
 import { createTileTexture } from './tileTexture';
 
 // A altura das casas mora em layout.ts (contrato com quem fica em cima delas).
 export { TILE_HEIGHT };
-const SELECTED_LIFT = 0.06;
+const SELECTED_LIFT = SELECTED_TILE_LIFT;
 
 interface TileProps {
   tile: TileDefinition;
@@ -22,7 +22,6 @@ interface TileProps {
 
 export function Tile({ tile, placement, state, group }: TileProps) {
   const selectTile = useViewStore((s) => s.selectTile);
-  const focusTile = useViewStore((s) => s.focusTile);
   const selected = useViewStore((s) => s.selectedTile === tile.index);
   const [hovered, setHovered] = useState(false);
   // Valores primitivos: a casa só redesenha quando o aluguel ou o dono dela mudam.
@@ -82,10 +81,6 @@ export function Tile({ tile, placement, state, group }: TileProps) {
         if (e.delta > 4) return;
         e.stopPropagation();
         selectTile(tile.index);
-      }}
-      onDoubleClick={(e) => {
-        e.stopPropagation();
-        focusTile(tile.index);
       }}
     >
       <boxGeometry args={[placement.width * 0.98, TILE_HEIGHT, placement.depth * 0.98]} />

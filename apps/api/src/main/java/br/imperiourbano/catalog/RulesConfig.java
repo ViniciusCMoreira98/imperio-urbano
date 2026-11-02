@@ -13,6 +13,7 @@ public record RulesConfig(
         OlympicsRules olympics,
         RestRules rest,
         NationalTravelRules nationalTravel,
+        TaxRules tax,
         TurnTimers turnTimers,
         AbandonmentRules abandonment,
         Map<GameMode, ModeConfig> modes) {
@@ -53,6 +54,10 @@ public record RulesConfig(
 
     /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
     public record NationalTravelRules(int fee) {
+    }
+
+    /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida com o banco. */
+    public record TaxRules(int amount) {
     }
 
     /**
