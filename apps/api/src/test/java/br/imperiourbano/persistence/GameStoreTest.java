@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
@@ -30,6 +31,9 @@ class GameStoreTest {
 
     @Autowired
     Catalog catalog;
+
+    @Autowired
+    JdbcTemplate jdbc;
 
     private GameEngine engine;
     private String gameId;
@@ -57,7 +61,7 @@ class GameStoreTest {
 
     @Test
     void snapshotAndEventLogRestoreTheGame() {
-        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
+        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(3, 5));
         play("c2", "ana", new GameCommand.BuyProperty(1), null);
 
         assertThat(store.loadSnapshot(gameId)).contains(state);
@@ -69,7 +73,7 @@ class GameStoreTest {
 
     @Test
     void processedCommandsAreRemembered() {
-        play("cmd-roll", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
+        play("cmd-roll", "ana", new GameCommand.RollDice(), new DiceRoll(3, 5));
 
         assertThat(store.processedVersion(gameId + ":cmd-roll")).hasValue(state.version());
         assertThat(store.processedVersion(gameId + ":never-sent")).isEmpty();
@@ -77,7 +81,7 @@ class GameStoreTest {
 
     @Test
     void sameCommandIdCannotBeStoredTwice() {
-        play("dup", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
+        play("dup", "ana", new GameCommand.RollDice(), new DiceRoll(3, 5));
 
         assertThatThrownBy(() -> play("dup", "ana", new GameCommand.DeclinePurchase(), null))
                 .isInstanceOf(DuplicateCommandException.class);
@@ -87,12 +91,26 @@ class GameStoreTest {
     @Test
     void staleVersionIsRejected() {
         GameState stale = state;
-        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
+        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(3, 5));
 
         GameEngine.Result concurrent = engine.execute(stale, "ana", new GameCommand.RollDice(), () -> new DiceRoll(2, 3));
 
         assertThatThrownBy(() -> store.append(gameId, stale.version(), concurrent.events(), concurrent.state(), gameId + ":c2", "ana"))
                 .isInstanceOf(ConcurrentGameUpdateException.class);
         assertThat(store.loadSnapshot(gameId)).contains(state);
+    }
+
+    @Test
+    void gamesFromTheOldBoardAreKeptButDoNotResume() {
+        assertThat(store.usesOldBoard(gameId)).isFalse();
+        assertThat(store.inProgressGameIds()).contains(gameId);
+
+        // Snapshot gravado antes da migração para 33 casas (versão 1 do tabuleiro).
+        jdbc.update("update game_snapshots set board_version = 1 where game_id = ?", gameId);
+
+        assertThat(store.usesOldBoard(gameId)).isTrue();
+        assertThat(store.loadSnapshot(gameId)).isEmpty();
+        assertThat(store.inProgressGameIds()).doesNotContain(gameId);
+        assertThat(store.loadEvents(gameId)).hasSize((int) state.version());
     }
 }

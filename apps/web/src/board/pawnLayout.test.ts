@@ -18,7 +18,7 @@ function local(index: number, x: number, z: number): [number, number] {
 
 describe('personagens nas casas', () => {
   it('sozinho fica no centro da área de personagens, em cima da casa', () => {
-    for (const index of [0, 3, 9, 14, 18, 21, 27, 35]) {
+    for (const index of [0, 3, 7, 12, 16, 19, 20, 25, 32]) {
       const spot = pawnSpots([pawn('ana', index, 0)]).get('ana')!;
       const anchor = tileAnchor(index);
       const [lx, lz] = local(index, spot.x, spot.z);
@@ -29,7 +29,8 @@ describe('personagens nas casas', () => {
     }
   });
 
-  it('até quatro na mesma casa ficam separados e dentro da área de personagens, em todos os lados e cantos', () => {
+  // Que cabem no contorno real de cada casa é conferido em layout.test.ts.
+  it('até quatro na mesma casa ficam separados, em volta do centro da área de personagens', () => {
     for (let index = 0; index < TILE_COUNT; index++) {
       for (let count = 2; count <= 4; count++) {
         const pawns = Array.from({ length: count }, (_, seat) => pawn(`p${seat}`, index, seat));
@@ -37,8 +38,7 @@ describe('personagens nas casas', () => {
         const area = tileAnchor(index).pawnArea;
         for (const spot of spots) {
           const [lx, lz] = local(index, spot.x, spot.z);
-          expect(Math.abs(lx - area.x) + PAWN_RADIUS).toBeLessThanOrEqual(area.width / 2 + 1e-9);
-          expect(Math.abs(lz - area.z) + PAWN_RADIUS).toBeLessThanOrEqual(area.depth / 2 + 1e-9);
+          expect(Math.hypot(lx - area.x, lz - area.z)).toBeLessThanOrEqual(2 * PAWN_RADIUS);
         }
         for (let i = 0; i < spots.length; i++) {
           for (let j = i + 1; j < spots.length; j++) {

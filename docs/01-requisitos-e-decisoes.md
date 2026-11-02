@@ -5,32 +5,26 @@ Tudo que é número está em `packages/game-data/data/*.json`, não no código.
 
 ## 1. Distribuição do tabuleiro (calculada)
 
-**36 casas, 9 por lado** (4 cantos + 32 laterais = 27 estados + 5 especiais laterais).
+**33 casas** (D24, aprovada em 2026-11-02): exatamente as casas da arte `assets/board/tabuleiro-brasil-alvo.png` — 26 UFs (**sem Tocantins**), dois Eventos e Início, Olimpíadas, Descanso, Taxa e Aeroporto. Os lados têm tamanhos diferentes (8, 9, 9 e 7 casas entre os cantos), como na arte; o motor só usa o total de casas. A versão anterior, de 36 casas e 9 por lado (27 UFs, quatro Eventos), foi substituída.
 
-| Opção | Casas | Especiais laterais | Volta média (2d6 ≈ 7) |
-|---|---|---|---|
-| 32 | 8/lado | 1 | ~4,6 turnos — sem espaço para eventos |
-| **36 (escolhida)** | 9/lado | 5 | ~5,1 turnos |
-| 40 | 10/lado | 9 | ~5,7 turnos — mais casas vazias, menos revisitas |
-
-36 favorece a mecânica de construção por visitas (o jogador volta mais vezes aos próprios estados) e dá casas maiores para a arte.
-
-Percurso definitivo (aprovado em 2026-11-01), sentido horário, seguindo a arte `assets/board/tabuleiro-brasil-alvo.png` com TO e dois Eventos acrescentados para fechar 8 casas por lado:
+Percurso definitivo, sentido horário. Cada casa tem um **id estável** (`board.json`): a sigla nos estados e o id da arte nas especiais. As cartas apontam destinos por esse id, nunca pelo número.
 
 | Índice | Casas |
 |---|---|
-| 0 | **Início** (canto) |
-| 1–8 | AM RR · *Eventos* · AP PA RO TO · *Eventos* |
-| 9 | **Olimpíadas** (canto) |
-| 10–17 | AC MT MS GO · *Eventos* · DF MG ES |
-| 18 | **Descanso** (canto) |
-| 19–26 | RJ PR SP · *Taxa* · RS SC PE PB |
-| 27 | **Aeroporto** (canto; regra da Viagem Nacional, D3) |
-| 28–35 | BA SE AL · *Eventos* · RN CE PI MA |
+| 0 | **Início** (`START`) |
+| 1–6 | AM RR · *Eventos* (`EVENT_NORTH`) · AP PA RO |
+| 7 | **Olimpíadas** (`OLYMPICS`) |
+| 8–15 | AC MT MS GO · *Eventos* (`EVENT_EAST`) · DF MG ES |
+| 16 | **Descanso** (`REST`) |
+| 17–24 | RJ PR SP · *Taxa* (`TAX`) · RS SC PE PB |
+| 25 | **Aeroporto** (`AIRPORT`; regra da Viagem Nacional, D3) |
+| 26–32 | BA SE AL RN CE PI MA |
 
-- 8 grupos de cor seguindo as regiões geográficas; Nordeste (9 UFs) dividido em 3 grupos.
-- 27 preços distintos entre 100 e 500, definidos por estado (não crescem ao longo do percurso).
-- Validação automática (`packages/game-data/src/catalog.test.ts`): sem UF ausente/duplicada, preços únicos, cada UF exatamente uma vez no tabuleiro, todas as casas especiais presentes.
+- 8 grupos de cor seguindo as regiões geográficas; Nordeste (9 UFs) dividido em 3 grupos. Sem Tocantins, o Norte II fica com RO, AM e PA.
+- 26 preços distintos entre 100 e 500, definidos por estado (não crescem ao longo do percurso).
+- A ordem e os ids seguem o manifesto da arte (`apps/web/src/board/reference33/layout.json`); um teste confere índice, id e tipo das 33 casas.
+- Validação automática (`packages/game-data/src/catalog.test.ts`): sem UF ausente/duplicada, preços únicos, cada UF exatamente uma vez no tabuleiro, ids únicos, todas as casas especiais presentes.
+- Partidas salvas no tabuleiro anterior ficam guardadas, mas não continuam: o servidor avisa "Esta partida usa o tabuleiro antigo e não pode continuar" (versão do tabuleiro gravada em cada snapshot).
 
 ## 2. Balanceamento inicial (PROPOSTA)
 
@@ -51,7 +45,7 @@ Patrimônio (modo Rápido) = saldo + preço dos estados + valor investido em con
 
 | # | Tema | Problema | Proposta |
 |---|---|---|---|
-| D1 | **Visita** | Não há regra; sem prisão, "visita" não tem significado. | **Removida** do percurso (2026-11-01): a arte do tabuleiro não tem Visita; o canto 27 passou a ser o Aeroporto. |
+| D1 | **Visita** | Não há regra; sem prisão, "visita" não tem significado. | **Removida** do percurso (2026-11-01): a arte do tabuleiro não tem Visita; o canto passou a ser o Aeroporto. |
 | D2 | **Descanso** | Efeito não definido. | Canto: jogador perde a próxima jogada, mas continua recebendo aluguéis. Sai antes se tirar dupla. |
 | D3 | **Viagem Nacional (Aeroporto)** | Efeito não definido. | No turno seguinte, em vez de rolar, escolhe qualquer casa e viaja até ela pagando 50 (recebe 200 se passar pelo Início). Pode recusar e rolar normalmente. |
 | D4 | **Construção por visitas** | "Primeira visita" e "completar até três casas" se sobrepõem: comprar e voltar depois sem ter 3 casas conta como 2ª visita? | Regra por **etapa**, no máximo uma etapa por visita: etapa 1 (0–3 casas) pode ser completada em qualquer visita do dono; 4ª casa exige uma visita posterior àquela em que chegou a 3; hotel exige visita posterior à 4ª casa. A compra conta como 1ª visita. Só conta **parar** na casa (passar não conta). |
@@ -74,3 +68,4 @@ Patrimônio (modo Rápido) = saldo + preço dos estados + valor investido em con
 | D21 | **Ritmo do turno** (pedido do usuário) | Jogador parado trava a partida. | Prazos no servidor (`rules.turnTimers`): 10 s para rolar/escolher a viagem → rola sozinho; 15 s para comprar/construir/sediar → recusa. Sem decisão restante, a vez passa sozinha (inclusive logo após comprar). Dívida não tem prazo para quem está conectado. Jogador desconectado entra no **modo automático** (a cada 2 s o servidor joga a ação padrão; na dívida, vende construção → estado → falência) até voltar; com ninguém conectado a partida pausa e, se ninguém voltar em 2 minutos (`rules.abandonment.seconds`), é encerrada sem vencedor. A câmera não se move sozinha. |
 | D20 | **Ações no turno** | Construir só é possível ao parar no estado? | Sim: compra/construção só no estado onde o peão parou; venda ao banco só com dívida (D10). Não há negociação (D12). |
 | D23 | **Taxa** | Casa nova da arte do tabuleiro (2026-11-01). | Paga `rules.tax.amount` (100) ao banco ao parar; sem saldo, vira dívida com o banco (fluxo de D10/D11). Passar pela casa não cobra. |
+| D24 | **33 casas da arte** (pedido do usuário, 2026-11-02) | O percurso de 36 casas não corresponde à arte aprovada. | 33 casas da arte, 26 UFs (sem Tocantins), dois Eventos; ids estáveis por casa e cartas por id. Partidas do tabuleiro anterior ficam guardadas, mas não continuam. |

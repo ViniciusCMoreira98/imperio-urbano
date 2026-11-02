@@ -17,6 +17,6 @@ class ImperioUrbanoApplicationTests {
 
     @Test
     void contextLoadsWithCatalogAndDatabase() {
-        assertThat(catalog.states()).hasSize(27);
+        assertThat(catalog.states()).hasSize(26);
     }
 }

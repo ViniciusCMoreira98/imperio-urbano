@@ -6,7 +6,7 @@ Cada entrega é pequena, testável e termina com algo visível ou com testes ver
 
 | # | Entrega | Pronto quando |
 |---|---|---|
-| ✅ E0 | Monorepo, catálogo de 27 UFs, tabuleiro de 36 casas, regras em JSON, tipos e validação | `npm test` verde |
+| ✅ E0 | Monorepo, catálogo de 27 UFs, tabuleiro de 36 casas, regras em JSON, tipos e validação (hoje 26 UFs e 33 casas, P1) | `npm test` verde |
 | ✅ E1 | Scaffold `apps/web` (Vite + React + TS + Tailwind + R3F + Drei + Zustand) | `npm run dev` abre cena vazia |
 | ✅ E2 | Geometria do tabuleiro a partir de `board.json` (casas, cores, bordas elevadas, centro reservado) | 36 casas corretas na tela |
 | ✅ E3 | Câmera isométrica: visão geral, zoom e rotação limitados, foco suave | Inspecionar qualquer casa |
@@ -59,6 +59,7 @@ Alvo visual: [visual-alvo.webp](referencias/visual-alvo.webp). Desde 2026-10-31 
 | P4 | Personagens: multiplayer e estabilidade | Etapa 5: fila de movimentos, versões/ordem dos eventos, reconexão, testes | — |
 | P5 | Personagens: polimento | Etapa 6: transições e validação com a arte | Validação visual conjunta |
 | T1 | Tabuleiro com câmera estática | ✅ Percurso definitivo (Taxa, Aeroporto, sem Visita), áreas em `tileAnchor`, retirada de foco/giro | Geometria, câmera estática, materiais, atlas das casas |
+| P1 | Tabuleiro de 33 casas | ✅ Motor, catálogo e cartas por id; partidas antigas não continuam; cena de 33 casas no jogo com peões e construções no contorno real | Arte própria das casas (substituir a projeção da referência), acabamento do HUD |
 | E25 | Dados 3D | Rolagem ligada ao resultado do servidor, sempre parando no valor oficial, reconexão no meio da rolagem | Modelo, material e animação visual |
 | E26 | Anúncio olímpico | Disparo pelo evento do servidor, sem repetir após reconexão | Confete, selo ×N e visual da chamada |
 | E27 | Cartas e mapa | Destaque do estado ao selecionar a casa (lógica) e fluxo da carta revelada | Arte das cartas de Evento e do verso da pilha |

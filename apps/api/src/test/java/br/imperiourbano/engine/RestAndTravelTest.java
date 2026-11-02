@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 class RestAndTravelTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int REST_TILE = 18;
-    private static final int TRAVEL_TILE = 27;
+    private static final int REST_TILE = 16;
+    private static final int TRAVEL_TILE = 25;
     private static final int TRAVEL_FEE = CATALOG.rules().nationalTravel().fee();
-    private static final int TAX_TILE = 22;
+    private static final int TAX_TILE = 20;
     private static final int TAX = CATALOG.rules().tax().amount();
 
     private final GameEngine engine = new GameEngine(CATALOG);
@@ -111,7 +111,7 @@ class RestAndTravelTest {
         state = state.withProperty(PropertyState.purchased("AC", "ana"))
                 .withTurn(1, 1, TurnPhase.AWAITING_ROLL, 0);
 
-        run("bia", new RollDice(), 4, 6);
+        run("bia", new RollDice(), 3, 5);
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 + CATALOG.state("AC").rent().base());
     }
@@ -145,10 +145,10 @@ class RestAndTravelTest {
     void travelPaysTheFeeAndResolvesTheDestination() {
         anaChoosingTravel();
 
-        GameEngine.Result result = run("ana", new ChooseTravel(35));
+        GameEngine.Result result = run("ana", new ChooseTravel(32));
 
-        assertThat(result.events()).first().isEqualTo(new TravelChosen("ana", 35, TRAVEL_FEE));
-        assertThat(state.player("ana").position()).isEqualTo(35);
+        assertThat(result.events()).first().isEqualTo(new TravelChosen("ana", 32, TRAVEL_FEE));
+        assertThat(state.player("ana").position()).isEqualTo(32);
         assertThat(state.player("ana").credits()).isEqualTo(1500 - TRAVEL_FEE);
         assertThat(state.player("ana").travelPending()).isFalse();
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
@@ -167,7 +167,7 @@ class RestAndTravelTest {
     void travelDestinationMustBeAnotherTile() {
         anaChoosingTravel();
 
-        for (int invalid : new int[] {TRAVEL_TILE, -1, 36}) {
+        for (int invalid : new int[] {TRAVEL_TILE, -1, 33}) {
             assertThatThrownBy(() -> run("ana", new ChooseTravel(invalid)))
                     .hasMessage("Escolha outra casa do tabuleiro como destino.");
         }
@@ -216,7 +216,7 @@ class RestAndTravelTest {
         biaPlays();
 
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_ROLL);
-        assertThatThrownBy(() -> run("ana", new ChooseTravel(35))).isInstanceOf(RuleViolationException.class);
+        assertThatThrownBy(() -> run("ana", new ChooseTravel(32))).isInstanceOf(RuleViolationException.class);
         run("ana", new RollDice(), 1, 2);
         assertThat(state.player("ana").travelPending()).isFalse();
     }

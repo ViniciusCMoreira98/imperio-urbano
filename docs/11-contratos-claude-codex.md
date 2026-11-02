@@ -1,6 +1,6 @@
 # 11 — Contratos entre engenharia (Claude) e arte 3D (Codex)
 
-**Orientações operacionais e fila atual da engenharia:** [ORIENTACOES-CLAUDE.md](ORIENTACOES-CLAUDE.md). O Codex deve atualizar esse único arquivo sempre que uma entrega exigir ação do Claude; este contrato mantém os detalhes das interfaces.
+**Orientações operacionais e fila atual da engenharia:** [ORIENTACOES-CLAUDE.md](ORIENTACOES-CLAUDE.md). O Codex deve atualizar esse único arquivo sempre que uma entrega exigir ação do Claude; este contrato mantém os detalhes das interfaces. Pedidos da engenharia para a arte: [ORIENTACOES-CODEX.md](ORIENTACOES-CODEX.md).
 
 ## Regra vigente de criação — referências não são assets finais
 

@@ -4,6 +4,7 @@ import { CanvasTexture, SRGBColorSpace } from 'three';
 import type { ColorGroup, StateDefinition, TileDefinition, TileType } from '@imperio/shared-types';
 import { STATE_ART, SPECIAL_ART, drawArtwork, projectArtwork, type Quad } from './illustratedBoard';
 import { board } from '@imperio/game-data';
+import { LEGACY_TILES_PER_SIDE } from './layout';
 import { drawCompleteStateArtwork, loadedStateArtwork, type StateArtworkFit } from './art/stateArtwork';
 
 const PX_PER_UNIT = 256;
@@ -50,7 +51,7 @@ export function createTileTexture({ tile, state, group, width, depth, owned, art
   const h = canvas.height;
   let stateArtworkFit:StateArtworkFit|undefined;
 
-  const side=Math.floor(tile.index/board.tilesPerSide);
+  const side=Math.floor(tile.index/LEGACY_TILES_PER_SIDE);
   const pw=side%2?h:w,ph=side%2?w:h;
   ctx.translate(w/2,h/2);ctx.rotate([0,-Math.PI/2,Math.PI,Math.PI/2][side]);ctx.translate(-pw/2,-ph/2);
   ctx.fillStyle = '#7c431d';

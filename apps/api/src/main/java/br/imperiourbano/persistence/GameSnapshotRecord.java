@@ -23,6 +23,9 @@ class GameSnapshotRecord {
     @Column(nullable = false)
     private String state;
 
+    @Column(name = "board_version", nullable = false)
+    private int boardVersion;
+
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
@@ -33,13 +36,18 @@ class GameSnapshotRecord {
         this.gameId = gameId;
     }
 
-    void update(long newVersion, String newState) {
+    void update(long newVersion, String newState, int newBoardVersion) {
         this.version = newVersion;
         this.state = newState;
+        this.boardVersion = newBoardVersion;
         this.updatedAt = Instant.now();
     }
 
     String state() {
         return state;
+    }
+
+    int boardVersion() {
+        return boardVersion;
     }
 }

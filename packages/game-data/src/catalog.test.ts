@@ -7,8 +7,11 @@ describe('catálogo de jogo', () => {
     expect(validateCatalog(states, board, rules)).toEqual([]);
   });
 
-  it('tem exatamente 27 unidades federativas', () => {
-    expect(states).toHaveLength(27);
+  it('tem 26 unidades federativas, sem Tocantins, em 33 casas com dois Eventos', () => {
+    expect(states).toHaveLength(26);
+    expect(states.some((s) => s.id === ('TO' as string))).toBe(false);
+    expect(board.tiles).toHaveLength(33);
+    expect(board.tiles.filter((t) => t.type === 'EVENT')).toHaveLength(2);
   });
 
   it('detecta estado duplicado e ausente', () => {
@@ -30,7 +33,7 @@ describe('catálogo de jogo', () => {
   });
 
   it('detecta carta duplicada e destino inexistente', () => {
-    const broken = [...eventCards, { ...eventCards[0] }, { id: 'x', title: 'X', text: 'X', effect: { type: 'MOVE_TO' as const, tile: 99 } }];
+    const broken = [...eventCards, { ...eventCards[0] }, { id: 'x', title: 'X', text: 'X', effect: { type: 'MOVE_TO' as const, tile: 'TO' } }];
     const errors = validateEventCards(broken, board);
     expect(errors).toContain(`Carta duplicada: ${eventCards[0].id}`);
     expect(errors).toContain('x: casa de destino inexistente');

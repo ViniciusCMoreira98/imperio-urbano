@@ -54,7 +54,7 @@ describe('movimentos a partir dos eventos', () => {
 });
 
 describe('fila de movimentos no store', () => {
-  const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0 };
+  const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, unavailable: null };
   const snapshot = (version: number) => ({ version, turnTimeLeftMs: null }) as GameSnapshot;
   const start = reduceServerMessage(empty, { kind: 'SNAPSHOT', snapshot: snapshot(10) });
 

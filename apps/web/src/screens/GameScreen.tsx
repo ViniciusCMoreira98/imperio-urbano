@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { BoardScene } from '../board/BoardScene';
+import { useEffect, useState } from 'react';
+import { GameBoard } from '../board/GameBoard';
 import { isMyTurn, playerOf } from '../game/rules';
 import { ActionBar } from '../hud/ActionBar';
 import { CardReveal } from '../hud/CardReveal';
@@ -20,6 +20,8 @@ export function GameScreen() {
   const leave = useAppStore((s) => s.leave);
   const snapshot = useGameStore((s) => s.snapshot);
   const connection = useGameStore((s) => s.connection);
+  const unavailable = useGameStore((s) => s.unavailable);
+  const wideHud = useMediaQuery(WIDE_HUD_QUERY);
 
   useEffect(() => {
     const store = useGameStore.getState();
@@ -50,29 +52,35 @@ export function GameScreen() {
 
   return (
     <div className="game-viewport relative h-full w-full overflow-hidden">
-      <BoardScene />
+      {/* Na tela larga o tabuleiro fica no espaço entre os painéis (index.css), sem nada por cima das casas. */}
+      <div className="game-hud-board absolute inset-0">
+        <GameBoard />
+      </div>
 
       <header className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
         <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
           ←<span className="hidden sm:inline"> Menu</span>
         </Button>
-        {connection !== 'open' && (
+        {connection !== 'open' && !unavailable && (
           <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-amber-300">reconectando…</p>
         )}
       </header>
 
-      {!snapshot ? (
+      {unavailable ? (
+        <UnavailableOverlay reason={unavailable} onLeave={leave} />
+      ) : !snapshot ? (
         <p className="absolute inset-0 flex items-center justify-center text-white/80">Conectando à partida…</p>
       ) : (
         <>
-          {/* Celular: faixa no topo. Computador: coluna à esquerda. Rodada e sala ficam no centro do tabuleiro. */}
-          <aside className="game-hud-players absolute inset-x-2 top-12 flex flex-col gap-2 sm:inset-x-auto sm:left-3 sm:top-5 sm:max-h-[calc(100%-7rem)] sm:overflow-y-auto">
+          {/* Jogadores: faixa no topo. Na tela larga, o histórico vai para a coluna da direita. */}
+          <aside className="game-hud-players absolute inset-x-2 top-12 flex flex-col gap-2">
             <PlayersPanel myId={session.playerId} />
-            <EventLog />
+            {!wideHud && <EventLog />}
           </aside>
-          {/* Carta do estado: folha acima da barra no celular; coluna à direita no computador. */}
-          <aside className="absolute inset-x-2 bottom-20 max-h-[45%] overflow-y-auto sm:inset-x-auto sm:bottom-auto sm:right-3 sm:top-16 sm:max-h-[calc(100%-7rem)]">
+          {/* Carta do estado: folha acima da barra no celular; coluna à direita na tela larga. */}
+          <aside className="game-hud-side absolute inset-x-2 bottom-20 max-h-[45%] overflow-y-auto">
             <PropertyPanel myId={session.playerId} />
+            {wideHud && <EventLog />}
           </aside>
           <footer className="pointer-events-none absolute inset-x-2 bottom-2 flex justify-center sm:bottom-3">
             <div className="pointer-events-auto w-full sm:w-auto">
@@ -88,6 +96,35 @@ export function GameScreen() {
           {snapshot.status === 'FINISHED' && <FinishedOverlay onLeave={leave} />}
         </>
       )}
+    </div>
+  );
+}
+
+/** Mesma condição da seção "HUD em tela larga" do index.css. */
+const WIDE_HUD_QUERY = '(min-width: 640px) and (orientation: landscape)';
+
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
+  useEffect(() => {
+    const list = window.matchMedia(query);
+    const update = () => setMatches(list.matches);
+    update();
+    list.addEventListener('change', update);
+    return () => list.removeEventListener('change', update);
+  }, [query]);
+  return matches;
+}
+
+function UnavailableOverlay({ reason, onLeave }: { reason: string; onLeave: () => void }) {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-black/50 p-4">
+      <div role="alert" className="max-w-sm rounded-2xl bg-slate-900 p-6 text-center shadow-2xl">
+        <h2 className="text-xl font-extrabold text-amber-300">Partida indisponível</h2>
+        <p className="mt-2 text-white">{reason}</p>
+        <Button variant="primary" className="mt-4" onClick={onLeave}>
+          Voltar ao menu
+        </Button>
+      </div>
     </div>
   );
 }

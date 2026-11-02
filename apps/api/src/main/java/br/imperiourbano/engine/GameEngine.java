@@ -414,7 +414,7 @@ public final class GameEngine {
                         int paid = Math.min(effect.amount(), Math.max(0, d.state.player(other.id()).credits()));
                         if (paid > 0) d.emit(new CreditsTransferred(other.id(), player.id(), paid));
                     });
-            case MOVE_TO -> moveForward(d, Math.floorMod(effect.tile() - player.position(), tileCount), depth + 1);
+            case MOVE_TO -> moveForward(d, Math.floorMod(catalog.tileIndex(effect.tile()) - player.position(), tileCount), depth + 1);
             case MOVE_BY -> {
                 if (effect.steps() > 0) {
                     moveForward(d, effect.steps(), depth + 1);

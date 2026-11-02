@@ -19,14 +19,16 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-/** Servidor real + cliente WebSocket do JDK. Dados sempre 4 + 6: do Início, para no Acre (livre). */
+/** Servidor real + cliente WebSocket do JDK. Dados sempre 3 + 5: do Início, para no Acre (livre). */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({TestcontainersConfiguration.class, GameSocketTest.FixedDiceConfig.class})
 class GameSocketTest {
@@ -36,12 +38,15 @@ class GameSocketTest {
         @Bean
         @Primary
         Dice fixedDice() {
-            return () -> new DiceRoll(4, 6);
+            return () -> new DiceRoll(3, 5);
         }
     }
 
     @LocalServerPort
     int port;
+
+    @Autowired
+    JdbcTemplate jdbc;
 
     private final HttpClient http = HttpClient.newHttpClient();
     private String anaToken;
@@ -166,7 +171,7 @@ class GameSocketTest {
         ana.send(command("c1", 1, ROLL));
 
         for (Client client : new Client[] {ana, bia}) {
-            assertThat(client.next("EVENTS")).contains("\"DICE_ROLLED\"", "\"PLAYER_MOVED\"", "\"to\":10");
+            assertThat(client.next("EVENTS")).contains("\"DICE_ROLLED\"", "\"PLAYER_MOVED\"", "\"to\":8");
             assertThat(client.next("SNAPSHOT")).contains("\"version\":3", "\"phase\":\"AWAITING_PURCHASE\"");
         }
     }
@@ -240,6 +245,16 @@ class GameSocketTest {
         String biaEntry = snapshot.replaceAll("(?s).*(\\{[^{}]*\"nickname\":\"Bia\"[^{}]*\\}).*", "$1");
         assertThat(biaEntry).contains("\"connected\":false");
         bia = null;
+    }
+
+    @Test
+    void gameFromTheOldBoardIsUnavailable() throws Exception {
+        jdbc.update("update game_snapshots set board_version = 1 where game_id = ?", gameId);
+
+        ana = connect(anaToken);
+
+        assertThat(ana.next("GAME_UNAVAILABLE")).contains("tabuleiro antigo e não pode continuar");
+        assertThat(ana.messages.poll(300, TimeUnit.MILLISECONDS)).isNull();
     }
 
     @Test

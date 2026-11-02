@@ -58,6 +58,16 @@ class GameSocketHandler extends TextWebSocketHandler {
         }
     }
 
+    /** A partida não pode continuar (ex.: tabuleiro antigo); o cliente para de reconectar. */
+    record UnavailableMessage(String kind, String reason) {
+        UnavailableMessage(String reason) {
+            this("GAME_UNAVAILABLE", reason);
+        }
+    }
+
+    static final String OLD_BOARD_REASON = "Esta partida usa o tabuleiro antigo e não pode continuar.";
+    private static final String UNAVAILABLE = "unavailable";
+
     record RejectedMessage(String kind, String commandId, String reason) {
         RejectedMessage(String commandId, String reason) {
             this("COMMAND_REJECTED", commandId, reason);
@@ -98,6 +108,16 @@ class GameSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession raw) {
+        if (store.usesOldBoard(gameId(raw))) {
+            raw.getAttributes().put(UNAVAILABLE, true);
+            send(raw, new UnavailableMessage(OLD_BOARD_REASON));
+            try {
+                raw.close(CloseStatus.NORMAL.withReason("tabuleiro antigo"));
+            } catch (IOException ignored) {
+                // Já estava fechando.
+            }
+            return;
+        }
         WebSocketSession session = new ConcurrentWebSocketSessionDecorator(raw, SEND_TIME_LIMIT_MS, BUFFER_LIMIT_BYTES);
         rooms.computeIfAbsent(gameId(raw), id -> new ConcurrentHashMap<>()).put(raw.getId(), session);
         presence.joined(gameId(raw), playerId(raw));
@@ -130,6 +150,7 @@ class GameSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession raw, CloseStatus status) {
+        if (raw.getAttributes().containsKey(UNAVAILABLE)) return;
         String gameId = gameId(raw);
         presence.left(gameId, playerId(raw));
         Map<String, WebSocketSession> room = rooms.get(gameId);

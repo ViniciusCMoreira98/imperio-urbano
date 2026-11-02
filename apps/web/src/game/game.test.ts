@@ -25,12 +25,18 @@ const snapshot = (version: number, extra: Partial<GameSnapshot> = {}): GameSnaps
 });
 
 describe('mensagens do servidor', () => {
-  const empty = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0 };
+  const empty = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, unavailable: null };
 
   it('ignora snapshot mais antigo que o atual', () => {
     const current = reduceServerMessage(empty, { kind: 'SNAPSHOT', snapshot: snapshot(5) });
     const stale = reduceServerMessage(current, { kind: 'SNAPSHOT', snapshot: snapshot(3) });
     expect(stale.snapshot?.version).toBe(5);
+  });
+
+  it('guarda o motivo de a partida não poder continuar (tabuleiro antigo)', () => {
+    const next = reduceServerMessage(empty, { kind: 'GAME_UNAVAILABLE', reason: 'Esta partida usa o tabuleiro antigo e não pode continuar.' });
+    expect(next.unavailable).toBe('Esta partida usa o tabuleiro antigo e não pode continuar.');
+    expect(next.snapshot).toBeNull();
   });
 
   it('converte o tempo restante do turno em prazo local', () => {

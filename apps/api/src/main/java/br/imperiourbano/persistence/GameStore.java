@@ -1,5 +1,6 @@
 package br.imperiourbano.persistence;
 
+import br.imperiourbano.catalog.Catalog;
 import br.imperiourbano.catalog.GameMode;
 import br.imperiourbano.engine.GameEvent;
 import br.imperiourbano.engine.GameState;
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Persistência das partidas (ADR A3/A4): cada comando aceito grava seus eventos, o snapshot resultante
  * e o commandId numa única transação, com concorrência otimista pela versão da partida.
+ *
+ * <p>Cada snapshot leva a versão do tabuleiro em que foi jogado. Snapshot de outra versão (as partidas de
+ * 36 casas) não é carregado: a partida fica guardada, mas não continua.
  */
 @Service
 public class GameStore {
@@ -22,13 +26,15 @@ public class GameStore {
     private final GameEventRecordRepository events;
     private final GameSnapshotRecordRepository snapshots;
     private final ProcessedCommandRecordRepository commands;
+    private final int boardVersion;
 
     GameStore(GameRecordRepository games, GameEventRecordRepository events,
-            GameSnapshotRecordRepository snapshots, ProcessedCommandRecordRepository commands) {
+            GameSnapshotRecordRepository snapshots, ProcessedCommandRecordRepository commands, Catalog catalog) {
         this.games = games;
         this.events = events;
         this.snapshots = snapshots;
         this.commands = commands;
+        this.boardVersion = catalog.board().version();
     }
 
     @Transactional
@@ -48,7 +54,7 @@ public class GameStore {
 
     @Transactional(readOnly = true)
     public List<String> inProgressGameIds() {
-        return games.findInProgressIds();
+        return games.findInProgressIds(boardVersion);
     }
 
     @Transactional(readOnly = true)
@@ -85,7 +91,7 @@ public class GameStore {
                     GameJson.typeName(event.getClass()), GameJson.write(event)));
         }
         GameSnapshotRecord snapshot = snapshots.findById(gameId).orElseGet(() -> new GameSnapshotRecord(gameId));
-        snapshot.update(state.version(), GameJson.write(state));
+        snapshot.update(state.version(), GameJson.write(state), boardVersion);
         snapshots.save(snapshot);
         if (commandId != null) {
             commands.save(new ProcessedCommandRecord(commandId, gameId, playerId, state.version()));
@@ -94,7 +100,15 @@ public class GameStore {
 
     @Transactional(readOnly = true)
     public Optional<GameState> loadSnapshot(String gameId) {
-        return snapshots.findById(gameId).map(s -> GameJson.readState(s.state()));
+        return snapshots.findById(gameId)
+                .filter(s -> s.boardVersion() == boardVersion)
+                .map(s -> GameJson.readState(s.state()));
+    }
+
+    /** Partida jogada num tabuleiro anterior ao atual: não pode continuar. */
+    @Transactional(readOnly = true)
+    public boolean usesOldBoard(String gameId) {
+        return snapshots.findById(gameId).filter(s -> s.boardVersion() != boardVersion).isPresent();
     }
 
     @Transactional(readOnly = true)

@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "cards": [
     { "id": "festa-junina", "title": "Festa Junina", "text": "Sua quadrilha venceu o concurso da cidade. Receba 100.", "effect": { "type": "GAIN", "amount": 100 } },
     { "id": "safra-recorde", "title": "Safra recorde", "text": "A colheita superou todas as previsões. Receba 150.", "effect": { "type": "GAIN", "amount": 150 } },
@@ -10,10 +10,10 @@
     { "id": "churrasco", "title": "Churrasco de domingo", "text": "Você bancou a carne para todo mundo. Pague 75.", "effect": { "type": "PAY", "amount": 75 } },
     { "id": "reforma-urbana", "title": "Reforma urbana", "text": "A prefeitura exige reformas. Pague 25 por casa e 100 por hotel.", "effect": { "type": "PAY_PER_BUILDING", "perHouse": 25, "perHotel": 100 } },
     { "id": "aniversario", "title": "Aniversário", "text": "Hoje é seu aniversário! Cada jogador lhe dá 50.", "effect": { "type": "COLLECT_FROM_EACH", "amount": 50 } },
-    { "id": "volta-ao-inicio", "title": "De volta ao começo", "text": "Avance até o Início.", "effect": { "type": "MOVE_TO", "tile": 0 } },
-    { "id": "voo-sao-paulo", "title": "Voo para São Paulo", "text": "Avance até São Paulo. Se passar pelo Início, receba o bônus.", "effect": { "type": "MOVE_TO", "tile": 21 } },
-    { "id": "tocha-olimpica", "title": "Tocha olímpica", "text": "Você foi chamado para conduzir a tocha. Avance até as Olimpíadas.", "effect": { "type": "MOVE_TO", "tile": 9 } },
-    { "id": "convite-brasilia", "title": "Convite em Brasília", "text": "Uma reunião importante no Planalto. Avance até o Distrito Federal.", "effect": { "type": "MOVE_TO", "tile": 15 } },
+    { "id": "volta-ao-inicio", "title": "De volta ao começo", "text": "Avance até o Início.", "effect": { "type": "MOVE_TO", "tile": "START" } },
+    { "id": "voo-sao-paulo", "title": "Voo para São Paulo", "text": "Avance até São Paulo. Se passar pelo Início, receba o bônus.", "effect": { "type": "MOVE_TO", "tile": "SP" } },
+    { "id": "tocha-olimpica", "title": "Tocha olímpica", "text": "Você foi chamado para conduzir a tocha. Avance até as Olimpíadas.", "effect": { "type": "MOVE_TO", "tile": "OLYMPICS" } },
+    { "id": "convite-brasilia", "title": "Convite em Brasília", "text": "Uma reunião importante no Planalto. Avance até o Distrito Federal.", "effect": { "type": "MOVE_TO", "tile": "DF" } },
     { "id": "estrada-interditada", "title": "Estrada interditada", "text": "A ponte caiu. Volte 3 casas.", "effect": { "type": "MOVE_BY", "steps": -3 } },
     { "id": "carona", "title": "Carona", "text": "Um amigo passou de carro. Avance 3 casas.", "effect": { "type": "MOVE_BY", "steps": 3 } },
     { "id": "feriado-prolongado", "title": "Feriado prolongado", "text": "Hora de relaxar. Vá direto para o Descanso.", "effect": { "type": "GO_TO_REST" } }

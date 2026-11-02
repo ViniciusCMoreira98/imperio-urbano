@@ -74,24 +74,6 @@
       "hotelCost": 135
     },
     {
-      "id": "TO",
-      "abbreviation": "TO",
-      "name": "Tocantins",
-      "region": "NORTE",
-      "colorGroup": "NORTE_II",
-      "price": 145,
-      "rent": {
-        "base": 15,
-        "house1": 60,
-        "house2": 130,
-        "house3": 230,
-        "house4": 320,
-        "hotel": 435
-      },
-      "houseCost": 75,
-      "hotelCost": 145
-    },
-    {
       "id": "AM",
       "abbreviation": "AM",
       "name": "Amazonas",

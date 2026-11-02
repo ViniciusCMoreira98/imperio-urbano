@@ -15,7 +15,7 @@ import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
 import { type PawnMove, enqueueMoves, hopTiles } from '../game/moves';
 import { useGameStore } from '../store/gameStore';
 import { forgetPawn, reportPawn } from './pawnDebug';
-import { type PawnSpot, pawnCenter } from './pawnLayout';
+import { PAWN_SCALE, type PawnSpot, pawnCenter } from './pawnLayout';
 
 const TILE_COUNT = board.tiles.length;
 
@@ -248,7 +248,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
   });
 
   return (
-    <group ref={rootRef} scale={0.95}>
+    <group ref={rootRef} scale={PAWN_SCALE}>
       <PlayerBase color={color} active={active} />
       <mesh ref={ringRef} position={[0, 0.012, 0]} rotation={[-Math.PI / 2, 0, 0]} material={ringMaterial}>
         <ringGeometry args={[0.22, 0.27, 32]} />

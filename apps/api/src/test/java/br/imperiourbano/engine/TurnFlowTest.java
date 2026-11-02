@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 class TurnFlowTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int REST_TILE = 18;
+    private static final int REST_TILE = 16;
 
     private final GameEngine engine = new GameEngine(CATALOG);
     private final List<GameEvent> log = new ArrayList<>();
@@ -77,11 +77,11 @@ class TurnFlowTest {
 
     @Test
     void rollMovesTheCurrentPlayerBySum() {
-        roll("ana", 3, 4);
+        roll("ana", 2, 3);
 
-        assertThat(state.player("ana").position()).isEqualTo(7);
-        assertThat(state.lastDice()).isEqualTo(new DiceRoll(3, 4));
-        // Casa 7 é o Pará, livre: o jogador decide se compra.
+        assertThat(state.player("ana").position()).isEqualTo(5);
+        assertThat(state.lastDice()).isEqualTo(new DiceRoll(2, 3));
+        // Casa 5 é o Pará, livre: o jogador decide se compra.
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
     }
 
@@ -117,7 +117,7 @@ class TurnFlowTest {
 
     @Test
     void passingStartPaysBonus() {
-        moveAnaTo(33);
+        moveAnaTo(30);
 
         roll("ana", 2, 3);
 
@@ -127,7 +127,7 @@ class TurnFlowTest {
 
     @Test
     void landingExactlyOnStartPaysBonus() {
-        moveAnaTo(30);
+        moveAnaTo(27);
 
         roll("ana", 2, 4);
 

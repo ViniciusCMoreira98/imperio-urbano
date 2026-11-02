@@ -4,7 +4,7 @@ package br.imperiourbano.catalog;
 public record CardEffect(
         CardEffectType type,
         Integer amount,
-        Integer tile,
+        String tile,
         Integer steps,
         Integer perHouse,
         Integer perHotel) {
