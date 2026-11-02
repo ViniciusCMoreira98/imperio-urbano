@@ -75,4 +75,4 @@ export function tileInfo(index: number): TileInfo {
   };
 }
 
-export const formatCredits = (value: number) => `$ ${value.toLocaleString('pt-BR')}`;
+export const formatCredits = (value: number) => `R$ ${value.toLocaleString('pt-BR')}`;

@@ -1,0 +1,61 @@
+{
+  "stages": 6,
+  "levels": "Terreno, Casa 1–4, Hotel",
+  "sizes": [
+    320,
+    390,
+    768,
+    1024,
+    1536
+  ],
+  "stateHeaders": {
+    "created": 25,
+    "total": 26,
+    "codes": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP"
+    ],
+    "desktopAndMobileSwitches": 52,
+    "distinctSources": 26,
+    "sourceMinimum": [
+      2000,
+      700
+    ],
+    "matchesReference33": true
+  },
+  "selectionAndPurchaseCallbacks": true,
+  "lockedCardsDisabled": true,
+  "keyboardClose": true,
+  "noHorizontalOverflow": true,
+  "originalGeneratedArtwork": true,
+  "buildingSourceMinWidth": 1024,
+  "referencePixelsUsed": false,
+  "backendUsed": false,
+  "meshyCreditsUsed": 0,
+  "gameIntegration": "pending Claude",
+  "errors": []
+}
