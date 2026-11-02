@@ -1,0 +1,977 @@
+{
+  "states": [
+    {
+      "stateId": "AM",
+      "sourceRect": [
+        697,
+        21,
+        207,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "RR",
+      "sourceRect": [
+        255,
+        604,
+        252,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "AP",
+      "sourceRect": [
+        482,
+        21,
+        211,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "PA",
+      "sourceRect": [
+        1325,
+        216,
+        201,
+        185
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "RO",
+      "sourceRect": [
+        6,
+        604,
+        246,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "TO",
+      "sourceRect": [
+        1277,
+        604,
+        253,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "AC",
+      "sourceRect": [
+        17,
+        21,
+        240,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "MT",
+      "sourceRect": [
+        695,
+        216,
+        211,
+        185
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "MS",
+      "sourceRect": [
+        910,
+        216,
+        204,
+        185
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "GO",
+      "sourceRect": [
+        257,
+        216,
+        218,
+        185
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "DF",
+      "sourceRect": [
+        1323,
+        21,
+        204,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "MG",
+      "sourceRect": [
+        1117,
+        216,
+        204,
+        185
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "ES",
+      "sourceRect": [
+        16,
+        216,
+        237,
+        185
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "RJ",
+      "sourceRect": [
+        905,
+        411,
+        208,
+        181
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "PR",
+      "sourceRect": [
+        254,
+        411,
+        217,
+        181
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "SP",
+      "sourceRect": [
+        769,
+        604,
+        244,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "RS",
+      "sourceRect": [
+        1324,
+        411,
+        202,
+        181
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "SC",
+      "sourceRect": [
+        510,
+        604,
+        255,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "PE",
+      "sourceRect": [
+        475,
+        411,
+        215,
+        181
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "PB",
+      "sourceRect": [
+        9,
+        411,
+        241,
+        181
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "BA",
+      "sourceRect": [
+        909,
+        21,
+        205,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "SE",
+      "sourceRect": [
+        1018,
+        604,
+        254,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "AL",
+      "sourceRect": [
+        263,
+        21,
+        216,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "RN",
+      "sourceRect": [
+        1117,
+        411,
+        204,
+        181
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "CE",
+      "sourceRect": [
+        1117,
+        21,
+        204,
+        183
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "PI",
+      "sourceRect": [
+        696,
+        411,
+        205,
+        181
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    },
+    {
+      "stateId": "MA",
+      "sourceRect": [
+        479,
+        216,
+        212,
+        185
+      ],
+      "ratioPreserved": true,
+      "corners": [
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        },
+        {
+          "insideTexture": true,
+          "insideFrame": true,
+          "visible": true,
+          "occluder": null
+        }
+      ]
+    }
+  ],
+  "clipped": []
+}

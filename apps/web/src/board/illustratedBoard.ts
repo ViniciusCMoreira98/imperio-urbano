@@ -1,5 +1,6 @@
 import artUrl from '../../../../assets/board/tabuleiro-brasil-alvo.png?url';
 import { useEffect, useState } from 'react';
+import { loadStateArtwork } from './art/stateArtwork';
 export { artUrl as illustratedBoardUrl };
 export type Point = readonly [number,number];
 export type Quad = readonly [Point,Point,Point,Point];
@@ -48,7 +49,7 @@ export function useIllustratedBoardArt(): HTMLImageElement | null {
   const [art,setArt]=useState<HTMLImageElement|null>(null);
   useEffect(()=>{
     let active=true;
-    loading??=new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=artUrl;});
+    loading??=Promise.all([new Promise<HTMLImageElement>((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=artUrl;}),loadStateArtwork().catch(()=>null)]).then(([image])=>image);
     loading.then(image=>{if(active)setArt(image);},()=>undefined);
     return()=>{active=false;};
   },[]);

@@ -1,0 +1,195 @@
+{
+  "reference": {
+    "file": "assets/board/tabuleiro-brasil-alvo.png",
+    "sha256": "9f1c1dbbd22171a47e2522585c9236ffe7f331eb7dff282b25960d27f5fa330b",
+    "width": 1536,
+    "height": 1024
+  },
+  "tiles": 33,
+  "states": 26,
+  "events": 2,
+  "clicksVerified": 33,
+  "cameraInvariant": true,
+  "nativePixelProjection": true,
+  "faces": [
+    {
+      "id": "START",
+      "samples": 22047,
+      "maeRgb255": 0.25205243343765593
+    },
+    {
+      "id": "AM",
+      "samples": 11895,
+      "maeRgb255": 0.6359534818551212
+    },
+    {
+      "id": "RR",
+      "samples": 17773,
+      "maeRgb255": 0.32187400363847785
+    },
+    {
+      "id": "EVENT_NORTH",
+      "samples": 16458,
+      "maeRgb255": 0.2791145137116701
+    },
+    {
+      "id": "AP",
+      "samples": 10628,
+      "maeRgb255": 0.5968510851837913
+    },
+    {
+      "id": "PA",
+      "samples": 9923,
+      "maeRgb255": 0.7617655950821324
+    },
+    {
+      "id": "RO",
+      "samples": 10570,
+      "maeRgb255": 0.967045096184169
+    },
+    {
+      "id": "OLYMPICS",
+      "samples": 21735,
+      "maeRgb255": 0.603665363085653
+    },
+    {
+      "id": "AC",
+      "samples": 7979,
+      "maeRgb255": 0.6491623845928897
+    },
+    {
+      "id": "MT",
+      "samples": 8032,
+      "maeRgb255": 0.4584993359893758
+    },
+    {
+      "id": "MS",
+      "samples": 8221,
+      "maeRgb255": 0.7165794915460406
+    },
+    {
+      "id": "GO",
+      "samples": 9340,
+      "maeRgb255": 0.7519628836545325
+    },
+    {
+      "id": "EVENT_EAST",
+      "samples": 12800,
+      "maeRgb255": 0.26734375
+    },
+    {
+      "id": "DF",
+      "samples": 9816,
+      "maeRgb255": 0.5148397174680793
+    },
+    {
+      "id": "MG",
+      "samples": 10733,
+      "maeRgb255": 0.6649895959501848
+    },
+    {
+      "id": "ES",
+      "samples": 11217,
+      "maeRgb255": 0.5387061305756145
+    },
+    {
+      "id": "REST",
+      "samples": 34749,
+      "maeRgb255": 0.33913685765537616
+    },
+    {
+      "id": "RJ",
+      "samples": 17393,
+      "maeRgb255": 0.4431284616416566
+    },
+    {
+      "id": "PR",
+      "samples": 18108,
+      "maeRgb255": 0.5650909358662838
+    },
+    {
+      "id": "SP",
+      "samples": 19315,
+      "maeRgb255": 0.15481922512727586
+    },
+    {
+      "id": "TAX",
+      "samples": 18457,
+      "maeRgb255": 0.2592331725993751
+    },
+    {
+      "id": "RS",
+      "samples": 12756,
+      "maeRgb255": 0.4255252430228912
+    },
+    {
+      "id": "SC",
+      "samples": 13270,
+      "maeRgb255": 0.45360462195428286
+    },
+    {
+      "id": "PE",
+      "samples": 13233,
+      "maeRgb255": 0.611929771530769
+    },
+    {
+      "id": "PB",
+      "samples": 12962,
+      "maeRgb255": 0.42897186648151003
+    },
+    {
+      "id": "AIRPORT",
+      "samples": 33467,
+      "maeRgb255": 0.5478232288523023
+    },
+    {
+      "id": "BA",
+      "samples": 20505,
+      "maeRgb255": 0.3305697797285215
+    },
+    {
+      "id": "SE",
+      "samples": 16486,
+      "maeRgb255": 0.4492094302236241
+    },
+    {
+      "id": "AL",
+      "samples": 12653,
+      "maeRgb255": 0.2688163544877368
+    },
+    {
+      "id": "RN",
+      "samples": 9390,
+      "maeRgb255": 0.6395811146609869
+    },
+    {
+      "id": "CE",
+      "samples": 8594,
+      "maeRgb255": 0.32534326274144754
+    },
+    {
+      "id": "PI",
+      "samples": 8233,
+      "maeRgb255": 0.4741487509615774
+    },
+    {
+      "id": "MA",
+      "samples": 9477,
+      "maeRgb255": 1.0122049875136294
+    }
+  ],
+  "edges": {
+    "samples": 212939,
+    "bandPixels": 6,
+    "maeBefore": 22.665420613415108,
+    "maeAfter": 1.582013315237384
+  },
+  "houseFacesAccepted": true,
+  "wholeReconstructionAccepted": false,
+  "hiddenAmRevealsSupport": true,
+  "hiddenAmGreenBlueSum": 55,
+  "errors": [],
+  "backendUsed": false,
+  "logicalIntegrationPending": true,
+  "paidCredits": 0
+}
