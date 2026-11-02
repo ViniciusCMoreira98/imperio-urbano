@@ -4,9 +4,9 @@ import { useMemo, useRef } from 'react';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
-import { SELECTED_TILE_LIFT, tileAnchor } from './layout';
+import { tileAnchor } from './layout';
 import { Pawn } from './Pawn';
-import { type PawnSpot, pawnSpots } from './pawnLayout';
+import { type PawnSpot, pawnCenter, pawnSpots } from './pawnLayout';
 
 export function Pawns() {
   const players = useGameStore((s) => s.snapshot?.players);
@@ -22,9 +22,9 @@ export function Pawns() {
   return (
     <>
       {(players ?? []).map((p) => {
-        const base = spots.get(p.id) ?? lastSpots.current.get(p.id) ?? { ...tileAnchor(p.position), y: tileAnchor(p.position).surfaceY };
+        const base = spots.get(p.id) ?? lastSpots.current.get(p.id) ?? pawnCenter(p.position);
         // A casa selecionada sobe um pouco; quem está nela sobe junto (sem afundar no tabuleiro).
-        const spot = p.position === selectedTile && !p.bankrupt ? { ...base, y: base.y + SELECTED_TILE_LIFT } : base;
+        const spot = p.position === selectedTile && !p.bankrupt ? { ...base, y: base.y + tileAnchor(p.position).selectedLift } : base;
         if (!p.bankrupt) lastSpots.current.set(p.id, base);
         return (
           <Pawn

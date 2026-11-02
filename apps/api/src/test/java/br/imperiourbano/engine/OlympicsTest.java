@@ -98,7 +98,7 @@ class OlympicsTest {
         state = state.withProperty(new PropertyState("AC", "bia", 3, 1, 1))
                 .withOlympics(new OlympicsState(2, "AC", "bia", 3));
 
-        run("ana", new RollDice(), 1, 2);
+        run("ana", new RollDice(), 4, 6);
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 - 3 * AC.rent().house3());
     }

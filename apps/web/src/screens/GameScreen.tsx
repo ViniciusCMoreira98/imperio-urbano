@@ -7,7 +7,6 @@ import { EventLog } from '../hud/EventLog';
 import { PlayersPanel } from '../hud/PlayersPanel';
 import { PropertyPanel } from '../hud/PropertyPanel';
 import { TurnBadge } from '../hud/TurnBadge';
-import { ViewControls } from '../hud/ViewControls';
 import { GameConnection } from '../net/gameSocket';
 import { useAppStore } from '../store/appStore';
 import { useGameStore } from '../store/gameStore';
@@ -60,7 +59,6 @@ export function GameScreen() {
         {connection !== 'open' && (
           <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-amber-300">reconectando…</p>
         )}
-        <ViewControls />
       </header>
 
       {!snapshot ? (

@@ -49,11 +49,11 @@ class DebtBankruptcyAndVictoryTest {
         state = state.withPendingDebt(new Debt("ana", null, amount)).withPhase(TurnPhase.AWAITING_DEBT_RESOLUTION);
     }
 
-    /** Ana, com pouco saldo, para no Acre de Bia (1 + 2) e fica devendo o aluguel base. */
+    /** Ana, com pouco saldo, para no Acre de Bia (4 + 6) e fica devendo o aluguel base. */
     private void anaOwesRentToBia(int anaCredits) {
         state = state.withProperty(PropertyState.purchased("AC", "bia"));
         setCredits("ana", anaCredits);
-        run("ana", new RollDice(), 1, 2);
+        run("ana", new RollDice(), 4, 6);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_DEBT_RESOLUTION);
     }
 
@@ -82,7 +82,7 @@ class DebtBankruptcyAndVictoryTest {
         state = state.withProperty(new PropertyState("AP", "ana", 1, 1, 1))
                 .withProperty(new PropertyState("AC", "bia", 3, 1, 1));
         setCredits("ana", 0);
-        run("ana", new RollDice(), 1, 2);
+        run("ana", new RollDice(), 4, 6);
         assertThat(AP.houseCost() / 2).isLessThan(AC.rent().house3());
 
         run("ana", new SellBuilding("AP"));
@@ -101,7 +101,7 @@ class DebtBankruptcyAndVictoryTest {
                 .hasMessage("Só é possível vender ao banco para pagar uma dívida.");
         assertThatThrownBy(() -> run("ana", new SellProperty("AP")))
                 .hasMessage("Só é possível vender ao banco para pagar uma dívida.");
-        run("ana", new RollDice(), 1, 2);
+        run("ana", new RollDice(), 4, 6);
         assertThatThrownBy(() -> run("ana", new SellProperty("AP"))).isInstanceOf(RuleViolationException.class);
     }
 
@@ -179,7 +179,7 @@ class DebtBankruptcyAndVictoryTest {
         run("ana", new DeclareBankruptcy());
 
         // Bia para no próprio Acre (fase de construção); Caio para em Rondônia, livre.
-        run("bia", new RollDice(), 1, 2);
+        run("bia", new RollDice(), 4, 6);
         run("bia", new GameCommand.SkipBuild());
         run("bia", new EndTurn());
         run("caio", new RollDice(), 1, 3);
@@ -214,7 +214,7 @@ class DebtBankruptcyAndVictoryTest {
         assertThat(state.status()).isEqualTo(GameStatus.FINISHED);
         assertThat(state.winnerIds()).containsExactly("bia");
         assertThat(state.phase()).isNull();
-        assertThatThrownBy(() -> run("bia", new RollDice(), 1, 2))
+        assertThatThrownBy(() -> run("bia", new RollDice(), 4, 6))
                 .hasMessage("A partida não está em andamento.");
     }
 

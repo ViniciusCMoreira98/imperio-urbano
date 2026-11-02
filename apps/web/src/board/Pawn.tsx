@@ -14,9 +14,8 @@ import { characterFor } from '../avatars/characterManifest';
 import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
 import { type PawnMove, enqueueMoves, hopTiles } from '../game/moves';
 import { useGameStore } from '../store/gameStore';
-import { tileAnchor } from './layout';
 import { forgetPawn, reportPawn } from './pawnDebug';
-import type { PawnSpot } from './pawnLayout';
+import { type PawnSpot, pawnCenter } from './pawnLayout';
 
 const TILE_COUNT = board.tiles.length;
 
@@ -54,11 +53,6 @@ const EXIT = { pause: 0.3, clipPause: 1.2, duration: 0.6, sink: 0.3 };
 /** Ângulo equivalente a `target` mais próximo de `current` (gira pelo lado mais curto). */
 function nearest(current: number, target: number): number {
   return current + Math.atan2(Math.sin(target - current), Math.cos(target - current));
-}
-
-function centerOf(tile: number): PawnSpot {
-  const anchor = tileAnchor(tile);
-  return { x: anchor.x, y: anchor.surfaceY, z: anchor.z };
 }
 
 export function Pawn({ playerId, position, spot, avatarId, color, active, leaving, celebrating }: PawnProps) {
@@ -142,7 +136,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
       // Decidido na hora do salto (o snapshot chega logo depois dos eventos): a última casa do último
       // movimento pendente pousa direto no lugar oficial dentro dela; as outras, no centro.
       const target = () =>
-        i === tiles.length - 1 && queue.current.length === 0 && move.to === latest.current.position ? latest.current.spot : centerOf(tile);
+        i === tiles.length - 1 && queue.current.length === 0 && move.to === latest.current.position ? latest.current.spot : pawnCenter(tile);
       const angle = () => Math.atan2(target().x - root.position.x, target().z - root.position.z);
       const label = `salto${i}`;
       tl.to(face.rotation, { y: () => nearest(face.rotation.y, angle()), duration: style.turn, ease: 'power2.out' })

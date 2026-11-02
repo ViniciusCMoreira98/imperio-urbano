@@ -39,7 +39,7 @@ export type TileType =
   | 'PROPERTY'
   | 'EVENT'
   | 'REST'
-  | 'VISIT'
+  | 'TAX'
   | 'OLYMPICS'
   | 'NATIONAL_TRAVEL';
 
@@ -92,6 +92,8 @@ export interface RulesConfig {
   rest: { turnsLost: number };
   /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
   nationalTravel: { fee: number };
+  /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida. */
+  tax: { amount: number };
   /** Tempo para rolar (ou escolher a viagem) e para decidir compra/construção/Olimpíadas; ao acabar, o servidor joga. */
   /** automaticSeconds: pausa entre as jogadas feitas pelo servidor para quem está desconectado. */
   turnTimers: { rollSeconds: number; decisionSeconds: number; automaticSeconds: number };

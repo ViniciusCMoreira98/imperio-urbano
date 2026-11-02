@@ -22,7 +22,7 @@ function landscapeQuad(id: string): Quad {
 const SPECIAL_STYLE: Record<Exclude<TileType, 'PROPERTY'>, { bg: string; ink: string; icon: string; caption?: string }> = {
   START: { bg: '#1f7a3a', ink: '#ffffff', icon: '➜', caption: '+200 ao passar' },
   REST: { bg: '#16304f', ink: '#ffffff', icon: '☾', caption: 'Perde a próxima jogada' },
-  VISIT: { bg: '#dcecf7', ink: INK, icon: '⌂', caption: 'Apenas visite' },
+  TAX: { bg: '#f3d9a4', ink: INK, icon: '$', caption: 'Pague ao banco' },
   OLYMPICS: { bg: '#0f1d3a', ink: '#ffffff', icon: '★', caption: 'Sede ×2–×10' },
   NATIONAL_TRAVEL: { bg: '#f6d27a', ink: INK, icon: '✈', caption: 'Viaje no próximo turno' },
   EVENT: { bg: '#f8e6b0', ink: INK, icon: '?' },
@@ -91,7 +91,7 @@ export function createTileTexture({ tile, state, group, width, depth, owned, art
       ctx.font = `700 ${base * 0.4}px system-ui, sans-serif`;
       ctx.fillText(style.icon, pw / 2, ph * 0.34);
     }
-    if(!art||type==='NATIONAL_TRAVEL'||type==='VISIT'){
+    if(!art||type==='NATIONAL_TRAVEL'||type==='TAX'){
       ctx.fillStyle='#073b60';ctx.fillRect(pw*.035,ph*.63,pw*.93,ph*.33);
       ctx.fillStyle = '#ffffff';
       drawWrapped(ctx, (tile.name ?? '').toUpperCase(), pw / 2, ph * 0.75, pw * 0.86, base * 0.12, 900);

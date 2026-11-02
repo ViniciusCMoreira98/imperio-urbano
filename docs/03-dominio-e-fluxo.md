@@ -43,8 +43,9 @@ LOBBY ──START_GAME (2–4 prontos, chamado pelo anfitrião)──▶ IN_PROG
   │ Olimpíadas .............. AWAITING_OLYMPICS_HOST se possui estado e saldo ≥ 50 │
   │ Eventos ................. EVENT_CARD_DRAWN → aplica efeito (pode encadear)     │
   │ Descanso ................ skipTurns = rules.rest.turnsLost (também via carta/3ª dupla) │
-  │ Viagem Nacional ......... travelPending; próximo turno abre AWAITING_TRAVEL_DESTINATION │
-  │ Início / Visita ......... nada                                                 │
+  │ Aeroporto (Viagem Nac.) . travelPending; próximo turno abre AWAITING_TRAVEL_DESTINATION │
+  │ Taxa .................... CREDITS_TO_BANK rules.tax.amount (sem saldo → DEBT)  │
+  │ Início .................. nada                                                 │
   └────────────────────────────────────────────────────────────────────────────────┘
                                        │
          AWAITING_DEBT_RESOLUTION ◀────┤ (SELL_BUILDING | SELL_PROPERTY | DECLARE_BANKRUPTCY)

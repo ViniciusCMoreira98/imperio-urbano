@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { board } from '@imperio/game-data';
 import { tileAnchor } from './layout';
-import { PAWN_RADIUS, pawnSpots } from './pawnLayout';
+import { PAWN_RADIUS, pawnCenter, pawnSpots } from './pawnLayout';
 
 const TILE_COUNT = board.tiles.length;
 const pawn = (id: string, position: number, seat: number) => ({ id, position, seat });
@@ -17,24 +17,28 @@ function local(index: number, x: number, z: number): [number, number] {
 }
 
 describe('personagens nas casas', () => {
-  it('sozinho fica no centro da casa, em cima dela', () => {
-    for (const index of [0, 3, 9, 14, 18, 27, 35]) {
+  it('sozinho fica no centro da área de personagens, em cima da casa', () => {
+    for (const index of [0, 3, 9, 14, 18, 21, 27, 35]) {
       const spot = pawnSpots([pawn('ana', index, 0)]).get('ana')!;
       const anchor = tileAnchor(index);
-      expect(spot).toEqual({ x: anchor.x, y: anchor.surfaceY, z: anchor.z });
+      const [lx, lz] = local(index, spot.x, spot.z);
+      expect(spot.y).toBe(anchor.surfaceY);
+      expect(lx).toBeCloseTo(anchor.pawnArea.x);
+      expect(lz).toBeCloseTo(anchor.pawnArea.z);
+      expect(spot).toEqual(pawnCenter(index));
     }
   });
 
-  it('até quatro na mesma casa ficam separados e dentro dela, em todos os lados e cantos', () => {
+  it('até quatro na mesma casa ficam separados e dentro da área de personagens, em todos os lados e cantos', () => {
     for (let index = 0; index < TILE_COUNT; index++) {
       for (let count = 2; count <= 4; count++) {
         const pawns = Array.from({ length: count }, (_, seat) => pawn(`p${seat}`, index, seat));
         const spots = [...pawnSpots(pawns).values()];
-        const anchor = tileAnchor(index);
+        const area = tileAnchor(index).pawnArea;
         for (const spot of spots) {
           const [lx, lz] = local(index, spot.x, spot.z);
-          expect(Math.abs(lx) + PAWN_RADIUS).toBeLessThanOrEqual(anchor.width / 2 + 1e-9);
-          expect(Math.abs(lz) + PAWN_RADIUS).toBeLessThanOrEqual(anchor.depth / 2 + 1e-9);
+          expect(Math.abs(lx - area.x) + PAWN_RADIUS).toBeLessThanOrEqual(area.width / 2 + 1e-9);
+          expect(Math.abs(lz - area.z) + PAWN_RADIUS).toBeLessThanOrEqual(area.depth / 2 + 1e-9);
         }
         for (let i = 0; i < spots.length; i++) {
           for (let j = i + 1; j < spots.length; j++) {
@@ -55,7 +59,7 @@ describe('personagens nas casas', () => {
 
   it('casas diferentes não interferem entre si', () => {
     const spots = pawnSpots([pawn('ana', 1, 0), pawn('bia', 2, 1)]);
-    expect(spots.get('ana')).toMatchObject({ x: tileAnchor(1).x, z: tileAnchor(1).z });
-    expect(spots.get('bia')).toMatchObject({ x: tileAnchor(2).x, z: tileAnchor(2).z });
+    expect(spots.get('ana')).toEqual(pawnCenter(1));
+    expect(spots.get('bia')).toEqual(pawnCenter(2));
   });
 });

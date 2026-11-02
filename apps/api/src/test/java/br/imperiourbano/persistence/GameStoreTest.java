@@ -57,7 +57,7 @@ class GameStoreTest {
 
     @Test
     void snapshotAndEventLogRestoreTheGame() {
-        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(1, 2));
+        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
         play("c2", "ana", new GameCommand.BuyProperty(1), null);
 
         assertThat(store.loadSnapshot(gameId)).contains(state);
@@ -69,7 +69,7 @@ class GameStoreTest {
 
     @Test
     void processedCommandsAreRemembered() {
-        play("cmd-roll", "ana", new GameCommand.RollDice(), new DiceRoll(1, 2));
+        play("cmd-roll", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
 
         assertThat(store.processedVersion(gameId + ":cmd-roll")).hasValue(state.version());
         assertThat(store.processedVersion(gameId + ":never-sent")).isEmpty();
@@ -77,7 +77,7 @@ class GameStoreTest {
 
     @Test
     void sameCommandIdCannotBeStoredTwice() {
-        play("dup", "ana", new GameCommand.RollDice(), new DiceRoll(1, 2));
+        play("dup", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
 
         assertThatThrownBy(() -> play("dup", "ana", new GameCommand.DeclinePurchase(), null))
                 .isInstanceOf(DuplicateCommandException.class);
@@ -87,7 +87,7 @@ class GameStoreTest {
     @Test
     void staleVersionIsRejected() {
         GameState stale = state;
-        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(1, 2));
+        play("c1", "ana", new GameCommand.RollDice(), new DiceRoll(4, 6));
 
         GameEngine.Result concurrent = engine.execute(stale, "ana", new GameCommand.RollDice(), () -> new DiceRoll(2, 3));
 

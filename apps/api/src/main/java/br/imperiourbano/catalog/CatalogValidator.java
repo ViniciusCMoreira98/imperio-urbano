@@ -16,7 +16,7 @@ public final class CatalogValidator {
             "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO");
 
     private static final List<TileType> REQUIRED_SPECIALS = List.of(
-            TileType.START, TileType.OLYMPICS, TileType.VISIT, TileType.REST, TileType.EVENT, TileType.NATIONAL_TRAVEL);
+            TileType.START, TileType.OLYMPICS, TileType.REST, TileType.EVENT, TileType.NATIONAL_TRAVEL, TileType.TAX);
 
     private CatalogValidator() {
     }
@@ -110,6 +110,9 @@ public final class CatalogValidator {
         int[] m = rules.olympics().multipliers().stream().mapToInt(Integer::intValue).toArray();
         if (m.length == 0 || m[0] != 2 || m[m.length - 1] != 10 || !isStrictlyIncreasingPositive(m)) {
             errors.add("Multiplicadores olímpicos devem crescer de ×2 a ×10");
+        }
+        if (rules.tax().amount() <= 0) {
+            errors.add("Valor da Taxa deve ser positivo");
         }
         if (rules.construction().firstVisitMaxHouses() > rules.construction().maxHouses()) {
             errors.add("Casas da primeira visita excedem o máximo");

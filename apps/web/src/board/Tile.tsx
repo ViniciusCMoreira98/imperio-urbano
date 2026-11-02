@@ -22,7 +22,6 @@ interface TileProps {
 
 export function Tile({ tile, placement, state, group }: TileProps) {
   const selectTile = useViewStore((s) => s.selectTile);
-  const focusTile = useViewStore((s) => s.focusTile);
   const selected = useViewStore((s) => s.selectedTile === tile.index);
   const [hovered, setHovered] = useState(false);
   // Valores primitivos: a casa só redesenha quando o aluguel ou o dono dela mudam.
@@ -82,10 +81,6 @@ export function Tile({ tile, placement, state, group }: TileProps) {
         if (e.delta > 4) return;
         e.stopPropagation();
         selectTile(tile.index);
-      }}
-      onDoubleClick={(e) => {
-        e.stopPropagation();
-        focusTile(tile.index);
       }}
     >
       <boxGeometry args={[placement.width * 0.98, TILE_HEIGHT, placement.depth * 0.98]} />

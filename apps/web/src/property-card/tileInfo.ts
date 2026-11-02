@@ -37,9 +37,9 @@ const { olympics } = rules;
 const SPECIAL_DESCRIPTIONS: Record<Exclude<TileType, 'PROPERTY'>, string> = {
   START: `Receba ${rules.passStartBonus} créditos sempre que passar ou parar aqui.`,
   REST: 'Pausa para descansar: você perde a próxima jogada (uma dupla libera antes), mas continua recebendo aluguéis.',
-  VISIT: 'Apenas de passagem. Nada acontece.',
+  TAX: `Pague ${rules.tax.amount} créditos ao banco. Sem saldo, a Taxa vira dívida.`,
   OLYMPICS: `Pague ${olympics.hostFee} créditos para sediar as Olimpíadas em um estado seu. O aluguel da sede é multiplicado (×${olympics.multipliers[0]} até ×${olympics.multipliers[olympics.multipliers.length - 1]}).`,
-  NATIONAL_TRAVEL: `Na próxima jogada, pague ${rules.nationalTravel.fee} créditos e viaje até qualquer casa do tabuleiro, ou role os dados normalmente.`,
+  NATIONAL_TRAVEL: `No Aeroporto, na próxima jogada, pague ${rules.nationalTravel.fee} créditos e viaje até qualquer casa do tabuleiro, ou role os dados normalmente.`,
   EVENT: 'Compre uma carta de eventos e siga as instruções.',
 };
 

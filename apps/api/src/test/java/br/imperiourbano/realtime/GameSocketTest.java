@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-/** Servidor real + cliente WebSocket do JDK. Dados sempre 1 + 2: do Início, para no Acre (livre). */
+/** Servidor real + cliente WebSocket do JDK. Dados sempre 4 + 6: do Início, para no Acre (livre). */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({TestcontainersConfiguration.class, GameSocketTest.FixedDiceConfig.class})
 class GameSocketTest {
@@ -36,7 +36,7 @@ class GameSocketTest {
         @Bean
         @Primary
         Dice fixedDice() {
-            return () -> new DiceRoll(1, 2);
+            return () -> new DiceRoll(4, 6);
         }
     }
 
@@ -166,7 +166,7 @@ class GameSocketTest {
         ana.send(command("c1", 1, ROLL));
 
         for (Client client : new Client[] {ana, bia}) {
-            assertThat(client.next("EVENTS")).contains("\"DICE_ROLLED\"", "\"PLAYER_MOVED\"", "\"to\":3");
+            assertThat(client.next("EVENTS")).contains("\"DICE_ROLLED\"", "\"PLAYER_MOVED\"", "\"to\":10");
             assertThat(client.next("SNAPSHOT")).contains("\"version\":3", "\"phase\":\"AWAITING_PURCHASE\"");
         }
     }
