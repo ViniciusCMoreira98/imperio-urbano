@@ -36,16 +36,16 @@
   "maxErrorPixels": 8.526512829121202e-13,
   "metrics": {
     "all": {
-      "maeRgb255": 72.47141944037543,
-      "rmseRgb255": 100.16284933872055
+      "maeRgb255": 72.46108669704861,
+      "rmseRgb255": 100.19319109063287
     },
     "center": {
-      "maeRgb255": 56.22845393643195,
-      "rmseRgb255": 86.59118338370823
+      "maeRgb255": 56.227746054702216,
+      "rmseRgb255": 86.5945555798451
     },
     "tilesAndFrame": {
-      "maeRgb255": 98.72958531443135,
-      "rmseRgb255": 123.45193147069617
+      "maeRgb255": 98.70382685810401,
+      "rmseRgb255": 123.51276676160396
     },
     "tableAndDecor": {
       "maeRgb255": 54.739698489634655,
@@ -56,7 +56,7 @@
     "wheel": true,
     "drag": true,
     "keyboardQE": true,
-    "doubleClickFocus": true,
+    "doubleClickSelection": true,
     "turnChange": true,
     "resize": true,
     "touchPinch": true
@@ -74,7 +74,7 @@
     },
     "aspectPreserved": true
   },
-  "legacyCameraUi": "Botões/atalhos legados nos componentes do Claude ainda precisam ser retirados por ele; não alteram mais a câmera.",
+  "legacyCameraUi": "Controles/foco já retirados pela engenharia no commit 7f002d5; seleção abre o painel sem mover a câmera.",
   "fidelityAccepted": false,
   "remainingDifferences": [
     "Contorno arredondado e espessura da moldura ainda não reconstruídos no Blender.",

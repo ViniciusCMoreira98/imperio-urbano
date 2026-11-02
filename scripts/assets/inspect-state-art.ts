@@ -1,4 +1,4 @@
-import {Raycaster,Vector3,Mesh,PerspectiveCamera,Scene,MeshStandardMaterial,BoxGeometry} from 'three';
+import {Raycaster,Vector3,Mesh,PerspectiveCamera,Scene,MeshStandardMaterial,BoxGeometry,type Object3D} from 'three';
 import type {StateArtworkFit} from '../../apps/web/src/board/art/stateArtwork';
 
 /** Confere os cantos da arte na malha real, incluindo oclusão pela moldura 3D. */
@@ -18,7 +18,10 @@ export function inspectStateArtwork(){
     const corners=fit.canvasCorners.map(([x,y])=>{
       const target=object.localToWorld(new Vector3((x/cw-.5)*width,height/2+.00001,(y/ch-.5)*depth));
       const ray=new Raycaster(camera.position,target.clone().sub(camera.position).normalize());
-      const first=ray.intersectObjects(scene.children,true).find(hit=>hit.object.visible);
+      const first=ray.intersectObjects(scene.children,true).find(hit=>{
+        for(let current:Object3D|null=hit.object;current;current=current.parent)if(!current.visible)return false;
+        return true;
+      });
       const screen=target.clone().project(camera);
       return {insideTexture:x>=0&&x<=cw&&y>=0&&y<=ch,insideFrame:Math.abs(screen.x)<=1&&Math.abs(screen.y)<=1,visible:first?.object===object,occluder:first?.object===object?null:(first?.object as Mesh|undefined)?.geometry?.type??'none'};
     });
