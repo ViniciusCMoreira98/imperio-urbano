@@ -74,3 +74,31 @@ body {
   .hud-dice { gap: 2px; padding: 0 2px; }
   .hud-dice svg { width: 27px; height: 32px; }
 }
+
+/* HUD em tela larga (mesma condição de WIDE_HUD_QUERY em GameScreen.tsx): jogadores numa faixa no topo,
+   carta do estado e histórico numa coluna à direita, ações embaixo. O tabuleiro (3:2, escala uniforme)
+   ocupa só o espaço entre eles, para nenhum painel cobrir casas. */
+@media (min-width: 640px) {
+  .game-hud-players .hud-players { flex-direction: row; width: auto; }
+  .game-hud-players .hud-player-row { flex: 0 1 216px; }
+}
+@media (min-width: 640px) and (orientation: landscape) {
+  .game-viewport { --hud-top: 112px; --hud-right: 344px; --hud-bottom: 104px; background: #2b1914; }
+  .game-hud-board { top: var(--hud-top); right: var(--hud-right); bottom: var(--hud-bottom); }
+  .game-hud-players { left: 12px; right: 112px; top: 8px; }
+  .game-hud-side {
+    left: auto; right: 12px; top: var(--hud-top); bottom: var(--hud-bottom); width: 320px; max-height: none;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .game-hud-side > * { flex-shrink: 0; }
+  .game-hud-side > :last-child { margin-top: auto; }
+}
+/* Faixa de jogadores compacta quando a tela não tem largura ou altura para os quatro retratos grandes. */
+@media (min-width: 640px) and (max-width: 1099px), (min-width: 640px) and (max-height: 699px) {
+  .game-hud-players .hud-players { gap: 8px; padding-top: 4px; padding-bottom: 4px; }
+  .game-hud-players .hud-player-row { min-height: 60px; gap: 8px; }
+  .game-hud-players .hud-player-row .hud-avatar-frame { width: 46px; height: 46px; }
+  .game-hud-players .hud-player-name { font-size: 14px; }
+  .game-hud-players .hud-player-balance { font-size: 18px; white-space: nowrap; }
+  .game-viewport { --hud-top: 84px; }
+}
