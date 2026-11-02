@@ -25,6 +25,6 @@ describe('informações da casa', () => {
   });
 
   it('formata créditos no padrão brasileiro', () => {
-    expect(formatCredits(1100)).toBe('$ 1.100');
+    expect(formatCredits(1100)).toBe('R$ 1.100');
   });
 });

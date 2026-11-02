@@ -1,0 +1,23 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-11-02",
+  "referencePixelsUsed": false,
+  "meshyCreditsUsed": 0,
+  "assets": [
+    {
+      "file": "coins-v2.png",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-717c397a-2eae-49a8-a9f4-55bd8bec518f.png",
+      "prompt": "Use case: stylized-concept. Create ONE original high-resolution premium 3D cartoon mobile board-game UI icon, centered and fully visible with clear margin on a square canvas. Rich dimensional beveled forms, polished glossy materials, warm key light from upper left, bright highlights and soft contact shadow, crisp clean silhouette legible at 64 pixels. Genuine transparent background, no panel, no border, no writing, no watermark. Match luxury blue and gold Brazilian property game UI. Subject: three short stacks of shiny gold coins arranged triangularly, the rear stack taller with a large top coin, embossed circular rims, visible ridged orange-gold edges, luminous golden faces. No currency letters or symbols."
+    },
+    {
+      "file": "rent-growth-v2.png",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-693b2940-b17f-4b1d-ba8b-3742ba8d20ea.png",
+      "prompt": "Use case: stylized-concept. Create ONE original high-resolution premium 3D cartoon mobile board-game UI icon, centered and fully visible with clear margin on a square canvas. Rich dimensional beveled forms, polished glossy materials, warm key light from upper left, bright highlights and soft contact shadow, crisp clean silhouette legible at 64 pixels. Genuine transparent background, no panel, no border, no writing, no watermark. Match luxury blue and gold Brazilian property game UI. Subject: a small front-facing golden yellow house with orange gable roof and dark warm doorway, with a thick bright lime-green arrow pointing UP immediately behind the upper-right edge. Precisely a property rent increase symbol. Straight frontal view with slight 3D thickness, not isometric diorama. No lawn, no scenery."
+    },
+    {
+      "file": "build-tools-v2.png",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-9086bed5-6b72-4d8a-89d3-9f4d20d9085e.png",
+      "prompt": "Use case: stylized-concept. Create ONE original high-resolution premium 3D cartoon mobile board-game UI icon, centered and fully visible with clear margin on a square canvas. Rich dimensional beveled forms, polished glossy materials, warm key light from upper left, bright highlights and soft contact shadow, crisp clean silhouette legible at 64 pixels. Genuine transparent background, no panel, no border, no writing, no watermark. Match luxury blue and gold Brazilian property game UI. Subject: two dark navy blue steel construction hammers crossed in an X, with short dark blue handles and small golden brass collars, shiny silver-blue highlights along bevels. Large hammer heads at upper left and upper right and handles extending diagonally down. Symmetrical balanced X composition, no nails, no buildings, no hands."
+    }
+  ]
+}

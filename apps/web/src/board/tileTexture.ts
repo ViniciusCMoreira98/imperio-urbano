@@ -87,7 +87,7 @@ export function createTileTexture({ tile, state, group, width, depth, owned, art
       ctx.fillRect(pw*.04, ph * 0.79, pw*.92, ph * 0.15);
       ctx.fillStyle = readableOn(owned.ownerColor);
       ctx.font = `800 ${Math.min(pw,ph) * 0.16}px system-ui, sans-serif`;
-      ctx.fillText(`$ ${owned.rent}`, pw / 2, ph * 0.865, pw * 0.87);
+      ctx.fillText(`R$ ${owned.rent}`, pw / 2, ph * 0.865, pw * 0.87);
     }
   } else {
     const type = tile.type as Exclude<TileType, 'PROPERTY'>;

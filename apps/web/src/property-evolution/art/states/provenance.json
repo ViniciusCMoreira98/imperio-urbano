@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "created": "2026-11-02",
+  "tool": "built-in image_gen",
+  "referencePixelsUsed": false,
+  "meshyCreditsUsed": 0,
+  "scope": "Property modal tourism header illustrations only; not replacements for board tile textures.",
+  "layout": "Approved reference33 layout: 26 UFs including DF; no TO.",
+  "notes": [
+    "Stylized original illustrations, not documentary photographs or measured architectural reconstructions.",
+    "State code and name remain live HTML, not baked into artwork.",
+    "Preserve source aspect ratio; object-fit cover only for small header crop; keep main landmark visible."
+  ],
+  "assets": [
+    {
+      "code": "AC",
+      "name": "Acre",
+      "subject": "a traditional Amazonian wooden riverside house on stilts with a warm terracotta roof and a wooden landing, calm reflective river and dense lush Acre rainforest, no urban high-rises",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Acre — a traditional Amazonian wooden riverside house on stilts with a warm terracotta roof and a wooden landing, calm reflective river and dense lush Acre rainforest, no urban high-rises",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-a57a1b89-e34e-402e-9f42-27173d789fdd.png",
+      "file": "ac-header-v1.png"
+    },
+    {
+      "code": "AL",
+      "name": "Alagoas",
+      "subject": "a brilliant turquoise Alagoas tropical coastline, pale sand beach, curved coconut palms, shallow clear natural reef pools and distant green coast, inviting sunny beach scenery",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Alagoas — a brilliant turquoise Alagoas tropical coastline, pale sand beach, curved coconut palms, shallow clear natural reef pools and distant green coast, inviting sunny beach scenery",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-80e61acb-a9d4-45b4-a01d-c3adc1791118.png",
+      "file": "al-header-v1.png"
+    },
+    {
+      "code": "AM",
+      "name": "Amazonas",
+      "subject": "a wide Amazon rainforest river, dense deep-green tropical forest lining both banks, small traditional wooden riverboats with red and white cabins, reflections and vivid blue sky",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Amazonas — a wide Amazon rainforest river, dense deep-green tropical forest lining both banks, small traditional wooden riverboats with red and white cabins, reflections and vivid blue sky",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-007738ce-3040-40d5-a06a-0fff09a28df5.png",
+      "file": "am-header-v1.png"
+    },
+    {
+      "code": "AP",
+      "name": "Amapá",
+      "subject": "Fortaleza de São José de Macapá: large pale cream colonial stone fortress, red-tiled gatehouse, low substantial defensive walls and corner bastions, green grass and the broad Amazon estuary nearby",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Amapá — Fortaleza de São José de Macapá: large pale cream colonial stone fortress, red-tiled gatehouse, low substantial defensive walls and corner bastions, green grass and the broad Amazon estuary nearby",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-2ea3f8c3-1dde-44cc-8953-89013d0434b6.png",
+      "file": "ap-header-v1.png"
+    },
+    {
+      "code": "BA",
+      "name": "Bahia",
+      "subject": "colorful historic Salvador Pelourinho colonial facades and ornate golden-yellow baroque church towers, pale cobbled square, small tropical greenery and distant bright blue sky",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Bahia — colorful historic Salvador Pelourinho colonial facades and ornate golden-yellow baroque church towers, pale cobbled square, small tropical greenery and distant bright blue sky",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-8f3dd9cd-7f4c-431f-a1ca-5077fa927d94.png",
+      "file": "ba-header-v1.png"
+    },
+    {
+      "code": "CE",
+      "name": "Ceará",
+      "subject": "Pedra Furada at Jericoacoara, a monumental ochre-orange natural rock arch on a golden sand beach with turquoise sea visible through the opening, sunny blue sky and white clouds",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Ceará — Pedra Furada at Jericoacoara, a monumental ochre-orange natural rock arch on a golden sand beach with turquoise sea visible through the opening, sunny blue sky and white clouds",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-efc19d84-b587-4756-892a-87d87fc866a8.png",
+      "file": "ce-header-v1.png"
+    },
+    {
+      "code": "DF",
+      "name": "Distrito Federal",
+      "subject": "the Cathedral of Brasília, unmistakable sixteen white curved rising structural ribs and glass central body, broad clean pale plaza, vivid blue sky, low modern Brasília skyline at a distance",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Distrito Federal — the Cathedral of Brasília, unmistakable sixteen white curved rising structural ribs and glass central body, broad clean pale plaza, vivid blue sky, low modern Brasília skyline at a distance",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-d6614e3b-6e77-4692-b9a5-335ec8d05e83.png",
+      "file": "df-header-v1.png"
+    },
+    {
+      "code": "ES",
+      "name": "Espírito Santo",
+      "subject": "Convento da Penha at Vila Velha, a compact white colonial convent with orange tiled roofs on top of a steep rocky lush green hill, turquoise coast and distant city below",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Espírito Santo — Convento da Penha at Vila Velha, a compact white colonial convent with orange tiled roofs on top of a steep rocky lush green hill, turquoise coast and distant city below",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-fba45bda-439f-450e-be26-6d7c4308b61f.png",
+      "file": "es-header-v1.png"
+    },
+    {
+      "code": "GO",
+      "name": "Goiás",
+      "subject": "Igreja Matriz de Nossa Senhora do Rosário in Pirenópolis, large white colonial church with twin square towers and ochre-orange detailing, tiled roofs and a sunny cobbled square backed by green hills",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Goiás — Igreja Matriz de Nossa Senhora do Rosário in Pirenópolis, large white colonial church with twin square towers and ochre-orange detailing, tiled roofs and a sunny cobbled square backed by green hills",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-7a829484-7794-465f-a249-16e6fcbe3938.png",
+      "file": "go-header-v1.png"
+    },
+    {
+      "code": "MA",
+      "name": "Maranhão",
+      "subject": "Lençóis Maranhenses, sweeping white-golden sand dunes with many intensely turquoise blue freshwater lagoons curving between the dunes, rich saturated clear sky and far green horizon",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Maranhão — Lençóis Maranhenses, sweeping white-golden sand dunes with many intensely turquoise blue freshwater lagoons curving between the dunes, rich saturated clear sky and far green horizon",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-e0a9bbd8-db05-49b0-ba76-0d0323bd2a94.png",
+      "file": "ma-header-v1.png"
+    },
+    {
+      "code": "MG",
+      "name": "Minas Gerais",
+      "subject": "Ouro Preto historic white and warm ochre colonial church with twin towers and red roofs, cobbled street, clustered colorful colonial houses and rolling green Minas hills",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Minas Gerais — Ouro Preto historic white and warm ochre colonial church with twin towers and red roofs, cobbled street, clustered colorful colonial houses and rolling green Minas hills",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-eb62173a-0bdf-4344-acb1-71f5d3147a05.png",
+      "file": "mg-header-v1.png"
+    },
+    {
+      "code": "MS",
+      "name": "Mato Grosso do Sul",
+      "subject": "a bright blue hyacinth macaw with yellow eye-ring perched on a branch in the Pantanal, lush green wetland trees and calm water in the background, sunny blue sky",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Mato Grosso do Sul — a bright blue hyacinth macaw with yellow eye-ring perched on a branch in the Pantanal, lush green wetland trees and calm water in the background, sunny blue sky",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-ae717481-e0fa-49c2-81bb-375d80642c27.png",
+      "file": "ms-header-v1.png"
+    },
+    {
+      "code": "MT",
+      "name": "Mato Grosso",
+      "subject": "a golden jaguar with accurate black rosettes reclining beside clear Pantanal wetland water, lush green vegetation and palms, distant wetland forest, calm sunlit beautiful wildlife landscape",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Mato Grosso — a golden jaguar with accurate black rosettes reclining beside clear Pantanal wetland water, lush green vegetation and palms, distant wetland forest, calm sunlit beautiful wildlife landscape",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-e0405a5f-2c98-42c8-af80-1b084cd7c1e9.png",
+      "file": "mt-header-v1.png"
+    },
+    {
+      "code": "PA",
+      "name": "Pará",
+      "subject": "Belém's Basílica de Nossa Senhora de Nazaré, warm golden yellow and cream ornate church with twin bell towers, grand symmetrical facade, green tropical trees and blue sunny sky",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Pará — Belém's Basílica de Nossa Senhora de Nazaré, warm golden yellow and cream ornate church with twin bell towers, grand symmetrical facade, green tropical trees and blue sunny sky",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-9ea859e3-9d00-4266-bd93-daeacf7aad87.png",
+      "file": "pa-header-v1.png"
+    },
+    {
+      "code": "PB",
+      "name": "Paraíba",
+      "subject": "Farol do Cabo Branco: distinct white triangular wing-shaped lighthouse with a red horizontal band, on a green coastal clifftop, João Pessoa turquoise ocean and pale sand shoreline below",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Paraíba — Farol do Cabo Branco: distinct white triangular wing-shaped lighthouse with a red horizontal band, on a green coastal clifftop, João Pessoa turquoise ocean and pale sand shoreline below",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-aa259da1-0a31-47e2-96f2-4906196ab966.png",
+      "file": "pb-header-v1.png"
+    },
+    {
+      "code": "PE",
+      "name": "Pernambuco",
+      "subject": "Recife's colorful waterfront colonial buildings at Rua da Aurora, vivid yellow coral blue and white facades reflected in calm Capibaribe river, bridges faintly distant, tropical blue sky",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Pernambuco — Recife's colorful waterfront colonial buildings at Rua da Aurora, vivid yellow coral blue and white facades reflected in calm Capibaribe river, bridges faintly distant, tropical blue sky",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-e05b7edc-20d8-4ea8-8b39-cb087c25297c.png",
+      "file": "pe-header-v1.png"
+    },
+    {
+      "code": "PI",
+      "name": "Piauí",
+      "subject": "Serra da Capivara, warm reddish sandstone rock shelter with ancient red-ochre human stick-figure rock paintings clearly visible on the rock face, dry-green caatinga plants around the rocks",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Piauí — Serra da Capivara, warm reddish sandstone rock shelter with ancient red-ochre human stick-figure rock paintings clearly visible on the rock face, dry-green caatinga plants around the rocks",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-6f7cce12-bd83-4771-8df5-b475afaf6777.png",
+      "file": "pi-header-v1.png"
+    },
+    {
+      "code": "PR",
+      "name": "Paraná",
+      "subject": "Iguaçu Falls in Paraná, a majestic broad curved cascade with multiple bright white waterfalls plunging between rich emerald rainforest cliffs, blue-green river and rising luminous mist",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Paraná — Iguaçu Falls in Paraná, a majestic broad curved cascade with multiple bright white waterfalls plunging between rich emerald rainforest cliffs, blue-green river and rising luminous mist",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-5927e157-a83c-4e97-a3fb-aa69f7038caa.png",
+      "file": "pr-header-v1.png"
+    },
+    {
+      "code": "RN",
+      "name": "Rio Grande do Norte",
+      "subject": "Forte dos Reis Magos in Natal: low white star-shaped coastal fortress with terracotta roofed internal structures, on the edge of turquoise sea, pale beach sand and lush green nearby shore",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Rio Grande do Norte — Forte dos Reis Magos in Natal: low white star-shaped coastal fortress with terracotta roofed internal structures, on the edge of turquoise sea, pale beach sand and lush green nearby shore",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-d4d33091-cadd-4b66-85a4-adc9729b10be.png",
+      "file": "rn-header-v1.png"
+    },
+    {
+      "code": "RO",
+      "name": "Rondônia",
+      "subject": "a long modern concrete bridge across the wide Madeira River at Porto Velho, repeating pale supporting piers, warm orange rails, lush Amazon rainforest on riverbanks, distant soft green hills",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Rondônia — a long modern concrete bridge across the wide Madeira River at Porto Velho, repeating pale supporting piers, warm orange rails, lush Amazon rainforest on riverbanks, distant soft green hills",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-66c91d36-d138-459c-b5b5-9302a34bc026.png",
+      "file": "ro-header-v1.png"
+    },
+    {
+      "code": "RR",
+      "name": "Roraima",
+      "subject": "Mount Roraima, an immense flat-topped sandstone tepui with high sheer orange-brown vertical cliffs, lush green savanna and forest in foreground, low clouds drifting below the plateau and clear blue sky",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Roraima — Mount Roraima, an immense flat-topped sandstone tepui with high sheer orange-brown vertical cliffs, lush green savanna and forest in foreground, low clouds drifting below the plateau and clear blue sky",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-e2895d3e-a087-461f-9535-209eb468b598.png",
+      "file": "rr-header-v1.png"
+    },
+    {
+      "code": "RS",
+      "name": "Rio Grande do Sul",
+      "subject": "Catedral de Pedra at Canela, tall neo-Gothic brown stone cathedral with one high central pointed tower and arched main doorway, flowerbeds and lush green trees in a sunlit square",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Rio Grande do Sul — Catedral de Pedra at Canela, tall neo-Gothic brown stone cathedral with one high central pointed tower and arched main doorway, flowerbeds and lush green trees in a sunlit square",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-75b37819-7327-4d83-bfe5-16d67142718d.png",
+      "file": "rs-header-v1.png"
+    },
+    {
+      "code": "SC",
+      "name": "Santa Catarina",
+      "subject": "Florianópolis Hercílio Luz suspension bridge, its iconic long red metal lattice towers and suspension cables across blue bay, small white-red sailboat below, green hills and low coastal buildings",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Santa Catarina — Florianópolis Hercílio Luz suspension bridge, its iconic long red metal lattice towers and suspension cables across blue bay, small white-red sailboat below, green hills and low coastal buildings",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-62c61753-1172-4873-9010-165fcc73b820.png",
+      "file": "sc-header-v1.png"
+    },
+    {
+      "code": "SE",
+      "name": "Sergipe",
+      "subject": "a vivid orange-red crab on a sunlit sandy tidal bank with green mangrove trees and turquoise estuary water, playful premium 3D cartoon wildlife tourism emblem of Sergipe, no text",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: Sergipe — a vivid orange-red crab on a sunlit sandy tidal bank with green mangrove trees and turquoise estuary water, playful premium 3D cartoon wildlife tourism emblem of Sergipe, no text",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-48b63fcd-8409-4654-9df1-1f1f65f13e7a.png",
+      "file": "se-header-v1.png"
+    },
+    {
+      "code": "SP",
+      "name": "São Paulo",
+      "subject": "Avenida Paulista skyline, tall modern glass and concrete buildings on either side of a broad tree-lined avenue, visible red MASP suspended museum structure in midground, warm late afternoon blue and pink sky",
+      "prompt": "Use case: stylized-concept. Asset type: one original wide tourism landscape illustration for a Brazilian state property modal header in Império Urbano Edição Brasil. Premium colorful 3D cartoon board-game illustration, lush detailed vegetation and warm dimensional architectural forms, rich saturated tropical palette, vivid blue sky and small soft white clouds, warm sunlight from upper left, pleasing ambient occlusion, polished cinematic miniature environment with a slightly painterly finish, not a photograph, not flat vector. Landscape aspect ratio 3:1, canvas filled edge to edge with scenery, no borders or rounded frame, no text, no sigla, no labels, no logo, no watermark. Compose the identifiable primary subject in the left-middle 60% and keep it fully visible with breathing room; right edge will be partially covered by a separate state-code badge. Keep horizon near upper third, landscape legible as a small panoramic thumbnail. Create genuinely new artwork; do not use any existing screenshot or atlas pixels. State and subject: São Paulo — Avenida Paulista skyline, tall modern glass and concrete buildings on either side of a broad tree-lined avenue, visible red MASP suspended museum structure in midground, warm late afternoon blue and pink sky",
+      "generatedSource": "C:\\Users\\Plust\\.codex\\generated_images\\01a19495-b0d4-7790-8715-a844aeb27e85\\exec-34dea2c9-f61d-4d40-821c-7692c5c4543e.png",
+      "file": "sp-header-v1.png"
+    }
+  ],
+  "existingRJ": {
+    "file": "../rio-header-v2.png",
+    "promptSource": "../provenance.json",
+    "recreatedThisTask": false
+  }
+}

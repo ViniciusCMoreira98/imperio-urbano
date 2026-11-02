@@ -107,8 +107,8 @@ describe('regras de apoio à interface', () => {
   it('descreve eventos em português', () => {
     const name = (id: string) => ({ ana: 'Ana', bia: 'Bia' })[id] ?? id;
     expect(describeEvent({ type: 'RENT_PAID', fromId: 'bia', toId: 'ana', stateId: 'AP', amount: 10 }, name))
-      .toBe('Bia pagou $ 10 de aluguel a Ana.');
+      .toBe('Bia pagou R$ 10 de aluguel a Ana.');
     expect(describeEvent({ type: 'PLAYER_MOVED', playerId: 'ana', from: 33, to: 2, startBonus: 200, sentToRest: false }, name))
-      .toBe('Ana foi para Roraima e recebeu $ 200 no Início.');
+      .toBe('Ana foi para Roraima e recebeu R$ 200 no Início.');
   });
 });
