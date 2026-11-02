@@ -102,7 +102,7 @@ O usuário vai pedir ao Codex para ampliar a área em volta do tabuleiro (mesa/c
 
 ## C6 — Modal de compra e construção
 
-**Estado: pedido aberto.** O usuário pediu a arte ao Codex; a engenharia liga o modal às regras e aos comandos.
+**Estado: respondido pelo Codex; integração e conferência pelo Claude pendentes.** Arte e componente em `2c17e50`, na `develop_arte_3d`, atualizada com a engenharia `97c9d54` pelo merge `f0b2148`. A engenharia continua responsável pelo diálogo e pelo fluxo funcional; a entrega visual não conclui a integração ao jogo.
 
 Ao parar num estado para comprar ou construir (`AWAITING_PURCHASE` / `AWAITING_BUILD`, na vez do jogador), abre um modal no centro, no estilo da referência enviada pelo usuário (cabeçalho com foto e sigla do estado, trilha Terreno → casas → Hotel, custo e novo aluguel, botão de confirmar). Hoje isso aparece no painel lateral (`PropertyPanel` + `TileActions`).
 
@@ -111,15 +111,15 @@ A referência vale como estilo e layout, não como regra. O modal precisa repres
 - **Quatro casas e depois o hotel** (a referência mostra três). Trilha: Terreno, Casa 1 a 4, Hotel.
 - **Na compra:** comprar só o terreno ou já com 1 a 3 casas (`BUY_PROPERTY { houses: 0..3 }`), limitado pelo saldo.
 - **Na construção:** pode haver mais de uma casa por visita (até 3 na primeira; depois 1 por visita; hotel só numa visita depois da Casa 4). As opções vêm de `buildOptions` e `affordablePurchaseHouses` em `game/rules.ts`; o modal não calcula regra.
-- Valores em créditos do jogo (`$`, `formatCredits`), não em R$ reais com milhares.
+- O usuário autorizou posteriormente exibir **R$**. `formatCredits` e o aluguel desenhado em `tileTexture` já usam esse prefixo; os números permanecem os créditos do catálogo, sem conversão nem multiplicação por mil. Não repor o prefixo `$` da orientação antiga.
 - Etapas que o saldo não paga ou que ainda não foram liberadas aparecem bloqueadas com o motivo (como o cadeado do hotel).
 - O tempo do turno continua visível; se acabar, o servidor decide como hoje.
 
 Contrato pedido para a arte (mesmo modelo do `ReferenceBoardScene`: o componente não lê stores, não envia comandos):
 
-- [ ] Componente de apresentação, por exemplo `PropertyDecisionModal`, com props: estado (`stateId`, nome, região, imagem), nível atual (0 a 5), lista de etapas com `level`, `rent`, `cost`, `status` (`current` | `available` | `selected` | `locked`, com `lockedReason`), etapa escolhida, `onChoose(level)`, `onConfirm()`, `onClose()`, rótulo do botão, `busy`/`disabled` e o tempo restante do turno.
-- [ ] Layout que funcione em 1536×1024 e em 390×844 (no celular, a trilha pode virar duas linhas ou rolar na horizontal).
-- [ ] Arquivos da arte em pasta própria (ex.: `apps/web/src/hud/propertyModal/`), para a engenharia só ligar.
+- [x] Componente de apresentação `PropertyEvolutionPanel` em `apps/web/src/property-evolution/`, sem stores/comandos. Contrato entregue: `stateCode`, `stateName`, `artwork?` (por padrão resolve as 26 artes pela sigla), `mode`, `stages` com `{level,label,rentLabel,status,note?}`, `selectedLevel`, `costLabel`, `newRentLabel`, `actionLabel`, `pending`, `actionDisabled`, `message`, `onSelect(targetLevel)`, `onConfirm`, `onClose`. `current` identifica o nível atual; seleção é uma prop separada, `complete` marca anteriores e `note` explica bloqueios. Valores e custos já formatados vêm da engenharia. O tempo restante oficial e o controlador do diálogo devem ficar visíveis no host da engenharia; não há relógio local dentro da arte.
+- [x] Layout conferido em 1536×1024 e 390×844, além de larguras 320/768/1024; trilha em duas linhas no celular. Ver `scripts/assets/property-evolution-qa.mjs` e capturas em `assets/3d/reviews/property-evolution/`.
+- [x] Arte em pasta própria `apps/web/src/property-evolution/`: construções/ícones originais e cabeçalhos das 26 UFs. Procedência e prompts junto aos assets; nenhum pixel das referências foi reutilizado.
 
 A engenharia faz: abrir/fechar conforme a fase, montar as etapas a partir das regras, enviar `BUY_PROPERTY` / `BUILD` / `BUILD_HOTEL`, recusar com o "Não comprar" atual e os testes. **Decidido pelo usuário:** o "×" recusa, igual a "Não comprar" (`DECLINE_PURCHASE`) na compra e "Não construir" (`SKIP_BUILD`) na construção; o modal não minimiza. Se o clique numa casa fora da vez abre o mesmo modal em modo consulta: a confirmar com o usuário.
 
