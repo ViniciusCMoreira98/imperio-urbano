@@ -2,8 +2,11 @@ import type { BoardDefinition, EventCard, RulesConfig, StateDefinition } from '@
 
 export const ALL_STATE_IDS = [
   'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA',
-  'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
+  'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE',
 ] as const;
+
+/** Percurso definitivo: 33 casas, com lados de tamanhos diferentes. */
+export const BOARD_SIZE = 33;
 
 const REQUIRED_SPECIALS = ['START', 'OLYMPICS', 'REST', 'EVENT', 'NATIONAL_TRAVEL', 'TAX'] as const;
 
@@ -41,12 +44,15 @@ export function validateCatalog(
   const prices = states.map((s) => s.price);
   if (new Set(prices).size !== prices.length) errors.push('Preços de compra repetidos');
 
-  const expectedTiles = board.tilesPerSide * 4;
-  if (board.tiles.length !== expectedTiles) {
-    errors.push(`Tabuleiro deve ter ${expectedTiles} casas, possui ${board.tiles.length}`);
+  if (board.tiles.length !== BOARD_SIZE) {
+    errors.push(`Tabuleiro deve ter ${BOARD_SIZE} casas, possui ${board.tiles.length}`);
   }
+  const tileIds = new Set<string>();
   board.tiles.forEach((t, i) => {
     if (t.index !== i) errors.push(`Casa na posição ${i} com índice ${t.index}`);
+    if (!t.id || tileIds.has(t.id)) errors.push(`Casa ${i}: id ausente ou repetido (${t.id})`);
+    tileIds.add(t.id);
+    if (t.type === 'PROPERTY' && t.id !== t.stateId) errors.push(`Casa ${i}: id deve ser a sigla do estado`);
   });
   const boardStates = board.tiles.filter((t) => t.type === 'PROPERTY').map((t) => t.stateId);
   for (const id of ALL_STATE_IDS) {
@@ -90,7 +96,7 @@ export function validateEventCards(cards: EventCard[], board: BoardDefinition): 
         if (!(e.perHouse > 0 && e.perHotel > 0)) errors.push(`${card.id}: valores por construção devem ser positivos`);
         break;
       case 'MOVE_TO':
-        if (!(e.tile >= 0 && e.tile < board.tiles.length)) errors.push(`${card.id}: casa de destino inexistente`);
+        if (!board.tiles.some((t) => t.id === e.tile)) errors.push(`${card.id}: casa de destino inexistente`);
         break;
       case 'MOVE_BY':
         if (!Number.isInteger(e.steps) || e.steps === 0) errors.push(`${card.id}: deslocamento inválido`);

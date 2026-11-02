@@ -20,7 +20,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/** Construção por etapas e visitas (D4). Rolar 4 + 6 a partir do Início leva ao Acre. */
+/** Construção por etapas e visitas (D4). Rolar 3 + 5 a partir do Início leva ao Acre (casa 8). */
 class ConstructionTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
@@ -45,7 +45,7 @@ class ConstructionTest {
     /** Ana já possui o Acre com o nível e visitas informados e para nele de novo. */
     private void anaReturnsToAcre(int level, int visits, int reachedAtVisit) {
         state = state.withProperty(new PropertyState("AC", "ana", level, visits, reachedAtVisit));
-        run("ana", new RollDice(), 4, 6);
+        run("ana", new RollDice(), 3, 5);
     }
 
     private PropertyState acre() {
@@ -54,7 +54,7 @@ class ConstructionTest {
 
     @Test
     void buyingWithThreeHousesOnFirstVisit() {
-        run("ana", new RollDice(), 4, 6);
+        run("ana", new RollDice(), 3, 5);
         GameEngine.Result result = run("ana", new BuyProperty(3));
 
         assertThat(result.events()).containsExactly(
@@ -67,7 +67,7 @@ class ConstructionTest {
 
     @Test
     void cannotBuyWithMoreThanThreeHouses() {
-        run("ana", new RollDice(), 4, 6);
+        run("ana", new RollDice(), 3, 5);
 
         assertThatThrownBy(() -> run("ana", new BuyProperty(4)))
                 .isInstanceOf(RuleViolationException.class)
@@ -77,7 +77,7 @@ class ConstructionTest {
     @Test
     void housesOnPurchaseMustFitTheBalance() {
         state = state.updatePlayer("ana", p -> p.withCredits(AC.price() + AC.houseCost()));
-        run("ana", new RollDice(), 4, 6);
+        run("ana", new RollDice(), 3, 5);
 
         assertThatThrownBy(() -> run("ana", new BuyProperty(2))).isInstanceOf(RuleViolationException.class);
         run("ana", new BuyProperty(1));
@@ -162,7 +162,7 @@ class ConstructionTest {
     void opponentVisitsDoNotAdvanceConstruction() {
         state = state.withProperty(new PropertyState("AC", "bia", 3, 1, 1));
 
-        run("ana", new RollDice(), 4, 6);
+        run("ana", new RollDice(), 3, 5);
 
         assertThat(acre().ownerVisits()).isEqualTo(1);
         assertThatThrownBy(() -> run("ana", new Build(1))).isInstanceOf(RuleViolationException.class);

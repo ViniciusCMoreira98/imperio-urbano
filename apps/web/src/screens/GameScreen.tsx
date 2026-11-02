@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BoardScene } from '../board/BoardScene';
+import { GameBoard } from '../board/GameBoard';
 import { isMyTurn, playerOf } from '../game/rules';
 import { ActionBar } from '../hud/ActionBar';
 import { CardReveal } from '../hud/CardReveal';
@@ -20,6 +20,7 @@ export function GameScreen() {
   const leave = useAppStore((s) => s.leave);
   const snapshot = useGameStore((s) => s.snapshot);
   const connection = useGameStore((s) => s.connection);
+  const unavailable = useGameStore((s) => s.unavailable);
 
   useEffect(() => {
     const store = useGameStore.getState();
@@ -50,18 +51,20 @@ export function GameScreen() {
 
   return (
     <div className="game-viewport relative h-full w-full overflow-hidden">
-      <BoardScene />
+      <GameBoard />
 
       <header className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
         <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
           ←<span className="hidden sm:inline"> Menu</span>
         </Button>
-        {connection !== 'open' && (
+        {connection !== 'open' && !unavailable && (
           <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-amber-300">reconectando…</p>
         )}
       </header>
 
-      {!snapshot ? (
+      {unavailable ? (
+        <UnavailableOverlay reason={unavailable} onLeave={leave} />
+      ) : !snapshot ? (
         <p className="absolute inset-0 flex items-center justify-center text-white/80">Conectando à partida…</p>
       ) : (
         <>
@@ -88,6 +91,20 @@ export function GameScreen() {
           {snapshot.status === 'FINISHED' && <FinishedOverlay onLeave={leave} />}
         </>
       )}
+    </div>
+  );
+}
+
+function UnavailableOverlay({ reason, onLeave }: { reason: string; onLeave: () => void }) {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-black/50 p-4">
+      <div role="alert" className="max-w-sm rounded-2xl bg-slate-900 p-6 text-center shadow-2xl">
+        <h2 className="text-xl font-extrabold text-amber-300">Partida indisponível</h2>
+        <p className="mt-2 text-white">{reason}</p>
+        <Button variant="primary" className="mt-4" onClick={onLeave}>
+          Voltar ao menu
+        </Button>
+      </div>
     </div>
   );
 }

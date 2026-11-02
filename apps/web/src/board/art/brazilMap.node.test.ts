@@ -6,7 +6,8 @@ import map from './brazilMap.json';
 
 describe('Contornos locais do mapa decorativo', () => {
   it('inclui cada UF do catálogo exatamente uma vez, inclusive o DF', () => {
-    expect(map.states.map(s => s.id).sort()).toEqual(states.map(s => s.id).sort());
+    // O mapa decorativo é geográfico: inclui Tocantins, que não está no percurso de 33 casas.
+    expect(map.states.map(s => s.id).sort()).toEqual([...states.map(s => s.id), 'TO'].sort());
     for (const state of map.states) for (const polygon of state.polygons) for (const ring of polygon) {
       expect(ring.length).toBeGreaterThanOrEqual(4);
       expect(ring[0]).toEqual(ring.at(-1));

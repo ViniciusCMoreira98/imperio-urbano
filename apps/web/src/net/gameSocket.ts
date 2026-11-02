@@ -47,7 +47,10 @@ export class GameConnection {
       this.handlers.onStatus('open');
     };
     socket.onmessage = (event) => {
-      this.handlers.onMessage(JSON.parse(event.data as string) as ServerMessage);
+      const message = JSON.parse(event.data as string) as ServerMessage;
+      // Partida que não pode continuar: o servidor fecha a conexão e não adianta tentar de novo.
+      if (message.kind === 'GAME_UNAVAILABLE') this.closedByUs = true;
+      this.handlers.onMessage(message);
     };
     socket.onclose = () => {
       if (this.socket !== socket) return;

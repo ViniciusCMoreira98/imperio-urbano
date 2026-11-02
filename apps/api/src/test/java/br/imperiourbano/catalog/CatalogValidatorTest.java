@@ -12,7 +12,7 @@ class CatalogValidatorTest {
 
     @Test
     void detectsMissingAndDuplicatedState() {
-        List<StateDefinition> states = new ArrayList<>(valid.states().subList(1, 27));
+        List<StateDefinition> states = new ArrayList<>(valid.states().subList(1, 26));
         states.add(valid.states().get(1));
         Catalog broken = new Catalog(states, valid.board(), valid.rules(), valid.eventCards());
 
@@ -25,8 +25,8 @@ class CatalogValidatorTest {
     void detectsStateRepeatedOnBoard() {
         List<TileDefinition> tiles = new ArrayList<>(valid.board().tiles());
         TileDefinition second = tiles.get(2);
-        tiles.set(2, new TileDefinition(second.index(), TileType.PROPERTY, valid.board().tiles().get(1).stateId(), null));
-        BoardDefinition board = new BoardDefinition(1, valid.board().tilesPerSide(), valid.board().colorGroups(), tiles);
+        tiles.set(2, new TileDefinition(second.index(), second.id(), TileType.PROPERTY, valid.board().tiles().get(1).stateId(), null));
+        BoardDefinition board = new BoardDefinition(1, valid.board().colorGroups(), tiles);
 
         assertThat(CatalogValidator.validate(new Catalog(valid.states(), board, valid.rules(), valid.eventCards())))
                 .anyMatch(e -> e.contains("aparece 2 vez"));

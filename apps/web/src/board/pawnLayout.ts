@@ -1,12 +1,17 @@
 // Onde cada personagem fica dentro da casa, a partir só do estado oficial (posição e assento).
-// Sozinho: no centro da área de personagens (pawnArea). Dividindo a casa: espalhados sem sair dela, na ordem dos assentos, para que
-// cada um mantenha o mesmo lugar enquanto ninguém entra ou sai.
+// Sozinho: no centro da área de personagens (pawnArea). Dividindo a casa: espalhados sem sair do contorno dela, na ordem dos
+// assentos, para que cada um mantenha o mesmo lugar enquanto ninguém entra ou sai.
 import { anchorToWorld, tileAnchor } from './layout';
 
-/** Raio que a base do personagem ocupa no tabuleiro (base de 0,25 com a peça em escala 0,95). */
-export const PAWN_RADIUS = 0.24;
-/** Afastamento máximo do centro, para não encostar na borda nem em casas vizinhas. */
-const MAX_SPREAD = 0.35;
+/**
+ * Escala do personagem com a base. Nas casas mais estreitas do tabuleiro de 33 casas (ES, CE) quatro
+ * personagens só cabem com a base de até ~0,19 de raio; os testes de layout conferem com o contorno real.
+ */
+export const PAWN_SCALE = 0.75;
+/** Raio que a base do personagem ocupa no tabuleiro (base de 0,25 na escala PAWN_SCALE). */
+export const PAWN_RADIUS = 0.25 * PAWN_SCALE;
+/** Afastamento de cada personagem até o centro do grupo quando dividem a casa. */
+const PAWN_SPREAD = PAWN_RADIUS + 0.005;
 
 export interface PawnSpot {
   x: number;
@@ -51,8 +56,10 @@ export function pawnSpots(pawns: PawnOnBoard[]): Map<string, PawnSpot> {
   for (const [index, onTile] of byTile) {
     const anchor = tileAnchor(index);
     const area = anchor.pawnArea;
-    const a = Math.min(area.width / 2 - PAWN_RADIUS, MAX_SPREAD);
-    const b = Math.min(area.depth / 2 - PAWN_RADIUS, MAX_SPREAD);
+    // Grupo compacto, bases quase encostadas: as casas são inclinadas e espalhar mais faria
+    // quem fica nos cantos passar do contorno.
+    const a = PAWN_SPREAD;
+    const b = PAWN_SPREAD;
     const slots = localSlots(onTile.length, a, b);
     [...onTile]
       .sort((p, q) => p.seat - q.seat)

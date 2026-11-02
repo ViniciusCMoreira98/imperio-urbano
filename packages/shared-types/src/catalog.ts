@@ -3,7 +3,7 @@
 export type StateId =
   | 'AC' | 'AL' | 'AP' | 'AM' | 'BA' | 'CE' | 'DF' | 'ES' | 'GO'
   | 'MA' | 'MT' | 'MS' | 'MG' | 'PA' | 'PB' | 'PR' | 'PE' | 'PI'
-  | 'RJ' | 'RN' | 'RS' | 'RO' | 'RR' | 'SC' | 'SP' | 'SE' | 'TO';
+  | 'RJ' | 'RN' | 'RS' | 'RO' | 'RR' | 'SC' | 'SP' | 'SE';
 
 export type Region = 'NORTE' | 'NORDESTE' | 'CENTRO_OESTE' | 'SUDESTE' | 'SUL';
 
@@ -45,6 +45,8 @@ export type TileType =
 
 export interface TileDefinition {
   index: number;
+  /** Identificador estável da casa: a sigla nos estados; nas especiais, o ID visual (START, TAX, AIRPORT…). */
+  id: string;
   type: TileType;
   stateId?: StateId;
   name?: string;
@@ -52,7 +54,6 @@ export interface TileDefinition {
 
 export interface BoardDefinition {
   version: number;
-  tilesPerSide: number;
   colorGroups: ColorGroup[];
   tiles: TileDefinition[];
 }
@@ -62,7 +63,7 @@ export type CardEffect =
   | { type: 'PAY'; amount: number }
   | { type: 'PAY_PER_BUILDING'; perHouse: number; perHotel: number }
   | { type: 'COLLECT_FROM_EACH'; amount: number }
-  | { type: 'MOVE_TO'; tile: number }
+  | { type: 'MOVE_TO'; tile: string }
   | { type: 'MOVE_BY'; steps: number }
   | { type: 'GO_TO_REST' };
 

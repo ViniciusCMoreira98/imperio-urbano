@@ -70,4 +70,6 @@ export type DomainEvent =
 export type ServerMessage =
   | { kind: 'SNAPSHOT'; snapshot: GameSnapshot }
   | { kind: 'EVENTS'; version: number; events: DomainEvent[] }
-  | { kind: 'COMMAND_REJECTED'; commandId: string; reason: string };
+  | { kind: 'COMMAND_REJECTED'; commandId: string; reason: string }
+  /** A partida não pode continuar (ex.: jogada no tabuleiro antigo): o cliente para de reconectar. */
+  | { kind: 'GAME_UNAVAILABLE'; reason: string };

@@ -24,6 +24,8 @@ export interface ServerState {
    * abandonam as animações e vão direto para a posição do snapshot.
    */
   resync: number;
+  /** Motivo de a partida não poder continuar (ex.: tabuleiro antigo); null enquanto pode. */
+  unavailable: string | null;
 }
 
 /**
@@ -56,6 +58,8 @@ export function reduceServerMessage(state: ServerState, message: ServerMessage, 
     }
     case 'COMMAND_REJECTED':
       return { ...state, rejection: message.reason };
+    case 'GAME_UNAVAILABLE':
+      return { ...state, unavailable: message.reason };
   }
 }
 
@@ -70,7 +74,7 @@ interface GameStoreState extends ServerState {
   reset: () => void;
 }
 
-const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0 };
+const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, unavailable: null };
 
 export const useGameStore = create<GameStoreState>()((set) => ({
   ...empty,

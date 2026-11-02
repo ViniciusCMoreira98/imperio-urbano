@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 class EventCardsTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int REST_TILE = 18;
+    private static final int REST_TILE = 16;
 
     private final GameEngine engine = new GameEngine(CATALOG, new Random(42));
     private final List<GameEvent> log = new ArrayList<>();
@@ -154,14 +154,14 @@ class EventCardsTest {
     void moveToStateResolvesTheNewTile() {
         anaDraws("voo-sao-paulo");
 
-        assertThat(state.player("ana").position()).isEqualTo(21);
+        assertThat(state.player("ana").position()).isEqualTo(19);
         assertThat(credits("ana")).isEqualTo(1500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
     }
 
     @Test
     void moveToStartPaysTheBonus() {
-        state = state.updatePlayer("ana", p -> p.withPosition(27));
+        state = state.updatePlayer("ana", p -> p.withPosition(29));
         nextCard("volta-ao-inicio");
 
         run("ana", new RollDice(), 1, 3);
@@ -172,14 +172,14 @@ class EventCardsTest {
 
     @Test
     void moveBackChargesRentAtTheNewTileWithoutBonus() {
-        // Da casa 5, 1 + 2 cai em Eventos (casa 8); voltar 3 leva ao Pará (casa 5).
-        state = state.withProperty(PropertyState.purchased("PA", "bia"))
-                .updatePlayer("ana", p -> p.withPosition(5));
+        // Da casa 9, 1 + 2 cai em Eventos (casa 12); voltar 3 leva ao Mato Grosso (casa 9).
+        state = state.withProperty(PropertyState.purchased("MT", "bia"))
+                .updatePlayer("ana", p -> p.withPosition(9));
 
         anaDraws("estrada-interditada");
 
-        assertThat(state.player("ana").position()).isEqualTo(5);
-        assertThat(credits("ana")).isEqualTo(1500 - CATALOG.state("PA").rent().base());
+        assertThat(state.player("ana").position()).isEqualTo(9);
+        assertThat(credits("ana")).isEqualTo(1500 - CATALOG.state("MT").rent().base());
     }
 
     @Test

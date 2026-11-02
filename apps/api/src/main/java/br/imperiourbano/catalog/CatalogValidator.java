@@ -13,7 +13,10 @@ public final class CatalogValidator {
 
     public static final List<String> ALL_STATE_IDS = List.of(
             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA",
-            "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO");
+            "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE");
+
+    /** Percurso definitivo: 33 casas, com lados de tamanhos diferentes. */
+    public static final int BOARD_SIZE = 33;
 
     private static final List<TileType> REQUIRED_SPECIALS = List.of(
             TileType.START, TileType.OLYMPICS, TileType.REST, TileType.EVENT, TileType.NATIONAL_TRAVEL, TileType.TAX);
@@ -41,7 +44,7 @@ public final class CatalogValidator {
             boolean valid = switch (e.type()) {
                 case GAIN, PAY, COLLECT_FROM_EACH -> positive(e.amount());
                 case PAY_PER_BUILDING -> positive(e.perHouse()) && positive(e.perHotel());
-                case MOVE_TO -> e.tile() != null && e.tile() >= 0 && e.tile() < catalog.board().tileCount();
+                case MOVE_TO -> e.tile() != null && catalog.board().tiles().stream().anyMatch(t -> e.tile().equals(t.id()));
                 case MOVE_BY -> e.steps() != null && e.steps() != 0;
                 case GO_TO_REST -> true;
             };
@@ -81,13 +84,20 @@ public final class CatalogValidator {
     }
 
     private static void validateBoard(BoardDefinition board, List<String> errors) {
-        int expected = board.tilesPerSide() * 4;
-        if (board.tileCount() != expected) {
-            errors.add("Tabuleiro deve ter " + expected + " casas, possui " + board.tileCount());
+        if (board.tileCount() != BOARD_SIZE) {
+            errors.add("Tabuleiro deve ter " + BOARD_SIZE + " casas, possui " + board.tileCount());
         }
+        Set<String> tileIds = new HashSet<>();
         for (int i = 0; i < board.tileCount(); i++) {
-            if (board.tiles().get(i).index() != i) {
-                errors.add("Casa na posição " + i + " com índice " + board.tiles().get(i).index());
+            TileDefinition tile = board.tiles().get(i);
+            if (tile.index() != i) {
+                errors.add("Casa na posição " + i + " com índice " + tile.index());
+            }
+            if (tile.id() == null || !tileIds.add(tile.id())) {
+                errors.add("Casa " + i + ": id ausente ou repetido (" + tile.id() + ")");
+            }
+            if (tile.type() == TileType.PROPERTY && !String.valueOf(tile.stateId()).equals(tile.id())) {
+                errors.add("Casa " + i + ": id deve ser a sigla do estado");
             }
         }
         Map<String, Long> onBoard = board.tiles().stream()

@@ -3,13 +3,13 @@ import { board, states } from '@imperio/game-data';
 import { Buildings, Pawns } from './Pieces';
 import { BoardCenter } from './BoardCenter';
 import { CameraRig } from './CameraRig';
-import { CORNER_SIZE, boardLength, tilePlacement } from './layout';
+import { CORNER_SIZE, LEGACY_TILES_PER_SIDE, boardLength, tilePlacement } from './layout';
 import { WoodenTableScene } from './WoodenTableScene';
 import { Tile } from './Tile';
 import { FixedBoardViewport } from './camera/FixedBoardViewport';
 import { FIXED_CAMERA } from './camera/fixedCamera';
 
-const LENGTH = boardLength(board.tilesPerSide);
+const LENGTH = boardLength(LEGACY_TILES_PER_SIDE);
 const FRAME_WIDTH = 0.35;
 const FRAME_HEIGHT = 0.3;
 const OUTER = LENGTH + 2 * FRAME_WIDTH;
@@ -23,7 +23,7 @@ const tiles = board.tiles.map((tile) => {
     tile,
     state,
     group: state ? groupsById.get(state.colorGroup) : undefined,
-    placement: tilePlacement(tile.index, board.tilesPerSide),
+    placement: tilePlacement(tile.index, LEGACY_TILES_PER_SIDE),
   };
 });
 

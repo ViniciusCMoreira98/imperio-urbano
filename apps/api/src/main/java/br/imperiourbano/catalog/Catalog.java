@@ -63,4 +63,13 @@ public final class Catalog {
     public TileDefinition tile(int index) {
         return board.tiles().get(Math.floorMod(index, board.tileCount()));
     }
+
+    /** Índice da casa pelo id estável (destino das cartas). */
+    public int tileIndex(String id) {
+        return board.tiles().stream()
+                .filter(t -> t.id().equals(id))
+                .mapToInt(TileDefinition::index)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Casa inexistente: " + id));
+    }
 }
