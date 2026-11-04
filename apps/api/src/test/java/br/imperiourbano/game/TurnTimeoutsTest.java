@@ -2,6 +2,7 @@ package br.imperiourbano.game;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import br.imperiourbano.catalog.Catalog;
 import br.imperiourbano.catalog.CatalogLoader;
 import br.imperiourbano.catalog.GameMode;
 import br.imperiourbano.engine.GameCommand;
@@ -14,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** Ações padrão por fase; na dívida do modo automático, vende antes de falir. */
+/** Ações padrão por fase; na dívida (com prazo ou no modo automático), vende antes de falir. */
 class TurnTimeoutsTest {
 
-    private final GameEngine engine = new GameEngine(CatalogLoader.load());
-    private final TurnTimeouts timeouts = new TurnTimeouts(Duration.ofSeconds(10), Duration.ofSeconds(15), Duration.ofSeconds(2));
+    private final Catalog catalog = CatalogLoader.load();
+    private final GameEngine engine = new GameEngine(catalog);
+    private final TurnTimeouts timeouts = new TurnTimeouts(Duration.ofSeconds(10), Duration.ofSeconds(15), Duration.ofSeconds(12),
+            Duration.ofSeconds(2), catalog);
 
     /** Ana devendo ao banco, com os bens informados (eventos aplicados pelo motor). */
     private GameState anaInDebt(GameEvent... holdings) {
@@ -41,13 +44,35 @@ class TurnTimeoutsTest {
 
         assertThat(timeouts.forState(rolling, false)).hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(10), new GameCommand.RollDice()));
         assertThat(timeouts.forState(rolling, true)).hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(2), new GameCommand.RollDice()));
-        assertThat(timeouts.forState(inDebt, false)).as("conectado em dívida não tem prazo").isEmpty();
+        assertThat(timeouts.forState(inDebt, false)).as("conectado em dívida: prazo próprio e venda automática")
+                .hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(12), new GameCommand.DeclareBankruptcy()));
     }
 
     @Test
-    void automaticDebtSellsBuildingsFirst() {
+    void debtSellsTheCheapestFirst() {
+        // Acre (o banco paga 50) sai antes de uma casa de SP (125).
         GameState state = anaInDebt(
                 new GameEvent.PropertyPurchased("ana", "AC", 100),
+                new GameEvent.PropertyPurchased("ana", "SP", 500),
+                new GameEvent.HouseBuilt("ana", "SP", 2, 500));
+
+        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellProperty("AC"));
+    }
+
+    @Test
+    void debtSellsACheapBuildingBeforeAnExpensiveState() {
+        // Casa do Acre (25) antes do Espírito Santo (200).
+        GameState state = anaInDebt(
+                new GameEvent.PropertyPurchased("ana", "ES", 400),
+                new GameEvent.PropertyPurchased("ana", "AC", 100),
+                new GameEvent.HouseBuilt("ana", "AC", 1, 50));
+
+        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellBuilding("AC"));
+    }
+
+    @Test
+    void aStateWithBuildingsLosesTheBuildingsBeforeTheStateItself() {
+        GameState state = anaInDebt(
                 new GameEvent.PropertyPurchased("ana", "SP", 500),
                 new GameEvent.HouseBuilt("ana", "SP", 2, 500));
 

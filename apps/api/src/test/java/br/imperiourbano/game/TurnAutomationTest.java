@@ -3,10 +3,12 @@ package br.imperiourbano.game;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import br.imperiourbano.TestcontainersConfiguration;
+import br.imperiourbano.catalog.Catalog;
 import br.imperiourbano.catalog.GameMode;
 import br.imperiourbano.engine.Dice;
 import br.imperiourbano.engine.DiceRoll;
 import br.imperiourbano.engine.GameCommand;
+import br.imperiourbano.engine.GameEngine;
 import br.imperiourbano.engine.GameEvent;
 import br.imperiourbano.engine.GameState;
 import br.imperiourbano.engine.TurnPhase;
@@ -16,6 +18,7 @@ import br.imperiourbano.lobby.LobbyService;
 import br.imperiourbano.lobby.LobbyView;
 import br.imperiourbano.persistence.GameStore;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,8 +31,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 /**
- * Dados sempre 3 + 5 (Ana para no Acre, livre); prazos curtos: 3 s para rolar, 1 s para decidir e
- * 300 ms entre jogadas do modo automático. As duas começam conectadas.
+ * Dados sempre 3 + 5 (Ana para no Acre, livre); prazos curtos: 3 s para rolar, 1 s para decidir,
+ * 1,5 s para pagar dívida e 300 ms entre jogadas do modo automático. As duas começam conectadas.
  */
 @SpringBootTest
 @Import({TestcontainersConfiguration.class, TurnAutomationTest.Config.class})
@@ -45,8 +48,8 @@ class TurnAutomationTest {
 
         @Bean
         @Primary
-        TurnTimeouts fastTimeouts() {
-            return new TurnTimeouts(Duration.ofSeconds(3), Duration.ofSeconds(1), Duration.ofMillis(300));
+        TurnTimeouts fastTimeouts(Catalog catalog) {
+            return new TurnTimeouts(Duration.ofSeconds(3), Duration.ofSeconds(1), Duration.ofMillis(1500), Duration.ofMillis(300), catalog);
         }
     }
 
@@ -67,6 +70,12 @@ class TurnAutomationTest {
 
     @Autowired
     Presence presence;
+
+    @Autowired
+    GameEngine engine;
+
+    @Autowired
+    Catalog catalog;
 
     private GuestPrincipal ana;
     private GuestPrincipal bia;
@@ -167,6 +176,40 @@ class TurnAutomationTest {
             Thread.sleep(100);
         }
         assertThat(store.loadEvents(gameId)).contains(new GameEvent.DiceRolled(ana.playerId(), new DiceRoll(3, 5)));
+    }
+
+    @Test
+    void connectedPlayerInDebtSellsEverythingNeededWhenTimeRunsOut() throws InterruptedException {
+        // Ana tem SP com 2 casas e deve ao banco o saldo mais uma casa e pouco: precisa de duas vendas.
+        GameState before = state();
+        int houseRefund = catalog.state("SP").houseCost() / 2;
+        List<GameEvent> holdings = List.of(new GameEvent.PropertyPurchased(ana.playerId(), "SP", 0),
+                new GameEvent.HouseBuilt(ana.playerId(), "SP", 2, 0));
+        GameState owning = applyAll(before, holdings);
+        List<GameEvent> events = new ArrayList<>(holdings);
+        events.add(new GameEvent.DebtIncurred(ana.playerId(), null, owning.player(ana.playerId()).credits() + houseRefund + 1));
+        store.append(gameId, before.version(), events, applyAll(before, events), null, null);
+        long start = System.nanoTime();
+        games.announce(gameId);
+        assertThat(timer.remainingMillis(gameId).getAsLong()).isBetween(1_000L, 1_500L);
+
+        long deadline = start + Duration.ofSeconds(5).toNanos();
+        while (state().phase() == TurnPhase.AWAITING_DEBT_RESOLUTION && System.nanoTime() < deadline) {
+            Thread.sleep(50);
+        }
+
+        // As duas vendas saem no mesmo prazo, sem esperar outro prazo a cada venda.
+        assertThat(Duration.ofNanos(System.nanoTime() - start)).isLessThan(Duration.ofMillis(2_500));
+        List<GameEvent> log = store.loadEvents(gameId);
+        assertThat(log.stream().filter(e -> e.equals(new GameEvent.BuildingSold(ana.playerId(), "SP", houseRefund)))).hasSize(2);
+        assertThat(log).anyMatch(e -> e instanceof GameEvent.DebtSettled settled && settled.debtorId().equals(ana.playerId()));
+        assertThat(state().player(ana.playerId()).bankrupt()).isFalse();
+        assertThat(state().property("SP")).hasValueSatisfying(p -> assertThat(p.buildingLevel()).isZero());
+    }
+
+    private GameState applyAll(GameState state, List<GameEvent> events) {
+        for (GameEvent event : events) state = engine.apply(state, event);
+        return state;
     }
 
     @Test

@@ -61,10 +61,11 @@ public record RulesConfig(
     }
 
     /**
-     * Prazos do turno: rolar/viajar e decidir; ao acabar, o servidor executa a ação padrão.
+     * Prazos do turno: rolar/viajar, decidir e pagar dívida; ao acabar, o servidor executa a ação padrão
+     * (na dívida, vende o necessário para pagar).
      * {@code automaticSeconds}: pausa entre as jogadas do modo automático (jogador desconectado).
      */
-    public record TurnTimers(int rollSeconds, int decisionSeconds, int automaticSeconds) {
+    public record TurnTimers(int rollSeconds, int decisionSeconds, int debtSeconds, int automaticSeconds) {
     }
 
     /** Partida em andamento sem ninguém conectado por {@code seconds} é encerrada sem vencedor. */

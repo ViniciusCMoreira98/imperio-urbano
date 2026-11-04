@@ -121,6 +121,10 @@ function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
           <strong className="text-rose-300">{formatCredits(missing)}</strong>.
         </p>
       )}
+      <p className="mb-2 text-xs text-amber-200">
+        Sem decisão em {rules.turnTimers.debtSeconds} s, o banco vende sozinho até pagar, do bem mais barato ao mais caro
+        (as casas de um estado saem antes dele). Se nem assim der, é falência.
+      </p>
       <ul className="max-h-56 space-y-2 overflow-y-auto pr-1">
         {list.map((property) => {
           const definition = statesById.get(property.stateId)!;
@@ -161,7 +165,7 @@ export function Countdown({ deadline }: { deadline: number }) {
   return (
     <span
       className={`rounded-full px-2 py-0.5 font-mono text-sm font-bold tabular-nums ${seconds <= 5 ? 'bg-rose-600 text-white' : 'bg-white/15 text-white'}`}
-      title="Ao acabar o tempo, o servidor joga a ação padrão: rola os dados ou recusa a compra."
+      title="Ao acabar o tempo, o servidor joga a ação padrão: rola os dados, recusa a compra ou vende para pagar a dívida."
       aria-label={`${seconds} segundos restantes`}
     >
       ⏱ {seconds}s
