@@ -17,16 +17,21 @@ import { HOTEL_LEVEL, playerOf } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { PropertyEvolutionPanel } from '../property-evolution/PropertyEvolutionPanel';
 import { useGameStore } from '../store/gameStore';
+import { usePawnStore } from '../store/pawnStore';
 import { useViewStore } from '../store/viewStore';
 import { Countdown } from './ActionBar';
 
 export function PropertyDecisionDialog({ myId }: { myId: string }) {
   const snapshot = useGameStore((s) => s.snapshot);
   const selectedTile = useViewStore((s) => s.selectedTile);
+  // A fase muda no servidor antes de o personagem terminar os saltos: a decisão espera o pouso.
+  const landed = usePawnStore((s) => !s.moving[myId]);
   const decision = useMemo(() => {
     if (!snapshot) return null;
-    return pendingDecision(snapshot, myId) ?? (selectedTile === null ? null : viewDecision(snapshot, myId, selectedTile));
-  }, [snapshot, myId, selectedTile]);
+    const pending = pendingDecision(snapshot, myId);
+    if (pending) return landed ? pending : null;
+    return selectedTile === null ? null : viewDecision(snapshot, myId, selectedTile);
+  }, [snapshot, myId, selectedTile, landed]);
   // A decisão da vez substitui a consulta aberta antes; ao terminar, não reabre a casa antiga.
   const deciding = decision !== null && decision.mode !== 'view';
   useEffect(() => {

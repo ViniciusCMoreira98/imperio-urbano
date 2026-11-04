@@ -179,6 +179,12 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
         const next = enqueueMoves(queue.current, state.moves, playerId, handled.current, shownTile.current);
         queue.current = next.queue;
         handled.current = next.handled;
+        // Aba em segundo plano: o navegador pausa a animação e a fila viraria um replay atrasado ao
+        // voltar. Vai direto; o snapshot que chega em seguida acerta a casa (efeito de position).
+        if (document.hidden) {
+          snap();
+          return;
+        }
         if (!timeline.current && queue.current.length > 0) {
           shift.current?.kill();
           runNext();
@@ -186,6 +192,16 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
       }),
     [playerId], // eslint-disable-line react-hooks/exhaustive-deps
   );
+
+  // Saiu da aba no meio dos saltos (ou voltou com eles pela metade): termina já no lugar oficial,
+  // em vez de reproduzir depois o que ficou para trás.
+  useEffect(() => {
+    const onVisibility = () => {
+      if (timeline.current || queue.current.length > 0) snap();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Snapshot mudou sem salto em andamento: mesma casa → acomoda; casa diferente sem evento → vai direto.
   useEffect(() => {
