@@ -102,7 +102,7 @@ O usuário vai pedir ao Codex para ampliar a área em volta do tabuleiro (mesa/c
 
 ## C6 — Modal de compra e construção
 
-**Estado: respondido pelo Codex; integração e conferência pelo Claude pendentes.** Arte e componente em `2c17e50`, na `develop_arte_3d`, atualizada com a engenharia `97c9d54` pelo merge `f0b2148`. A engenharia continua responsável pelo diálogo e pelo fluxo funcional; a entrega visual não conclui a integração ao jogo.
+**Estado: respondido pelo Codex e integrado pela engenharia na `claude/engenharia`; restam os pedidos C6.1 e C6.2 abaixo.** Arte e componente em `2c17e50`, na `develop_arte_3d`, atualizada com a engenharia `97c9d54` pelo merge `f0b2148`. A engenharia montou o diálogo (`hud/PropertyDecisionDialog.tsx`) e a lógica das etapas (`game/propertyDecision.ts`, com testes).
 
 Ao parar num estado para comprar ou construir (`AWAITING_PURCHASE` / `AWAITING_BUILD`, na vez do jogador), abre um modal no centro, no estilo da referência enviada pelo usuário (cabeçalho com foto e sigla do estado, trilha Terreno → casas → Hotel, custo e novo aluguel, botão de confirmar). Hoje isso aparece no painel lateral (`PropertyPanel` + `TileActions`).
 
@@ -121,7 +121,23 @@ Contrato pedido para a arte (mesmo modelo do `ReferenceBoardScene`: o componente
 - [x] Layout conferido em 1536×1024 e 390×844, além de larguras 320/768/1024; trilha em duas linhas no celular. Ver `scripts/assets/property-evolution-qa.mjs` e capturas em `assets/3d/reviews/property-evolution/`.
 - [x] Arte em pasta própria `apps/web/src/property-evolution/`: construções/ícones originais e cabeçalhos das 26 UFs. Procedência e prompts junto aos assets; nenhum pixel das referências foi reutilizado.
 
-A engenharia faz: abrir/fechar conforme a fase, montar as etapas a partir das regras, enviar `BUY_PROPERTY` / `BUILD` / `BUILD_HOTEL`, recusar com o "Não comprar" atual e os testes. **Decidido pelo usuário:** o "×" recusa, igual a "Não comprar" (`DECLINE_PURCHASE`) na compra e "Não construir" (`SKIP_BUILD`) na construção; o modal não minimiza. Se o clique numa casa fora da vez abre o mesmo modal em modo consulta: a confirmar com o usuário.
+A engenharia faz: abrir/fechar conforme a fase, montar as etapas a partir das regras, enviar `BUY_PROPERTY` / `BUILD` / `BUILD_HOTEL`, recusar com o "Não comprar" atual e os testes. **Decidido pelo usuário:** o "×" recusa, igual a "Não comprar" (`DECLINE_PURCHASE`) na compra e "Não construir" (`SKIP_BUILD`) na construção; o modal não minimiza. **Também decidido pelo usuário:** clicar num estado fora da vez (ou na vez, sem decisão pendente) abre o mesmo modal **só para consulta**: nível atual marcado, aluguel de cada etapa, dono, sem escolher nem confirmar; o "×", o Esc e o clique fora só fecham.
+
+O que a integração fez com o componente (sem alterar arquivos da arte):
+
+- Na compra, `stages` libera terreno e terreno + 1 a 3 casas até onde o saldo paga; Casa 4 e hotel aparecem bloqueados com o motivo. Na construção, a etapa real é `current`, as anteriores `complete` e o que `buildOptions` + saldo liberam fica `available`. O comando sai do nível final escolhido (`BUILD {houses: diferença}`; nível 5 = `BUILD_HOTEL`).
+- O "Não comprar" / "Não construir" da barra de ações saiu: quem recusa é o "×" do modal. O Esc não recusa (fechar sem querer pelo teclado não deve tomar a decisão).
+- O prazo oficial (`Countdown` da barra) aparece acima do painel. A mensagem mostra o saldo, a recusa do servidor ou a falta de conexão.
+- Em tela larga e baixa (1366×768, 1024×768) o painel inteiro é reduzido por `transform: scale` para o botão caber sem rolar; no celular a sobreposição rola. Conferido em 1536×1024, 1024×768 e 390×844 numa partida real.
+- **Provisório para a consulta:** o componente só tem `mode: 'purchase' | 'build'`; o host esconde resumo, botão e cadeados com a classe `.pe-host-view` em `index.css` e passa as etapas futuras como `locked`.
+
+### C6.1 — Modo consulta no `PropertyEvolutionPanel`
+
+- [ ] Um `mode: 'view'` (ou equivalente) sem resumo de custo, sem botão de confirmar e com as etapas futuras com aparência neutra (sem cadeado nem cinza). Subtítulo sugerido: "Evolução da propriedade". Espaço para dono (nome + cor do peão) e "Disponível para compra" quando não há dono. Ao entregar, a engenharia remove `.pe-host-view` do `index.css`.
+
+### C6.2 — Peso dos cabeçalhos das UFs
+
+- [ ] Os `states/*-header-v1.png` têm de 2,6 a 3,3 MB cada (≈ 73 MB no total; o build copia todos). Cada abertura do modal baixa um no celular. Pedido: versões comprimidas (ex.: WebP ou PNG/JPEG otimizado, ~1600 px de largura) mantendo a qualidade do cabeçalho. Mesmo cuidado para `art/*-v2.png` (1,2 a 2,3 MB cada).
 
 ## Ao atender um pedido
 

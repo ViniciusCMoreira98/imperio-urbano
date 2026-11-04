@@ -1,8 +1,11 @@
 import { expect, test } from '@playwright/test';
 import { myTurn, newPlayer, turnOf } from './helpers';
 
-/** Decisões que o jogador da vez pode recusar depois de andar; recusar mantém o teste previsível. */
-const DECLINE = ['ROLAR DADOS', 'Não comprar', 'Não construir', 'Não sediar'];
+/**
+ * Decisões que o jogador da vez pode recusar depois de andar; recusar mantém o teste previsível.
+ * O "×" do modal de compra/construção recusa (DECLINE_PURCHASE / SKIP_BUILD).
+ */
+const DECLINE = ['ROLAR DADOS', 'Fechar evolução da propriedade', 'Não sediar'];
 
 test('dois jogadores criam a sala, começam a partida e jogam um turno', async ({ browser }) => {
   const ana = await newPlayer(browser, 'Ana E2E');

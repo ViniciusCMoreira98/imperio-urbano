@@ -62,12 +62,7 @@ export function ActionBar({ myId }: { myId: string }) {
             ROLAR DADOS
           </Button>
         )}
-        {mine && phase === 'AWAITING_PURCHASE' && (
-          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'DECLINE_PURCHASE' })}>Não comprar</Button>
-        )}
-        {mine && phase === 'AWAITING_BUILD' && (
-          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_BUILD' })}>Não construir</Button>
-        )}
+        {/* Comprar/construir e recusar ("×") ficam no modal de evolução da propriedade. */}
         {mine && phase === 'AWAITING_OLYMPICS_HOST' && (
           <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_OLYMPICS' })}>Não sediar</Button>
         )}
@@ -156,7 +151,7 @@ function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
 }
 
 /** Segundos até o servidor jogar pelo jogador da vez (rolar, recusar a compra...). */
-function Countdown({ deadline }: { deadline: number }) {
+export function Countdown({ deadline }: { deadline: number }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 250);

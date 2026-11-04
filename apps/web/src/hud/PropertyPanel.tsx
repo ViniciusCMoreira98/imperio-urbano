@@ -1,6 +1,7 @@
 // Painel lateral direito: carta do estado selecionado (seção 6 dos requisitos e arte de referência),
 // com dono, construções e Olimpíadas vindos do servidor e as ações do jogador da vez.
 import { PAWN_COLORS } from '../game/presentation';
+import { pendingDecision, viewDecision } from '../game/propertyDecision';
 import { HOTEL_LEVEL, currentRent, propertyAt } from '../game/rules';
 import { formatCredits, regionName, tileInfo } from '../property-card/tileInfo';
 import { useGameStore } from '../store/gameStore';
@@ -25,6 +26,9 @@ export function PropertyPanel({ myId }: { myId: string }) {
   const snapshot = useGameStore((s) => s.snapshot);
 
   if (index === null) return null;
+  // Estados abrem o modal (PropertyDecisionDialog); aqui ficam as casas especiais e os cliques de
+  // sediar, viajar ou vender, que pertencem às ações da vez.
+  if (snapshot && (pendingDecision(snapshot, myId) || viewDecision(snapshot, myId, index))) return null;
 
   const info = tileInfo(index);
   const closeButton = (
