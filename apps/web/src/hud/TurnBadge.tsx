@@ -2,7 +2,7 @@ import { PAWN_COLORS } from '../game/presentation';
 import { AvatarPortrait } from './AvatarPortrait';
 import { useGameStore } from '../store/gameStore';
 
-/** "Turno de" com o retrato de quem joga, no canto inferior esquerdo (só no computador). */
+/** Retrato e vez integrados à barra de ação; o rótulo acessível preserva o contrato da engenharia. */
 export function TurnBadge({ myId }: { myId: string }) {
   const snapshot = useGameStore((s) => s.snapshot);
   const current = snapshot?.players.find((p) => p.id === snapshot.currentPlayerId);
@@ -19,8 +19,8 @@ export function TurnBadge({ myId }: { myId: string }) {
         <AvatarPortrait avatarId={current.avatarId}/>
       </span>
       <div className="leading-tight">
-        <p className="text-xs text-white/80">Turno de:</p>
-        <p className="text-lg font-black text-amber-300">{name}</p>
+        <p className="text-xs text-white/80">{current.id===myId?'Jogando agora':'Vez de'}</p>
+        <p className="text-lg font-black text-amber-300">{current.id===myId?'Sua vez':name}</p>
       </div>
     </div>
   );

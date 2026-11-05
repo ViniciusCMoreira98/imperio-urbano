@@ -1,0 +1,58 @@
+{
+  "provider": "Meshy 7.1 image-to-3d",
+  "levels": [
+    {
+      "level": 0,
+      "models": 1,
+      "players": 4
+    },
+    {
+      "level": 1,
+      "models": 1,
+      "players": 4
+    },
+    {
+      "level": 2,
+      "models": 1,
+      "players": 4
+    },
+    {
+      "level": 3,
+      "models": 1,
+      "players": 4
+    },
+    {
+      "level": 4,
+      "models": 1,
+      "players": 4
+    },
+    {
+      "level": 5,
+      "models": 1,
+      "players": 4
+    }
+  ],
+  "ownershipColorChanges": true,
+  "cameraUnchanged": true,
+  "mobileLandscape": [
+    {
+      "width": 844,
+      "height": 390,
+      "level": 0
+    },
+    {
+      "width": 932,
+      "height": 430,
+      "level": 0
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "level": 0
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "paidCredits": 280,
+  "balanceAfter": 670
+}

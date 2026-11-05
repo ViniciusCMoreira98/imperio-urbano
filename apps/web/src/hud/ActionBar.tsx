@@ -7,6 +7,7 @@ import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 import { DiceFaces } from './DiceFaces';
+import { TurnBadge } from './TurnBadge';
 
 /** Só quando a escolha é feita tocando no tabuleiro; nas demais, a carta do estado já se explica. */
 const BOARD_HINTS: Partial<Record<TurnPhase, string>> = {
@@ -37,14 +38,15 @@ export function ActionBar({ myId }: { myId: string }) {
   const canRoll = mine && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
 
   return (
-    <div className="relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
-      <p className="rounded-full border border-amber-200/40 bg-slate-950/85 px-3 py-0.5 text-[11px] font-bold text-amber-100">Rodada {snapshot.round} · {snapshot.mode === 'QUICK' ? 'Rápido' : 'Clássico'}</p>
+    <div className="hud-action-shell relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
+      <p className="hud-round-seal rounded-full border border-amber-200/40 bg-slate-950/85 px-3 py-0.5 text-[11px] font-bold text-amber-100">Rodada {snapshot.round} · {snapshot.mode === 'QUICK' ? 'Rápido' : 'Clássico'}</p>
       {selling && inDebt && <SellDrawer myId={myId} onClose={() => setSelling(false)} />}
 
       <div className="hud-action-tray flex w-full flex-wrap items-center justify-center gap-2 hud-panel rounded-2xl px-2 py-1.5 sm:w-auto sm:px-3 sm:py-2">
+        <TurnBadge myId={myId}/>
         <DiceFaces values={snapshot.lastDice} />
         {/* Em telas largas a vez aparece no quadro "Turno de" (TurnBadge); aqui só nas menores. */}
-        <span className={`text-sm text-white/90 ${snapshot.status === 'FINISHED' ? '' : 'lg:hidden'}`}>
+        <span className={`text-sm text-white/90 ${snapshot.status === 'FINISHED' ? '' : 'hidden'}`}>
           {snapshot.status === 'FINISHED' ? (
             'Partida encerrada'
           ) : mine ? (

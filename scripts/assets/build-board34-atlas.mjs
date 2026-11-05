@@ -2,11 +2,13 @@ import{createServer}from'vite';import{chromium}from'@playwright/test';import{wri
 const root=fileURLToPath(new URL('../../',import.meta.url));const server=await createServer({root,configFile:false,esbuild:{jsx:'automatic'},server:{host:'127.0.0.1',port:4193,strictPort:true},optimizeDeps:{include:['react','react-dom/client']}});await server.listen();let browser;
 try{
  browser=await chromium.launch({headless:true});const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('http://127.0.0.1:4193/scripts/assets/board34-preview/atlas.html',{waitUntil:'networkidle'});await page.waitForFunction(()=>!!window.buildBoard34Atlas);const result=await page.evaluate(()=>window.buildBoard34Atlas());if(errors.length)throw Error(errors.join('\n'));
+ await page.goto('http://127.0.0.1:4193/scripts/assets/board34-preview/atlas.html',{waitUntil:'networkidle'});await page.waitForFunction(()=>!!window.buildBoard34Atlas);
+ for(const scale of[2,4]){const result=await page.evaluate(scale=>window.buildBoard34Atlas(scale),scale);if(errors.length)throw Error(errors.join('\n'));const suffix=scale===4?'-6k':'';
  const bytes=Buffer.from(result.dataUrl.split(',')[1],'base64'),webp=Buffer.from(result.webpDataUrl.split(',')[1],'base64');
- await writeFile(new URL('../../assets/3d/calibration/board34/atlas-source.png',import.meta.url),bytes);await writeFile(new URL('../../apps/web/public/models/board/board34-atlas-v01.webp',import.meta.url),webp);
+ await writeFile(new URL(`../../assets/3d/calibration/board34/atlas-source${suffix}.png`,import.meta.url),bytes);await writeFile(new URL(`../../apps/web/public/models/board/board34-atlas-v01${suffix}.webp`,import.meta.url),webp);
  await mkdir(new URL('../../apps/web/public/models/decor/',import.meta.url),{recursive:true});await writeFile(new URL('../../apps/web/public/models/decor/brand-v3.webp',import.meta.url),Buffer.from(result.brandDataUrl.split(',')[1],'base64'));
  for(const p of result.placements)assert.ok(Math.abs(p.destination.width/p.source.width-p.destination.height/p.source.height)<1e-10,`${p.id}: imagem deformada`);
  const report={runtimeBytes:webp.length,width:result.width,height:result.height,stateCount:result.stateCount,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),sourcePhotoPixelsUsed:false,sources:'26 original v3 board illustrations, 7 independent transparent special icons, own center-brasil-v2. Header photos retained only in property modals. One homography for printed art and dynamic values. No triangle seams.',iconsUniformScale:true,placements:result.placements,errors};
- await writeFile(new URL('../../assets/3d/calibration/board34/atlas-build.json',import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({...report,placements:report.placements.length}));
+ await writeFile(new URL(`../../assets/3d/calibration/board34/atlas-build${suffix}.json`,import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({...report,placements:report.placements.length}));
+ }
 }finally{await browser?.close();await server.close();}

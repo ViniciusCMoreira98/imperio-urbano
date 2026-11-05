@@ -8,7 +8,11 @@
       "file": "/models/characters/character-female-a.glb",
       "height": 0.8,
       "rotationY": 0,
-      "offset": [0, 0, 0],
+      "offset": [
+        0,
+        0,
+        0
+      ],
       "idleClip": "idle",
       "status": "published",
       "license": "CC0 (Kenney Mini Characters)"
@@ -19,7 +23,11 @@
       "file": "/models/characters/character-male-a.glb",
       "height": 0.8,
       "rotationY": 0,
-      "offset": [0, 0, 0],
+      "offset": [
+        0,
+        0,
+        0
+      ],
       "idleClip": "idle",
       "status": "published",
       "license": "CC0 (Kenney Mini Characters)"
@@ -30,14 +38,21 @@
       "file": "/models/characters/steampunk-brasil-v01-rest-v01.glb",
       "height": 0.8,
       "rotationY": 0,
-      "offset": [0, 0, 0],
+      "offset": [
+        0,
+        0,
+        0
+      ],
       "idleClip": null,
       "status": "candidate",
-      "license": "Gerado no Meshy 7.1 para o projeto; termos de distribuição a confirmar",
+      "license": "Meshy Terms of Service 3.2 (paid plan; own generation; confirmed 2026-11-05; assets/3d/commercial-licenses.json)",
       "uniform": {
         "mask": "/models/characters/steampunk-brasil-v01-uniform-mask-v04.png",
         "referenceLuminance": 0.02695356,
-        "localYRange": [-0.57, 0.07]
+        "localYRange": [
+          -0.57,
+          0.07
+        ]
       }
     },
     {
@@ -46,7 +61,11 @@
       "file": "/models/characters/character-female-b.glb",
       "height": 0.8,
       "rotationY": 0,
-      "offset": [0, 0, 0],
+      "offset": [
+        0,
+        0,
+        0
+      ],
       "idleClip": "idle",
       "status": "published",
       "license": "CC0 (Kenney Mini Characters)"
@@ -57,7 +76,11 @@
       "file": "/models/characters/character-male-d.glb",
       "height": 0.8,
       "rotationY": 0,
-      "offset": [0, 0, 0],
+      "offset": [
+        0,
+        0,
+        0
+      ],
       "idleClip": "idle",
       "status": "published",
       "license": "CC0 (Kenney Mini Characters)"
@@ -68,7 +91,11 @@
       "file": "/models/characters/character-male-b.glb",
       "height": 0.8,
       "rotationY": 0,
-      "offset": [0, 0, 0],
+      "offset": [
+        0,
+        0,
+        0
+      ],
       "idleClip": "idle",
       "status": "published",
       "license": "CC0 (Kenney Mini Characters)"

@@ -7,7 +7,6 @@ import {currentRent} from '../game/rules';
 import {formatCredits} from '../property-card/tileInfo';
 import {tileIndexOf} from './layout';
 import {Buildings,Pawns} from './Pieces';
-import {ReferenceBoardScene} from './reference33/ReferenceBoardScene';
 import {Board34Scene,type BoardRentLabel} from './board34/Board34Scene';
 import {isBoard34} from './boardVisualManifest';
 
@@ -18,10 +17,10 @@ export function GameBoard({taxPoolLabel=null}:{taxPoolLabel?:string|null}){
  const selectedId=selectedTile===null?null:board.tiles[selectedTile]?.id??null;
  const rents=useMemo<BoardRentLabel[]>(()=>{
   if(!active34||!snapshot)return[];
-  return states.filter(state=>board.tiles.some(t=>t.stateId===state.id)&&snapshot.properties.some(p=>p.stateId===state.id)).map(state=>({stateId:state.id,rentLabel:formatCredits(currentRent(snapshot,state))}));
+  return states.filter(state=>board.tiles.some(t=>t.stateId===state.id)&&snapshot.properties.some(p=>p.stateId===state.id&&p.ownerId!==null)).map(state=>({stateId:state.id,rentLabel:formatCredits(currentRent(snapshot,state))}));
  },[snapshot]);
  const onSelect=(id:string)=>{const index=tileIndexOf(id);if(index!==null)selectTile(index);};
  const pieces=<><Buildings/><Pawns/></>;
- if(active34)return <Board34Scene selectedId={selectedId} onSelect={onSelect} rentLabels={rents} taxPoolLabel={taxPoolLabel} diceValues={null}>{pieces}</Board34Scene>;
- return <ReferenceBoardScene selectedId={selectedId} onSelect={onSelect} diceValues={null}>{pieces}</ReferenceBoardScene>;
+ if(!active34)throw Error('A partida atual exige o catálogo de 34 casas.');
+ return <Board34Scene selectedId={selectedId} onSelect={onSelect} rentLabels={rents} taxPoolLabel={taxPoolLabel} diceValues={null}>{pieces}</Board34Scene>;
 }

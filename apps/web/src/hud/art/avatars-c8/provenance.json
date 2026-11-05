@@ -1,0 +1,65 @@
+{
+  "created": "2026-11-05",
+  "provider": "OpenAI image_gen built-in",
+  "originalGeneration": true,
+  "referenceImageUsed": false,
+  "commercialUse": "Output ownership under OpenAI Terms; no third-party reference pixels",
+  "terms": "https://openai.com/policies/row-terms-of-use/",
+  "records": [
+    {
+      "avatar": "avatar-1",
+      "file": "avatar-1.webp",
+      "source": "assets/3d/calibration/c8/portraits/avatar-1-source.png",
+      "sourceSha256": "927d7b682f325b3d8faf53d28d383797cc8a4b7a734b0d0746863aa80721b6a8",
+      "sha256": "332ce2c05b447c2a7607c21f24c46d0f6cfe9e1d5354b90e9db796fb9c4b1402",
+      "bytes": 83266,
+      "width": 512,
+      "height": 512,
+      "prompt": "Use case: stylized-concept. Asset type: one original transparent HUD character portrait for the Brazilian board game Império Urbano. Jurema: a young Brazilian woman with warm dark brown skin, short voluminous dark-violet curly hair with a small gold hair clip, kind confident smile, plum and cream collar. Premium polished colorful stylized 3D cartoon game illustration, rounded appealing proportions, oversized expressive eyes and head, tasteful painterly surface, rich hair modeling, warm soft studio key light and subtle cool rim light. Frontal three-quarter face turning only slightly right, direct welcoming gaze. Square canvas. Head and a little shoulder collar centered, face large and readable at 48 pixels, full hair silhouette with a safe transparent margin. A single head and shoulders only, cropped below collar. Genuine transparent background. No circle, no frame, no nameplate, no text, no letters, no crown, no watermarks, no logos, no scenery, no extra objects or people. Entirely original character design: do not imitate any existing character, celebrity or reference image. Consistent family aesthetic: jewel colors, clean defined silhouette, detailed yet uncluttered, friendly premium board game."
+    },
+    {
+      "avatar": "avatar-2",
+      "file": "avatar-2.webp",
+      "source": "assets/3d/calibration/c8/portraits/avatar-2-source.png",
+      "sourceSha256": "26f5fcdcac49e736f9525264a88ee43ee775c6bde35f70ad37e96240c91837c2",
+      "sha256": "3d2ef4c9e2b08c4237dda45dd163355c99f6965fe85681369ca01e8f70a40d42",
+      "bytes": 65970,
+      "width": 512,
+      "height": 512,
+      "prompt": "Use case: stylized-concept. Asset type: one original transparent HUD character portrait for the Brazilian board game Império Urbano. Caio: a young Brazilian man with medium tan skin, thick wavy dark brown hair, soft brown eyebrows, friendly open smile, blue jacket collar. Premium polished colorful stylized 3D cartoon game illustration, rounded appealing proportions, oversized expressive eyes and head, tasteful painterly surface, rich hair modeling, warm soft studio key light and subtle cool rim light. Frontal three-quarter face turning only slightly right, direct welcoming gaze. Square canvas. Head and a little shoulder collar centered, face large and readable at 48 pixels, full hair silhouette with a safe transparent margin. A single head and shoulders only, cropped below collar. Genuine transparent background. No circle, no frame, no nameplate, no text, no letters, no crown, no watermarks, no logos, no scenery, no extra objects or people. Entirely original character design: do not imitate any existing character, celebrity or reference image. Consistent family aesthetic: jewel colors, clean defined silhouette, detailed yet uncluttered, friendly premium board game."
+    },
+    {
+      "avatar": "avatar-3",
+      "file": "avatar-3.webp",
+      "source": "assets/3d/calibration/c8/portraits/avatar-3-source.png",
+      "sourceSha256": "5209f4f8a61e2a79484a6ca64fb7b69f8faedfde8940e3cc9f706fb7370775f9",
+      "sha256": "c02033ea8bf46972a4c3ed10c72f44f6c90a96a9090e5241b8663571143c5fa8",
+      "bytes": 89790,
+      "width": 512,
+      "height": 512,
+      "prompt": "Use case: stylized-concept. Asset type: one original transparent HUD character portrait for the Brazilian board game Império Urbano. Luana: a young Afro-Brazilian woman with medium brown skin, expressive warm eyes, short emerald-accented dark curls, brass steampunk goggles resting on her head and a cream/forest-green collar. Premium polished colorful stylized 3D cartoon game illustration, rounded appealing proportions, oversized expressive eyes and head, tasteful painterly surface, rich hair modeling, warm soft studio key light and subtle cool rim light. Frontal three-quarter face turning only slightly right, direct welcoming gaze. Square canvas. Head and a little shoulder collar centered, face large and readable at 48 pixels, full hair silhouette with a safe transparent margin. A single head and shoulders only, cropped below collar. Genuine transparent background. No circle, no frame, no nameplate, no text, no letters, no crown, no watermarks, no logos, no scenery, no extra objects or people. Entirely original character design: do not imitate any existing character, celebrity or reference image. Consistent family aesthetic: jewel colors, clean defined silhouette, detailed yet uncluttered, friendly premium board game."
+    },
+    {
+      "avatar": "avatar-4",
+      "file": "avatar-4.webp",
+      "source": "assets/3d/calibration/c8/portraits/avatar-4-source.png",
+      "sourceSha256": "170b27778c6c8909b38eced39ed56c868c0d294b9e90057b68229afaf4d2c2f9",
+      "sha256": "390210428366746810d533e14dcde4634b9ec1bcfd7b7add513213bdf3908372",
+      "bytes": 62550,
+      "width": 512,
+      "height": 512,
+      "prompt": "Use case: stylized-concept. Asset type: one original transparent HUD character portrait for the Brazilian board game Império Urbano. Otávio: a young Brazilian man with light olive skin, neat black hair swept to one side, playful welcoming smile, coral-red jacket collar. Premium polished colorful stylized 3D cartoon game illustration, rounded appealing proportions, oversized expressive eyes and head, tasteful painterly surface, rich hair modeling, warm soft studio key light and subtle cool rim light. Frontal three-quarter face turning only slightly right, direct welcoming gaze. Square canvas. Head and a little shoulder collar centered, face large and readable at 48 pixels, full hair silhouette with a safe transparent margin. A single head and shoulders only, cropped below collar. Genuine transparent background. No circle, no frame, no nameplate, no text, no letters, no crown, no watermarks, no logos, no scenery, no extra objects or people. Entirely original character design: do not imitate any existing character, celebrity or reference image. Consistent family aesthetic: jewel colors, clean defined silhouette, detailed yet uncluttered, friendly premium board game."
+    },
+    {
+      "avatar": "avatar-5",
+      "file": "avatar-5.webp",
+      "source": "assets/3d/calibration/c8/portraits/avatar-5-source.png",
+      "sourceSha256": "4895d052a48619ae5a101e529b5c0e586fcc9a41f3a77c426b06c13f817f8db7",
+      "sha256": "388c67e0602bf252dab9c30d9d3006aff5eebcf7a0fabf4436eba45700de91fc",
+      "bytes": 93002,
+      "width": 512,
+      "height": 512,
+      "prompt": "Use case: stylized-concept. Asset type: one original transparent HUD character portrait for the Brazilian board game Império Urbano. Seu Zé: an older Brazilian man with sun-warmed tan skin, curly salt-and-pepper hair, neatly groomed grey moustache and short beard, cheerful smile, warm ochre shirt collar. Premium polished colorful stylized 3D cartoon game illustration, rounded appealing proportions, oversized expressive eyes and head, tasteful painterly surface, rich hair modeling, warm soft studio key light and subtle cool rim light. Frontal three-quarter face turning only slightly right, direct welcoming gaze. Square canvas. Head and a little shoulder collar centered, face large and readable at 48 pixels, full hair silhouette with a safe transparent margin. A single head and shoulders only, cropped below collar. Genuine transparent background. No circle, no frame, no nameplate, no text, no letters, no crown, no watermarks, no logos, no scenery, no extra objects or people. Entirely original character design: do not imitate any existing character, celebrity or reference image. Consistent family aesthetic: jewel colors, clean defined silhouette, detailed yet uncluttered, friendly premium board game."
+    }
+  ]
+}

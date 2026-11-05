@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-05",
+  "aiModel": "meshy-7.1",
+  "budgetCredits": 30,
+  "totalFamilyCreditsAfter": 280,
+  "balanceBefore": 700,
+  "expectedBalanceAfter": 670,
+  "explicitImageUploadAuthorized": true,
+  "consent": "Sim, criar o terreno no Meshy",
+  "tasks": [{"level": 0, "sourceArtwork": "terrain-v2.png"}]
+}

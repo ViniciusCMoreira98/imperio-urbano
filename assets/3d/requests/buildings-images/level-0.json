@@ -1,0 +1,28 @@
+{
+  "level": 0,
+  "sourceArtwork": "terrain-v2.png",
+  "sourceSha256": "78f5597201be2e66b708bd184f7f43f59132c405a37a36abf54370d2a91b9490",
+  "expectedCredits": 30,
+  "stage": "SUCCEEDED",
+  "submittedAt": "2026-11-05T04:58:20.825Z",
+  "parameters": {
+    "file_path": "C:\\Users\\Plust\\Projetos\\imperio-urbano\\.worktrees\\meshy-phase-b\\apps\\web\\src\\property-evolution\\art\\terrain-v2.png",
+    "image_enhancement": false,
+    "ai_model": "meshy-7.1",
+    "model_type": "standard",
+    "geometry_resolution": "standard",
+    "should_remesh": true,
+    "target_polycount": 12000,
+    "topology": "triangle",
+    "should_texture": true,
+    "texture_resolution": "2k",
+    "enable_pbr": true,
+    "target_formats": [
+      "glb"
+    ],
+    "response_format": "json"
+  },
+  "explicitImageUploadAuthorized": true,
+  "taskId": "01a1aa12-8126-745d-a721-386082b71279",
+  "consumedCredits": 30
+}

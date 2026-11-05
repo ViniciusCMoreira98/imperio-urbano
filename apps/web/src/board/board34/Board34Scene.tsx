@@ -1,11 +1,13 @@
-import{Suspense,useEffect,useLayoutEffect,useMemo,useRef,type ReactNode}from'react';
-import{Canvas,type ThreeEvent}from'@react-three/fiber';
+import{Suspense,useDeferredValue,useEffect,useLayoutEffect,useMemo,useRef,type ReactNode}from'react';
+import{Canvas,useThree,type ThreeEvent}from'@react-three/fiber';
 import{useGLTF,useTexture}from'@react-three/drei';
 import{BufferAttribute,CanvasTexture,DoubleSide,LinearFilter,Matrix4,Mesh,PerspectiveCamera,ShaderMaterial,SRGBColorSpace,Vector3,Vector4,type Object3D,type Texture}from'three';
 import{CameraRig}from'../CameraRig';import{FixedBoardViewport}from'../camera/FixedBoardViewport';import{applyFixedCamera,FIXED_CAMERA}from'../camera/fixedCamera';
 import{DiceVisual}from'../../dice/DiceVisual';import type{DiceFace}from'../../dice/diceOrientation';
 import{TabletopEnvironment}from'./TabletopEnvironment';import layout from'./layout.json';
 import{paintPanel}from'./panelProjection';
+import{paintRentalPlaque}from'./rentalPlaque';
+import{tabletopViewport}from'../camera/tabletopViewport';
 
 export{layout as board34Layout};
 export interface BoardRentLabel{stateId:string;rentLabel:string}
@@ -16,18 +18,21 @@ function tileOf(object:Object3D,root:Object3D){for(let node:Object3D|null=object
 function labelTexture(labels:BoardRentLabel[],taxPoolLabel:string|null){
  const c=document.createElement('canvas');c.width=3072;c.height=2048;const x=c.getContext('2d')!;x.scale(2,2);x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff7d4';
  const values=new Map(labels.map(l=>[l.stateId,l.rentLabel]));
- for(const tile of layout.tiles){const rect=tile.panel.rent,label=values.get(tile.id);if(!rect||label===undefined)continue;paintPanel(x,tile.panel,ctx=>{let font=rect.height*.66;ctx.font=`900 ${font}px Arial,sans-serif`;while(ctx.measureText(label).width>rect.width*.83&&font>7){font-=.25;ctx.font=`900 ${font}px Arial,sans-serif`;}ctx.fillStyle='#fff5d3';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,rect.x+rect.width/2,rect.y+rect.height/2+.3);},rect);}
+ for(const tile of layout.tiles){const rect=tile.panel.rent,label=values.get(tile.id);if(!rect||label===undefined)continue;paintPanel(x,tile.panel,ctx=>{paintRentalPlaque(ctx,rect);let font=rect.height*.66;ctx.font=`900 ${font}px Arial,sans-serif`;while(ctx.measureText(label).width>rect.width*.83&&font>7){font-=.25;ctx.font=`900 ${font}px Arial,sans-serif`;}ctx.fillStyle='#fff5d3';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,rect.x+rect.width/2,rect.y+rect.height/2+.3);},rect);}
  const tax=layout.tiles.find(t=>t.id==='TAX')!;paintPanel(x,tax.panel,ctx=>{const rect=tax.panel.pool!;let size=14;const amount=taxPoolLabel??'—';ctx.font=`900 ${size}px Arial,sans-serif`;while(ctx.measureText(amount).width>rect.width*.88&&size>8){size-=.5;ctx.font=`900 ${size}px Arial,sans-serif`;}ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#ffe47b';ctx.fillText(amount,rect.x+rect.width/2,rect.y+rect.height*.70);},tax.panel.pool!);
  const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;texture.magFilter=texture.minFilter=LinearFilter;texture.generateMipmaps=false;return texture;
 }
 function material(atlas:Texture,overlay:Texture){return new ShaderMaterial({side:DoubleSide,toneMapped:false,uniforms:{atlas:{value:atlas},overlay:{value:overlay},highlight:{value:0}},vertexShader:'attribute vec3 sourceQ;varying vec3 q;void main(){q=sourceQ;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'uniform sampler2D atlas;uniform sampler2D overlay;uniform float highlight;varying vec3 q;void main(){vec2 uv=q.xy/q.z;vec4 a=texture2D(atlas,uv);vec4 b=texture2D(overlay,uv);gl_FragColor=vec4(mix(a.rgb,b.rgb,b.a)*(1.0+highlight),1.0);\n#include <colorspace_fragment>\n}'});}
 function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null}:Board34SceneProps){
- const {scene}=useGLTF(layout.model),atlas=useTexture(layout.atlas),hovered=useRef<string|null>(null);
+ const {gl,size}=useThree();
+ const large=tabletopViewport(size.width,size.height).scale*1536*gl.getPixelRatio()>3072&&gl.capabilities.maxTextureSize>=6144;
+ const atlasUrl=useDeferredValue(large?layout.atlas.replace('.webp','-6k.webp'):layout.atlas);
+ const {scene}=useGLTF(layout.model),atlas=useTexture(atlasUrl),hovered=useRef<string|null>(null);
  const labelsKey=JSON.stringify([rentLabels,taxPoolLabel]);
  const overlay=useMemo(()=>labelTexture(rentLabels,taxPoolLabel),[labelsKey]);
  useEffect(()=>()=>overlay.dispose(),[overlay]);
  const prepared=useMemo(()=>{
-  atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=8;
+  atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=Math.min(8,gl.capabilities.getMaxAnisotropy());atlas.generateMipmaps=false;atlas.minFilter=atlas.magFilter=LinearFilter;atlas.needsUpdate=true;
   const model=scene.clone(true);model.updateMatrixWorld(true);
   const camera=new PerspectiveCamera();applyFixedCamera(camera);const projector=new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);
   const materials:ShaderMaterial[]=[],geometries:Mesh['geometry'][]=[];
@@ -41,18 +46,18 @@ function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null}:Board3
    }
    object.castShadow=true;object.receiveShadow=true;
   });return{model,materials,geometries};
- },[scene,atlas]);
+ },[scene,atlas,gl]);
  useLayoutEffect(()=>{prepared.materials.forEach(m=>{m.uniforms.overlay.value=overlay;});},[prepared,overlay]);
  const highlight=(id:string|null)=>prepared.materials.forEach(m=>{const tile=m.userData.tileId;m.uniforms.highlight.value=tile&&tile===selectedId? .12:tile&&tile===id?.toString()? .04:0;});
  useEffect(()=>{highlight(hovered.current);},[selectedId,prepared]);
  useEffect(()=>()=>{prepared.materials.forEach(m=>m.dispose());prepared.geometries.forEach(g=>g.dispose());document.body.style.cursor='';},[prepared]);
- useEffect(()=>{if(import.meta.env.DEV){const inspect=()=>({model:prepared.model,layout,printedFaces:prepared.materials.filter(m=>m.userData.tileId).length});(window as any).__board34=inspect;return()=>{delete(window as any).__board34;};}},[prepared]);
+ useEffect(()=>{if(import.meta.env.DEV){const inspect=()=>({model:prepared.model,layout,printedFaces:prepared.materials.filter(m=>m.userData.tileId).length,rentalStates:rentLabels.map(l=>l.stateId),viewport:{width:size.width,height:size.height,dpr:gl.getPixelRatio(),large},atlas:{url:atlasUrl,width:(atlas.image as HTMLImageElement).width,height:(atlas.image as HTMLImageElement).height}});(window as any).__board34=inspect;return()=>{delete(window as any).__board34;};}},[prepared,labelsKey,atlasUrl,size.width,size.height,large,gl]);
  const click=(event:ThreeEvent<MouseEvent>)=>{const id=tileOf(event.object,prepared.model);if(id){event.stopPropagation();onSelect?.(id);}};
  const move=(event:ThreeEvent<PointerEvent>)=>{const id=tileOf(event.object,prepared.model);hovered.current=id;highlight(id);document.body.style.cursor=id?'pointer':'';};
  return <primitive object={prepared.model} onClick={click} onPointerMove={move} onPointerOut={()=>{hovered.current=null;highlight(null);document.body.style.cursor='';}}/>;
 }
 /** Cena real de 34 casas. Estado, regras, comandos e peças vêm do host. */
-export function Board34Scene({children,diceValues=null,...props}:Board34SceneProps){return <FixedBoardViewport><Canvas shadows dpr={[1,2]} camera={{position:FIXED_CAMERA.position as[number,number,number],fov:FIXED_CAMERA.fov,far:FIXED_CAMERA.far}}>
+export function Board34Scene({children,diceValues=null,...props}:Board34SceneProps){return <FixedBoardViewport expanded><Canvas shadows dpr={[1,2]} camera={{position:FIXED_CAMERA.position as[number,number,number],fov:FIXED_CAMERA.fov,far:FIXED_CAMERA.far}}>
  <color attach="background" args={['#5e321e']}/><ambientLight intensity={.75}/><directionalLight position={[-8,18,8]} intensity={1.8} color="#fff0dc" castShadow shadow-mapSize={[2048,2048]} shadow-camera-left={-12} shadow-camera-right={12} shadow-camera-top={12} shadow-camera-bottom={-12} shadow-camera-far={60} shadow-normalBias={.03} shadow-bias={-.0001}/>
- <Suspense fallback={null}><TabletopEnvironment/><BoardModel {...props}/>{diceValues&&layout.dice.map((die,i)=><group key={i} position={die.position as[number,number,number]} rotation={[0,die.yaw,0]}><DiceVisual face={diceValues[i]} size={die.size}/></group>)}{children}</Suspense><CameraRig/>
+ <Suspense fallback={null}><TabletopEnvironment/><BoardModel {...props}/>{diceValues&&layout.dice.map((die,i)=><group key={i} position={die.position as[number,number,number]} rotation={[0,die.yaw,0]}><DiceVisual face={diceValues[i]} size={die.size}/></group>)}{children}</Suspense><CameraRig expanded/>
  </Canvas><section aria-label="Valores do tabuleiro" style={{position:'absolute',width:1,height:1,overflow:'hidden',clipPath:'inset(50%)',whiteSpace:'nowrap'}}>{props.rentLabels?.map(label=><p key={label.stateId} data-board34-rent={label.stateId}>{label.stateId}: {label.rentLabel}</p>)}<p data-board34-tax>Fundo da Taxa: {props.taxPoolLabel??'saldo indisponível'}</p></section></FixedBoardViewport>;}

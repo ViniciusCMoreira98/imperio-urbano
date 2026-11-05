@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-05",
+  "aiModel": "meshy-7.1",
+  "budgetCredits": 250,
+  "alreadyConsumedTextPreviews": 100,
+  "newImageTasksCredits": 150,
+  "expectedCreditsPerImageModel": 30,
+  "balanceBeforeAllGenerations": 950,
+  "balanceBeforeImageTasks": 850,
+  "source": "Original illustrations from ArtesImperio, house-1..4-v2.png and hotel-v2.png",
+  "tasks": [
+    {
+      "level": 1,
+      "sourceArtwork": "house-1-v2.png",
+      "discardedTextPreviewTaskId": "01a1a9fd-007f-764e-b6a6-07130f148bf4"
+    },
+    {
+      "level": 2,
+      "sourceArtwork": "house-2-v2.png",
+      "discardedTextPreviewTaskId": "01a1a9fd-163f-74e9-9747-b7965ea5abbc"
+    },
+    {
+      "level": 3,
+      "sourceArtwork": "house-3-v2.png",
+      "discardedTextPreviewTaskId": "01a1a9fd-2b6c-7378-bbef-03ec76940065"
+    },
+    {
+      "level": 4,
+      "sourceArtwork": "house-4-v2.png",
+      "discardedTextPreviewTaskId": "01a1a9fd-428b-7362-8d13-cb0f341ddd2f"
+    },
+    {
+      "level": 5,
+      "sourceArtwork": "hotel-v2.png",
+      "discardedTextPreviewTaskId": "01a1a9fd-574c-77de-b987-b94527fa21b9"
+    }
+  ]
+}

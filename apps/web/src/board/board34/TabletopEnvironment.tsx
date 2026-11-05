@@ -1,10 +1,11 @@
 import{useEffect,useLayoutEffect,useMemo}from'react';
 import{useThree}from'@react-three/fiber';
 import{useGLTF,useTexture}from'@react-three/drei';
-import{CanvasTexture,Euler,Mesh,MirroredRepeatWrapping,PMREMGenerator,SRGBColorSpace,Vector3}from'three';
+import{CanvasTexture,Euler,Mesh,MirroredRepeatWrapping,PerspectiveCamera,Plane,PMREMGenerator,Raycaster,SRGBColorSpace,Vector2,Vector3}from'three';
 import{DecalGeometry}from'three/examples/jsm/geometries/DecalGeometry.js';
 import{RoomEnvironment}from'three/examples/jsm/environments/RoomEnvironment.js';
 import woodUrl from './art/table-wood-v1.png';
+import{applyTabletopCamera}from'../camera/tabletopViewport';
 
 function StudioReflections(){
  const{gl,scene}=useThree();
@@ -26,14 +27,22 @@ function coinTexture(){
  const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d')!;const g=x.createRadialGradient(180,130,20,256,256,260);g.addColorStop(0,'#fff8b2');g.addColorStop(.5,'#f7c54d');g.addColorStop(1,'#aa681b');x.fillStyle=g;x.fillRect(0,0,512,512);x.strokeStyle='#ae731d';x.lineWidth=8;for(const r of[211,231]){x.beginPath();x.arc(256,256,r,0,Math.PI*2);x.stroke();}x.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?70:145,px=256+Math.cos(a)*r,py=256+Math.sin(a)*r;i?x.lineTo(px,py):x.moveTo(px,py);}x.closePath();x.shadowColor='#fff3af';x.shadowOffsetY=4;x.fillStyle='#e8b43f';x.fill();x.stroke();const t=new CanvasTexture(c);t.colorSpace=SRGBColorSpace;return t;
 }
 export function TabletopEnvironment(){
+ const size=useThree(state=>state.size);
+ const decor=useMemo(()=>{
+  const camera=new PerspectiveCamera(),fit=applyTabletopCamera(camera,size.width,size.height),offset=Math.max(0,(size.width-1536*fit.scale)/2-36)*.75;
+  const move=(position:[number,number,number],pixels:number):[number,number,number]=>{
+   const screen=new Vector3(...position).project(camera),ray=new Raycaster(),target=new Vector3();ray.setFromCamera(new Vector2(screen.x+pixels*2/Math.max(1,size.width),screen.y),camera);ray.ray.intersectPlane(new Plane(new Vector3(0,1,0),-position[1]),target);return[target.x,position[1],target.z];
+  };
+  return{plant:move([-7,-.505,-3],-offset),mug:move([7,-.505,-4.5],offset),coins:move([-7.05,-.47,-.1],-offset)};
+ },[size.width,size.height]);
  const source=useTexture(woodUrl);
  const texture=useMemo(()=>{const map=source.clone();map.colorSpace=SRGBColorSpace;map.wrapS=map.wrapT=MirroredRepeatWrapping;map.repeat.set(9,9);map.anisotropy=8;return map;},[source]);
  const coin=useMemo(coinTexture,[]);useEffect(()=>()=>{texture.dispose();coin.dispose();},[texture,coin]);
  return <group name="TABLETOP_ENVIRONMENT"><StudioReflections/>
   <mesh position={[0,-.505,0]} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[120,120]}/><meshBasicMaterial map={texture} color="#b4a18e" toneMapped={false}/></mesh>
   <mesh position={[0,-.504,0]} rotation={[-Math.PI/2,0,0]} receiveShadow><planeGeometry args={[120,120]}/><shadowMaterial transparent opacity={.24}/></mesh>
-  <DecorModel name="plant" position={[-7.0,-.505,-3.0]} rotation={.3}/>
-  <DecorModel name="mug" position={[7.0,-.505,-4.5]} rotation={-.12}/>
-  <group name="DECOR_COINS" position={[-7.05,-.47,-.1]}>{[0,1].map(stack=><group key={stack} position={[stack*.43,0,stack*.20]}>{Array.from({length:3+stack*2},(_,i)=><group key={i} position={[0,i*.058,0]}><mesh castShadow><cylinderGeometry args={[.24,.24,.052,48]}/><meshStandardMaterial attach="material-0" color="#e9b633" metalness={.7} roughness={.24}/><meshStandardMaterial attach="material-1" map={coin} metalness={.45} roughness={.28}/><meshStandardMaterial attach="material-2" color="#d49a22" metalness={.6}/></mesh><mesh position={[0,.022,0]} rotation={[Math.PI/2,0,0]}><torusGeometry args={[.229,.007,5,48]}/><meshStandardMaterial color="#ffe6a0" metalness={.7} roughness={.23}/></mesh></group>)}</group>)}</group>
+  <DecorModel name="plant" position={decor.plant} rotation={.3}/>
+  <DecorModel name="mug" position={decor.mug} rotation={-.12}/>
+  <group name="DECOR_COINS" position={decor.coins}>{[0,1].map(stack=><group key={stack} position={[stack*.43,0,stack*.20]}>{Array.from({length:3+stack*2},(_,i)=><group key={i} position={[0,i*.058,0]}><mesh castShadow><cylinderGeometry args={[.24,.24,.052,48]}/><meshStandardMaterial attach="material-0" color="#e9b633" metalness={.7} roughness={.24}/><meshStandardMaterial attach="material-1" map={coin} metalness={.45} roughness={.28}/><meshStandardMaterial attach="material-2" color="#d49a22" metalness={.6}/></mesh><mesh position={[0,.022,0]} rotation={[Math.PI/2,0,0]}><torusGeometry args={[.229,.007,5,48]}/><meshStandardMaterial color="#ffe6a0" metalness={.7} roughness={.23}/></mesh></group>)}</group>)}</group>
  </group>;
 }

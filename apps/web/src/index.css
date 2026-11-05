@@ -75,34 +75,6 @@ body {
   .hud-dice svg { width: 27px; height: 32px; }
 }
 
-/* HUD em tela larga (mesma condição de WIDE_HUD_QUERY em GameScreen.tsx): jogadores numa faixa no topo,
-   carta do estado e histórico numa coluna à direita, ações embaixo. O tabuleiro (3:2, escala uniforme)
-   ocupa só o espaço entre eles, para nenhum painel cobrir casas. */
-@media (min-width: 640px) {
-  .game-hud-players .hud-players { flex-direction: row; width: auto; }
-  .game-hud-players .hud-player-row { flex: 0 1 216px; }
-}
-@media (min-width: 640px) and (orientation: landscape) {
-  .game-viewport { --hud-top: 112px; --hud-right: 344px; --hud-bottom: 104px; background: #2b1914; }
-  .game-hud-board { top: var(--hud-top); right: var(--hud-right); bottom: var(--hud-bottom); }
-  .game-hud-players { left: 12px; right: 112px; top: 8px; }
-  .game-hud-side {
-    left: auto; right: 12px; top: var(--hud-top); bottom: var(--hud-bottom); width: 320px; max-height: none;
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .game-hud-side > * { flex-shrink: 0; }
-  .game-hud-side > :last-child { margin-top: auto; }
-}
-/* Faixa de jogadores compacta quando a tela não tem largura ou altura para os quatro retratos grandes. */
-@media (min-width: 640px) and (max-width: 1099px), (min-width: 640px) and (max-height: 699px) {
-  .game-hud-players .hud-players { gap: 8px; padding-top: 4px; padding-bottom: 4px; }
-  .game-hud-players .hud-player-row { min-height: 60px; gap: 8px; }
-  .game-hud-players .hud-player-row .hud-avatar-frame { width: 46px; height: 46px; }
-  .game-hud-players .hud-player-name { font-size: 14px; }
-  .game-hud-players .hud-player-balance { font-size: 18px; white-space: nowrap; }
-  .game-viewport { --hud-top: 84px; }
-}
-
 /* Modal em modo consulta (C6): sem escolha, sem custo e sem confirmar. Provisório até o Codex
    entregar um modo de consulta no PropertyEvolutionPanel. */
 .pe-host-view .pe-summary,
@@ -111,3 +83,52 @@ body {
 .pe-host-view .pe-locked { border-color: #00a7ef; background: radial-gradient(ellipse at 50% 27%, #075fb5 0, #03224d 63%, #064b82 100%); }
 .pe-host-view .pe-locked .pe-building { filter: saturate(.75) brightness(.85) drop-shadow(0 7px 4px #0006); }
 .pe-host-view .pe-message { margin: 18px 0 4px; font-size: 16px; }
+
+/* C8: a mesa ocupa a janela, com painéis flutuantes e sem coluna reservada. */
+.game-viewport { background:#59341f; }
+.game-hud-board { inset:0; }
+.game-hud-header { z-index:15; }
+.game-hud-players { top:6px;left:50%;right:auto;width:min(1000px,calc(100% - 190px));transform:translateX(-50%);z-index:12;display:block; }
+.game-hud-players .hud-players { flex-direction:row;width:100%;gap:12px;padding:4px; }
+.game-hud-players .hud-player-row { flex:1 1 0;min-height:60px;gap:9px;padding:4px 10px;border-radius:16px;background:linear-gradient(145deg,#452377,#161630 82%);box-shadow:0 5px 0 #8c5019,0 7px 0 #e6b760,0 9px 13px #160c0990; }
+.game-hud-players .hud-player-row .hud-avatar-frame { width:48px;height:48px; }
+.game-hud-players .hud-player-name { font-size:15px; }
+.game-hud-players .hud-player-balance { font-size:21px;white-space:nowrap; }
+.game-hud-property { inset:auto 16px 108px auto;width:min(320px,calc(100% - 32px));max-height:65%;z-index:18; }
+.game-hud-history { position:absolute;right:20px;bottom:26%;display:flex;justify-content:flex-end;max-width:calc(100% - 24px);z-index:17; }
+.game-hud-history > button,.game-hud-header button { border-color:#f3ca70;border-radius:16px;background:linear-gradient(155deg,#573380,#17152d);box-shadow:0 3px 0 #a96928,0 5px 8px #150b0a70; }
+.game-hud-actions { z-index:16;bottom:12px; }
+.hud-action-shell { max-width:calc(100vw - 24px); }
+.hud-round-seal { position:absolute;top:-16px;z-index:2;color:#40220e;border-color:#fff2ae;background:linear-gradient(#fff2b5,#e5a751);box-shadow:0 2px 4px #2b130c88;white-space:nowrap; }
+.hud-action-tray { min-height:68px;gap:16px;padding:9px 22px;border:2px solid #edc86d;border-radius:26px;background:linear-gradient(155deg,#452278,#16152e 75%);box-shadow:0 4px 0 #9a581f,0 7px 0 #e6b65e,0 10px 14px #140a0990,inset 0 1px 6px #c099eb60; }
+.hud-action-tray .hud-turn-badge { min-width:0;min-height:0;border:0;padding:0 10px 0 0;border-radius:0;background:none;box-shadow:none;gap:9px;max-width:210px; }
+.hud-action-tray .hud-turn-badge .hud-avatar-frame { width:48px;height:48px;flex-shrink:0; }
+.hud-action-tray .hud-turn-badge p:last-child { font-size:19px;max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.hud-action-tray .hud-roll { min-height:44px;font-size:19px;padding:8px 22px;border-radius:16px; }
+.hud-player-rank { display:flex; }
+@media (max-height:699px), (max-width:900px) {
+ .game-hud-players { top:3px;width:calc(100% - 190px); }
+ .game-hud-players .hud-players { gap:5px;padding:2px; }
+ .game-hud-players .hud-player-row { min-height:39px;padding:3px 5px;gap:5px;flex-direction:row;text-align:left;border-radius:11px; }
+ .game-hud-players .hud-player-row > div { width:auto; }
+ .game-hud-players .hud-player-row .hud-avatar-frame { width:28px;height:28px; }
+ .game-hud-players .hud-player-name { font-size:10px; }
+ .game-hud-players .hud-player-name > span { display:none; }
+ .game-hud-players .hud-player-balance { font-size:14px; }
+ .game-hud-players .hud-player-rank { width:17px;height:17px;font-size:9px; }
+ .game-hud-players .hud-leader-crown { width:18px;height:15px; }
+ .game-hud-actions { bottom:7px; }
+ .hud-action-tray { min-height:44px;gap:9px;padding:5px 12px;border-radius:19px;flex-wrap:nowrap; }
+ .hud-action-tray .hud-roll { min-height:34px;font-size:14px;padding:5px 13px; }
+ .hud-action-tray .hud-turn-badge { gap:6px;padding-right:3px;max-width:130px; }
+ .hud-action-tray .hud-turn-badge .hud-avatar-frame { width:30px;height:30px; }
+ .hud-action-tray .hud-turn-badge p:first-child { font-size:9px; }
+ .hud-action-tray .hud-turn-badge p:last-child { font-size:14px;max-width:90px; }
+ .hud-action-tray .hud-dice { gap:2px;padding:0; }
+ .hud-action-tray .hud-dice svg { width:25px;height:30px; }
+ .hud-round-seal { top:-15px;font-size:9px;padding:1px 10px; }
+ .game-hud-property { bottom:76px; }
+ .game-hud-history { right:10px;bottom:23%; }
+ .game-hud-header { padding:5px; }
+ .game-hud-header button { min-height:32px;font-size:12px; }
+}

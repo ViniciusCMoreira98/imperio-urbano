@@ -1,10 +1,10 @@
 {
-  "runtimeBytes": 1301978,
+  "runtimeBytes": 1357692,
   "width": 3072,
   "height": 2048,
   "stateCount": 26,
-  "bytes": 8123310,
-  "sha256": "e355a202f2cfdbf5813cfb2ffc7df82457d46817f734d1f84fcd3610d9f50fc7",
+  "bytes": 8415200,
+  "sha256": "f7b570e54081f340e49d91623a73393ccc2b29b5db40038196f15602956d2ad8",
   "sourcePhotoPixelsUsed": false,
   "sources": "26 original v3 board illustrations, 7 independent transparent special icons, own center-brasil-v2. Header photos retained only in property modals. One homography for printed art and dynamic values. No triangle seams.",
   "iconsUniformScale": true,

@@ -1,0 +1,1099 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-11-05",
+  "scope": "Packaged models and original source art used by the board, HUD and property modals",
+  "meshyPaidPlanEvidence": {
+    "source": "Explicit user answer in current Codex chat",
+    "answer": "Sim, plano pago",
+    "date": "2026-11-05"
+  },
+  "sources": [
+    {
+      "provider": "Meshy",
+      "url": "https://www.meshy.ai/terms-of-use",
+      "section": "3.2",
+      "effective": "2026-09-19"
+    },
+    {
+      "provider": "OpenAI",
+      "url": "https://openai.com/policies/row-terms-of-use/",
+      "section": "Content — Ownership of content"
+    },
+    {
+      "provider": "Kenney",
+      "url": "https://kenney.nl/assets/mini-characters",
+      "license": "CC0-1.0"
+    }
+  ],
+  "excludedReferences": [
+    {
+      "file": "docs/referencias/visual-alvo.webp",
+      "reason": "User confirmed no commercial authorization; portrait crops replaced and removed from runtime imports"
+    },
+    {
+      "file": "assets/board/tabuleiro-brasil-alvo.png",
+      "reason": "Legacy 33-tile reference scene removed from game entry point; not packaged by the current app"
+    },
+    {
+      "file": "assets/board/tabuleiro-arte.webp",
+      "reason": "Legacy reference cropping code not reachable from current game"
+    }
+  ],
+  "historicalMeshyDownloads": "Four pre-existing steampunk-girl calibration models remain unverified, unapproved for distribution and absent from public runtime; paid-plan confirmation does not establish the origin of their input references.",
+  "newMeshyCreditsForC8": 0,
+  "records": [
+    {
+      "file": "apps/web/public/models/board/board34-atlas-v01-6k.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "994e1fe5feb2f2a1639e4b596dbba1cf4f8aed1541e2de201479df32d5d4aad6",
+      "bytes": 3716762
+    },
+    {
+      "file": "apps/web/public/models/board/board34-atlas-v01.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "a42ff6b1177d2480c5dfbd752fcb21dcb37625afb32a4c29ed71df96e5dc9629",
+      "bytes": 1357692
+    },
+    {
+      "file": "apps/web/public/models/board/board34-v01.glb",
+      "provider": "Imperio Urbano asset pipeline",
+      "license": "Project original geometry/material work",
+      "evidence": "scripts/assets/",
+      "commercialUse": true,
+      "sha256": "6d5f2ddd9e2554335cf3c2122a0046ad67d2e4fb105b136d5870bd67249ee39e",
+      "bytes": 444384
+    },
+    {
+      "file": "apps/web/public/models/board/reference33-v01.glb",
+      "provider": "Imperio Urbano asset pipeline",
+      "license": "Project original geometry/material work",
+      "evidence": "scripts/assets/",
+      "commercialUse": true,
+      "sha256": "12cb70d47ad8be1171b9ae7cbf269fafd0fea33c812e2de763effe121c1a7471",
+      "bytes": 446128
+    },
+    {
+      "file": "apps/web/public/models/buildings/property-level-0-meshy-v1.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/buildings/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "fd7d09cdb4a88993a7887686647141738da0b2e8f82fc5f05b1714153381de93",
+      "bytes": 1815212
+    },
+    {
+      "file": "apps/web/public/models/buildings/property-level-1-meshy-v1.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/buildings/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "4c82421dcbd2fe38a4e088a7aea70dd7f91fa1478768c9d87e7c6303b1f0101e",
+      "bytes": 1889904
+    },
+    {
+      "file": "apps/web/public/models/buildings/property-level-2-meshy-v1.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/buildings/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "e932ab1f14528dc493f74f86f6ac644aea25d1d9a954d9f2089d854b7349377f",
+      "bytes": 1914776
+    },
+    {
+      "file": "apps/web/public/models/buildings/property-level-3-meshy-v1.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/buildings/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "c3901c3060ee620025fc41c33500107bc1fa59661e15d1eb5ac09c305020e99a",
+      "bytes": 1834848
+    },
+    {
+      "file": "apps/web/public/models/buildings/property-level-4-meshy-v1.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/buildings/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "53416040d06fd18c3a8b7cbb773a7dc250cd4427478f18a29ee993ac87bcf472",
+      "bytes": 1983772
+    },
+    {
+      "file": "apps/web/public/models/buildings/property-level-5-meshy-v1.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/buildings/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "d627ff99f1bf0082db99572e1868cf7ad5346f56ac02c3511b11afa6fde9486b",
+      "bytes": 2096368
+    },
+    {
+      "file": "apps/web/public/models/characters/Textures/colormap.png",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
+      "bytes": 8706
+    },
+    {
+      "file": "apps/web/public/models/characters/character-female-a.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "8cfcff43460da8b421f2a7fdfb43ec177321cad2746db9497cbf128d5806e2a8",
+      "bytes": 273448
+    },
+    {
+      "file": "apps/web/public/models/characters/character-female-b.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "2288438e7baf9acc91a870c82dc00d66710bb486592cfc3474ef8ed93a03863a",
+      "bytes": 252140
+    },
+    {
+      "file": "apps/web/public/models/characters/character-female-c.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "3cd9e1b5d6409fce0ba1af617d9e008c3069493185a4c100f49fb99a2626a055",
+      "bytes": 252040
+    },
+    {
+      "file": "apps/web/public/models/characters/character-female-d.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "67f61708743bd34f91a4c2ba8160b61bf2e7d4ec2ca6647dfe99873422561410",
+      "bytes": 258760
+    },
+    {
+      "file": "apps/web/public/models/characters/character-female-e.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "3ee3939f80d718945fcb9199f909a92c39669e38aeec7f544536b5dce6e79f98",
+      "bytes": 248012
+    },
+    {
+      "file": "apps/web/public/models/characters/character-female-f.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "2ff4311897bfaf99be80d2fa13918db30f506607da0291640b2609d82b70e0ca",
+      "bytes": 259488
+    },
+    {
+      "file": "apps/web/public/models/characters/character-male-a.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "77572792bfe2773b715b8cd8e18644b52b3e1f155fe10450254b50f9c364382a",
+      "bytes": 246916
+    },
+    {
+      "file": "apps/web/public/models/characters/character-male-b.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "791fc0c203924c175c0a3d5b60d030daf36797b039506689cf7cd01ef5253b3c",
+      "bytes": 247332
+    },
+    {
+      "file": "apps/web/public/models/characters/character-male-c.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "672a6506f7475bbd655da1d7ff712c1729a430f134c62385a4e5d3c1378acb40",
+      "bytes": 263104
+    },
+    {
+      "file": "apps/web/public/models/characters/character-male-d.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "dd12b2e75ffb1cdb45aaec3916c3d6e732929ccb4a8b89b946f69baaabfa64da",
+      "bytes": 245184
+    },
+    {
+      "file": "apps/web/public/models/characters/character-male-e.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "cd76681090ce29861b055b0f8b2bdcf84bfccc4ca816f428df42a9bb76d6e1b6",
+      "bytes": 242704
+    },
+    {
+      "file": "apps/web/public/models/characters/character-male-f.glb",
+      "provider": "Kenney Mini Characters",
+      "license": "CC0-1.0",
+      "evidence": "apps/web/public/models/characters/LICENSE-kenney.txt",
+      "commercialUse": true,
+      "sha256": "ed151fc47c5cd6be9693c524e92f045170c965819f4f81b28ed66dcc3c1085bf",
+      "bytes": 249388
+    },
+    {
+      "file": "apps/web/public/models/characters/steampunk-brasil-v01-rest-v01.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/catalog.json",
+      "commercialUse": true,
+      "sha256": "21636805b6a0f2d9ee2c788343aa5db362f58e13fccfd851f11185b361ca40bd",
+      "bytes": 2020832
+    },
+    {
+      "file": "apps/web/public/models/characters/steampunk-brasil-v01-uniform-mask-v04.png",
+      "provider": "Imperio Urbano asset pipeline",
+      "license": "Project original geometry/material work",
+      "evidence": "scripts/assets/",
+      "commercialUse": true,
+      "sha256": "e6ae154894f63617941ac2b57775771accd43a445a7c40995b5e990ef92656fd",
+      "bytes": 58768
+    },
+    {
+      "file": "apps/web/public/models/characters/steampunk-brasil-v01.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/catalog.json",
+      "commercialUse": true,
+      "sha256": "6464d04215354c6c4a6d54dc6dd7e2e25e05c44c83ae9ac121f8cfcc4c0d69e7",
+      "bytes": 2019584
+    },
+    {
+      "file": "apps/web/public/models/decor/brand-v3.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "9ac24470f6e63cfad743840d602080026547cc28baeeff07b93c1a5991904d95",
+      "bytes": 47186
+    },
+    {
+      "file": "apps/web/public/models/decor/mug-v3.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/decor-v3/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "16c6a7acd3b64dc679c798e2a3ab00aae65d48aa4c0729cf4cc96660e5a1495a",
+      "bytes": 737652
+    },
+    {
+      "file": "apps/web/public/models/decor/plant-v3.glb",
+      "provider": "Meshy",
+      "license": "Meshy Terms of Service 3.2: paid-customer output",
+      "evidence": "assets/3d/reviews/decor-v3/meshy-ledger.json",
+      "commercialUse": true,
+      "sha256": "f60a60756dd02c27fa1895d901c68287651e01cbcf1f4d06e23882860400c4d3",
+      "bytes": 1065892
+    },
+    {
+      "file": "apps/web/public/models/dice/dice-ivory-v01.glb",
+      "provider": "Imperio Urbano asset pipeline",
+      "license": "Project original geometry/material work",
+      "evidence": "scripts/assets/",
+      "commercialUse": true,
+      "sha256": "ca7b2d933ae2b61c50c6c83a3805c2c32f8f32f13b92099d6ea99133a65b2837",
+      "bytes": 84280
+    },
+    {
+      "file": "apps/web/src/board/board34/art/airport-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "c674dab3f8e16a95c57bb2cfe6faa59f7cb239a8c253868941d10a0e4c1064e0",
+      "bytes": 1899533
+    },
+    {
+      "file": "apps/web/src/board/board34/art/center-brasil-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "87ef0b36cf53e10d62bc6f1bb4e357812f2898d2ac267496d88260071aa571a9",
+      "bytes": 3256473
+    },
+    {
+      "file": "apps/web/src/board/board34/art/center-brasil-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "4a7194433a0de1a155487fc900afef330bb005b0dad594f6a2a58e64c8289424",
+      "bytes": 2856891
+    },
+    {
+      "file": "apps/web/src/board/board34/art/event-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "f9f723779b3a3ee04b74817b796be05e93a8cb4c274ebca7b129ac7e9f6a8a19",
+      "bytes": 1824586
+    },
+    {
+      "file": "apps/web/src/board/board34/art/olympics-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "46eb37ca7cfafc529d933652d2356e34f23178693a93456d4ab92e13b54e50c8",
+      "bytes": 1749176
+    },
+    {
+      "file": "apps/web/src/board/board34/art/rest-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "3081664dbd1bddbc4caa57e6dd982dbdf4c06a3bc9bd9e23ede6350d03bd8633",
+      "bytes": 1858482
+    },
+    {
+      "file": "apps/web/src/board/board34/art/start-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "c7e0431df3190aa68973e2ccc9788d87c00b92633e36f9eaef17050a41d25f33",
+      "bytes": 1802180
+    },
+    {
+      "file": "apps/web/src/board/board34/art/table-wood-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "83075d7fff9447cd69cdf25eb524178dcbe4760efbf374f2ff110a39f5eb9fcf",
+      "bytes": 2474265
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/ac-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "39880b8a54799aba4844f091880bff66520765439d0b4866c3f684b0745b7245",
+      "bytes": 2473844
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/airport-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "9582816b9dfb08892143ccad05f27d9e73b96c70898c71df310e4a62235d00fd",
+      "bytes": 1072598
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/al-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "50a5982c361a2a298790d4ca90c5e2bf1609bf228d3df87f139db1f785c87bf6",
+      "bytes": 2416601
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/am-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "dad7cacb9fd135a77ea3c549b3f3dbb179e1ba677b4aed6587901f6c44056904",
+      "bytes": 2395692
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/ap-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "40b8a5e64f5107060d404434e2b6c2ad25538af94003ee57dbe2d9675a8fd525",
+      "bytes": 2124154
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/arrow-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "3d2b3e9c51c98b5478ca0ef09a0b30cf7aa5b17cee50147b4bc490f746105a66",
+      "bytes": 498173
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/ba-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "e58bf33f54ac464702d3f3ec6b41f31ff28566450c6f41e62e8cad7873eb1cfc",
+      "bytes": 2119222
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/brand-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "6d8ed30a716db1f8ef17d5d9aeea606e91fc7a8079b97df7b66f5472b1d70552",
+      "bytes": 1766175
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/ce-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "350233afe834085bdd147536c74f5a801fa248c2cd8da48c411b6f50f2937e0f",
+      "bytes": 2048352
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/chest-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "175c597f37500f1a7926feb0869c73a1cd6e63f7c66b7d42c2e5b4ed7d316ea0",
+      "bytes": 966085
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/df-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "4641fa810fe0165a8e1409a1d0be4d93a58ec3ac6b5b416f1c5411da89b51afa",
+      "bytes": 1979356
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/es-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "71870b181615a2dbd58353c52963654ed64398b39451371761942089a83bb738",
+      "bytes": 2137624
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/event-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "b368179393805aad8aa3b685e798a9766a424e29d43552262abb9176263d671f",
+      "bytes": 1047228
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/flame-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "60318418918cbe0873c67037ca9d64e3ff2169e5447c0e9fd92f26d0d9472cfe",
+      "bytes": 931966
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/go-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "d96ac15618d29fe22e624a3b2bf904183bff90b473cac218183ecda69e063712",
+      "bytes": 2137824
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/ma-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "937f881242eb20eb661974254c020389c2e17a71d043c41b7691f53b401484e2",
+      "bytes": 1897800
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/mg-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "6b2fcd225d7cd13ed5846b4b57f4f1dd6b5dc64a4c0610ffdbe313449dce2bf5",
+      "bytes": 2304266
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/ms-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "7cc22bf55d07f7f59094b3170ccc2045ebe48018fcd9a210bdbae1b34ed17cf7",
+      "bytes": 2088192
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/mt-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "24b337c6f717497772101b3995d9aac6d5204e52fe46ebc730fd8549b67cf210",
+      "bytes": 2422046
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/pa-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "da8869745d1c5370a3bf009c9abb95d606e338800d6bea2020f866555912bc1c",
+      "bytes": 2212978
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/pb-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "36cedb40c52b933efe7acffaae569477478ad515a524011fb16aad091508d605",
+      "bytes": 1920550
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/pe-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "c3d48e6f5712ab02384c54c1d049c712d07b35aa0e122f61f6fbb3e11078aa9e",
+      "bytes": 2163077
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/pi-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "1ea1e57da186facb271c3aeaf114a477b06c98967943537a23d8590aa62b6f07",
+      "bytes": 2547870
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/pr-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "b52afb82bed2bc1ef2e719a918dc5f622ffe756169a9fd5a7578dd5586a88b23",
+      "bytes": 2290818
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/rest-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "34105ed9a770fff0ec1232a594b8b7a8f3c2a1cf193316a000bc358505cf21d5",
+      "bytes": 1092200
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/rj-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "d51ddd441362d406becdab23caf7e63333e0ddebf321bc34e3642148d08b93d5",
+      "bytes": 2031610
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/rn-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "60c2c39a49cc0101173f2f8dde0d50bca826dbea3ebcc5d89c670a12c68e72e6",
+      "bytes": 2220342
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/ro-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "dc22b81fceeabbaba5547cd32ed72b60c5781a45d91d2a3189cd56efbd848d70",
+      "bytes": 2051157
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/rr-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "47831a1eeee867375b4cb810d57a89fc6b4cfdb6195ea1705868f5e8dde8466f",
+      "bytes": 2273570
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/rs-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "47da765c13d7507071ed04772d017819872efa2a4f828afddbb0455c6653a783",
+      "bytes": 2370517
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/sc-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "4cbe71e46cedfad787ba6992aa28ebe820735c61c4f7b7ce6e5dc7b0bfeb4d83",
+      "bytes": 2301491
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/se-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "a45f1431ca4483a8345b4f5b35a63ca23faa96c3768636e284bc5bb7a9227cf8",
+      "bytes": 2237682
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/sp-board-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "9b7d95b8c3b8f1baababe2073fc34fb2bd5adc06c6619a32c787543ca57058e3",
+      "bytes": 2268200
+    },
+    {
+      "file": "apps/web/src/board/board34/art/v3/tax-v3.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "eb6ba02ba68ac00ddf45fe312c808b384eed44c7831964a10f617088e5f54e8c",
+      "bytes": 1270004
+    },
+    {
+      "file": "apps/web/src/hud/art/avatars-c8/avatar-1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/hud/art/avatars-c8/provenance.json",
+      "commercialUse": true,
+      "sha256": "332ce2c05b447c2a7607c21f24c46d0f6cfe9e1d5354b90e9db796fb9c4b1402",
+      "bytes": 83266
+    },
+    {
+      "file": "apps/web/src/hud/art/avatars-c8/avatar-2.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/hud/art/avatars-c8/provenance.json",
+      "commercialUse": true,
+      "sha256": "3d2ef4c9e2b08c4237dda45dd163355c99f6965fe85681369ca01e8f70a40d42",
+      "bytes": 65970
+    },
+    {
+      "file": "apps/web/src/hud/art/avatars-c8/avatar-3.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/hud/art/avatars-c8/provenance.json",
+      "commercialUse": true,
+      "sha256": "c02033ea8bf46972a4c3ed10c72f44f6c90a96a9090e5241b8663571143c5fa8",
+      "bytes": 89790
+    },
+    {
+      "file": "apps/web/src/hud/art/avatars-c8/avatar-4.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/hud/art/avatars-c8/provenance.json",
+      "commercialUse": true,
+      "sha256": "390210428366746810d533e14dcde4634b9ec1bcfd7b7add513213bdf3908372",
+      "bytes": 62550
+    },
+    {
+      "file": "apps/web/src/hud/art/avatars-c8/avatar-5.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/hud/art/avatars-c8/provenance.json",
+      "commercialUse": true,
+      "sha256": "388c67e0602bf252dab9c30d9d3006aff5eebcf7a0fabf4436eba45700de91fc",
+      "bytes": 93002
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/build-tools-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "b9e198e63d912aeec187a2b8939311b3bf13ad0d29f596356b3f926f00eb51ab",
+      "bytes": 1317117
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/coins-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "1557f1933881a730dd3141f775c0ae7a4c0426267ba023e544dceaab9c40daa9",
+      "bytes": 1365303
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/hotel-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "31a340caff432da5cb7d1ce652ed8eee9a7457e4fcc2eb88a1c537bae8fd6992",
+      "bytes": 2255484
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/house-1-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "210b7bf95e7a4fcdc4b357ff23943410fc8ccbbc438a39539d9a70c208dc6681",
+      "bytes": 1885532
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/house-2-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "0bcebbaf825ae6893de2b46104b47d7718c846bc5725c5646516c4eec9e82042",
+      "bytes": 1947936
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/house-3-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "d188e7c108f0edd2a79b0c04ef54b0611a7d427930d9db969f5086ce7c518af7",
+      "bytes": 1914234
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/house-4-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "81715cb49867c91a3c4bb9df80391bef453245d056703c6dc3e2d4a0d663849f",
+      "bytes": 1927520
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/rent-growth-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "15caf0bf29f19a1980cf9651210710a04deabbe62579b791baf221b0956234db",
+      "bytes": 1228335
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/rio-header-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "9913f32ead6637815d0d9d92efe7fb4d7e62271484ce6d9e6658cd6e3bf4f96b",
+      "bytes": 2869717
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/ac-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "3ef3781222213c3efaaf9903dd7d294506745103f7119d033cbdd06b15697f54",
+      "bytes": 3105099
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/al-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "93896d046b58a52ac0e699a3aa035296f35fd70112a02aa36bcd2447e51fb3a4",
+      "bytes": 3324000
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/am-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "58905319c057393bcbbf63778c369aa4f50d9e7481dbeeb893289f25a4be298f",
+      "bytes": 3279685
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/ap-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "95df1ce6f55e20c65eb0cf0cefa98823c6b27075e187f4baa9c0494f2ca467bc",
+      "bytes": 3150873
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/ba-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "6c58ada4cd665cb7645a9fb7006fe9a48a67a4ffc3563eef0e53f38255bcb5cb",
+      "bytes": 2891790
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/ce-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "b8a2931a223bb5c71611ba71cf391b6780e51a1fe9294561da39824a6178f66c",
+      "bytes": 2645230
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/df-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "3b613fc91cac26ac32837f25fa85072f0bdc25cf73413f36ad23919589277aa9",
+      "bytes": 2812711
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/es-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "e0d3d13cf742a4b1dba1b14cebcfd37b39269305a8a2eb7b27a5cfd958f14f36",
+      "bytes": 2857037
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/go-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "e190778f6dbc4e38fc8f73015ba22b3a644a9a1153616c80f923742f1ddcfa09",
+      "bytes": 2950079
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/ma-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "48b0d35407cbb916b67efd618996c894313ba19e851dc258420ef72a725341c1",
+      "bytes": 2681047
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/mg-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "45fc6eba9b23f6861da801e0bc41bb41abd144a5ed3079d16d172e6f435bdd9c",
+      "bytes": 3163015
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/ms-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "05bc171770419303bb8a51fbe55e56eaaa533284251fd67160e0eea3be726b74",
+      "bytes": 3102222
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/mt-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "99d8c8fdeab309925073c39d70ad8e4c0b5fb80ee26a13eea3b69b13a8521884",
+      "bytes": 3001887
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/pa-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "c91883cd79935ee1b64901496125c9fa48fd314fe54133e51cb1511f4094bcb2",
+      "bytes": 2994690
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/pb-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "ed131b6a60ef9b12afa6a5490ca47eec9a004ec0789e8ed0d150a41fb366150c",
+      "bytes": 3038410
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/pe-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "78f862bb70dcece1abc2f24014fbcaea5dcc36e5fe4ba2410168fe9887985113",
+      "bytes": 3063647
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/pi-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "473258d5b4de883451200fe80125f5b485157a2d744f5e8dfffec9aaf84c3d67",
+      "bytes": 3336420
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/pr-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "81afe9df39204a2f3383b8f5bf2fb15bc2fc4b11f4cfc574c1af27738772d64c",
+      "bytes": 3255638
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/rn-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "1f9187dcce23ab90b6ea77d1e38a3a8f160edc259cde097eeee7bb8b666bcd80",
+      "bytes": 3249254
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/ro-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "b6a8f26c70d63f07e949a0cf47561c8aba978bfea0a862b73f4de42936742867",
+      "bytes": 2846213
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/rr-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "11b973af5646aaddbcfdbae84b08df094f3bde8e4376503e63db74c05490318f",
+      "bytes": 3009061
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/rs-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "a113e1978cc141164ed6d6debc8d3796ebf63f5a439879426564dbdaf82162ef",
+      "bytes": 3174154
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/sc-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "a2991cb63b94653b46d88ebd6aeb95b425a069bd270465e342253895725edbb1",
+      "bytes": 3025234
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/se-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "86a6126876aecff0633bd70a05b0b169bef47602d086425883ff815fe84bdb23",
+      "bytes": 2882719
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/states/sp-header-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "ce862fcd32545ae6c5c0e350197e0c9062917a10718910a1468e14f5a50e2666",
+      "bytes": 3030347
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/terrain-v2.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/provenance.json",
+      "commercialUse": true,
+      "sha256": "78f5597201be2e66b708bd184f7f43f59132c405a37a36abf54370d2a91b9490",
+      "bytes": 1671684
+    },
+    {
+      "file": "apps/web/src/special-tiles/art/saque-tile-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "67bf2314355ef945aeea399df5d43509c4c7a6cf5bda77250e9988ae61a58389",
+      "bytes": 2508378
+    },
+    {
+      "file": "apps/web/src/special-tiles/art/tax-pool-marker-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "09defb673ef9f34e4607e08ab2a061215c11ea83973efd7e5be6ea95c3ccaebc",
+      "bytes": 1746089
+    },
+    {
+      "file": "apps/web/src/tabletop-ui/art/action-dock-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "2dc30a1aced36d42f56da35c4750cb13efa13c5f6f432ae47d816e2f3e892bcb",
+      "bytes": 1212163
+    },
+    {
+      "file": "apps/web/src/tabletop-ui/art/player-frame-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "7e106fa69ecd735e4be9c1a606177a2e5239ebb24a69ecd80da7dab4d0dd4808",
+      "bytes": 1500000
+    },
+    {
+      "file": "apps/web/src/tabletop-ui/art/rent-plaque-v1.png",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "Relevant adjacent provenance JSON and scripts/assets/board34-atlas.ts",
+      "commercialUse": true,
+      "sha256": "bb61d6a892f253d5840117792015db6f40251f02d37ccc275561cb0ad21c76b2",
+      "bytes": 1311814
+    }
+  ]
+}
