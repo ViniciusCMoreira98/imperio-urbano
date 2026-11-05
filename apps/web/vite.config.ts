@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 // API_PORT: testar uma worktree contra outra API sem parar a principal (padrão 8080).
+// O tsconfig do app não carrega os tipos do Node; aqui só se lê uma variável de ambiente.
+declare const process: { env: Record<string, string | undefined> };
 const apiPort = process.env.API_PORT ?? '8080';
 
 export default defineConfig({

@@ -6,6 +6,7 @@ import { EventLog } from '../hud/EventLog';
 import { PlayersPanel } from '../hud/PlayersPanel';
 import { PropertyDecisionDialog } from '../hud/PropertyDecisionDialog';
 import { PropertyPanel } from '../hud/PropertyPanel';
+import { RotateDeviceNotice, useAskToRotate } from '../hud/RotateDeviceNotice';
 import { TurnBadge } from '../hud/TurnBadge';
 import { GameConnection } from '../net/gameSocket';
 import { formatCredits } from '../property-card/tileInfo';
@@ -22,6 +23,8 @@ export function GameScreen() {
   const connection = useGameStore((s) => s.connection);
   const unavailable = useGameStore((s) => s.unavailable);
   const wideHud = useMediaQuery(WIDE_HUD_QUERY);
+  // Celular em pé: a partida fica coberta e inerte (sem toque nem foco), mas segue conectada.
+  const askToRotate = useAskToRotate();
 
   useEffect(() => {
     const store = useGameStore.getState();
@@ -41,54 +44,57 @@ export function GameScreen() {
   }, [gameId, session.token]);
 
   return (
-    <div className="game-viewport relative h-full w-full overflow-hidden">
-      {/* Na tela larga o tabuleiro fica no espaço entre os painéis (index.css), sem nada por cima das casas. */}
-      <div className="game-hud-board absolute inset-0">
-        <GameBoard taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
-      </div>
+    <>
+      <div className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
+        {/* Na tela larga o tabuleiro fica no espaço entre os painéis (index.css), sem nada por cima das casas. */}
+        <div className="game-hud-board absolute inset-0">
+          <GameBoard taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
+        </div>
 
-      <header className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
-        <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
-          ←<span className="hidden sm:inline"> Menu</span>
-        </Button>
-        {connection !== 'open' && !unavailable && (
-          <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-amber-300">reconectando…</p>
-        )}
-      </header>
+        <header className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
+          <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
+            ←<span className="hidden sm:inline"> Menu</span>
+          </Button>
+          {connection !== 'open' && !unavailable && (
+            <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-amber-300">reconectando…</p>
+          )}
+        </header>
 
-      {unavailable ? (
-        <UnavailableOverlay reason={unavailable} onLeave={leave} />
-      ) : !snapshot ? (
-        <p className="absolute inset-0 flex items-center justify-center text-white/80">Conectando à partida…</p>
-      ) : (
-        <>
-          {/* Jogadores: faixa no topo. Na tela larga, o histórico vai para a coluna da direita. */}
-          <aside className="game-hud-players absolute inset-x-2 top-12 flex flex-col gap-2">
-            <PlayersPanel myId={session.playerId} />
-            {!wideHud && <EventLog />}
-          </aside>
-          {/* Carta do estado: folha acima da barra no celular; coluna à direita na tela larga. */}
-          <aside className="game-hud-side absolute inset-x-2 bottom-20 max-h-[45%] overflow-y-auto">
-            <PropertyPanel myId={session.playerId} />
-            {wideHud && <EventLog />}
-          </aside>
-          <footer className="pointer-events-none absolute inset-x-2 bottom-2 flex justify-center sm:bottom-3">
-            <div className="pointer-events-auto w-full sm:w-auto">
-              <ActionBar myId={session.playerId} />
+        {unavailable ? (
+          <UnavailableOverlay reason={unavailable} onLeave={leave} />
+        ) : !snapshot ? (
+          <p className="absolute inset-0 flex items-center justify-center text-white/80">Conectando à partida…</p>
+        ) : (
+          <>
+            {/* Jogadores: faixa no topo. Na tela larga, o histórico vai para a coluna da direita. */}
+            <aside className="game-hud-players absolute inset-x-2 top-12 flex flex-col gap-2">
+              <PlayersPanel myId={session.playerId} />
+              {!wideHud && <EventLog />}
+            </aside>
+            {/* Carta do estado: folha acima da barra no celular; coluna à direita na tela larga. */}
+            <aside className="game-hud-side absolute inset-x-2 bottom-20 max-h-[45%] overflow-y-auto">
+              <PropertyPanel myId={session.playerId} />
+              {wideHud && <EventLog />}
+            </aside>
+            <footer className="pointer-events-none absolute inset-x-2 bottom-2 flex justify-center sm:bottom-3">
+              <div className="pointer-events-auto w-full sm:w-auto">
+                <ActionBar myId={session.playerId} />
+              </div>
+            </footer>
+            <div className="absolute bottom-3 left-3 hidden lg:block">
+              <TurnBadge myId={session.playerId} />
             </div>
-          </footer>
-          <div className="absolute bottom-3 left-3 hidden lg:block">
-            <TurnBadge myId={session.playerId} />
-          </div>
-          <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center">
-            <CardReveal />
-          </div>
-          {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
-          <PropertyDecisionDialog myId={session.playerId} />
-          {snapshot.status === 'FINISHED' && <FinishedOverlay onLeave={leave} />}
-        </>
-      )}
-    </div>
+            <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center">
+              <CardReveal />
+            </div>
+            {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
+            <PropertyDecisionDialog myId={session.playerId} />
+            {snapshot.status === 'FINISHED' && <FinishedOverlay onLeave={leave} />}
+          </>
+        )}
+      </div>
+      {askToRotate && <RotateDeviceNotice />}
+    </>
   );
 }
 
