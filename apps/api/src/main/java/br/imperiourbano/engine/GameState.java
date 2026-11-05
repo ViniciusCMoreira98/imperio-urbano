@@ -24,7 +24,9 @@ public record GameState(
         OlympicsState olympics,
         EventDeck eventDeck,
         Debt pendingDebt,
-        List<String> winnerIds) {
+        List<String> winnerIds,
+        /** Fundo da Taxa: tudo que foi pago na casa Taxa até alguém parar no Saque. */
+        int taxPool) {
 
     public GameState {
         players = List.copyOf(players);
@@ -69,22 +71,22 @@ public record GameState(
 
     GameState withPlayers(List<PlayerState> value) {
         return new GameState(gameId, mode, status, version, round, value, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
     }
 
     GameState withTurn(int playerIndex, int roundValue, TurnPhase phaseValue, int doubles) {
         return new GameState(gameId, mode, status, version, roundValue, players, playerIndex, phaseValue, lastDice,
-                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds);
+                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
     }
 
     GameState withPhase(TurnPhase value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, value, lastDice,
-                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
     }
 
     GameState withDice(DiceRoll dice, int doubles) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, dice,
-                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds);
+                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
     }
 
     GameState withProperty(PropertyState property) {
@@ -101,31 +103,36 @@ public record GameState(
 
     GameState withProperties(Map<String, PropertyState> value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, value, olympics, eventDeck, pendingDebt, winnerIds);
+                doublesInRow, value, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
     }
 
     GameState withOlympics(OlympicsState value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, value, eventDeck, pendingDebt, winnerIds);
+                doublesInRow, properties, value, eventDeck, pendingDebt, winnerIds, taxPool);
     }
 
     GameState withEventDeck(EventDeck value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, value, pendingDebt, winnerIds);
+                doublesInRow, properties, olympics, value, pendingDebt, winnerIds, taxPool);
     }
 
     GameState withPendingDebt(Debt value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, eventDeck, value, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, value, winnerIds, taxPool);
+    }
+
+    GameState withTaxPool(int value) {
+        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, value);
     }
 
     GameState finished(List<String> winners) {
         return new GameState(gameId, mode, GameStatus.FINISHED, version, round, players, currentPlayerIndex, null,
-                lastDice, doublesInRow, properties, olympics, eventDeck, null, winners);
+                lastDice, doublesInRow, properties, olympics, eventDeck, null, winners, taxPool);
     }
 
     GameState nextVersion() {
         return new GameState(gameId, mode, status, version + 1, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
     }
 }

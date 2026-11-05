@@ -58,6 +58,8 @@ export interface Debt {
   /** null = banco. */
   creditorId: string | null;
   amount: number;
+  /** Dívida da casa Taxa: o pagamento vai para o fundo do Saque. */
+  toTaxPool: boolean;
 }
 
 export interface GameSnapshot {
@@ -76,6 +78,8 @@ export interface GameSnapshot {
   olympics: OlympicsState;
   pendingDebt: Debt | null;
   winnerIds: string[];
+  /** Fundo da Taxa: quem parar no Saque leva tudo. */
+  taxPool: number;
   /** Tempo até o servidor jogar pelo jogador da vez (rolar, recusar compra...); null sem prazo. */
   turnTimeLeftMs: number | null;
 }

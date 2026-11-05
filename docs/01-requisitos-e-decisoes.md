@@ -5,24 +5,24 @@ Tudo que é número está em `packages/game-data/data/*.json`, não no código.
 
 ## 1. Distribuição do tabuleiro (calculada)
 
-**33 casas** (D24, aprovada em 2026-11-02): exatamente as casas da arte `assets/board/tabuleiro-brasil-alvo.png` — 26 UFs (**sem Tocantins**), dois Eventos e Início, Olimpíadas, Descanso, Taxa e Aeroporto. Os lados têm tamanhos diferentes (8, 9, 9 e 7 casas entre os cantos), como na arte; o motor só usa o total de casas. A versão anterior, de 36 casas e 9 por lado (27 UFs, quatro Eventos), foi substituída.
+**34 casas** (D25, 2026-11-04; antes D24 com 33): as casas da arte `assets/board/tabuleiro-brasil-alvo.png` com o RN movido para antes do AM e a casa **Saque** no lugar antigo do RN — 26 UFs (**sem Tocantins**), dois Eventos e Início, Olimpíadas, Descanso, Taxa, Aeroporto e Saque. Os lados têm tamanhos diferentes (8, 9, 9 e 7 casas entre os cantos), como na arte; o motor só usa o total de casas. A versão anterior, de 36 casas e 9 por lado (27 UFs, quatro Eventos), foi substituída.
 
 Percurso definitivo, sentido horário. Cada casa tem um **id estável** (`board.json`): a sigla nos estados e o id da arte nas especiais. As cartas apontam destinos por esse id, nunca pelo número.
 
 | Índice | Casas |
 |---|---|
 | 0 | **Início** (`START`) |
-| 1–6 | AM RR · *Eventos* (`EVENT_NORTH`) · AP PA RO |
-| 7 | **Olimpíadas** (`OLYMPICS`) |
-| 8–15 | AC MT MS GO · *Eventos* (`EVENT_EAST`) · DF MG ES |
-| 16 | **Descanso** (`REST`) |
-| 17–24 | RJ PR SP · *Taxa* (`TAX`) · RS SC PE PB |
-| 25 | **Aeroporto** (`AIRPORT`; regra da Viagem Nacional, D3) |
-| 26–32 | BA SE AL RN CE PI MA |
+| 1–7 | RN AM RR · *Eventos* (`EVENT_NORTH`) · AP PA RO |
+| 8 | **Olimpíadas** (`OLYMPICS`) |
+| 9–16 | AC MT MS GO · *Eventos* (`EVENT_EAST`) · DF MG ES |
+| 17 | **Descanso** (`REST`) |
+| 18–25 | RJ PR SP · *Taxa* (`TAX`) · RS SC PE PB |
+| 26 | **Aeroporto** (`AIRPORT`; regra da Viagem Nacional, D3) |
+| 27–33 | BA SE AL · **Saque** (`SAQUE`) · CE PI MA |
 
 - 8 grupos de cor seguindo as regiões geográficas; Nordeste (9 UFs) dividido em 3 grupos. Sem Tocantins, o Norte II fica com RO, AM e PA.
 - 26 preços distintos entre 100 e 500, definidos por estado (não crescem ao longo do percurso).
-- A ordem e os ids seguem o manifesto da arte (`apps/web/src/board/reference33/layout.json`); um teste confere índice, id e tipo das 33 casas.
+- A ordem e os ids seguem o manifesto da arte (`apps/web/src/board/reference33/layout.json`); um teste confere índice, id e tipo das casas (o manifesto de 34 casas depende da recalibração do Codex).
 - Validação automática (`packages/game-data/src/catalog.test.ts`): sem UF ausente/duplicada, preços únicos, cada UF exatamente uma vez no tabuleiro, ids únicos, todas as casas especiais presentes.
 - Partidas salvas no tabuleiro anterior ficam guardadas, mas não continuam: o servidor avisa "Esta partida usa o tabuleiro antigo e não pode continuar" (versão do tabuleiro gravada em cada snapshot).
 
@@ -67,5 +67,6 @@ Patrimônio (modo Rápido) = saldo + preço dos estados + valor investido em con
 | D22 | **Onde mostrar as Olimpíadas** (pedido do usuário) | A seção 8 pede edição, multiplicador, sede e responsável no centro do tabuleiro. | O destaque fica **no próprio estado-sede**: moldura dourada pulsando, tocha e selo "🔥×N" virado para a câmera; o centro não tem mais painel olímpico. A carta do estado mostra o multiplicador e quem é o dono. |
 | D21 | **Ritmo do turno** (pedido do usuário) | Jogador parado trava a partida. | Prazos no servidor (`rules.turnTimers`): 10 s para rolar/escolher a viagem → rola sozinho; 15 s para comprar/construir/sediar → recusa. Sem decisão restante, a vez passa sozinha (inclusive logo após comprar). Dívida: 10 s (`debtSeconds`, pedido do usuário) para vender por conta própria; ao acabar, o servidor vende de uma vez até quitar, do bem mais barato ao mais caro pelo valor que o banco paga (as construções de um estado saem antes dele; falência só sem nada a vender). Jogador desconectado entra no **modo automático** (a cada 2 s o servidor joga a ação padrão; na dívida, a mesma venda, um bem por vez) até voltar; com ninguém conectado a partida pausa e, se ninguém voltar em 2 minutos (`rules.abandonment.seconds`), é encerrada sem vencedor. A câmera não se move sozinha. |
 | D20 | **Ações no turno** | Construir só é possível ao parar no estado? | Sim: compra/construção só no estado onde o peão parou; venda ao banco só com dívida (D10). Não há negociação (D12). |
-| D23 | **Taxa** | Casa nova da arte do tabuleiro (2026-11-01). | Paga `rules.tax.amount` (100) ao banco ao parar; sem saldo, vira dívida com o banco (fluxo de D10/D11). Passar pela casa não cobra. |
+| D23 | **Taxa** | Casa nova da arte do tabuleiro (2026-11-01). | Paga `rules.tax.amount` (100) ao parar; o valor vai para o **fundo do Saque** (D25), não ao banco. Sem saldo, vira dívida (fluxo de D10/D11) cujo pagamento também vai ao fundo. Passar pela casa não cobra. |
+| D25 | **Saque e RN antes do AM** (pedido do usuário, 2026-11-04) | Fundo para a Taxa e RN junto do Início. | 34 casas: RN no índice 1, Saque entre AL e CE. O fundo (`taxPool`, público no snapshot) recebe só pagamentos da Taxa (`TAX_PAID`, ou `DEBT_SETTLED` de dívida com `toTaxPool`); na falência por Taxa, o saldo que sobrar vai ao fundo e os estados voltam ao banco. Parar no Saque paga o fundo inteiro (`SAQUE_COLLECTED`) e o zera; fundo vazio rende zero. Cartas de pagar ao banco não entram no fundo. Partidas do tabuleiro anterior não continuam. |
 | D24 | **33 casas da arte** (pedido do usuário, 2026-11-02) | O percurso de 36 casas não corresponde à arte aprovada. | 33 casas da arte, 26 UFs (sem Tocantins), dois Eventos; ids estáveis por casa e cartas por id. Partidas do tabuleiro anterior ficam guardadas, mas não continuam. |

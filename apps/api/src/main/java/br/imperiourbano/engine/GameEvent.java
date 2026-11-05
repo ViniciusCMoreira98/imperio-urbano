@@ -73,14 +73,26 @@ public sealed interface GameEvent {
     record CreditsToBank(String playerId, int amount) implements GameEvent {
     }
 
+    /** Pagamento na casa Taxa: sai do jogador e vai para o fundo do Saque. */
+    record TaxPaid(String playerId, int amount) implements GameEvent {
+    }
+
+    /** Parou no Saque: leva o fundo da Taxa inteiro, que volta a zero. */
+    record SaqueCollected(String playerId, int amount) implements GameEvent {
+    }
+
     record CreditsTransferred(String fromId, String toId, int amount) implements GameEvent {
     }
 
     record RentPaid(String fromId, String toId, String stateId, int amount) implements GameEvent {
     }
 
-    /** Aluguel maior que o saldo: a resolução (venda ou falência) entra na E11. */
-    record DebtIncurred(String debtorId, String creditorId, int amount) implements GameEvent {
+    /** Pagamento maior que o saldo; {@code toTaxPool}: dívida da Taxa, paga ao fundo do Saque. */
+    record DebtIncurred(String debtorId, String creditorId, int amount, boolean toTaxPool) implements GameEvent {
+
+        public DebtIncurred(String debtorId, String creditorId, int amount) {
+            this(debtorId, creditorId, amount, false);
+        }
     }
 
     record BuildingSold(String playerId, String stateId, int refund) implements GameEvent {

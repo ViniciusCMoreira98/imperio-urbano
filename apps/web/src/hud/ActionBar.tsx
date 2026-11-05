@@ -106,7 +106,7 @@ function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
   const debt = snapshot.pendingDebt;
   const credits = snapshot.players.find((p) => p.id === myId)?.credits ?? 0;
   const missing = debt ? Math.max(0, debt.amount - credits) : 0;
-  const creditor = snapshot.players.find((p) => p.id === debt?.creditorId)?.nickname ?? 'o banco';
+  const creditor = snapshot.players.find((p) => p.id === debt?.creditorId)?.nickname ?? (debt?.toTaxPool ? 'a Taxa (vai para o Saque)' : 'o banco');
   return (
     <div className="absolute bottom-full mb-2 w-[min(20rem,calc(100vw-1.5rem))] hud-panel rounded-2xl p-3 text-sm">
       <div className="mb-1 flex items-center justify-between">

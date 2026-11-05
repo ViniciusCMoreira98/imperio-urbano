@@ -36,6 +36,8 @@ record SnapshotView(
         OlympicsState olympics,
         Debt pendingDebt,
         List<String> winnerIds,
+        /** Fundo da Taxa: quem parar no Saque leva tudo. */
+        int taxPool,
         /** Tempo até o servidor agir pelo jogador da vez; nulo quando não há prazo. */
         Long turnTimeLeftMs) {
 
@@ -74,6 +76,7 @@ record SnapshotView(
                 state.olympics(),
                 state.pendingDebt(),
                 state.winnerIds(),
+                state.taxPool(),
                 turnTimeLeftMs);
     }
 

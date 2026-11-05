@@ -40,6 +40,7 @@ export type TileType =
   | 'EVENT'
   | 'REST'
   | 'TAX'
+  | 'SAQUE'
   | 'OLYMPICS'
   | 'NATIONAL_TRAVEL';
 

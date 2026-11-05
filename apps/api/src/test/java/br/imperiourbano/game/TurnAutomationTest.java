@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 /**
- * Dados sempre 3 + 5 (Ana para no Acre, livre); prazos curtos: 3 s para rolar, 1 s para decidir,
+ * Dados sempre 4 + 5 (Ana para no Acre, livre); prazos curtos: 3 s para rolar, 1 s para decidir,
  * 1,5 s para pagar dívida e 300 ms entre jogadas do modo automático. As duas começam conectadas.
  */
 @SpringBootTest
@@ -43,7 +43,7 @@ class TurnAutomationTest {
         @Bean
         @Primary
         Dice fixedDice() {
-            return () -> new DiceRoll(3, 5);
+            return () -> new DiceRoll(4, 5);
         }
 
         @Bean
@@ -134,7 +134,7 @@ class TurnAutomationTest {
 
         List<GameEvent> log = store.loadEvents(gameId);
         assertThat(log).contains(
-                new GameEvent.DiceRolled(ana.playerId(), new DiceRoll(3, 5)),
+                new GameEvent.DiceRolled(ana.playerId(), new DiceRoll(4, 5)),
                 new GameEvent.PurchaseDeclined(ana.playerId(), "AC"),
                 new GameEvent.TurnEnded(ana.playerId(), bia.playerId(), 1));
         assertThat(state().property("AC")).isEmpty();
@@ -175,7 +175,7 @@ class TurnAutomationTest {
         while (state().version() == version && System.nanoTime() < deadline) {
             Thread.sleep(100);
         }
-        assertThat(store.loadEvents(gameId)).contains(new GameEvent.DiceRolled(ana.playerId(), new DiceRoll(3, 5)));
+        assertThat(store.loadEvents(gameId)).contains(new GameEvent.DiceRolled(ana.playerId(), new DiceRoll(4, 5)));
     }
 
     @Test

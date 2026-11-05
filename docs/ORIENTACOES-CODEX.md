@@ -115,6 +115,17 @@ A decisão nova do usuário exige revisão do contrato congelado anterior C2. O 
 4. Tratar pagamento de Taxa com saldo insuficiente/debt conforme o motor, contabilizando o que foi efetivamente pago; não somar dinheiro inexistente ou duplicar entradas em ressincronizações. A animação não altera o saldo.
 5. Validar múltiplos pagadores, fundo vazio, saque/zeragem, nova arrecadação após saque, idempotência, persistência/reconexão, sincronização entre clientes e compatibilidade do tabuleiro. Regras de turno continuam no servidor; celular segue exclusivamente em paisagem.
 
+### Engenharia — regra pronta na branch `claude/engenharia`, aguardando a geometria (04/11/2026)
+
+Feito e testado, **sem integrar na develop** até a geometria de 34 casas chegar (o cliente não carrega sem as âncoras novas):
+
+- `board.json` versão 3 com as 34 casas da proposta (`0 START, 1 RN, 2 AM … 29 AL, 30 SAQUE, 31 CE, 32 PI, 33 MA`), ids iguais a `proposedBoard34.json`. Tipo novo `SAQUE` em `TileType` (Java e TS); validadores exigem 34 casas e o Saque.
+- Fundo: campo **`taxPool`** (inteiro, em créditos) no estado persistido e no snapshot público `GameSnapshot.taxPool`. Use-o direto em `collectedLabel` com `formatCredits(snapshot.taxPool)`.
+- Eventos novos: **`TAX_PAID { playerId, amount }`** (pagamento na Taxa, entra no fundo) e **`SAQUE_COLLECTED { playerId, amount }`** (parou no Saque, leva o fundo inteiro). `DEBT_INCURRED` e `pendingDebt` ganharam `toTaxPool: boolean`: dívida da Taxa paga depois por venda entra no fundo; na falência por Taxa, o saldo que sobrar vai ao fundo (decisão do usuário).
+- Fundo vazio: nenhum evento. Cartas de pagar ao banco não entram no fundo. 8 testes novos do motor (`TaxAndSaqueTest`) e toda a suíte do servidor passam.
+
+**Pedido ao Codex (C7 — geometria de 34 casas):** recalibrar `reference33/layout.json` (ou um manifesto novo de 34), pixels/áreas, âncoras dos peões, GLB do tabuleiro e `tabletop-ui/rentPlacements.json` para a ordem acima. Hoje, no cliente da minha branch, falham só `layout.test.ts` e `pawnLayout.test.ts` (`Casa 30 (SAQUE) sem arte no manifesto do tabuleiro`) e `illustratedBoard.node.test.ts` (espera 33). Ao entregar, avise em `ORIENTACOES-CLAUDE.md` com o caminho do manifesto; eu ligo o marcador da Taxa/Saque ao `taxPool`, rodo E2E e integro.
+
 ### Validação da entrega de arte
 
 Três testes da proposta passaram: posição RN/AM, Saque entre AL/CE e preservação das 26 propriedades em 34 IDs únicos, mantendo o runtime antigo intacto. TypeScript do frontend sem erros. `scripts/assets/special-tiles-qa.mjs` conferiu transparência real dos dois PNGs, valores dinâmicos R$ 0/100/600/12.000 usando a mesma imagem, descrição acessível, telas 1536×900 e 844×390, sem erros de navegador ou chamadas de API. Capturas e relatório em `assets/3d/reviews/saque/`. Isso não valida cobrança ou pagamento de uma partida real.

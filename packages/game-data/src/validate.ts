@@ -5,10 +5,10 @@ export const ALL_STATE_IDS = [
   'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE',
 ] as const;
 
-/** Percurso definitivo: 33 casas, com lados de tamanhos diferentes. */
-export const BOARD_SIZE = 33;
+/** Percurso definitivo (v3): 34 casas, com lados de tamanhos diferentes; RN antes do AM e o Saque. */
+export const BOARD_SIZE = 34;
 
-const REQUIRED_SPECIALS = ['START', 'OLYMPICS', 'REST', 'EVENT', 'NATIONAL_TRAVEL', 'TAX'] as const;
+const REQUIRED_SPECIALS = ['START', 'OLYMPICS', 'REST', 'EVENT', 'NATIONAL_TRAVEL', 'TAX', 'SAQUE'] as const;
 
 /** Retorna a lista de erros; vazia quando o catálogo é consistente. */
 export function validateCatalog(

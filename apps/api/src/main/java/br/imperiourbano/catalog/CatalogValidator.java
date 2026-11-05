@@ -15,11 +15,12 @@ public final class CatalogValidator {
             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA",
             "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE");
 
-    /** Percurso definitivo: 33 casas, com lados de tamanhos diferentes. */
-    public static final int BOARD_SIZE = 33;
+    /** Percurso definitivo (v3): 34 casas, com lados de tamanhos diferentes; RN antes do AM e o Saque. */
+    public static final int BOARD_SIZE = 34;
 
     private static final List<TileType> REQUIRED_SPECIALS = List.of(
-            TileType.START, TileType.OLYMPICS, TileType.REST, TileType.EVENT, TileType.NATIONAL_TRAVEL, TileType.TAX);
+            TileType.START, TileType.OLYMPICS, TileType.REST, TileType.EVENT, TileType.NATIONAL_TRAVEL, TileType.TAX,
+            TileType.SAQUE);
 
     private CatalogValidator() {
     }

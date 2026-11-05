@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 class PurchaseAndRentTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    /** Rolar 3 + 5 a partir do Início leva à casa 8 (Acre). */
+    /** Rolar 4 + 5 a partir do Início leva à casa 9 (Acre). */
     private static final StateDefinition AC = CATALOG.state("AC");
 
     private GameEngine engine = new GameEngine(CATALOG);
@@ -54,14 +54,14 @@ class PurchaseAndRentTest {
 
     @Test
     void landingOnFreeStateOffersPurchase() {
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
 
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
     }
 
     @Test
     void buyingTransfersOwnershipAndChargesPrice() {
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
         GameEngine.Result result = run("ana", new BuyProperty(0));
 
         assertThat(result.events()).containsExactly(new PropertyPurchased("ana", "AC", AC.price()));
@@ -76,7 +76,7 @@ class PurchaseAndRentTest {
 
     @Test
     void decliningKeepsStateWithTheBank() {
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
         run("ana", new DeclinePurchase());
 
         assertThat(state.property("AC")).isEmpty();
@@ -95,7 +95,7 @@ class PurchaseAndRentTest {
     void noPurchaseOfferWithoutEnoughCredits() {
         setCredits("ana", AC.price() - 1);
 
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
 
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
         assertThatThrownBy(() -> run("ana", new BuyProperty(0))).isInstanceOf(RuleViolationException.class);
@@ -103,11 +103,11 @@ class PurchaseAndRentTest {
 
     @Test
     void opponentPaysBaseRentAutomatically() {
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
         run("ana", new BuyProperty(0));
         run("ana", new EndTurn());
 
-        GameEngine.Result result = run("bia", new RollDice(), 3, 5);
+        GameEngine.Result result = run("bia", new RollDice(), 4, 5);
 
         int rent = AC.rent().base();
         assertThat(result.events()).last().isEqualTo(new RentPaid("bia", "ana", "AC", rent));
@@ -120,7 +120,7 @@ class PurchaseAndRentTest {
     void rentFollowsBuildingLevel() {
         state = state.withProperty(new PropertyState("AC", "bia", 3, 2, 1));
 
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 - AC.rent().house3());
     }
@@ -129,7 +129,7 @@ class PurchaseAndRentTest {
     void landingOnOwnStateChargesNothing() {
         giveTo("ana", "AC");
 
-        GameEngine.Result result = run("ana", new RollDice(), 3, 5);
+        GameEngine.Result result = run("ana", new RollDice(), 4, 5);
 
         assertThat(result.events()).noneMatch(e -> e instanceof RentPaid);
         assertThat(state.player("ana").credits()).isEqualTo(1500);
@@ -141,7 +141,7 @@ class PurchaseAndRentTest {
         giveTo("bia", "AC");
         setCredits("ana", 5);
 
-        GameEngine.Result result = run("ana", new RollDice(), 3, 5);
+        GameEngine.Result result = run("ana", new RollDice(), 4, 5);
 
         assertThat(result.events()).last().isEqualTo(new DebtIncurred("ana", "bia", AC.rent().base()));
         assertThat(state.pendingDebt()).isEqualTo(new Debt("ana", "bia", AC.rent().base()));
@@ -160,7 +160,7 @@ class PurchaseAndRentTest {
         engine = new GameEngine(new Catalog(CATALOG.states(), CATALOG.board(), doubled, CATALOG.eventCards()));
         giveTo("bia", "AC", "RR", "AP");
 
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 - 2 * AC.rent().base());
     }

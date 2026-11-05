@@ -7,10 +7,10 @@ describe('catálogo de jogo', () => {
     expect(validateCatalog(states, board, rules)).toEqual([]);
   });
 
-  it('tem 26 unidades federativas, sem Tocantins, em 33 casas com dois Eventos', () => {
+  it('tem 26 unidades federativas, sem Tocantins, em 34 casas com dois Eventos e o Saque', () => {
     expect(states).toHaveLength(26);
     expect(states.some((s) => s.id === ('TO' as string))).toBe(false);
-    expect(board.tiles).toHaveLength(33);
+    expect(board.tiles).toHaveLength(34);
     expect(board.tiles.filter((t) => t.type === 'EVENT')).toHaveLength(2);
   });
 

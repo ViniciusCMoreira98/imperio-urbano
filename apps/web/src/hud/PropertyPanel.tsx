@@ -51,6 +51,11 @@ export function PropertyPanel({ myId }: { myId: string }) {
         </header>
         <div className="space-y-3 p-4">
           <p className="leading-relaxed">{info.description}</p>
+          {(info.type === 'SAQUE' || info.type === 'TAX') && snapshot && (
+            <p className="rounded-lg bg-emerald-900/70 px-3 py-2 font-bold text-emerald-100">
+              Fundo do Saque agora: {formatCredits(snapshot.taxPool)}
+            </p>
+          )}
           <TileActions tileIndex={index} myId={myId} />
         </div>
       </section>

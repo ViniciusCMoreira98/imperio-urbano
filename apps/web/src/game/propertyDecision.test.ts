@@ -27,6 +27,7 @@ const game = (extra: Partial<GameSnapshot>): GameSnapshot => ({
   olympics: { edition: 0, hostStateId: null, hostPlayerId: null, multiplier: 1 },
   pendingDebt: null,
   winnerIds: [],
+  taxPool: 0,
   turnTimeLeftMs: null,
   ...extra,
 });

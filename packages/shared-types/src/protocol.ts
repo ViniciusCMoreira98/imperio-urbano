@@ -47,13 +47,17 @@ export type DomainEvent =
   | { type: 'BUILD_SKIPPED'; playerId: string; stateId: StateId }
   | { type: 'RENT_PAID'; fromId: string; toId: string; stateId: StateId; amount: number }
   /** Aluguel maior que o saldo; creditorId nulo = banco. */
-  | { type: 'DEBT_INCURRED'; debtorId: string; creditorId: string | null; amount: number }
+  | { type: 'DEBT_INCURRED'; debtorId: string; creditorId: string | null; amount: number; toTaxPool: boolean }
   /** Nova sede; a anterior perde o benefício. fee = taxa paga ao banco. */
   | { type: 'OLYMPICS_HOST_SELECTED'; playerId: string; stateId: StateId; edition: number; multiplier: number; fee: number }
   | { type: 'OLYMPICS_SKIPPED'; playerId: string }
   | { type: 'EVENT_CARD_DRAWN'; playerId: string; cardId: string }
   | { type: 'CREDITS_FROM_BANK'; playerId: string; amount: number }
   | { type: 'CREDITS_TO_BANK'; playerId: string; amount: number }
+  /** Pagamento na Taxa, que vai para o fundo do Saque. */
+  | { type: 'TAX_PAID'; playerId: string; amount: number }
+  /** Parou no Saque e levou o fundo da Taxa inteiro. */
+  | { type: 'SAQUE_COLLECTED'; playerId: string; amount: number }
   | { type: 'CREDITS_TRANSFERRED'; fromId: string; toId: string; amount: number }
   | { type: 'BUILDING_SOLD'; playerId: string; stateId: StateId; refund: number }
   | { type: 'PROPERTY_SOLD'; playerId: string; stateId: StateId; refund: number }

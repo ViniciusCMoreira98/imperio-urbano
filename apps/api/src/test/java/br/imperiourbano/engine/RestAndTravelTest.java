@@ -10,7 +10,7 @@ import br.imperiourbano.engine.GameCommand.ChooseTravel;
 import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.RollDice;
-import br.imperiourbano.engine.GameEvent.CreditsToBank;
+import br.imperiourbano.engine.GameEvent.TaxPaid;
 import br.imperiourbano.engine.GameEvent.DebtIncurred;
 import br.imperiourbano.engine.GameEvent.RestLeft;
 import br.imperiourbano.engine.GameEvent.RestTurnLost;
@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 class RestAndTravelTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int REST_TILE = 16;
-    private static final int TRAVEL_TILE = 25;
+    private static final int REST_TILE = 17;
+    private static final int TRAVEL_TILE = 26;
     private static final int TRAVEL_FEE = CATALOG.rules().nationalTravel().fee();
-    private static final int TAX_TILE = 20;
+    private static final int TAX_TILE = 21;
     private static final int TAX = CATALOG.rules().tax().amount();
 
     private final GameEngine engine = new GameEngine(CATALOG);
@@ -111,7 +111,7 @@ class RestAndTravelTest {
         state = state.withProperty(PropertyState.purchased("AC", "ana"))
                 .withTurn(1, 1, TurnPhase.AWAITING_ROLL, 0);
 
-        run("bia", new RollDice(), 3, 5);
+        run("bia", new RollDice(), 4, 5);
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 + CATALOG.state("AC").rent().base());
     }
@@ -167,7 +167,7 @@ class RestAndTravelTest {
     void travelDestinationMustBeAnotherTile() {
         anaChoosingTravel();
 
-        for (int invalid : new int[] {TRAVEL_TILE, -1, 33}) {
+        for (int invalid : new int[] {TRAVEL_TILE, -1, 34}) {
             assertThatThrownBy(() -> run("ana", new ChooseTravel(invalid)))
                     .hasMessage("Escolha outra casa do tabuleiro como destino.");
         }
@@ -186,12 +186,12 @@ class RestAndTravelTest {
     }
 
     @Test
-    void landingOnTaxPaysTheBank() {
+    void landingOnTaxPaysIntoTheSaquePool() {
         placeAna(TAX_TILE - 3);
 
         GameEngine.Result result = run("ana", new RollDice(), 1, 2);
 
-        assertThat(result.events()).last().isEqualTo(new CreditsToBank("ana", TAX));
+        assertThat(result.events()).last().isEqualTo(new TaxPaid("ana", TAX));
         assertThat(state.player("ana").credits()).isEqualTo(1500 - TAX);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
@@ -203,7 +203,7 @@ class RestAndTravelTest {
 
         GameEngine.Result result = run("ana", new RollDice(), 1, 2);
 
-        assertThat(result.events()).last().isEqualTo(new DebtIncurred("ana", null, TAX));
+        assertThat(result.events()).last().isEqualTo(new DebtIncurred("ana", null, TAX, true));
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_DEBT_RESOLUTION);
     }
 

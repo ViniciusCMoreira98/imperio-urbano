@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 class TurnFlowTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int REST_TILE = 16;
+    private static final int REST_TILE = 17;
 
     private final GameEngine engine = new GameEngine(CATALOG);
     private final List<GameEvent> log = new ArrayList<>();
@@ -117,7 +117,7 @@ class TurnFlowTest {
 
     @Test
     void passingStartPaysBonus() {
-        moveAnaTo(30);
+        moveAnaTo(31);
 
         roll("ana", 2, 3);
 
@@ -127,7 +127,7 @@ class TurnFlowTest {
 
     @Test
     void landingExactlyOnStartPaysBonus() {
-        moveAnaTo(27);
+        moveAnaTo(28);
 
         roll("ana", 2, 4);
 

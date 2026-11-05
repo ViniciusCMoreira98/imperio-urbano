@@ -44,7 +44,8 @@ LOBBY ──START_GAME (2–4 prontos, chamado pelo anfitrião)──▶ IN_PROG
   │ Eventos ................. EVENT_CARD_DRAWN → aplica efeito (pode encadear)     │
   │ Descanso ................ skipTurns = rules.rest.turnsLost (também via carta/3ª dupla) │
   │ Aeroporto (Viagem Nac.) . travelPending; próximo turno abre AWAITING_TRAVEL_DESTINATION │
-  │ Taxa .................... CREDITS_TO_BANK rules.tax.amount (sem saldo → DEBT)  │
+  │ Taxa .................... TAX_PAID ao fundo (sem saldo → DEBT toTaxPool)      │
+  │ Saque ................... SAQUE_COLLECTED: leva o fundo inteiro e o zera      │
   │ Início .................. nada                                                 │
   └────────────────────────────────────────────────────────────────────────────────┘
                                        │

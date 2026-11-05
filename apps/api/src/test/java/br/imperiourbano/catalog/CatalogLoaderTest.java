@@ -12,7 +12,7 @@ class CatalogLoaderTest {
     void loadsConsistentCatalogFromGameData() {
         assertThat(CatalogValidator.validate(catalog)).isEmpty();
         assertThat(catalog.states()).hasSize(26);
-        assertThat(catalog.board().tileCount()).isEqualTo(33);
+        assertThat(catalog.board().tileCount()).isEqualTo(34);
         assertThat(catalog.rules().startingCredits()).isEqualTo(1500);
     }
 
@@ -22,7 +22,7 @@ class CatalogLoaderTest {
         assertThat(sp.name()).isEqualTo("São Paulo");
         assertThat(sp.region()).isEqualTo(Region.SUDESTE);
         assertThat(catalog.tile(0).type()).isEqualTo(TileType.START);
-        assertThat(catalog.tile(33)).isEqualTo(catalog.tile(0));
+        assertThat(catalog.tile(34)).isEqualTo(catalog.tile(0));
     }
 
     @Test

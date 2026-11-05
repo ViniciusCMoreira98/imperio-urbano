@@ -61,6 +61,10 @@ export function describeEvent(event: DomainEvent, name: (playerId: string) => st
       return `${name(event.playerId)} construiu um hotel em ${stateNames.get(event.stateId)}.`;
     case 'RENT_PAID':
       return `${name(event.fromId)} pagou ${formatCredits(event.amount)} de aluguel a ${name(event.toId)}.`;
+    case 'TAX_PAID':
+      return `${name(event.playerId)} pagou ${formatCredits(event.amount)} de Taxa (vai para o Saque).`;
+    case 'SAQUE_COLLECTED':
+      return `${name(event.playerId)} parou no Saque e levou ${formatCredits(event.amount)}!`;
     case 'DEBT_INCURRED':
       return `${name(event.debtorId)} não tem saldo para pagar ${formatCredits(event.amount)}.`;
     case 'OLYMPICS_HOST_SELECTED':

@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 class OlympicsTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int OLYMPICS_TILE = 7;
+    private static final int OLYMPICS_TILE = 8;
     private static final int FEE = CATALOG.rules().olympics().hostFee();
     private static final StateDefinition AC = CATALOG.state("AC");
 
@@ -98,7 +98,7 @@ class OlympicsTest {
         state = state.withProperty(new PropertyState("AC", "bia", 3, 1, 1))
                 .withOlympics(new OlympicsState(2, "AC", "bia", 3));
 
-        run("ana", new RollDice(), 3, 5);
+        run("ana", new RollDice(), 4, 5);
 
         assertThat(state.player("ana").credits()).isEqualTo(1500 - 3 * AC.rent().house3());
     }

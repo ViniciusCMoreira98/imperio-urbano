@@ -43,10 +43,12 @@ import br.imperiourbano.engine.GameEvent.PropertyPurchased;
 import br.imperiourbano.engine.GameEvent.PropertySold;
 import br.imperiourbano.engine.GameEvent.RestLeft;
 import br.imperiourbano.engine.GameEvent.RestTurnLost;
+import br.imperiourbano.engine.GameEvent.TaxPaid;
 import br.imperiourbano.engine.GameEvent.TravelChosen;
 import br.imperiourbano.engine.GameEvent.TravelDeclined;
 import br.imperiourbano.engine.GameEvent.PurchaseDeclined;
 import br.imperiourbano.engine.GameEvent.RentPaid;
+import br.imperiourbano.engine.GameEvent.SaqueCollected;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
 import br.imperiourbano.engine.GameEvent.TurnEnded;
 import java.security.SecureRandom;
@@ -203,11 +205,17 @@ public final class GameEngine {
                     .updatePlayer(e.fromId(), p -> p.withCredits(p.credits() - e.amount()))
                     .updatePlayer(e.toId(), p -> p.withCredits(p.credits() + e.amount()));
             case DebtIncurred e -> state
-                    .withPendingDebt(new Debt(e.debtorId(), e.creditorId(), e.amount()))
+                    .withPendingDebt(new Debt(e.debtorId(), e.creditorId(), e.amount(), e.toTaxPool()))
                     .withPhase(TurnPhase.AWAITING_DEBT_RESOLUTION);
             case EventCardDrawn e -> state.withEventDeck(state.eventDeck().advanced());
             case CreditsFromBank e -> state.updatePlayer(e.playerId(), p -> p.withCredits(p.credits() + e.amount()));
             case CreditsToBank e -> state.updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.amount()));
+            case TaxPaid e -> state
+                    .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.amount()))
+                    .withTaxPool(state.taxPool() + e.amount());
+            case SaqueCollected e -> state
+                    .updatePlayer(e.playerId(), p -> p.withCredits(p.credits() + e.amount()))
+                    .withTaxPool(state.taxPool() - e.amount());
             case CreditsTransferred e -> state
                     .updatePlayer(e.fromId(), p -> p.withCredits(p.credits() - e.amount()))
                     .updatePlayer(e.toId(), p -> p.withCredits(p.credits() + e.amount()));
@@ -224,6 +232,9 @@ public final class GameEngine {
                 GameState paid = state.updatePlayer(e.debtorId(), p -> p.withCredits(p.credits() - e.amount()));
                 if (e.creditorId() != null) {
                     paid = paid.updatePlayer(e.creditorId(), p -> p.withCredits(p.credits() + e.amount()));
+                }
+                if (state.pendingDebt() != null && state.pendingDebt().toTaxPool()) {
+                    paid = paid.withTaxPool(paid.taxPool() + e.amount());
                 }
                 yield paid.withPendingDebt(null).withPhase(TurnPhase.AWAITING_END_TURN);
             }
@@ -287,7 +298,7 @@ public final class GameEngine {
                 .toList();
         return new GameState(e.gameId(), e.mode(), GameStatus.IN_PROGRESS, 0, 1, players, 0,
                 TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE,
-                new EventDeck(e.eventDeck(), 0), null, List.of());
+                new EventDeck(e.eventDeck(), 0), null, List.of(), 0);
     }
 
     /** D11: credor recebe saldo e estados (com construções); banco como credor libera os estados. D8: sede perde o marcador. */
@@ -306,6 +317,9 @@ public final class GameEngine {
                 .withPendingDebt(null);
         if (e.creditorId() != null) {
             next = next.updatePlayer(e.creditorId(), p -> p.withCredits(p.credits() + debtor.credits()));
+        } else if (state.pendingDebt() != null && state.pendingDebt().toTaxPool()) {
+            // Falência na Taxa: o saldo que sobrou vai para o fundo do Saque.
+            next = next.withTaxPool(next.taxPool() + Math.max(0, debtor.credits()));
         }
         if (e.playerId().equals(state.olympics().hostPlayerId())) {
             next = next.withOlympics(next.olympics().withoutHost());
@@ -385,7 +399,10 @@ public final class GameEngine {
             case EVENT -> {
                 if (depth < MAX_CHAINED_LANDINGS) drawEventCard(d, depth);
             }
-            case TAX -> payBank(d, player, rules.tax().amount());
+            case TAX -> payTax(d, player, rules.tax().amount());
+            case SAQUE -> {
+                if (d.state.taxPool() > 0) d.emit(new SaqueCollected(player.id(), d.state.taxPool()));
+            }
             default -> {
             }
         }
@@ -433,6 +450,15 @@ public final class GameEngine {
             d.emit(new CreditsToBank(player.id(), amount));
         } else {
             d.emit(new DebtIncurred(player.id(), null, amount));
+        }
+    }
+
+    /** Taxa vai para o fundo do Saque; sem saldo, vira dívida com o mesmo destino. */
+    private void payTax(Decision d, PlayerState player, int amount) {
+        if (d.state.player(player.id()).credits() >= amount) {
+            d.emit(new TaxPaid(player.id(), amount));
+        } else {
+            d.emit(new DebtIncurred(player.id(), null, amount, true));
         }
     }
 

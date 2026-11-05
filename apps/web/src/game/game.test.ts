@@ -20,6 +20,7 @@ const snapshot = (version: number, extra: Partial<GameSnapshot> = {}): GameSnaps
   olympics: { edition: 0, hostStateId: null, hostPlayerId: null, multiplier: 1 },
   pendingDebt: null,
   winnerIds: [],
+  taxPool: 0,
   turnTimeLeftMs: null,
   ...extra,
 });
@@ -109,6 +110,6 @@ describe('regras de apoio à interface', () => {
     expect(describeEvent({ type: 'RENT_PAID', fromId: 'bia', toId: 'ana', stateId: 'AP', amount: 10 }, name))
       .toBe('Bia pagou R$ 10 de aluguel a Ana.');
     expect(describeEvent({ type: 'PLAYER_MOVED', playerId: 'ana', from: 33, to: 2, startBonus: 200, sentToRest: false }, name))
-      .toBe('Ana foi para Roraima e recebeu R$ 200 no Início.');
+      .toBe('Ana foi para Amazonas e recebeu R$ 200 no Início.');
   });
 });
