@@ -91,4 +91,5 @@ Diretriz do usuário: a partida não pode ficar poluída e precisa funcionar no 
 - Histórico recolhido num botão; a carta do estado só aparece com uma casa selecionada.
 - Rodada, modo e vez ficam no painel do centro do tabuleiro, não no topo.
 - Olimpíadas: destaque no estado-sede (moldura dourada, tocha e selo ×N), não no centro da mesa (D22).
-- Celular (< 640 px): jogadores numa faixa no topo, carta do estado como folha acima da barra, câmera enquadrando pela largura (mais estreita em pé).
+- **Tela inteira (D26: navegador agora, Steam depois):** a partida ocupa a janela toda em qualquer proporção (16:9, 16:10, 21:9, de 1280×720 a 4K); a mesa e o cenário preenchem as sobras, sem faixas lisas e sem esticar o tabuleiro. Referência de posições: [partida-tela-cheia.webp](referencias/partida-tela-cheia.webp) — jogadores numa fileira no topo, Menu no canto superior direito, Histórico à direita, barra de ação única embaixo (avatar "Sua vez", dados, prazo, ROLAR DADOS, selo da rodada). A imagem vale para enquadramento e HUD; a arte atual do tabuleiro não muda.
+- Celular: **só em paisagem** (decisão de 2026-11-04), validado em 844×390, 932×430 e 667×375; em pé, aviso para girar o aparelho, sem pausar o relógio nem desconectar. Não há layout de partida vertical. Menus e lobby continuam funcionando em pé.

@@ -1,5 +1,27 @@
 # Orientações e pendências para o Codex
 
+## C8 — Tabuleiro de 34 casas na partida real: tamanho, nitidez e faixas de aluguel (05/11/2026)
+
+**Estado: pedido do usuário, aberto para o Codex.** A cena v3 está ativa na `develop` (`16f7705`), com `GameScreen` passando `taxPoolLabel`. Na tela real do usuário (janela larga, cerca de 2000×740), três problemas:
+
+1. **Faixas de aluguel em estados sem dono.** O usuário pediu que a plaquinha escura do aluguel **só apareça depois que o estado for comprado**. Hoje `plaque()` está gravada no atlas (`scripts/assets/board34-atlas.ts`) para os 26 estados, e o overlay de `Board34Scene` só escreve o valor quando há dono. Tirar a plaquinha do atlas e desenhá-la no overlay apenas para os `stateId` recebidos em `rentLabels` (o host já manda só os estados comprados). Estados sem dono mostram a ilustração inteira, sem faixa vazia.
+2. **Jogo não ocupa a tela.** `FixedBoardViewport` recorta a cena em 3:2 e pinta o resto com `#2b1914`: numa janela larga sobram faixas lisas laterais grandes. Pedido: o canvas ocupar a área inteira, com a mesa/cenário continuando nas laterais (e em cima/embaixo em telas altas), sem esticar nem mover o tabuleiro calibrado; a regra de "tabuleiro inteiro sempre visível" continua. Do meu lado, reduzo as margens reservadas ao HUD (`--hud-top/right/bottom` em `index.css`) para os painéis flutuarem sobre a mesa; aviso quando for mexer, para não conflitar com o C5.
+3. **Perda de nitidez.** Na tela do usuário o tabuleiro ficou com cerca de 855×570 px CSS, e cada casa com uns 55 px de largura: a arte v3 (boa nas capturas 2×) fica miúda e borrada. Parte se resolve com o item 2 (tabuleiro maior). Conferir também a nitidez do atlas projetado em telas grandes e com DPR 1 e 2: o atlas tem 3072×2048 para a composição inteira, então ampliar o tabuleiro além de cerca de 1536 px de largura útil vai borrar. Se preciso, um atlas maior ou a separação das faces por casa, dentro do orçamento de memória.
+
+**Referência de posições enviada pelo usuário (05/11/2026): `docs/referencias/partida-tela-cheia.webp`.** "O ideal das posições eu gostaria que fosse assim, e isso tudo ocupando a tela inteira." **Não mudar a arte atual:** o usuário esclareceu que a imagem é só exemplo de **como o jogo deve ocupar a tela** (enquadramento, HUD e posições dos elementos). As casas, o miolo, as cores e as ilustrações do tabuleiro v3 ficam **como estão hoje**; não copiar o desenho das casas, do centro ou da moldura da imagem. Ela também não vale para regras: a ordem das casas nela é a antiga (sem Saque); vale o percurso de 34 casas do catálogo. O que tirar dela:
+
+- Tabuleiro grande e centralizado, ocupando quase toda a altura, levemente inclinado, com a mesa de madeira e a decoração (planta, moedas, caneca) preenchendo **a tela inteira**, sem faixas lisas.
+- Jogadores numa **fileira no topo**, centralizada (avatar, nome, saldo e posição 1º–4º), em vez do canto superior esquerdo.
+- **Menu** no canto superior direito; botão **Histórico** à direita, na altura do terço inferior, sobre a mesa.
+- **Barra de ação embaixo, centralizada**, numa peça só: avatar de quem joga com "Sua vez", dados, prazo e ROLAR DADOS, com a "Rodada N" num selo em cima da barra. Sem o quadro "Turno de" separado no canto.
+- Painéis sobre a mesa, sem coluna lateral reservada: a área do tabuleiro deixa de descontar as margens do HUD.
+
+Isto substitui a disposição atual do C5. As posições e o acabamento do HUD são da arte; a engenharia mantém comportamento, dados e acessibilidade (`ActionBar`, `PlayersPanel`, `TurnBadge`, `EventLog`) e ajusta `index.css`/`GameScreen` junto, se você preferir que eu faça a parte estrutural; combine em `ORIENTACOES-CLAUDE.md`.
+
+**Lançamento (D26, 05/11/2026):** primeiro no **navegador**, depois na **Steam**. A tela inteira deixa de ser preferência e vira requisito já para o navegador (janelas de qualquer tamanho): qualquer proporção (16:9, 16:10 do Steam Deck 1280×800, 21:9 ultrawide) e resoluções de 1280×720 a 4K, com o tabuleiro **nítido em 1440p e 4K** (atlas ou faces com resolução suficiente, dentro de um orçamento de memória que você propõe). Toda arte entregue precisa ter origem e licença comercial registradas (E34); os itens com licença `pending-verification` entram nessa revisão.
+
+Validar na partida conectada (não só na prévia) em 1280×720, 1536×1024, 1280×800, 2560×1080 (ultrawide), 3840×2160, numa janela larga tipo 2000×740 e no celular em paisagem, com estados com e sem dono. Registrar a entrega em `ORIENTACOES-CLAUDE.md`.
+
 ## Registro do commit da arte v3 — 04/11/2026
 
 Entrega registrada em **`6d1de1a`**, branch **`develop_arte_3d`**, com commit e integração à `develop` autorizados pelo usuário. Base remota conferida: `2fc2c3e`. Verificação antes do commit: **107 testes, TypeScript, build e auditoria de credenciais aprovados**, sem arquivos acima de 100 MiB. O histórico Git registra a integração e este registro documental complementar. As menções a “sem commit/merge” abaixo são históricas. A publicação da arte não ativa por si só as regras/partida de 34 casas; consultar o contrato v3 a seguir.

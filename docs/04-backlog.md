@@ -64,8 +64,11 @@ Alvo visual: [visual-alvo.webp](referencias/visual-alvo.webp). Desde 2026-10-31 
 | E26 | Anúncio olímpico | Disparo pelo evento do servidor, sem repetir após reconexão | Confete, selo ×N e visual da chamada |
 | E27 | Cartas e mapa | Destaque do estado ao selecionar a casa (lógica) e fluxo da carta revelada | Arte das cartas de Evento e do verso da pilha |
 | E28 | Sons | Sistema de áudio: eventos certos, volume, mudo, sem repetição | Escolha/geração dos sons, se pedido |
-| E29 | Polimento e responsividade | Telas de Regras, Configurações e Resultado; desempenho no celular | Fonte, menus no estilo neon, acabamento visual |
+| E29 | Polimento e responsividade | Telas de Regras, Configurações e Resultado; tela inteira em qualquer proporção (D26); aviso de girar o celular; desempenho no celular | Fonte, menus no estilo neon, acabamento visual |
 | E30 | Build de produção e hospedagem | Tudo: build, banco, API, domínio, HTTPS | — |
-| E31 | Electron | Tudo, depois da versão web estável | — |
+| E31 | App de desktop para a Steam (Electron ou Tauri) | Tudo, depois da versão web estável: executável, tela cheia, resolução, atualização | Ícone e arte da loja |
+| E32 | Integração Steam | Steamworks: conta Steam no lugar do convidado, nome e avatar, convites e lobby de amigos, conquistas (opcional) | Arte das conquistas, se houver |
+| E33 | Teclado e controle | Navegar casas, comprar/construir, rolar e menus sem mouse; Steam Deck (1280×800, 16:10) | Indicadores de foco no HUD |
+| E34 | Licenças e proveniência | Inventário de cada asset com origem, prompt/ferramenta e licença comercial; nome, cartas e visual próprios, sem lembrar marcas existentes | Comprovar origem das imagens e GLB (Meshy, geração de imagens); refazer o que não puder ser comprovado |
 
-Ordem do lado da engenharia: P2 → P3 → P4 → P5 → E25 → E28 → E29 → E30 → E31. As partes de arte (E25–E27, E29) podem andar em paralelo do lado do Codex.
+Ordem do lado da engenharia: P2 → P3 → P4 → P5 → E25 → E28 → E29 → E30 (**lançamento no navegador**) → E31 → E32 → E33 (**Steam**). E34 corre em paralelo e precisa estar concluído antes do lançamento no navegador, que já é público (D26). As partes de arte (E25–E27, E29) podem andar em paralelo do lado do Codex.
