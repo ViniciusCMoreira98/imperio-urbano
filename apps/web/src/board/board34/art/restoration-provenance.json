@@ -1,0 +1,51 @@
+{
+  "createdAt": "2026-11-04",
+  "tool": "image_gen built-in",
+  "reference": "assets/3d/reviews/saque/board-rn-saque-concept-v1.png",
+  "scope": "Retomar direção visual aprovada; referência não é projetada no tabuleiro. Cada arte é independente. Fotos dos 26 estados preservadas.",
+  "paidMeshyCredits": 0,
+  "assets": [
+    {
+      "file": "center-brasil-v2.png",
+      "prompt": "Use case: stylized-concept. Create ONE production center illustration texture for a Brazilian board game, landscape 3:2. Reference image is STYLE AND CENTER COMPOSITION reference only. Recreate ONLY the vibrant painted Rio de Janeiro panorama from the middle of the reference: brilliant turquoise Guanabara bay, small white sailboats, rounded lush green mountains, Christ statue right upper area, white waterfront city, sugarloaf left, stadium right, charming colonial buildings and pink flowering trees along bottom. Large central playful bold BLOCK LETTER game emblem, exactly 'IMPÉRIO' in gold and 'URBANO' in WHITE, green shield outlined with thick sculpted bright gold, big simple crown above and yellow ribbon below reading exactly 'EDIÇÃO BRASIL'. Same friendly lavish colorful polished cartoon game style as reference, not serif typography, no laurel. The emblem occupies central 48% width, landscape remains visible around it. Full bleed rectangular illustration, front view, no perspective, no outer frame, NO board, no tiles, no HUD, no desk, no people, no dice. This is ONLY center printed artwork, not whole scene.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-ce53c429-d2bb-4fe3-b6e7-e15fe122f1f1.png",
+      "sha256": "4a7194433a0de1a155487fc900afef330bb005b0dad594f6a2a58e64c8289424",
+      "bytes": 2856891
+    },
+    {
+      "file": "start-v1.png",
+      "prompt": "ONE standalone square production board tile illustration. Style reference: rich colorful polished cartoon Brazilian board game. Emerald green enamel background with luminous rounded inner edge and fine golden scroll accents, large chunky raised polished GOLD rightward curved arrow, occupies upper 65%, a clear dark green blank lower 25% for native text later. Front view flat square texture, no perspective or surrounding board, no lettering, no text, no numbers, no UI. Full bleed to all edges. Match the START corner from reference, lavish sculpted tactile gold, not a flat vector.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-5daa8e86-3d90-4c1e-80d1-1ab599119f3b.png",
+      "sha256": "c7e0431df3190aa68973e2ccc9788d87c00b92633e36f9eaef17050a41d25f33",
+      "bytes": 1802180
+    },
+    {
+      "file": "olympics-v1.png",
+      "prompt": "ONE standalone square production board tile illustration. Match reference Olympics corner's lavish polished cartoon game style. Deep sapphire/navy enamel, soft blue rim glow, centered large dimensional orange golden flame above five linked colorful sports rings, jewel-like gold light and highlights, motif upper 65%; lower 25% remains blank dark navy to overlay text later. Front view flat square texture, full bleed, no perspective, no board, no UI, no text or letters. Premium colorful raised gold trim just inside square edge.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-235f642f-bb93-417b-b007-22dd930fc82f.png",
+      "sha256": "46eb37ca7cfafc529d933652d2356e34f23178693a93456d4ab92e13b54e50c8",
+      "bytes": 1749176
+    },
+    {
+      "file": "rest-v1.png",
+      "prompt": "ONE standalone square production board tile illustration, same lavish colorful cartoon board game style as reference REST corner. Deep navy enamel, jewel blue rim glow; detailed dimensional yellow and orange beach parasol sheltering a tiny orange wood lounge chair with gold frame over a small white sandy islet, bright blue sea accent. Icon centered in upper 65%; lower 25% blank navy for native label. Front view square texture full bleed, no perspective, no lettering, no text, no numbers, no board, no UI. Sculpted glossy luxurious game artwork with crisp warm golden highlights.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-7d4bece0-fe4c-42e8-a57b-d54d58995094.png",
+      "sha256": "3081664dbd1bddbc4caa57e6dd982dbdf4c06a3bc9bd9e23ede6350d03bd8633",
+      "bytes": 1858482
+    },
+    {
+      "file": "airport-v1.png",
+      "prompt": "ONE standalone square production board tile illustration, match lavish polished colorful cartoon reference AIRPORT corner. Deep sapphire and navy enamel; a beautifully shaded white passenger jet with gold reflected light and blue windows ascending diagonally right above a small airport terminal and control tower and turquoise landscape. Subject upper 65%, lower 25% blank dark navy for native title later. Front view flat square texture, full bleed, no lettering, no text, no numbers, no board, no UI, no perspective.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-f7f7550d-9f4e-462e-9e97-424ac092eb89.png",
+      "sha256": "c674dab3f8e16a95c57bb2cfe6faa59f7cb239a8c253868941d10a0e4c1064e0",
+      "bytes": 1899533
+    },
+    {
+      "file": "event-v1.png",
+      "prompt": "ONE standalone square production board tile illustration, match lavish polished colorful cartoon reference EVENT space. Rich golden yellow enamel luminous background, tiny gold sparkle accents, large sculpted blue QUESTION MARK on a raised ivory shield with beveled gold edge, upper 65%; lower 25% blank golden yellow for native label later. Front view flat square texture, full bleed, no text or numbers except the single question mark, no board, no UI, no perspective. Tactile premium rendered material, not flat emoji.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-1f9762b8-3279-43db-85c6-bd3c40d7a32c.png",
+      "sha256": "f9f723779b3a3ee04b74817b796be05e93a8cb4c274ebca7b129ac7e9f6a8a19",
+      "bytes": 1824586
+    }
+  ]
+}

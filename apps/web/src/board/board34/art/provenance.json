@@ -1,0 +1,28 @@
+{
+  "createdAt": "2026-11-04",
+  "tool": "image_gen built-in",
+  "file": "center-brasil-v1.png",
+  "scope": "Arte original exclusiva do miolo; nunca imagem inteira do tabuleiro.",
+  "sourcePhotoPixelsUsed": false,
+  "paidMeshyCredits": 0,
+  "prompt": "Create ONE original high-resolution central printed artwork texture for the tabletop board game \"IMPÉRIO URBANO — EDIÇÃO BRASIL\". Landscape 3:2, edge-to-edge illustration, opaque, no borders, no board, no tiles, no table, no HUD. This image will be printed ONLY on the center inset of a real 3D board, not used as a fake full-board screenshot.\nBright premium detailed cartoon 3D illustration of Rio de Janeiro / Brazil: blue Guanabara bay with small sailing boats, green tropical hills, Sugarloaf mountain on left, Christ statue on a hill in the upper right, warm white/colorful colonial buildings and a broad promenade at the lower edge, one rounded football stadium integrated into the landscape on the right. Rich tropical greenery, warm sunlight, saturated cobalt and turquoise water, small flowering trees. Charming playful detailed miniature-world art, polished textures and depth, no photorealism.\nAt the CENTER a compact original game logo in chunky beautifully rendered readable lettering: \"IMPÉRIO\" above \"URBANO\", and smaller \"EDIÇÃO BRASIL\" on a gold ribbon below. Warm gold crown above, dark green / navy backing, tasteful golden edges. The logo should occupy only the middle third, leaving generous beautiful landscape around it. Spell Portuguese accents correctly. No other lettering, names, numbers, prices, ads, brand marks or watermark. No reused pixels from an existing reference. Single original centered landscape texture, ready as a standalone asset.",
+  "companionAssets": [
+    {
+      "file": "table-wood-v1.png",
+      "tool": "image_gen built-in",
+      "prompt": "Create one original seamless tileable material texture for a premium cheerful cartoon 3D tabletop board game. Square 1024×1024, orthographic top-down flat material scan, warm reddish honey walnut / Brazilian wood tabletop. Rich natural flowing wood grain, fine organic curved fibers, broad subtle plank transitions, polished satin finish, warm caramel, amber and chestnut variation. High-quality stylized realistic wood, subtle enough for gameplay background, not photographic grunge and not flat vector stripes. Even diffuse neutral lighting without directional highlights or cast shadows, all edges seamless/tileable. No board, no game pieces, no furniture outlines, no objects, no decorations, no vignette, no perspective, no text, no logos. This is only a reusable base-color wood material, not a gameplay background screenshot."
+    }
+  ],
+  "sourceFiles": [
+    {
+      "file": "center-brasil-v1.png",
+      "bytes": 3256473,
+      "sha256": "87ef0b36cf53e10d62bc6f1bb4e357812f2898d2ac267496d88260071aa571a9"
+    },
+    {
+      "file": "table-wood-v1.png",
+      "bytes": 2474265,
+      "sha256": "83075d7fff9447cd69cdf25eb524178dcbe4760efbf374f2ff110a39f5eb9fcf"
+    }
+  ]
+}

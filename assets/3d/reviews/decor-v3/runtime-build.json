@@ -1,0 +1,22 @@
+[
+  {
+    "name": "plant",
+    "height": 2.0,
+    "triangles": 6497,
+    "bytes": 1065892,
+    "source": "assets\\3d\\staging\\decor-v3\\plant-textured.glb",
+    "target": "apps\\web\\public\\models\\decor\\plant-v3.glb",
+    "maxTextureSize": 1024,
+    "repairedZeroTangents": 1
+  },
+  {
+    "name": "mug",
+    "height": 1.22,
+    "triangles": 6244,
+    "bytes": 737652,
+    "source": "assets\\3d\\staging\\decor-v3\\mug-textured.glb",
+    "target": "apps\\web\\public\\models\\decor\\mug-v3.glb",
+    "maxTextureSize": 1024,
+    "repairedZeroTangents": 0
+  }
+]
