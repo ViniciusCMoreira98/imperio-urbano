@@ -95,9 +95,12 @@ export interface RulesConfig {
   nationalTravel: { fee: number };
   /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida. */
   tax: { amount: number };
-  /** Tempo para rolar (ou escolher a viagem) e para decidir compra/construção/Olimpíadas; ao acabar, o servidor joga. */
-  /** automaticSeconds: pausa entre as jogadas feitas pelo servidor para quem está desconectado. */
-  turnTimers: { rollSeconds: number; decisionSeconds: number; automaticSeconds: number };
+  /**
+   * Tempo para rolar (ou escolher a viagem) e para decidir compra/construção/Olimpíadas; ao acabar, o servidor joga.
+   * debtSeconds: prazo para vender e pagar uma dívida; ao acabar, o servidor vende o necessário.
+   * automaticSeconds: pausa entre as jogadas feitas pelo servidor para quem está desconectado.
+   */
+  turnTimers: { rollSeconds: number; decisionSeconds: number; debtSeconds: number; automaticSeconds: number };
   /** Partida em andamento sem ninguém conectado por esse tempo é encerrada sem vencedor. */
   abandonment: { seconds: number };
   modes: Record<GameMode, { roundLimit: number | null }>;

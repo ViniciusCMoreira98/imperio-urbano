@@ -62,12 +62,7 @@ export function ActionBar({ myId }: { myId: string }) {
             ROLAR DADOS
           </Button>
         )}
-        {mine && phase === 'AWAITING_PURCHASE' && (
-          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'DECLINE_PURCHASE' })}>Não comprar</Button>
-        )}
-        {mine && phase === 'AWAITING_BUILD' && (
-          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_BUILD' })}>Não construir</Button>
-        )}
+        {/* Comprar/construir e recusar ("×") ficam no modal de evolução da propriedade. */}
         {mine && phase === 'AWAITING_OLYMPICS_HOST' && (
           <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_OLYMPICS' })}>Não sediar</Button>
         )}
@@ -126,6 +121,10 @@ function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
           <strong className="text-rose-300">{formatCredits(missing)}</strong>.
         </p>
       )}
+      <p className="mb-2 text-xs text-amber-200">
+        Sem decisão em {rules.turnTimers.debtSeconds} s, o banco vende sozinho até pagar, do bem mais barato ao mais caro
+        (as casas de um estado saem antes dele). Se nem assim der, é falência.
+      </p>
       <ul className="max-h-56 space-y-2 overflow-y-auto pr-1">
         {list.map((property) => {
           const definition = statesById.get(property.stateId)!;
@@ -156,7 +155,7 @@ function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
 }
 
 /** Segundos até o servidor jogar pelo jogador da vez (rolar, recusar a compra...). */
-function Countdown({ deadline }: { deadline: number }) {
+export function Countdown({ deadline }: { deadline: number }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 250);
@@ -166,7 +165,7 @@ function Countdown({ deadline }: { deadline: number }) {
   return (
     <span
       className={`rounded-full px-2 py-0.5 font-mono text-sm font-bold tabular-nums ${seconds <= 5 ? 'bg-rose-600 text-white' : 'bg-white/15 text-white'}`}
-      title="Ao acabar o tempo, o servidor joga a ação padrão: rola os dados ou recusa a compra."
+      title="Ao acabar o tempo, o servidor joga a ação padrão: rola os dados, recusa a compra ou vende para pagar a dívida."
       aria-label={`${seconds} segundos restantes`}
     >
       ⏱ {seconds}s

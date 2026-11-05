@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import { GameBoard } from '../board/GameBoard';
-import { isMyTurn, playerOf } from '../game/rules';
 import { ActionBar } from '../hud/ActionBar';
 import { CardReveal } from '../hud/CardReveal';
 import { EventLog } from '../hud/EventLog';
 import { PlayersPanel } from '../hud/PlayersPanel';
+import { PropertyDecisionDialog } from '../hud/PropertyDecisionDialog';
 import { PropertyPanel } from '../hud/PropertyPanel';
 import { TurnBadge } from '../hud/TurnBadge';
 import { GameConnection } from '../net/gameSocket';
 import { useAppStore } from '../store/appStore';
 import { useGameStore } from '../store/gameStore';
-import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 
 /** Partida conectada ao servidor: o tabuleiro e os painéis só refletem o snapshot recebido. */
@@ -39,16 +38,6 @@ export function GameScreen() {
       useGameStore.getState().reset();
     };
   }, [gameId, session.token]);
-
-  // Ao parar num estado para comprar ou construir, abre o painel dele (sem mover a câmera).
-  const me = snapshot ? playerOf(snapshot, session.playerId) : undefined;
-  const phase = snapshot?.phase;
-  const myTurn = snapshot ? isMyTurn(snapshot, session.playerId) : false;
-  useEffect(() => {
-    if (myTurn && me && (phase === 'AWAITING_PURCHASE' || phase === 'AWAITING_BUILD')) {
-      useViewStore.getState().selectTile(me.position);
-    }
-  }, [myTurn, phase, me?.position]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="game-viewport relative h-full w-full overflow-hidden">
@@ -93,6 +82,8 @@ export function GameScreen() {
           <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center">
             <CardReveal />
           </div>
+          {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
+          <PropertyDecisionDialog myId={session.playerId} />
           {snapshot.status === 'FINISHED' && <FinishedOverlay onLeave={leave} />}
         </>
       )}

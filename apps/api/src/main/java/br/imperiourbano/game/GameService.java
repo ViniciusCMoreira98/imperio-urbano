@@ -46,6 +46,9 @@ public class GameService {
     public record Rejected(String reason, GameState state) implements Outcome {
     }
 
+    /** Limite de segurança da venda automática: cada venda reduz os bens, então a dívida acaba bem antes. */
+    private static final int MAX_AUTOMATIC_SALES = 200;
+
     private final GameEngine engine;
     private final GameStore store;
     private final Dice dice;
@@ -110,15 +113,30 @@ public class GameService {
     /**
      * Prazo esgotado: se a partida ainda está na versão em que o prazo começou, joga a ação padrão
      * pelo jogador da vez. Se alguém agiu antes, não faz nada.
+     *
+     * <p>Dívida de quem está conectado: a venda segue até quitar (ou falir sem nada a vender) no mesmo
+     * prazo, sem esperar outro prazo a cada venda. No modo automático cada venda é uma jogada.
      */
     public void timeout(String gameId, long version, boolean automaticMode) {
         withLock(gameId, () -> {
             GameState state = store.loadSnapshot(gameId).orElse(null);
             if (state == null || state.version() != version || state.status() != GameStatus.IN_PROGRESS) return null;
-            timeouts.forState(state, automaticMode).ifPresent(timeout -> apply(gameId, state, state.currentPlayer().id(),
-                    timeout.defaultCommand(), "auto:" + gameId + ":" + version));
+            timeouts.forState(state, automaticMode).ifPresent(timeout -> {
+                String debtor = state.currentPlayer().id();
+                GameState current = apply(gameId, state, debtor, timeout.defaultCommand(), "auto:" + gameId + ":" + version).state();
+                int sale = 1;
+                while (!automaticMode && inDebt(current, debtor) && sale < MAX_AUTOMATIC_SALES) {
+                    current = apply(gameId, current, debtor, timeouts.debtStep(current),
+                            "auto:" + gameId + ":" + version + ":" + sale++).state();
+                }
+            });
             return null;
         });
+    }
+
+    private static boolean inDebt(GameState state, String playerId) {
+        return state.status() == GameStatus.IN_PROGRESS && state.phase() == TurnPhase.AWAITING_DEBT_RESOLUTION
+                && state.currentPlayer().id().equals(playerId);
     }
 
     /** Todos saíram e ninguém voltou a tempo: encerra a partida sem vencedor. */

@@ -1,6 +1,6 @@
 import { rules } from '@imperio/game-data';
 import type { Command } from '@imperio/shared-types';
-import { HOTEL_LEVEL, affordablePurchaseHouses, buildOptions, isMyTurn, playerOf, propertyAt, saleRefunds } from '../game/rules';
+import { HOTEL_LEVEL, isMyTurn, playerOf, propertyAt, saleRefunds } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { useGameStore } from '../store/gameStore';
 import { Button } from '../ui/ui';
@@ -20,30 +20,7 @@ export function TileActions({ tileIndex, myId }: { tileIndex: number; myId: stri
   const act = (command: Command) => send(command);
   const buttons: { label: string; command: Command; variant?: 'confirm' | 'primary' | 'secondary' }[] = [];
 
-  if (phase === 'AWAITING_PURCHASE' && here && definition && !property) {
-    const max = affordablePurchaseHouses(definition, me.credits);
-    for (let houses = 0; houses <= max; houses++) {
-      const total = definition.price + houses * definition.houseCost;
-      buttons.push({
-        label: houses === 0 ? `COMPRAR — ${formatCredits(total)}` : `Comprar + ${houses} 🏠 — ${formatCredits(total)}`,
-        command: { type: 'BUY_PROPERTY', houses },
-        variant: houses === 0 ? 'confirm' : 'secondary',
-      });
-    }
-  }
-
-  if (phase === 'AWAITING_BUILD' && here && definition && property && mine) {
-    const options = buildOptions(property);
-    for (let houses = 1; houses <= options.houses; houses++) {
-      const cost = houses * definition.houseCost;
-      if (cost <= me.credits) {
-        buttons.push({ label: `Construir ${houses} 🏠 — ${formatCredits(cost)}`, command: { type: 'BUILD', houses }, variant: 'confirm' });
-      }
-    }
-    if (options.hotel && definition.hotelCost <= me.credits) {
-      buttons.push({ label: `Construir 🏨 hotel — ${formatCredits(definition.hotelCost)}`, command: { type: 'BUILD_HOTEL' }, variant: 'confirm' });
-    }
-  }
+  // Comprar e construir ficam no modal de evolução (PropertyDecisionDialog).
 
   if (phase === 'AWAITING_OLYMPICS_HOST' && definition && mine) {
     buttons.push({
