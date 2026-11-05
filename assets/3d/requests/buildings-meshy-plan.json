@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-05",
+  "aiModel": "meshy-7.1",
+  "budgetCredits": 150,
+  "balanceBefore": 950,
+  "expectedCreditsPerModel": 30,
+  "textureResolution": "2k",
+  "geometryResolution": "standard",
+  "generationRoute": "text preview + texture guided by original modal image",
+  "tasks": [
+    {
+      "level": 1,
+      "previewTaskId": "01a1a9fd-007f-764e-b6a6-07130f148bf4",
+      "prompt": "Premium detailed stylized Brazilian game miniature, rich terracotta barrel roof tiles, ivory cream stucco, crisp white moldings, reflective blue windows, pale stone paved square plinth, lush rounded garden trees and shrubs, two small black lantern posts at front corners. Separate full 3D diorama, no ground outside plinth, front facing forward, clean geometry, no characters. One SINGLE-storey compact Brazilian home. Exactly ONE floor, a white front door with step, one blue window either side, four-sided orange tiled hip roof, leafy garden. Small cute cottage, low wide proportions.",
+      "sourceArtwork": "house-1-v2.png"
+    },
+    {
+      "level": 2,
+      "previewTaskId": "01a1a9fd-163f-74e9-9747-b7965ea5abbc",
+      "prompt": "Premium detailed stylized Brazilian game miniature, rich terracotta barrel roof tiles, ivory cream stucco, crisp white moldings, reflective blue windows, pale stone paved square plinth, lush rounded garden trees and shrubs, two small black lantern posts at front corners. Separate full 3D diorama, no ground outside plinth, front facing forward, clean geometry, no characters. One TWO-storey Brazilian townhouse. Exactly TWO floors, carved wooden front door, blue ground floor windows, small ornate black wrought iron balcony and blue double door on second floor, tiled hip roof, front pots and garden trees.",
+      "sourceArtwork": "house-2-v2.png"
+    },
+    {
+      "level": 3,
+      "previewTaskId": "01a1a9fd-2b6c-7378-bbef-03ec76940065",
+      "prompt": "Premium detailed stylized Brazilian game miniature, rich terracotta barrel roof tiles, ivory cream stucco, crisp white moldings, reflective blue windows, pale stone paved square plinth, lush rounded garden trees and shrubs, two small black lantern posts at front corners. Separate full 3D diorama, no ground outside plinth, front facing forward, clean geometry, no characters. One THREE-storey Brazilian townhouse. Exactly THREE floors, blue windows, black wrought iron balconies on floors two and three with white flowers, orange tiled hip roof with a small open square rooftop terrace in its center, white parapet and potted plants on the terrace.",
+      "sourceArtwork": "house-3-v2.png"
+    },
+    {
+      "level": 4,
+      "previewTaskId": "01a1a9fd-428b-7362-8d13-cb0f341ddd2f",
+      "prompt": "Premium detailed stylized Brazilian game miniature, rich terracotta barrel roof tiles, ivory cream stucco, crisp white moldings, reflective blue windows, pale stone paved square plinth, lush rounded garden trees and shrubs, two small black lantern posts at front corners. Separate full 3D diorama, no ground outside plinth, front facing forward, clean geometry, no characters. One FOUR-storey Brazilian townhouse. Exactly FOUR clearly separated floors, warm wood entrance, white facade pilasters and cornices, blue windows, black wrought iron balconies with plants on upper three floors, orange tiled hip roof, lush front garden.",
+      "sourceArtwork": "house-4-v2.png"
+    },
+    {
+      "level": 5,
+      "previewTaskId": "01a1a9fd-574c-77de-b987-b94527fa21b9",
+      "prompt": "Premium detailed stylized Brazilian game miniature, rich terracotta barrel roof tiles, ivory cream stucco, crisp white moldings, reflective blue windows, pale stone paved square plinth, lush rounded garden trees and shrubs, two small black lantern posts at front corners. Separate full 3D diorama, no ground outside plinth, front facing forward, clean geometry, no characters. One luxurious FOUR-storey Brazilian HOTEL. Exactly four floors, cream peach facade pilasters, central tall arched blue glass bay, rows of blue windows and flower boxes, blue glass entrance canopy, warm golden glass doors, flat rooftop service enclosure and two antennas, deep navy rooftop sign reading HOTEL in gold, small golden stars above. Palm trees both sides of entrance and tiny Brazilian flag in garden. No terraco",
+      "sourceArtwork": "hotel-v2.png"
+    }
+  ]
+}

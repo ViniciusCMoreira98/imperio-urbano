@@ -10,7 +10,8 @@ export function panelPoint(panel:Panel,u:number,v:number):[number,number]{const[
 
 /** Rasterização única: evita as costuras diagonais de uma malha de triângulos Canvas2D. */
 export function paintPanel(ctx:CanvasRenderingContext2D,panel:Panel,paint:(ctx:CanvasRenderingContext2D,w:number,h:number)=>void,region?:PanelRect){
- const image=document.createElement('canvas');image.width=Math.ceil(panel.width*2);image.height=Math.ceil(panel.height*2);const local=image.getContext('2d')!;local.scale(image.width/panel.width,image.height/panel.height);paint(local,panel.width,panel.height);
+ const rasterScale=Math.max(1,Math.abs(ctx.getTransform().a));
+ const image=document.createElement('canvas');image.width=Math.ceil(panel.width*rasterScale);image.height=Math.ceil(panel.height*rasterScale);const local=image.getContext('2d')!;local.scale(image.width/panel.width,image.height/panel.height);paint(local,panel.width,panel.height);
  const source=local.getImageData(0,0,image.width,image.height).data,[a,b,c,d,e,f,g,h]=matrix(panel);
  // Adjugada da matriz; o determinante cancela ao dividir por q.
  const ia=e-f*h,ib=c*h-b,ic=b*f-c*e,id=f*g-d,ie=a-c*g,iff=c*d-a*f,ig=d*h-e*g,ih=b*g-a*h,ii=a*e-b*d;

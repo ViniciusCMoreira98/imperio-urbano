@@ -21,10 +21,10 @@ function name(ctx:CanvasRenderingContext2D,label:string,x:number,y:number,size:n
 function plaque(ctx:CanvasRenderingContext2D,r:PanelRect){const g=ctx.createLinearGradient(0,r.y,0,r.y+r.height);g.addColorStop(0,'#32447b');g.addColorStop(.5,'#171d43');g.addColorStop(1,'#070e27');ctx.fillStyle=g;ctx.strokeStyle='#edc25e';ctx.lineWidth=1.4;ctx.beginPath();ctx.roundRect(r.x,r.y,r.width,r.height,Math.min(6,r.height/3));ctx.fill();ctx.stroke();}
 function frame(ctx:CanvasRenderingContext2D,w:number,h:number,color:string){const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#fff6bd');g.addColorStop(.25,'#e0b34b');g.addColorStop(.5,'#fff2a8');g.addColorStop(1,'#a76b19');ctx.strokeStyle=g;ctx.lineWidth=4;ctx.beginPath();ctx.roundRect(2,2,w-4,h-4,7);ctx.stroke();ctx.lineWidth=1.5;ctx.strokeStyle=color;ctx.beginPath();ctx.roundRect(5,5,w-10,h-10,5);ctx.stroke();}
 
-export async function buildBoard34Atlas(){
+export async function buildBoard34Atlas(scale=2){
  placements.length=0;const center=await load(centerUrl),pictures=new Map(await Promise.all(layout.tiles.filter(t=>t.type==='PROPERTY').map(async t=>[t.id,await load(url(t.id.toLowerCase()+'-board-v3'))]as const)));
  const art=new Map(await Promise.all(['arrow','flame','rest','airport','event','tax','chest'].map(async k=>[k,await load(url(k+'-v3'))]as const)));
- const canvas=document.createElement('canvas');canvas.width=3072;canvas.height=2048;const ctx=canvas.getContext('2d')!;ctx.scale(2,2);ctx.fillStyle='#2d1a11';ctx.fillRect(0,0,1536,1024);
+ const canvas=document.createElement('canvas');canvas.width=1536*scale;canvas.height=1024*scale;const ctx=canvas.getContext('2d')!;ctx.scale(scale,scale);ctx.fillStyle='#2d1a11';ctx.fillRect(0,0,1536,1024);
  const poly=layout.layers.center.pixels,xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);ctx.save();path(ctx,poly);ctx.clip();cover(ctx,center,Math.min(...xs),Math.min(...ys),Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys));ctx.restore();
  for(const tile of layout.tiles){ctx.save();path(ctx,tile.pixels);ctx.clip();paintPanel(ctx,tile.panel,(x,w,h)=>{
   if(tile.type==='PROPERTY'){
@@ -37,7 +37,7 @@ export async function buildBoard34Atlas(){
     cover(x,image,4,34,w-8,h-38);const wash=x.createLinearGradient(0,4,0,55);wash.addColorStop(0,'#fffefa');wash.addColorStop(.65,'#fffefa');wash.addColorStop(1,'#fffefa00');x.fillStyle=wash;x.fillRect(4,4,w-8,53);
     text(x,tile.id,w/2,18,23,w-16);name(x,tile.label,w/2,33,10.2,w-16);
    }
-   plaque(x,tile.panel.rent!);frame(x,w,h,group.color);
+   frame(x,w,h,group.color);
   }else{
    const dark=tile.type==='START'||tile.type==='SAQUE'?'#084d2b':'#082458',light=tile.type==='START'||tile.type==='SAQUE'?'#16a158':'#1360b9',gold=tile.type==='TAX'||tile.type==='EVENT';
    const g=x.createRadialGradient(w*.45,h*.25,1,w*.5,h*.5,Math.max(w,h)*.7);g.addColorStop(0,gold?'#fff3a3':light);g.addColorStop(1,gold?'#e7a731':dark);x.fillStyle=g;x.fillRect(0,0,w,h);

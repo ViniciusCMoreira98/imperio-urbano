@@ -1,0 +1,27 @@
+{
+  "level": 1,
+  "sourceArtwork": "house-1-v2.png",
+  "sourceSha256": "210b7bf95e7a4fcdc4b357ff23943410fc8ccbbc438a39539d9a70c208dc6681",
+  "expectedCredits": 30,
+  "stage": "CREATED",
+  "submittedAt": "2026-11-05T04:43:52.209Z",
+  "parameters": {
+    "file_path": "C:\\Users\\Plust\\Projetos\\imperio-urbano\\.worktrees\\meshy-phase-b\\apps\\web\\src\\property-evolution\\art\\house-1-v2.png",
+    "image_enhancement": false,
+    "ai_model": "meshy-7.1",
+    "model_type": "standard",
+    "geometry_resolution": "standard",
+    "should_remesh": true,
+    "target_polycount": 12000,
+    "topology": "triangle",
+    "should_texture": true,
+    "texture_resolution": "2k",
+    "enable_pbr": true,
+    "target_formats": [
+      "glb"
+    ],
+    "response_format": "json"
+  },
+  "explicitImageUploadAuthorized": true,
+  "taskId": "01a1aa05-3ffe-7733-897d-729fc148ea31"
+}

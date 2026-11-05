@@ -1,0 +1,53 @@
+[
+  {
+    "width": 3840,
+    "height": 2160,
+    "deviceDpr": 1,
+    "viewport": {
+      "width": 3840,
+      "height": 2160,
+      "dpr": 1,
+      "large": true
+    },
+    "atlas": {
+      "url": "/models/board/board34-atlas-v01-6k.webp",
+      "width": 6144,
+      "height": 4096
+    },
+    "pixels": 8294400
+  },
+  {
+    "width": 2560,
+    "height": 1440,
+    "deviceDpr": 2,
+    "viewport": {
+      "width": 2560,
+      "height": 1440,
+      "dpr": 1.5084944665313014,
+      "large": true
+    },
+    "atlas": {
+      "url": "/models/board/board34-atlas-v01-6k.webp",
+      "width": 6144,
+      "height": 4096
+    },
+    "pixels": 8386092
+  },
+  {
+    "width": 1536,
+    "height": 1024,
+    "deviceDpr": 2,
+    "viewport": {
+      "width": 1536,
+      "height": 1024,
+      "dpr": 2,
+      "large": false
+    },
+    "atlas": {
+      "url": "/models/board/board34-atlas-v01.webp",
+      "width": 3072,
+      "height": 2048
+    },
+    "pixels": 6291456
+  }
+]

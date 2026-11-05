@@ -1,0 +1,62 @@
+[
+  {
+    "level": 0,
+    "reference": "terrain-v2.png",
+    "referenceSha256": "78f5597201be2e66b708bd184f7f43f59132c405a37a36abf54370d2a91b9490",
+    "sourceSha256": "4577659a88adb33a7ea26b36750cad29f75d0ad4d55f76f5b112b7461f6b38f5",
+    "runtime": "/models/buildings/property-level-0-meshy-v1.glb",
+    "runtimeSha256": "fd7d09cdb4a88993a7887686647141738da0b2e8f82fc5f05b1714153381de93",
+    "bytes": 1815212,
+    "triangles": 11055
+  },
+  {
+    "level": 1,
+    "reference": "house-1-v2.png",
+    "referenceSha256": "210b7bf95e7a4fcdc4b357ff23943410fc8ccbbc438a39539d9a70c208dc6681",
+    "sourceSha256": "dc9fe4205c5ab63f752b8faa2187f15e20d2d50347172d4920ab392dd86671a5",
+    "runtime": "/models/buildings/property-level-1-meshy-v1.glb",
+    "runtimeSha256": "4c82421dcbd2fe38a4e088a7aea70dd7f91fa1478768c9d87e7c6303b1f0101e",
+    "bytes": 1889904,
+    "triangles": 11093
+  },
+  {
+    "level": 2,
+    "reference": "house-2-v2.png",
+    "referenceSha256": "0bcebbaf825ae6893de2b46104b47d7718c846bc5725c5646516c4eec9e82042",
+    "sourceSha256": "2628126ce1b95156d88b1eb1afb68aadecb415f1b3c19ef439abaa86b4e3bef5",
+    "runtime": "/models/buildings/property-level-2-meshy-v1.glb",
+    "runtimeSha256": "e932ab1f14528dc493f74f86f6ac644aea25d1d9a954d9f2089d854b7349377f",
+    "bytes": 1914776,
+    "triangles": 11127
+  },
+  {
+    "level": 3,
+    "reference": "house-3-v2.png",
+    "referenceSha256": "d188e7c108f0edd2a79b0c04ef54b0611a7d427930d9db969f5086ce7c518af7",
+    "sourceSha256": "473fc0c8d7da09f927245c1b0a70649a05e3305489baeb81e02471fe519b5bfe",
+    "runtime": "/models/buildings/property-level-3-meshy-v1.glb",
+    "runtimeSha256": "c3901c3060ee620025fc41c33500107bc1fa59661e15d1eb5ac09c305020e99a",
+    "bytes": 1834848,
+    "triangles": 10442
+  },
+  {
+    "level": 4,
+    "reference": "house-4-v2.png",
+    "referenceSha256": "81715cb49867c91a3c4bb9df80391bef453245d056703c6dc3e2d4a0d663849f",
+    "sourceSha256": "571f008bfe8c3b7ad2a83b5f615b9e93f1be5b2807998feeeb0229f49eb5290e",
+    "runtime": "/models/buildings/property-level-4-meshy-v1.glb",
+    "runtimeSha256": "53416040d06fd18c3a8b7cbb773a7dc250cd4427478f18a29ee993ac87bcf472",
+    "bytes": 1983772,
+    "triangles": 11483
+  },
+  {
+    "level": 5,
+    "reference": "hotel-v2.png",
+    "referenceSha256": "31a340caff432da5cb7d1ce652ed8eee9a7457e4fcc2eb88a1c537bae8fd6992",
+    "sourceSha256": "3fb8f3ecc98e79c4a50532c486061d639f9ebc5a41c7c40a85dd63bbeec9dcc2",
+    "runtime": "/models/buildings/property-level-5-meshy-v1.glb",
+    "runtimeSha256": "d627ff99f1bf0082db99572e1868cf7ad5346f56ac02c3511b11afa6fde9486b",
+    "bytes": 2096368,
+    "triangles": 13403
+  }
+]

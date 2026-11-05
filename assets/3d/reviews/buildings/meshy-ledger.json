@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-05",
+  "balanceBefore": 950,
+  "balanceAfter": 670,
+  "totalCredits": 280,
+  "previousDecorCreditsExcluded": 50,
+  "imageUploadConsent": "Sim, enviar as cinco artes ao Meshy",
+  "aiModel": "meshy-7.1",
+  "tasks": [
+    {
+      "level": 1,
+      "taskId": "01a1a9fd-007f-764e-b6a6-07130f148bf4",
+      "type": "text-to-3d",
+      "credits": 20,
+      "status": "SUCCEEDED",
+      "used": false,
+      "reason": "Inconsistent with original modal architecture"
+    },
+    {
+      "level": 2,
+      "taskId": "01a1a9fd-163f-74e9-9747-b7965ea5abbc",
+      "type": "text-to-3d",
+      "credits": 20,
+      "status": "SUCCEEDED",
+      "used": false,
+      "reason": "Inconsistent with original modal architecture"
+    },
+    {
+      "level": 3,
+      "taskId": "01a1a9fd-2b6c-7378-bbef-03ec76940065",
+      "type": "text-to-3d",
+      "credits": 20,
+      "status": "SUCCEEDED",
+      "used": false,
+      "reason": "Inconsistent with original modal architecture"
+    },
+    {
+      "level": 4,
+      "taskId": "01a1a9fd-428b-7362-8d13-cb0f341ddd2f",
+      "type": "text-to-3d",
+      "credits": 20,
+      "status": "SUCCEEDED",
+      "used": false,
+      "reason": "Inconsistent with original modal architecture"
+    },
+    {
+      "level": 5,
+      "taskId": "01a1a9fd-574c-77de-b987-b94527fa21b9",
+      "type": "text-to-3d",
+      "credits": 20,
+      "status": "SUCCEEDED",
+      "used": false,
+      "reason": "Inconsistent with original modal architecture"
+    },
+    {
+      "level": 1,
+      "taskId": "01a1aa05-3ffe-7733-897d-729fc148ea31",
+      "type": "image-to-3d",
+      "credits": 30,
+      "status": "SUCCEEDED",
+      "used": true,
+      "reference": "house-1-v2.png",
+      "runtime": "property-level-1-meshy-v1.glb"
+    },
+    {
+      "level": 2,
+      "taskId": "01a1aa05-470d-77a4-817a-7985f2b47431",
+      "type": "image-to-3d",
+      "credits": 30,
+      "status": "SUCCEEDED",
+      "used": true,
+      "reference": "house-2-v2.png",
+      "runtime": "property-level-2-meshy-v1.glb"
+    },
+    {
+      "level": 3,
+      "taskId": "01a1aa05-4d84-74be-9175-65b572786885",
+      "type": "image-to-3d",
+      "credits": 30,
+      "status": "SUCCEEDED",
+      "used": true,
+      "reference": "house-3-v2.png",
+      "runtime": "property-level-3-meshy-v1.glb"
+    },
+    {
+      "level": 4,
+      "taskId": "01a1aa05-544d-76da-a534-ecf15b79578b",
+      "type": "image-to-3d",
+      "credits": 30,
+      "status": "SUCCEEDED",
+      "used": true,
+      "reference": "house-4-v2.png",
+      "runtime": "property-level-4-meshy-v1.glb"
+    },
+    {
+      "level": 5,
+      "taskId": "01a1aa05-5a4d-70f8-9e6b-5f3238cfba5a",
+      "type": "image-to-3d",
+      "credits": 30,
+      "status": "SUCCEEDED",
+      "used": true,
+      "reference": "hotel-v2.png",
+      "runtime": "property-level-5-meshy-v1.glb"
+    },
+    {
+      "level": 0,
+      "taskId": "01a1aa12-8126-745d-a721-386082b71279",
+      "type": "image-to-3d",
+      "credits": 30,
+      "status": "SUCCEEDED",
+      "used": true,
+      "reference": "terrain-v2.png",
+      "runtime": "property-level-0-meshy-v1.glb"
+    }
+  ],
+  "terrainImageUploadConsent": "Sim, criar o terreno no Meshy"
+}

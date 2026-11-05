@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedOn": "2026-10-31",
+  "reviewedOn": "2026-11-05",
   "provider": "meshy",
   "scope": [
     "text-to-3d",
@@ -53,6 +53,12 @@
           "Licença sem evidência",
           "Desempenho em aparelho móvel não medido"
         ]
+      },
+      "commercialLicenseReview": {
+        "date": "2026-11-05",
+        "status": "historical-calibration-only",
+        "commercialDistributionApproved": false,
+        "reason": "Not part of the shipped runtime; generation/reference provenance remains unverified"
       }
     },
     {
@@ -121,6 +127,12 @@
           },
           "approvedForRuntime": false
         }
+      },
+      "commercialLicenseReview": {
+        "date": "2026-11-05",
+        "status": "historical-calibration-only",
+        "commercialDistributionApproved": false,
+        "reason": "Not part of the shipped runtime; generation/reference provenance remains unverified"
       }
     },
     {
@@ -153,6 +165,12 @@
           "animations": []
         },
         "approvedForRuntime": false
+      },
+      "commercialLicenseReview": {
+        "date": "2026-11-05",
+        "status": "historical-calibration-only",
+        "commercialDistributionApproved": false,
+        "reason": "Not part of the shipped runtime; generation/reference provenance remains unverified"
       }
     },
     {
@@ -171,7 +189,13 @@
       "validationReport": null,
       "rig": "unknown",
       "animations": null,
-      "downloadStatus": "attempt-failed-no-file-saved"
+      "downloadStatus": "attempt-failed-no-file-saved",
+      "commercialLicenseReview": {
+        "date": "2026-11-05",
+        "status": "historical-calibration-only",
+        "commercialDistributionApproved": false,
+        "reason": "Not part of the shipped runtime; generation/reference provenance remains unverified"
+      }
     },
     {
       "id": "steampunk-brasil-v01",
@@ -183,7 +207,7 @@
         "glb"
       ],
       "status": "downloaded",
-      "license": "pending-verification",
+      "license": "Meshy Terms of Service 3.2 — own project generation, paid plan confirmed by owner 2026-11-05",
       "sourceSha256": "cd6199d107d0fccef1b744713a583db177eec410680db254964f234f98546100",
       "optimizedPath": null,
       "validationReport": "assets/3d/reviews/steampunk-brasil-v01/khronos.json",
@@ -225,6 +249,13 @@
           "Rig/animações",
           "Licença e desempenho móvel"
         ]
+      },
+      "commercialLicenseReview": {
+        "date": "2026-11-05",
+        "status": "verified",
+        "commercialUse": true,
+        "evidence": "Original text-to-3d prompt and task in assets/3d/requests; paid plan confirmed by owner",
+        "terms": "https://www.meshy.ai/terms-of-use"
       }
     },
     {
@@ -237,7 +268,7 @@
         "glb"
       ],
       "status": "candidate",
-      "license": "pending-verification",
+      "license": "Meshy Terms of Service 3.2 — own project generation, paid plan confirmed by owner 2026-11-05",
       "sourceSha256": "e4b1de4f65a93fe6e88e748aaa6ade30fca21383e74023b2849480fa7f67931b",
       "optimizedPath": "assets/3d/optimized/characters/steampunk-brasil-v01-rest-v01.glb",
       "validationReport": "assets/3d/reviews/rest-pose/khronos.json",
@@ -355,7 +386,15 @@
           "previewReport": "assets/3d/reviews/uniform-mask/preview.json"
         }
       },
-      "publicPath": "/models/characters/steampunk-brasil-v01-rest-v01.glb"
+      "publicPath": "/models/characters/steampunk-brasil-v01-rest-v01.glb",
+      "commercialLicenseReview": {
+        "date": "2026-11-05",
+        "status": "verified",
+        "commercialUse": true,
+        "evidence": "Own generation prompt/task in assets/3d/requests; user explicitly confirmed paid plan at generation time",
+        "terms": "https://www.meshy.ai/terms-of-use",
+        "releaseReview": "assets/3d/commercial-licenses.json"
+      }
     }
   ]
 }

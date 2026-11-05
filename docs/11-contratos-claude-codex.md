@@ -1,5 +1,58 @@
 # 11 — Contratos entre engenharia (Claude) e arte 3D (Codex)
 
+## C8 — entrega local de tela inteira, HUD e nitidez (05/11/2026)
+
+Implementação na `develop_arte_3d`, sobre `afbfbed`; commit e integração à `develop` solicitados e autorizados pelo usuário. Identificadores registrados no histórico Git. **A arte v3, os estados, o miolo, a moldura e o percurso de 34 casas foram preservados.** A referência de tela serve somente ao enquadramento e à posição dos controles.
+
+- **Aluguéis após a compra:** as plaquinhas foram retiradas dos dois atlas. `paintRentalPlaque` e o texto são desenhados no overlay apenas para as propriedades recebidas em `rentLabels`; `GameBoard` exige `ownerId` preenchido. A Taxa conserva sua placa e saldo próprios. Fontes dos estados sem dono ficam livres de faixas vazias.
+- **Mesa contínua:** `FixedBoardViewport expanded` usa a janela inteira. `tabletopViewport.ts` ajusta apenas a janela de projeção, com escala uniforme e espaço para o HUD; não altera pose, geometria, âncoras, matriz de mundo da câmera nem a calibração usada para projetar a arte. Mostra o tabuleiro completo e continua a madeira nas áreas excedentes de cada proporção. Planta, moedas e caneca existentes se distribuem horizontalmente sobre o plano da mesa para aproveitar as laterais extras, sem deslocar o tabuleiro. A projeção de exibição agora varia com o tamanho da janela; testes antigos que exigem projeção idêntica ao redimensionar são históricos. A matriz de mundo permanece idêntica.
+- **HUD C8:** jogadores centralizados no topo, Menu à direita, Histórico independente no terço inferior direito e barra inferior única com retrato/vez, dados, prazo, ações e selo de rodada. `TurnBadge` foi incorporado à `ActionBar`; o rótulo acessível `Turno de: Você/nome` foi preservado. `GameScreen` não reserva coluna para painéis; `PropertyPanel` só aparece quando solicitado, flutuando. Modais, comandos e condições de ação seguem da engenharia. O aviso de celular em pé continua ativo.
+- **Perfis de textura:** atlas normal 3072×2048, 1.357.692 bytes; atlas 6K 6144×4096, 3.716.762 bytes. O maior é solicitado quando o tamanho físico projetado supera 3072 px e a GPU suporta 6144. O anterior permanece visível durante a troca assíncrona. `paintPanel` rasteriza na resolução de cada perfil, mantendo tipografia e contornos maiores. Não foram inventados detalhes além da resolução das ilustrações-fonte.
+- **Orçamento:** atlas sem mipmaps; normal 24 MiB, 6K 96 MiB, overlay 24 MiB. Até **144 MiB de texturas GPU do tabuleiro** se os dois perfis estiverem no cache, além da madeira, modelos, avatares e buffers. Desenho limitado a 8.388.608 pixels: 4K/DPR 1 usa 8.294.400; 2560×1440 com dispositivo DPR 2 usa DPR efetivo ~1,5085; telas menores podem usar DPR 2. Não é medição de FPS ou memória total em aparelho físico.
+
+### Origem e licença — E34
+
+O usuário confirmou **plano pago do Meshy na geração** e informou que **não tem autorização comercial dos retratos da referência visual-alvo**. Os recortes foram substituídos por cinco retratos originais, gerados individualmente com `image_gen` integrado, sem imagens de referência. Arquivos WebP de 512×512 em `hud/art/avatars-c8/`, fontes PNG em `assets/3d/calibration/c8/portraits/`, prompts/hashes em `provenance.json` e `assets/3d/requests/c8-portraits.json`.
+
+`GameBoard` não importa mais a cena legada de 33 casas, evitando empacotar suas imagens de referência no jogo atual (que já exige catálogo 34 no servidor). Os módulos de calibração antigos permanecem como histórico; não reativá-los na distribuição. Modelos Kenney mantêm CC0 e aviso local. Modelos Meshy próprios têm plano/geração documentados; quatro downloads históricos de steampunk-girl continuam sem procedência suficiente e **não foram aprovados nem incluídos no runtime**. Registro comercial com fontes oficiais e hashes de 117 assets em `assets/3d/commercial-licenses.json`; isso não atribui licença a referências de terceiros. Nenhum crédito Meshy foi consumido no C8.
+
+### Verificação
+
+115 testes, TypeScript e build aprovados. Teste ponta a ponta de dois jogadores criando sala, rolando dados, passando a vez e consultando o histórico **aprovado** (Playwright, API real). QA visual conectado final aprovado com quatro jogadores, compra por comando oficial, estados com e sem dono, 34 meshes, canvas na dimensão integral da janela e mesma pose em 1280×720, 1536×1024, 1280×800, 2560×1080, 2560×1440, 3840×2160, 2000×740 e 844×390. Nenhum erro de página ou requisição falha. Atlas 6K confirmado em 4K na partida conectada. Perfis adicionais DPR 1/2 em `profile-report.json`, incluindo 2560×1440/DPR 2 com 8.386.092 pixels e 1536×1024/DPR 2 com 6.291.456 pixels. Capturas e `connected-report.json` em `assets/3d/reviews/c8/`. O build não contém as imagens de referência sem licença. Não publicar tokens: a sessão de QA fica apenas em staging ignorado pelo Git. QA usa Chromium de desktop com renderização de software; celular físico e desempenho no Steam Deck ainda não foram medidos.
+
+**Para Claude:** esta entrega inclui a parte estrutural de `GameScreen`, `index.css`, `ActionBar` e `TurnBadge`; não reaplicar as margens/coluna do C5 nem os retratos recortados da referência. Comportamento, validações, acessibilidade e snapshot continuam sob responsabilidade da engenharia. As casas/terreno Meshy da etapa anterior permanecem preservados.
+
+## Atualização com develop — 05/11/2026
+
+Branch develop_arte_3d atualizada para afbfbed, incorporando a partida de 34 casas (16f7705) e o aviso de orientação no celular. As referências abaixo à produção ainda usar 33 casas são históricas e foram superadas por esta atualização. Casas e terreno Meshy locais preservados; o C8 foi executado posteriormente, conforme a entrega acima.
+
+
+## Complemento — terreno antes da Casa 1 (05/11/2026)
+
+O usuário apontou a ausência do terreno e autorizou expressamente o envio de `terrain-v2.png` ao Meshy por mais 30 créditos. Tarefa de conversão: `01a1aa12-8126-745d-a721-386082b71279`, Meshy 7.1 com textura 2K; plano e consentimento em `assets/3d/requests/terrain-meshy-image-plan.json`.
+
+**Contrato vigente, substituindo a descrição de nível 0 abaixo:** propriedade comprada (`ownerId` preenchido) e `buildingLevel:0` recebe a miniatura do terreno original do modal; ao construir, o terreno é substituído pela Casa 1, depois Casa 2–4 e hotel. Propriedades sem dono e casas especiais não recebem o modelo. Nenhuma regra de compra/construção, preço ou aluguel foi alterada. `Pieces.tsx` respeita a posse do snapshot; não inferir posse pelo nível.
+
+Família de seis GLBs `property-level-{0..5}-meshy-v1.glb`, todos com frente +Z, apoio Y=0, escala uniforme e identificação do dono no material separado. A preparação aceita `--terrain` para incorporar apenas o novo terreno e preservar os cinco modelos já entregues; hashes anteriores conferidos. Terreno: 1.815.212 bytes e 11.055 triângulos. Prévia individual em `assets/3d/reviews/buildings/terrain-and-model.png`; comparação da família em `modal-and-models.png`.
+
+Custo acumulado da família: **280 créditos**, incluindo os 100 de prévias descartadas, os 150 das cinco construções e os 30 do terreno. Os 50 créditos anteriores de decoração permanecem fora deste total. Saldo confirmado após o terreno: **670 créditos**. Não repetir a geração para reconstruir arquivos locais.
+
+Validação do complemento: 110 testes, TypeScript e build aprovados. Terreno sem erros/avisos Khronos (duas mensagens informativas na faixa de cor). Resultado inspecionado em comparação com a arte original; QA no navegador dos níveis 0–5, quatro personagens, cor do dono e terreno em três resoluções móveis em paisagem, sem erros/requisições falhas e com câmera invariável. Relatório e procedência atualizados em `assets/3d/reviews/buildings/`. Nenhum commit ou publicação nesta etapa.
+
+## Construções Meshy a partir do modal — 05/11/2026
+
+Entrega local na `develop_arte_3d`, ainda sem commit/publicação desta etapa. Cinco modelos reais Meshy 7.1, orientados pelas artes originais de `property-evolution/art/house-1-v2.png` até `house-4-v2.png` e `hotel-v2.png`, com origem registrada no chat ArtesImperio. As ilustrações do modal foram preservadas. Prévia comparativa: `assets/3d/reviews/buildings/modal-and-models.png`.
+
+**Contrato visual:** um edifício evolui conforme `buildingLevel`: 0 sem modelo, 1–4 casas com respectivos pavimentos, 5 hotel. Substitui a repetição de quatro miniaturas iguais; não altera quantidade lógica, custos, aluguéis, saldo nem regras do servidor. `BuildingModels.tsx` carrega os GLBs; `buildingPresentation.ts` consulta `buildings.json` e aplica escala uniforme dentro de `buildingArea`. Frente +Z, apoio Y=0, sem alterar câmera/âncoras. Cor do jogador apenas no material independente `OWNER_ACCENT` e na faixa existente; fachada preserva a paleta do modal. Carregamento isolado por modelo para não esconder o tabuleiro inteiro.
+
+**Para Claude:** manter esta apresentação ao integrar as regras de 34 casas. A partida nesta branch ainda consulta o catálogo de 33; não mudar seletor/âncoras por este registro. A camada visual já consome o nível do snapshot, sem exigir novo campo do servidor. GLBs e manifesto constituem uma família inseparável. Não recolorir os materiais texturizados, esticar modelos por eixo ou recolocar quatro casas idênticas. As pendências C6.1/C6.2 anteriores não foram executadas nesta etapa.
+
+Arquivos finais: `apps/web/public/models/buildings/property-level-{1..5}-meshy-v1.glb`. Total 9.719.668 bytes, entre 10.442 e 13.403 triângulos/modelo. Fontes integrais 2K e preparação Blender em `assets/3d/calibration/buildings-meshy/`; processo reproduzível `scripts/assets/prepare-meshy-buildings.py`. Texturas de runtime até 1024 px. Protótipos locais anteriores arquivados em staging ignorado; não são os modelos entregues.
+
+**Créditos:** 250 consumidos nesta etapa: 100 nas cinco prévias por texto descartadas e 150 nas cinco conversões por imagem aprovadas. Saldo confirmado 950 → 700, separado dos 50 gastos anteriormente na decoração. O usuário autorizou explicitamente enviar as cinco imagens locais ao Meshy após bloqueio inicial da revisão automática; apenas a ferramenta necessária de conversão por imagem foi habilitada. Identificadores, referências e custos em `assets/3d/reviews/buildings/meshy-ledger.json`; não executar novamente os scripts de geração para reconstruir o runtime.
+
+Validação: 110 testes aprovados; TypeScript e build aprovados. Cinco GLBs sem erros/avisos Khronos (duas mensagens informativas por modelo sobre atributos não usados na faixa de cor). QA real: níveis 1–5, um edifício por propriedade, quatro personagens, mudança de cor do dono, câmera invariável e três telas em paisagem (844×390, 932×430, 667×375), sem erros de página ou requisições. Relatório `assets/3d/reviews/buildings/report.json`. Não equivale a teste em aparelho físico ou aprovação estética do usuário.
+
 ## Registro do commit da arte v3 — 04/11/2026
 
 Entrega registrada em **`6d1de1a`**, branch **`develop_arte_3d`**, com commit e integração à `develop` autorizados pelo usuário. Base remota conferida: `2fc2c3e`. Verificação antes do commit: **107 testes, TypeScript, build e auditoria de credenciais aprovados**, sem arquivos acima de 100 MiB. O histórico Git registra a integração e este registro documental complementar. As menções a “sem commit/merge” abaixo são históricas. A publicação da arte não ativa por si só as regras/partida de 34 casas; consultar o contrato v3 a seguir.

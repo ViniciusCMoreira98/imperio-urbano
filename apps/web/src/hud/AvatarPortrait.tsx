@@ -1,20 +1,11 @@
 import type { AvatarId } from '@imperio/shared-types';
-import reference from '../../../../docs/referencias/visual-alvo.webp?url';
+const portraits=import.meta.glob('./art/avatars-c8/*.webp',{eager:true,query:'?url',import:'default'})as Record<string,string>;
 
-// Janelas sobre a arte fornecida pelo projeto, sem duplicar/reescrever a imagem.
-// Ilustrações do HUD; não alteram a identidade, seleção ou GLB do avatar.
-const WINDOWS: Record<AvatarId, [number, number, number, number]> = {
-  'avatar-1': [49, 25, 66, 66],
-  'avatar-2': [49, 122, 66, 66],
-  'avatar-3': [49, 215, 66, 66],
-  'avatar-4': [49, 308, 66, 66],
-  'avatar-5': [29, 850, 66, 66],
-};
+// Retratos originais do projeto, sem pixels da referência sem autorização comercial.
+// Prompts, fontes e hashes em art/avatars-c8/provenance.json. GLBs e seleção não são alterados.
 
 export function AvatarPortrait({ avatarId }: { avatarId: AvatarId }) {
-  return <svg className="hud-avatar-art" viewBox={WINDOWS[avatarId].join(' ')} aria-hidden="true" focusable="false">
-    <image href={reference} width="1671" height="941"/>
-  </svg>;
+  return <img className="hud-avatar-art" src={portraits[`./art/avatars-c8/${avatarId}.webp`]} alt="" aria-hidden="true" draggable={false}/>;
 }
 
 export function LeaderCrown() {

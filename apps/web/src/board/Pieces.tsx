@@ -4,8 +4,9 @@ import { useMemo } from 'react';
 import { board } from '@imperio/game-data';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
-import { buildingPlacement, ownerStrip } from './buildingLayout';
-import { HotelModel, HouseModel } from './BuildingModels';
+import { ownerStrip } from './buildingLayout';
+import { PropertyBuildingModel } from './BuildingModels';
+import { propertyBuildingPlacement } from './buildings/buildingPresentation';
 import { tileAnchor } from './layout';
 import { OlympicHost } from './OlympicHost';
 
@@ -22,7 +23,7 @@ export function Buildings() {
       return {
         property,
         anchor,
-        buildings: buildingPlacement(anchor, property.buildingLevel),
+        building: property.ownerId ? propertyBuildingPlacement(anchor.buildingArea, property.buildingLevel) : null,
         strip: ownerStrip(anchor),
         ownerColor: colorOf.get(property.ownerId ?? '') ?? '#ffffff',
         hostMultiplier: snapshot.olympics.hostStateId === property.stateId ? snapshot.olympics.multiplier : null,
@@ -32,22 +33,17 @@ export function Buildings() {
 
   return (
     <>
-      {items.map(({ property, anchor, buildings, strip, ownerColor, hostMultiplier }) => (
+      {items.map(({ property, anchor, building, strip, ownerColor, hostMultiplier }) => (
         <group key={property.stateId} position={[anchor.x, anchor.surfaceY, anchor.z]} rotation={[0, anchor.rotationY, 0]}>
-          {/* Faixa do dono na borda externa; casas e hotel também levam a cor do peão do dono. */}
+          {/* Cor do dono na faixa e na base; fachada mantém a paleta original do modal. */}
           <mesh position={[0, 0.006, strip.z]}>
             <boxGeometry args={[strip.width, 0.012, strip.depth]} />
             <meshStandardMaterial color={ownerColor} />
           </mesh>
           {/* Construções na faixa interna da casa (buildingArea), de frente para fora. */}
-          {buildings.houses.map(([x, z], i) => (
-            <group key={i} position={[x, 0, z]}>
-              <HouseModel color={ownerColor} size={buildings.houseSize} />
-            </group>
-          ))}
-          {buildings.hotel && (
-            <group position={[buildings.hotel.x, 0, buildings.hotel.z]}>
-              <HotelModel color={ownerColor} width={buildings.hotel.width} height={buildings.hotel.height} depth={buildings.hotel.depth} />
+          {building && (
+            <group position={[building.x, 0, building.z]}>
+              <PropertyBuildingModel level={building.level} color={ownerColor} scale={building.scale}/>
             </group>
           )}
           {hostMultiplier !== null && (
