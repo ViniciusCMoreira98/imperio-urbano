@@ -1,0 +1,5 @@
+import React,{useState} from 'react';import{createRoot}from'react-dom/client';
+import{SaqueTileArtwork,TaxPoolMarker}from'../../../apps/web/src/special-tiles/SpecialTileArtwork';
+import './preview.css';
+function Preview(){const[label,setLabel]=useState('R$ 600');return <main><header><h1>Saque e fundo da Taxa</h1><p>Prévia de arte · valores ilustrativos · sem regras ou pagamentos conectados</p></header><div className="art-grid"><section><h2>Casa Saque</h2><SaqueTileArtwork/><p>Recebe todo o valor que estiver no fundo da Taxa.</p></section><section><h2>Marcador na Taxa</h2><TaxPoolMarker collectedLabel={label}/><label>Exemplo de valor <select value={label} onChange={e=>setLabel(e.target.value)}><option>R$ 0</option><option>R$ 100</option><option>R$ 600</option><option>R$ 12.000</option></select></label></section></div><footer><p>Nova posição: Início → RN → Amazonas</p><p>Antigo RN: AL → Saque → CE no sentido do percurso. Proposta com 34 casas.</p></footer></main>;}
+createRoot(document.getElementById('root')!).render(<Preview/>);

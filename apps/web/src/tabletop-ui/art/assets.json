@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "assets": {
+    "rent-plaque": {
+      "file": "rent-plaque-v1.png",
+      "width": 2172,
+      "height": 724,
+      "viewBox": [
+        4,
+        135,
+        2164,
+        455
+      ],
+      "transparentPixels": 613777,
+      "sha256": "bb61d6a892f253d5840117792015db6f40251f02d37ccc275561cb0ad21c76b2"
+    },
+    "player-frame": {
+      "file": "player-frame-v1.png",
+      "width": 2172,
+      "height": 724,
+      "viewBox": [
+        5,
+        28,
+        2160,
+        658
+      ],
+      "transparentPixels": 432866,
+      "sha256": "7e106fa69ecd735e4be9c1a606177a2e5239ebb24a69ecd80da7dab4d0dd4808"
+    },
+    "action-dock": {
+      "file": "action-dock-v1.png",
+      "width": 2172,
+      "height": 724,
+      "viewBox": [
+        0,
+        106,
+        2169,
+        507
+      ],
+      "transparentPixels": 607043,
+      "sha256": "2dc30a1aced36d42f56da35c4750cb13efa13c5f6f432ae47d816e2f3e892bcb"
+    }
+  }
+}

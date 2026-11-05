@@ -1,0 +1,14 @@
+body { background: #352015; }
+.asset-review-header { padding: 18px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+.asset-review-header h1 { margin: 0; font-size: 22px; color: #ffe3a2; }
+.asset-review-header p { font-size: 13px; color: #e6cbb1; }
+.asset-review-header label { margin-left: auto; display: flex; gap: 10px; align-items: center; font-size: 14px; }
+.asset-review-header select { max-width: 100%; background: #251744; border: 1px solid #b78e49; border-radius: 8px; padding: 8px; color: #fff2d1; }
+.asset-review-board { width: min(100%,1536px); aspect-ratio: 3 / 2; position: relative; margin: auto; }
+.asset-review-gallery { padding: 32px 24px; background: radial-gradient(ellipse at top,#9f6739,#57331e); display: flex; align-items: center; flex-direction: column; gap: 20px; }
+.asset-review-players { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+.asset-review-gallery .tabletop-player { flex-shrink: 0; }
+.asset-review-gallery button { background: linear-gradient(#ffdd6d,#f19a14); color: #331d05; font-size: 20px; font-weight: 900; border: 2px solid #ffe7a1; border-radius: 15px; padding: 14px 24px; box-shadow: 0 3px 0 #8f4e0b; }
+.asset-review-timer { border-radius: 12px; background: #ffffff20; padding: 5px 10px; }
+.asset-review-gallery p { font-size: 13px; color: #ffe8cc; }
+@media(max-width:639px) { .asset-review-header { padding: 12px; } .asset-review-header label { flex-direction: column; align-items: flex-start; margin-left: 0; width:100%; } .asset-review-header select { width:100%; } .asset-review-gallery { padding:24px 12px; } .asset-review-gallery .tabletop-action { min-height:120px; } .asset-review-gallery button { font-size:12px; padding:8px; } .tabletop-action__content { gap:5px; font-size:12px; } .tabletop-action__round { font-size:10px; } .asset-review-gallery .hud-dice svg { width:24px; height:28px; } }

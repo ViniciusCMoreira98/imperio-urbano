@@ -66,7 +66,7 @@ Tabelas (Flyway, `apps/api/src/main/resources/db/migration`): `games`, `game_eve
 |---|---|
 | `app/` | Raiz, troca de telas, layout principal. |
 | `screens/` | Início, Criar/Entrar, Seleção de avatar, Regras, Configurações, Resultado. |
-| `board/` | Cena R3F: `BoardScene`, `Tile`, `Pawn`, `CameraRig`, `Dice3D`, `Buildings`, layout calculado a partir de `board.json`. |
+| `board/` | Cena ativa: `GameBoard` → `reference33/ReferenceBoardScene`, com câmera fixa, `Pawns` e `Buildings` injetados pela engenharia. Percurso de 33 casas do `board.json`, âncoras por ID do manifesto `reference33/layout.json`. `BoardScene`/`Tile` e a geometria antiga ficam como referência histórica (C4 em `ORIENTACOES-CODEX.md`). |
 | `hud/` | Painel de jogadores, painel da propriedade, barra de ações, histórico, painel olímpico. |
 | `property-card/` | Carta digital do estado (cabeçalho colorido, paisagem, mapa, tabela). |
 | `store/` | Zustand: `gameStore` (snapshot do servidor, somente leitura) e `uiStore` (seleção, câmera, telas). |

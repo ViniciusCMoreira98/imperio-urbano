@@ -1,0 +1,6 @@
+.saque-artwork,.tax-pool-marker { position: relative; width: 100%; container-type: inline-size; }
+.saque-artwork img,.tax-pool-marker img { display: block; width: 100%; height: auto; }
+.saque-artwork > strong { position: absolute; left: 5%; top: 38%; width: 36%; text-align: center; color: #fff8dc; font: 950 10cqw/1.1 system-ui,sans-serif; text-shadow: 0 .5cqw .3cqw #103e26; }
+.tax-pool-marker__text { position: absolute; top: 56%; left: 10%; right: 10%; bottom: 12%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff6dd; font-family: system-ui,sans-serif; gap: 1cqw; }
+.tax-pool-marker__text span { font-size: 4cqw; font-weight: 800; letter-spacing: .06em; }
+.tax-pool-marker__text strong { font-size: 10cqw; font-weight: 950; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; color: #ffe25e; }

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "nativeBoard": {
+    "width": 1536,
+    "height": 1024,
+    "aspect": 1.5
+  },
+  "coordinateSpace": "viewport-css-pixels",
+  "landscape": {
+    "minimumWidth": 640,
+    "top": 112,
+    "compactTop": 84,
+    "compactWidth": 1100,
+    "compactHeight": 700,
+    "right": 344,
+    "compactRight": 280,
+    "compactRightBelow": 1024,
+    "bottom": 120,
+    "shortBottom": 128
+  },
+  "portrait": {
+    "top": 144,
+    "bottom": 148,
+    "minimumSideReserve": 180,
+    "maximumSideRatio": 0.45,
+    "tabletBottom": 120,
+    "tabletMinimumWidth": 640
+  },
+  "gutter": 12,
+  "background": "original-procedural-css-wood",
+  "cameraChanged": false,
+  "paidCredits": 0,
+  "referenceLayouts": [
+    {
+      "orientation": "landscape",
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "boardViewport": {
+        "x": 20,
+        "y": 124,
+        "width": 1152,
+        "height": 768
+      },
+      "hudSafeAreas": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 1512,
+          "height": 100
+        },
+        "side": {
+          "x": 1204,
+          "y": 124,
+          "width": 320,
+          "height": 768
+        },
+        "bottom": {
+          "x": 12,
+          "y": 910,
+          "width": 1512,
+          "height": 108
+        }
+      }
+    },
+    {
+      "orientation": "portrait",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "boardViewport": {
+        "x": 0,
+        "y": 156,
+        "width": 390,
+        "height": 260
+      },
+      "hudSafeAreas": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 366,
+          "height": 132
+        },
+        "side": {
+          "x": 12,
+          "y": 428,
+          "width": 366,
+          "height": 256
+        },
+        "bottom": {
+          "x": 12,
+          "y": 702,
+          "width": 366,
+          "height": 136
+        }
+      }
+    }
+  ]
+}

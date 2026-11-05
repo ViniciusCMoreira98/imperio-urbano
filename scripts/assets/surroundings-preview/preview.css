@@ -1,0 +1,2 @@
+/* Apenas encaixe da prévia: não duplica as margens da GameScreen. */
+.surroundings-preview__players { width: 100%; min-width: 0; position: static; }

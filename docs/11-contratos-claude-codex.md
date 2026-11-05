@@ -256,3 +256,50 @@ anchorToWorld(anchor, lx, lz) // ponto local da casa → mundo, mesma rotação 
 **Interação sem câmera móvel (feito):** saíram `ViewControls` (botões ⟲ ⌂ ⟳ e teclas Q/E/Esc) e o duplo clique de foco em `Tile`. Clicar numa casa continua abrindo o painel; o "×" do painel só limpa a seleção. `viewStore` ficou com `selectedTile`, `selectTile` e `clearSelection`; `focusedTile` e `quarterTurns` ficam fixos (`null` e `0`) só enquanto `CameraRig.tsx`/`cameraPose.ts` ainda os leem.
 
 **Próximo passo do Codex (aguarda aprovação do usuário):** câmera estática sem ler `focusedTile`/`quarterTurns` (e sem arrastar/girar/zoom). Depois disso a engenharia remove os dois campos do `viewStore`. `scripts/assets/hud-visual-qa.mjs` ainda verifica a rotação por teclado e precisa ser atualizado pelo Codex.
+
+## Contrato adicional — área de rolagem dos dados (04/11/2026)
+
+Fonte: `reference33/layout.json → diceRoll`. `dice[i].position`, `yaw` e `size` descrevem o repouso final, com pivô central. `diceRoll.supportY` é o plano de apoio; `centerBounds[i].min/max` são limites XYZ do **centro** durante giros livres, em coordenadas mundiais. Não são limites da superfície do dado. `horizontalTravel` é o deslocamento máximo em X e Z a partir da posição final; `bounceHeight` é a variação vertical adicional permitida acima do centro mínimo de giro. `rotationClearance: bounding-sphere` significa que cabe qualquer orientação dentro desses limites.
+
+Para pousar: manter o centro dentro do envelope durante os giros; concluir a orientação da face oficial e o yaw; voltar ao X/Z final; somente então baixar verticalmente até `dice[i].position.y`. Abaixo do centro mínimo do envelope não há garantia para giros livres: usar a orientação final, sem inclinação adicional. A sequência inversa permite sair do repouso. Esses limites não são uma trajetória ou temporização; a animação é responsabilidade da engenharia.
+
+O envelope foi verificado contra o quadro com margem de 8 px na composição nativa, moldura com folga de 0,02 unidade, recorte sem decoração e o outro dado. A câmera continua fixa, em 3:2; a margem escala junto com a composição no celular. Não confundir a validação da cena isolada com integração multiplayer ou com ausência de sobreposição pelo HUD.
+
+## C3 — precisão das áreas e escala (04/11/2026)
+
+As áreas locais de personagens/construções são retângulos de referência, não retângulos necessariamente inscritos nos polígonos inclinados. O `polygon` é o limite de ocupação; preservar a distribuição compacta e as escalas adaptativas existentes. O teste de discos de apoio (raio 0,1875 na escala 0,75) não demonstra separação visual dos corpos, nem confinamento de braços/roupas durante todo o idle. A arte mantém escala 0,75 nesta composição, com ressalva de encobrimento do grupo e tamanho pequeno no celular. Não alterar escala conforme turno/casa ou mudar a câmera para resolver isso sem revisar o contrato.
+
+## C5 — contrato da composição ao redor da cena (04/11/2026)
+
+A entrega de arte usa `BoardSurroundings` como camada de apresentação ao redor da cena existente. Não muda a câmera, o GLB nem `reference33/layout.json → tiles[].pixels`. Há dois sistemas explícitos: pixels nativos da câmera 1536×1024 e pixels do viewport externo. `surroundingsLayout(width,height)` publica `boardViewport` e `hudSafeAreas` em pixels do viewport; `boardPixelToViewport` transforma pixels nativos por escala uniforme e translação. O manifesto `surroundings.json` registra referência, reservas e mínimos. A camada externa se adapta à tela; o Canvas interno continua 3:2.
+
+Props: `children` é a cena/tabuleiro existente; `top`, `side`, `bottom` são elementos de apresentação fornecidos pela engenharia. O componente não lê stores, não decide ações e não abre conexões. O slot `side` fica à direita em tela larga e abaixo do tabuleiro na vertical, com rolagem interna. Os painéis precisam respeitar o retângulo recebido e não usar posicionamento absoluto em relação à janela. O entorno preenche toda a tela com madeira procedural CSS original, inclusive as sobras laterais; não inclui outra imagem de tabuleiro.
+
+Integração: usar a camada no lugar das margens `--hud-*`, não dentro delas. Claude conecta os painéis reais e mantém menu, temporizador e acessibilidade. A prévia usa os componentes reais com snapshot sintético, sem certificar conexão, multiplayer ou finalização do modal C6. Redimensionamento altera apenas os retângulos DOM e a escala uniforme da composição; câmera e coordenadas de mundo permanecem constantes.
+
+
+## Placas de aluguel e molduras do conceito aprovado (04/11/2026)
+
+`tabletop-ui/TabletopUi.tsx` exporta `RentPlaque`, `StateRentOverlay`, `PlayerNameplate` e `ActionDock`. São apresentação: sem stores, regras, conexões ou comandos. Os PNGs são vazios; valores, nomes, retratos, dados e tempo são conteúdo separado. Não incorporar preços em texturas finais.
+
+`RentLabel = {stateId,stateName,rentLabel,kind:'base'|'current'}`; `StateRentOverlay({labels})` usa retângulos nativos de `rentPlacements.json`, sobre composição 1536×1024, com escala uniforme. Preços completos e descrições acessíveis; cliques atravessam a camada. Fonte do aluguel é a engenharia: base no estado livre; `currentRent` com nível/multiplicador no estado possuído; `formatCredits` para R$. Não calcular nem multiplicar na arte. Não confundir preço de compra com aluguel.
+
+A nova decisão visual do usuário retira a prancheta lateral de estado do conceito C5; o modal de compra/construção existente permanece. O conceito de cenário contínuo é referência visual, não prova de integração funcional. A camada de preços ainda precisa de conferência com peões/construções e solução legível no celular ao integrar. Não reintroduzir a coluna permanente da prévia anterior como implementação do conceito aprovado.
+
+
+## Decisão vigente — celular somente em paisagem (04/11/2026)
+
+O usuário confirmou: **a partida no celular só pode ser jogada na orientação paisagem (horizontal)**. Esta decisão prevalece sobre as propostas e capturas históricas de jogo em 390×844/320×568. Essas capturas continuam úteis para inspecionar assets, mas não representam um modo de partida suportado nem são critério de aprovação de leitura móvel.
+
+Na integração, a engenharia deve mostrar em retrato um aviso para girar o aparelho e impedir interação com as ações da partida enquanto o telefone estiver em pé. Não depender exclusivamente de bloqueio de orientação do navegador: o aviso deve funcionar mesmo sem suporte a esse recurso. Girar o telefone não pode pausar o relógio oficial, desconectar, reiniciar a partida nem enviar comandos. Ao voltar à horizontal, retomar a apresentação do snapshot atual.
+
+Validar HUD, tabuleiro, aluguéis e modal em paisagem, incluindo 844×390, 932×430 e 667×375. Rever a legibilidade dos preços e a ocupação da tela nessa composição; não reutilizar o encaixe estreito da coluna lateral C5 rejeitada. Não há novo layout de partida vertical a implementar. O aviso de orientação e a montagem na partida continuam pendentes: esta atualização registra a decisão, sem alterar o GameScreen.
+
+
+## Revisão solicitada pelo usuário — proposta de 34 casas, RN e Saque (04/11/2026)
+
+A nova decisão acrescenta uma casa especial SAQUE: START → RN → AM no começo; AL → SAQUE → CE no antigo trecho de RN. As 26 propriedades permanecem; Início não sai. `special-tiles/proposedBoard34.json` é contrato de proposta, separado do manifesto atual de 33 casas. Não há migração de catálogo, modelo, câmera ou partidas aplicada nesta entrega. A revisão do congelamento C2 precisa ser coordenada entre arte e engenharia antes da integração.
+
+O fundo de Taxa é estado oficial do servidor: acumula pagamentos efetivados de Taxa, é recebido integralmente ao parar em Saque e zera nessa operação. O marcador na Taxa mostra o saldo disponível, com atualização por snapshot/eventos, sem contagem ou transferência local. R$600 no conceito é exemplo. A engenharia define o schema e valida dívida, idempotência, persistência e multiplayer.
+
+`special-tiles/SpecialTileArtwork.tsx`: `SaqueTileArtwork()` fornece a arte/título da casa e `TaxPoolMarker({collectedLabel:string})` fornece pote e total já formatado. Sem stores/regras/comandos. Imagens originais transparentes, texto e valor separados. Saque não tem plaquinha de aluguel; RN mantém seu aluguel e deve ganhar novas coordenadas na futura calibração. As posições de 33 casas não aprovam ocupação ou preços na proposta de 34. Conceito e assets em `assets/3d/reviews/saque/` e `special-tiles/art/`; detalhes no pedido vigente dos dois arquivos de orientação.

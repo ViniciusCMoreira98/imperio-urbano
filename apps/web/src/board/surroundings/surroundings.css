@@ -1,0 +1,36 @@
+/* Mesa procedural original: sem imagens de referência, rede, Canvas extra ou animações. */
+.board-surroundings {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #754127;
+  background-image:
+    radial-gradient(ellipse at 38% 28%, #f6c67f1f, #1c0d0780 110%),
+    repeating-linear-gradient(2deg, #2510060c 0 1px, #d0915309 1px 3px, transparent 3px 8px),
+    repeating-linear-gradient(0deg, transparent 0 94px, #32170c66 94px 96px, #d5954b20 96px 97px),
+    linear-gradient(100deg, #6f3822, #a16036 42%, #6c3824);
+  box-shadow: inset 0 0 100px #180b0799;
+}
+.board-surroundings::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #f0c77726;
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: -1;
+}
+.board-surroundings__board { position: absolute; box-shadow: 0 16px 28px #1b0b0770; }
+.board-surroundings__slot { position: absolute; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #c6a45f #321c13; }
+.board-surroundings__top { display: flex; align-items: flex-start; gap: 12px; }
+.board-surroundings__side { display: flex; flex-direction: column; gap: 12px; }
+.board-surroundings__side > * { flex-shrink: 0; }
+.board-surroundings__bottom { display: flex; align-items: center; justify-content: center; gap: 20px; }
+.board-surroundings[data-orientation="portrait"] .board-surroundings__bottom { gap: 8px; }
+.board-surroundings__top .hud-players { width: 100%; flex-direction: row; margin: 0; }
+.board-surroundings__top .hud-player-row { flex: 1 1 0; }
+.board-surroundings__side > * { width: 100%; max-width: 100%; }
+.board-surroundings[data-orientation="portrait"] .board-surroundings__bottom .hud-turn-badge { display: none; }
+.board-surroundings__top .hud-players { padding-top: 4px; padding-bottom: 4px; }
