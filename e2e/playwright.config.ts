@@ -8,6 +8,8 @@ import { defineConfig, devices } from '@playwright/test';
 // Caminho explícito: no Windows o processo do Playwright não procura executáveis na pasta atual.
 const mvnw = process.platform === 'win32' ? '.\\mvnw.cmd' : './mvnw';
 const webPort = Number(process.env.E2E_WEB_PORT ?? 5173);
+// E2E_API_PORT: API da worktree em outra porta (o Vite recebe a mesma via API_PORT).
+const apiPort = Number(process.env.E2E_API_PORT ?? 8080);
 
 export default defineConfig({
   testDir: '.',
@@ -31,16 +33,17 @@ export default defineConfig({
     {
       command: `${mvnw} -B -q spring-boot:run`,
       cwd: '../apps/api',
-      port: 8080,
+      port: apiPort,
       timeout: 180_000,
       reuseExistingServer: true,
       // O WebSocket só aceita as origens listadas; inclui a porta do front usada no teste. `env`
       // substitui o ambiente inteiro no Playwright: sem repassar o do sistema, a API perde PATH e JAVA_HOME.
-      env: { ...(process.env as Record<string, string>), ALLOWED_ORIGINS: `http://localhost:5173,http://localhost:${webPort}` },
+      env: { ...(process.env as Record<string, string>), ALLOWED_ORIGINS: `http://localhost:5173,http://localhost:${webPort}`, SERVER_PORT: String(apiPort) },
     },
     {
       command: `npx vite --port ${webPort} --strictPort`,
       cwd: '../apps/web',
+      env: { ...(process.env as Record<string, string>), API_PORT: String(apiPort) },
       port: webPort,
       reuseExistingServer: true,
     },

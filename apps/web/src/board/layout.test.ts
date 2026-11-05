@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { board } from '@imperio/game-data';
-import manifest from './reference33/layout.json';
+import { boardVisualManifest } from './boardVisualManifest';
 import { buildingPlacement, ownerStrip } from './buildingLayout';
 import { type TileAnchor, type TileArea, anchorToWorld, tileAnchor, tileIndexOf } from './layout';
 import { PAWN_RADIUS, pawnSpots } from './pawnLayout';
@@ -26,7 +26,9 @@ function corners(anchor: TileAnchor, area: TileArea): { x: number; z: number }[]
   return [-1, 1].flatMap((sx) => [-1, 1].map((sz) => anchorToWorld(anchor, area.x + (sx * area.width) / 2, area.z + (sz * area.depth) / 2)));
 }
 
-describe('âncoras das 33 casas', () => {
+const manifest = boardVisualManifest(board.tiles);
+
+describe('âncoras das casas do manifesto ativo', () => {
   it('cada casa do percurso usa a arte de mesmo id, índice e tipo do manifesto', () => {
     expect(board.tiles).toHaveLength(manifest.tiles.length);
     board.tiles.forEach((tile, i) => {

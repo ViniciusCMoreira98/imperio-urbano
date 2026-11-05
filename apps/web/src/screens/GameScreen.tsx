@@ -8,6 +8,7 @@ import { PropertyDecisionDialog } from '../hud/PropertyDecisionDialog';
 import { PropertyPanel } from '../hud/PropertyPanel';
 import { TurnBadge } from '../hud/TurnBadge';
 import { GameConnection } from '../net/gameSocket';
+import { formatCredits } from '../property-card/tileInfo';
 import { useAppStore } from '../store/appStore';
 import { useGameStore } from '../store/gameStore';
 import { Button } from '../ui/ui';
@@ -43,7 +44,7 @@ export function GameScreen() {
     <div className="game-viewport relative h-full w-full overflow-hidden">
       {/* Na tela larga o tabuleiro fica no espaço entre os painéis (index.css), sem nada por cima das casas. */}
       <div className="game-hud-board absolute inset-0">
-        <GameBoard />
+        <GameBoard taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
       </div>
 
       <header className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
