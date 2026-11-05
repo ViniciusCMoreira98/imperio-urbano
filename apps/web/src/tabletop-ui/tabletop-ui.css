@@ -1,0 +1,17 @@
+.tabletop-surface { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.rent-plaque { display: flex; align-items: center; justify-content: center; position: relative; width: 100%; height: 100%; color: #fff5d3; font-family: system-ui, sans-serif; font-weight: 850; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+.rent-plaque__value { position: relative; text-shadow: 0 1px 1px #120b29; }
+.state-rent-overlay { position: absolute; inset: 0; container-type: inline-size; pointer-events: none; }
+.state-rent-overlay__item { position: absolute; pointer-events: none; }
+.tabletop-player { position: relative; width: 280px; aspect-ratio: 2160 / 658; color: #fff6de; filter: drop-shadow(0 4px 3px #1c0d0b80); }
+.tabletop-player__portrait { position: absolute; left: 3.5%; top: 14%; width: 22.5%; height: 72%; border-radius: 50%; overflow: hidden; }
+.tabletop-player__portrait > * { width: 100%; height: 100%; }
+.tabletop-player__text { position: absolute; left: 30%; right: 6%; top: 22%; bottom: 19%; display: flex; flex-direction: column; justify-content: center; gap: 3px; min-width: 0; }
+.tabletop-player__text strong { font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tabletop-player__text span { font-size: 21px; color: #ffe15b; font-weight: 900; font-variant-numeric: tabular-nums; }
+.tabletop-player[data-active="true"] { filter: drop-shadow(0 0 6px #d1a1ffb0); }
+.tabletop-action { position: relative; width: min(100%, 760px); aspect-ratio: 2169 / 507; color: #fff6de; filter: drop-shadow(0 5px 4px #1c0d0b80); }
+.tabletop-action__round { position: absolute; top: 5%; left: 40%; right: 40%; text-align: center; font-size: 13px; font-weight: 850; white-space: nowrap; }
+.tabletop-action__content { position: absolute; inset: 25% 6% 18%; display: flex; align-items: center; justify-content: space-around; gap: 12px; }
+.tabletop-player__text { line-height: 1.05; gap: 2px; }
+.tabletop-player__text strong, .tabletop-player__text span { flex-shrink: 0; line-height: 1.05; }

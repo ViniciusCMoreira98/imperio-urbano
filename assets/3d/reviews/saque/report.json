@@ -1,0 +1,41 @@
+{
+  "assets": [
+    {
+      "source": "/apps/web/src/special-tiles/art/saque-tile-v1.png",
+      "width": 1774,
+      "height": 887,
+      "transparent": 98048,
+      "solid": 64
+    },
+    {
+      "source": "/apps/web/src/special-tiles/art/tax-pool-marker-v1.png",
+      "width": 1774,
+      "height": 887,
+      "transparent": 434100,
+      "solid": 229
+    }
+  ],
+  "examples": [
+    "R$ 0",
+    "R$ 100",
+    "R$ 600",
+    "R$ 12.000"
+  ],
+  "dynamicText": true,
+  "viewportChecks": [
+    [
+      1536,
+      900
+    ],
+    [
+      844,
+      390
+    ]
+  ],
+  "previewOnly": true,
+  "rulesImplemented": false,
+  "boardMigrationImplemented": false,
+  "errors": [],
+  "apiCalls": [],
+  "paidMeshyCredits": 0
+}

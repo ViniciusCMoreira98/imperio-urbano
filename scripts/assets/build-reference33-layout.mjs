@@ -42,7 +42,9 @@ layers.frame.inner=layers.frame.innerPixels.map(p=>unproject(p,layers.frame.surf
 layers.frame.top=framePixels.map(p=>unproject(p,layers.frame.surfaceY));
 layers.backdrop.polygon=layers.backdrop.pixels.map(p=>unproject(p,-.42));layers.backdrop.worldHoles=layers.backdrop.holes.map(h=>h.map(p=>unproject(p,-.42)));
 layers.gaps={polygon:backdropBoardHole.map(p=>unproject(p,.02)),surfaceY:.02};
-const dice=[{face:5,size:.73,pixel:[700,967],yaw:.25},{face:3,size:.73,pixel:[813,974],yaw:-.22}].map(d=>({...d,position:unproject(d.pixel,-.505+d.size/2)}));
-const out={schemaVersion:1,source:camera.reference,model:'/models/board/reference33-v01.glb',tileHeight,tiles,layers,dice,integration:{logicalMigration:'Claude: 33 casas, sem TO e com 2 Eventos. IDs visuais não dependem dos índices do motor antigo.',nativeReference:[1536,1024],textureFit:'projective-full-face',cameraLocked:true,backendChanged:false},paidCredits:0};
+// Espaço para rotação livre: esfera envolvente inteira após a moldura e dentro do quadro.
+const dice=[{face:5,size:.34,pixel:[690,982],yaw:.25},{face:3,size:.34,pixel:[810,982],yaw:-.22}].map(d=>({...d,position:unproject(d.pixel,-.505+d.size/2)}));
+const diceRoll={supportY:-.505,horizontalTravel:.03,bounceHeight:.03,rotationClearance:'bounding-sphere',centerBounds:dice.map(d=>{const r=d.size*Math.sqrt(3)/2;return {min:[d.position[0]-.03,-.505+r,d.position[2]-.03],max:[d.position[0]+.03,-.505+r+.03,d.position[2]+.03]};})};
+const out={schemaVersion:1,source:camera.reference,model:'/models/board/reference33-v01.glb',tileHeight,tiles,layers,dice,diceRoll,integration:{logicalMigration:'Claude: 33 casas, sem TO e com 2 Eventos. IDs visuais não dependem dos índices do motor antigo.',nativeReference:[1536,1024],textureFit:'projective-full-face',cameraLocked:true,backendChanged:false},paidCredits:0};
 const destination=new URL('apps/web/src/board/reference33/layout.json',root);await mkdir(new URL('.',destination),{recursive:true});await writeFile(destination,JSON.stringify(out,null,2)+'\n');
 console.log(JSON.stringify({tiles:tiles.length,states:tiles.filter(t=>t.type==='PROPERTY').length,events:tiles.filter(t=>t.type==='EVENT').length}));

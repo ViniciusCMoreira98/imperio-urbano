@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "status": "visual-proposal-not-runtime",
+  "basedOn": "board/reference33/layout.json",
+  "reason": "RN entre START e AM; SAQUE no antigo lugar de RN. Início preservado.",
+  "tileCount": 34,
+  "tiles": [
+    {
+      "index": 0,
+      "id": "START",
+      "role": "special"
+    },
+    {
+      "index": 1,
+      "id": "RN",
+      "role": "property"
+    },
+    {
+      "index": 2,
+      "id": "AM",
+      "role": "property"
+    },
+    {
+      "index": 3,
+      "id": "RR",
+      "role": "property"
+    },
+    {
+      "index": 4,
+      "id": "EVENT_NORTH",
+      "role": "special"
+    },
+    {
+      "index": 5,
+      "id": "AP",
+      "role": "property"
+    },
+    {
+      "index": 6,
+      "id": "PA",
+      "role": "property"
+    },
+    {
+      "index": 7,
+      "id": "RO",
+      "role": "property"
+    },
+    {
+      "index": 8,
+      "id": "OLYMPICS",
+      "role": "special"
+    },
+    {
+      "index": 9,
+      "id": "AC",
+      "role": "property"
+    },
+    {
+      "index": 10,
+      "id": "MT",
+      "role": "property"
+    },
+    {
+      "index": 11,
+      "id": "MS",
+      "role": "property"
+    },
+    {
+      "index": 12,
+      "id": "GO",
+      "role": "property"
+    },
+    {
+      "index": 13,
+      "id": "EVENT_EAST",
+      "role": "special"
+    },
+    {
+      "index": 14,
+      "id": "DF",
+      "role": "property"
+    },
+    {
+      "index": 15,
+      "id": "MG",
+      "role": "property"
+    },
+    {
+      "index": 16,
+      "id": "ES",
+      "role": "property"
+    },
+    {
+      "index": 17,
+      "id": "REST",
+      "role": "special"
+    },
+    {
+      "index": 18,
+      "id": "RJ",
+      "role": "property"
+    },
+    {
+      "index": 19,
+      "id": "PR",
+      "role": "property"
+    },
+    {
+      "index": 20,
+      "id": "SP",
+      "role": "property"
+    },
+    {
+      "index": 21,
+      "id": "TAX",
+      "role": "special"
+    },
+    {
+      "index": 22,
+      "id": "RS",
+      "role": "property"
+    },
+    {
+      "index": 23,
+      "id": "SC",
+      "role": "property"
+    },
+    {
+      "index": 24,
+      "id": "PE",
+      "role": "property"
+    },
+    {
+      "index": 25,
+      "id": "PB",
+      "role": "property"
+    },
+    {
+      "index": 26,
+      "id": "AIRPORT",
+      "role": "special"
+    },
+    {
+      "index": 27,
+      "id": "BA",
+      "role": "property"
+    },
+    {
+      "index": 28,
+      "id": "SE",
+      "role": "property"
+    },
+    {
+      "index": 29,
+      "id": "AL",
+      "role": "property"
+    },
+    {
+      "index": 30,
+      "id": "SAQUE",
+      "role": "special"
+    },
+    {
+      "index": 31,
+      "id": "CE",
+      "role": "property"
+    },
+    {
+      "index": 32,
+      "id": "PI",
+      "role": "property"
+    },
+    {
+      "index": 33,
+      "id": "MA",
+      "role": "property"
+    }
+  ],
+  "changes": {
+    "movedId": "RN",
+    "insertAfter": "START",
+    "insertBefore": "AM",
+    "newId": "SAQUE",
+    "newIdNeighbors": [
+      "AL",
+      "CE"
+    ],
+    "taxId": "TAX",
+    "taxPoolDisplay": "server-formatted label",
+    "taxPoolAmountInConceptIsIllustrative": true
+  },
+  "productionCatalogChanged": false
+}

@@ -1,0 +1,33 @@
+{
+  "states": 26,
+  "variants": [
+    "base",
+    "houses",
+    "hotel",
+    "olympics"
+  ],
+  "valuesFromCatalog": true,
+  "olympicPreview": {
+    "stateId": "ES",
+    "houses": 2,
+    "multiplier": 3
+  },
+  "priceClicksPassThrough": 26,
+  "textWithinPlaques": true,
+  "transparentAssets": 3,
+  "previewOnly": true,
+  "productionIntegrationPending": true,
+  "mobileFontPixels": 3.46328,
+  "mobileReadabilityApproved": false,
+  "captures": [
+    "rents-base-1536.png",
+    "rents-houses-1536.png",
+    "rents-hotel-1536.png",
+    "rents-olympics-1536.png"
+  ],
+  "errors": [],
+  "apiCalls": [],
+  "paidMeshyCredits": 0,
+  "playerNameTextFits": true,
+  "galleryRecheckedAfterLineHeightFix": true
+}

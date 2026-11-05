@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "assets": {
+    "saque-tile": {
+      "file": "saque-tile-v1.png",
+      "width": 1774,
+      "height": 887,
+      "rgba": true,
+      "bytes": 2508378,
+      "sha256": "67bf2314355ef945aeea399df5d43509c4c7a6cf5bda77250e9988ae61a58389"
+    },
+    "tax-pool-marker": {
+      "file": "tax-pool-marker-v1.png",
+      "width": 1774,
+      "height": 887,
+      "rgba": true,
+      "bytes": 1746089,
+      "sha256": "09defb673ef9f34e4607e08ab2a061215c11ea83973efd7e5be6ea95c3ccaebc"
+    }
+  }
+}

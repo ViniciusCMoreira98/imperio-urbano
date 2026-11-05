@@ -1,0 +1,391 @@
+{
+  "source": "BoardSurroundings com GameBoard e painéis reais; snapshot sintético sem backend.",
+  "results": [
+    {
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "board": {
+        "x": 20,
+        "y": 124,
+        "width": 1152,
+        "height": 768
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 1512,
+          "height": 100,
+          "scrollWidth": 1512,
+          "clientWidth": 1512,
+          "scrollHeight": 100,
+          "clientHeight": 100
+        },
+        "side": {
+          "x": 1204,
+          "y": 124,
+          "width": 320,
+          "height": 768,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "scrollHeight": 768,
+          "clientHeight": 768
+        },
+        "bottom": {
+          "x": 12,
+          "y": 910,
+          "width": 1512,
+          "height": 108,
+          "scrollWidth": 1512,
+          "clientWidth": 1512,
+          "scrollHeight": 108,
+          "clientHeight": 108
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-1536x1024.png"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "board": {
+        "x": 170,
+        "y": 124,
+        "width": 1236,
+        "height": 824
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 1896,
+          "height": 100,
+          "scrollWidth": 1896,
+          "clientWidth": 1896,
+          "scrollHeight": 100,
+          "clientHeight": 100
+        },
+        "side": {
+          "x": 1588,
+          "y": 124,
+          "width": 320,
+          "height": 824,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "scrollHeight": 824,
+          "clientHeight": 824
+        },
+        "bottom": {
+          "x": 12,
+          "y": 966,
+          "width": 1896,
+          "height": 108,
+          "scrollWidth": 1896,
+          "clientWidth": 1896,
+          "scrollHeight": 108,
+          "clientHeight": 108
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-1920x1080.png"
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "board": {
+        "x": 127,
+        "y": 124,
+        "width": 768,
+        "height": 512
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 1342,
+          "height": 100,
+          "scrollWidth": 1342,
+          "clientWidth": 1342,
+          "scrollHeight": 100,
+          "clientHeight": 100
+        },
+        "side": {
+          "x": 1034,
+          "y": 124,
+          "width": 320,
+          "height": 512,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "scrollHeight": 512,
+          "clientHeight": 512
+        },
+        "bottom": {
+          "x": 12,
+          "y": 654,
+          "width": 1342,
+          "height": 108,
+          "scrollWidth": 1342,
+          "clientWidth": 1342,
+          "scrollHeight": 108,
+          "clientHeight": 108
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-1366x768.png"
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "board": {
+        "x": 12,
+        "y": 147.328125,
+        "width": 655.984375,
+        "height": 437.328125
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 1000,
+          "height": 72,
+          "scrollWidth": 1000,
+          "clientWidth": 1000,
+          "scrollHeight": 72,
+          "clientHeight": 72
+        },
+        "side": {
+          "x": 692,
+          "y": 96,
+          "width": 320,
+          "height": 540,
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "scrollHeight": 540,
+          "clientHeight": 540
+        },
+        "bottom": {
+          "x": 12,
+          "y": 654,
+          "width": 1000,
+          "height": 108,
+          "scrollWidth": 1000,
+          "clientWidth": 1000,
+          "scrollHeight": 108,
+          "clientHeight": 108
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-1024x768.png"
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "board": {
+        "x": 166.5,
+        "y": 96,
+        "width": 231,
+        "height": 154
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 820,
+          "height": 72,
+          "scrollWidth": 820,
+          "clientWidth": 820,
+          "scrollHeight": 72,
+          "clientHeight": 72
+        },
+        "side": {
+          "x": 576,
+          "y": 96,
+          "width": 256,
+          "height": 154,
+          "scrollWidth": 256,
+          "clientWidth": 256,
+          "scrollHeight": 535,
+          "clientHeight": 154
+        },
+        "bottom": {
+          "x": 12,
+          "y": 268,
+          "width": 820,
+          "height": 116,
+          "scrollWidth": 820,
+          "clientWidth": 820,
+          "scrollHeight": 116,
+          "clientHeight": 116
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-844x390.png"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "board": {
+        "x": 0,
+        "y": 156,
+        "width": 390,
+        "height": 260
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 366,
+          "height": 132,
+          "scrollWidth": 366,
+          "clientWidth": 366,
+          "scrollHeight": 132,
+          "clientHeight": 132
+        },
+        "side": {
+          "x": 12,
+          "y": 428,
+          "width": 366,
+          "height": 256,
+          "scrollWidth": 366,
+          "clientWidth": 366,
+          "scrollHeight": 493,
+          "clientHeight": 256
+        },
+        "bottom": {
+          "x": 12,
+          "y": 702,
+          "width": 366,
+          "height": 136,
+          "scrollWidth": 366,
+          "clientWidth": 366,
+          "scrollHeight": 136,
+          "clientHeight": 136
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-390x844.png"
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "board": {
+        "x": 0,
+        "y": 156,
+        "width": 768,
+        "height": 512
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 744,
+          "height": 132,
+          "scrollWidth": 744,
+          "clientWidth": 744,
+          "scrollHeight": 132,
+          "clientHeight": 132
+        },
+        "side": {
+          "x": 12,
+          "y": 680,
+          "width": 744,
+          "height": 212,
+          "scrollWidth": 744,
+          "clientWidth": 744,
+          "scrollHeight": 493,
+          "clientHeight": 212
+        },
+        "bottom": {
+          "x": 12,
+          "y": 910,
+          "width": 744,
+          "height": 108,
+          "scrollWidth": 744,
+          "clientWidth": 744,
+          "scrollHeight": 108,
+          "clientHeight": 108
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-768x1024.png"
+    },
+    {
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "board": {
+        "x": 57.828125,
+        "y": 148.3125,
+        "width": 204.328125,
+        "height": 136.21875
+      },
+      "safe": {
+        "top": {
+          "x": 12,
+          "y": 6,
+          "width": 296,
+          "height": 124.3125,
+          "scrollWidth": 296,
+          "clientWidth": 296,
+          "scrollHeight": 124,
+          "clientHeight": 124
+        },
+        "side": {
+          "x": 12,
+          "y": 296.53125,
+          "width": 296,
+          "height": 111.453125,
+          "scrollWidth": 296,
+          "clientWidth": 296,
+          "scrollHeight": 513,
+          "clientHeight": 111
+        },
+        "bottom": {
+          "x": 12,
+          "y": 426,
+          "width": 296,
+          "height": 136,
+          "scrollWidth": 296,
+          "clientWidth": 296,
+          "scrollHeight": 136,
+          "clientHeight": 136
+        }
+      },
+      "documentOverflow": false,
+      "players": 4,
+      "screenshot": "surroundings-320x568.png"
+    }
+  ],
+  "clicksVerified": 33,
+  "cameraInvariant": true,
+  "rollCommandPreserved": true,
+  "countdownVisible": true,
+  "closePreserved": true,
+  "mobileSideScroll": true,
+  "paidCredits": 0,
+  "integrationPending": true,
+  "errors": [],
+  "apiCalls": []
+}

@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "coordinateSpace": "native-camera-pixels",
+  "reference": {
+    "width": 1536,
+    "height": 1024
+  },
+  "placements": [
+    {
+      "stateId": "AM",
+      "x": 415.3932,
+      "y": 148,
+      "width": 54.5235,
+      "height": 22
+    },
+    {
+      "stateId": "RR",
+      "x": 547.4361,
+      "y": 137,
+      "width": 84.3139,
+      "height": 22
+    },
+    {
+      "stateId": "AP",
+      "x": 859.1,
+      "y": 136,
+      "width": 62.8015,
+      "height": 22
+    },
+    {
+      "stateId": "PA",
+      "x": 961.1977,
+      "y": 141,
+      "width": 78.0005,
+      "height": 22
+    },
+    {
+      "stateId": "RO",
+      "x": 1084.4,
+      "y": 151,
+      "width": 62.6529,
+      "height": 22
+    },
+    {
+      "stateId": "AC",
+      "x": 1189,
+      "y": 212,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "MT",
+      "x": 1201.3,
+      "y": 268,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "MS",
+      "x": 1213.7,
+      "y": 327,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "GO",
+      "x": 1226.9,
+      "y": 391,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "DF",
+      "x": 1255.4,
+      "y": 535,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "MG",
+      "x": 1269.3,
+      "y": 606,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "ES",
+      "x": 1280.7,
+      "y": 675,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "RJ",
+      "x": 1170,
+      "y": 861,
+      "width": 100,
+      "height": 22
+    },
+    {
+      "stateId": "PR",
+      "x": 1026.5,
+      "y": 862,
+      "width": 100,
+      "height": 22
+    },
+    {
+      "stateId": "SP",
+      "x": 874.5,
+      "y": 867,
+      "width": 100,
+      "height": 22
+    },
+    {
+      "stateId": "RS",
+      "x": 604.8226,
+      "y": 865,
+      "width": 83.3547,
+      "height": 22
+    },
+    {
+      "stateId": "SC",
+      "x": 485.0784,
+      "y": 864,
+      "width": 87.8432,
+      "height": 22
+    },
+    {
+      "stateId": "PE",
+      "x": 369.4581,
+      "y": 862,
+      "width": 87.0838,
+      "height": 22
+    },
+    {
+      "stateId": "PB",
+      "x": 253.6898,
+      "y": 856,
+      "width": 85.2954,
+      "height": 22
+    },
+    {
+      "stateId": "BA",
+      "x": 195.68,
+      "y": 674,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "SE",
+      "x": 217,
+      "y": 563,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "AL",
+      "x": 232.52,
+      "y": 466,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "RN",
+      "x": 246.64,
+      "y": 388,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "CE",
+      "x": 257.92,
+      "y": 327,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "PI",
+      "x": 273.0192,
+      "y": 270,
+      "width": 84,
+      "height": 18
+    },
+    {
+      "stateId": "MA",
+      "x": 284.2,
+      "y": 215,
+      "width": 84,
+      "height": 18
+    }
+  ]
+}

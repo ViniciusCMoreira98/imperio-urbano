@@ -1,0 +1,838 @@
+{
+  "source": "GameScreen real com snapshots sintéticos; sem backend e sem comandos.",
+  "pawnScale": 0.75,
+  "baseRadius": 0.1875,
+  "results": [
+    {
+      "tileId": "AM",
+      "composition": {
+        "width": 1192,
+        "height": 794.65625
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": 0.048366204012578885,
+          "heightWorld": 0.6058666821964621,
+          "heightPixels": 43.86258432970164,
+          "widthPixels": 55.957413424116794,
+          "pixels": [
+            341.0631729062175,
+            45.22407340755611,
+            397.0205863303343,
+            89.08665773725775
+          ]
+        },
+        {
+          "vertices": 1259,
+          "minClearance": 0.14118609163473064,
+          "heightWorld": 0.6064573219689563,
+          "heightPixels": 43.70160190230462,
+          "widthPixels": 46.62187085380509,
+          "pixels": [
+            317.6023313907985,
+            44.62713572747218,
+            364.2242022446036,
+            88.3287376297768
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.19681429300222278,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 40.02811713950145,
+          "widthPixels": 24.62866448050653,
+          "pixels": [
+            357.3632056976146,
+            30.877041531821742,
+            381.99187017812113,
+            70.90515867132319
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.22363471242406818,
+          "heightWorld": 0.5857328792639899,
+          "heightPixels": 40.1811213573979,
+          "widthPixels": 42.95333432871769,
+          "pixels": [
+            322.4024977866546,
+            31.494163847576317,
+            365.35583211537227,
+            71.67528520497422
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 54,
+          "minClearance": 0.18208490595790155
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.2148941413435118
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.24770337672912215
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.12013124389303388
+        }
+      ],
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "players": 4,
+      "level": 4,
+      "avatarShift": 0,
+      "screenshot": "1536-AM-4p-4-0.png"
+    },
+    {
+      "tileId": "ES",
+      "composition": {
+        "width": 1192,
+        "height": 794.65625
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": -0.00215448491625696,
+          "heightWorld": 0.5976006546049382,
+          "heightPixels": 55.99900333409954,
+          "widthPixels": 66.0880457085093,
+          "pixels": [
+            1031.6442922980361,
+            483.74743727202105,
+            1097.7323380065454,
+            539.7464406061206
+          ]
+        },
+        {
+          "vertices": 1259,
+          "minClearance": 0.009414581716132126,
+          "heightWorld": 0.6040277105253274,
+          "heightPixels": 53.12645265562901,
+          "widthPixels": 54.564654066339244,
+          "pixels": [
+            1034.0844038799428,
+            458.4376079586265,
+            1088.649057946282,
+            511.5640606142555
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.032847296791459986,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 46.30170856311685,
+          "widthPixels": 32.195853930217936,
+          "pixels": [
+            1087.1029771143021,
+            488.6922810103959,
+            1119.29883104452,
+            534.9939895735127
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.01657146281779675,
+          "heightWorld": 0.6046404180675055,
+          "heightPixels": 49.22949234374363,
+          "widthPixels": 50.75950860676926,
+          "pixels": [
+            1069.787765252527,
+            461.68246831551755,
+            1120.5472738592962,
+            510.9119606592612
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 54,
+          "minClearance": 0.10488248389748729
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.24631233031075256
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.24640799708470354
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.10273979403632123
+        }
+      ],
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "players": 4,
+      "level": 4,
+      "avatarShift": 0,
+      "screenshot": "1536-ES-4p-4-0.png"
+    },
+    {
+      "tileId": "CE",
+      "composition": {
+        "width": 1192,
+        "height": 794.65625
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": 0.013372517148789113,
+          "heightWorld": 0.604482546351612,
+          "heightPixels": 50.04479382813551,
+          "widthPixels": 57.582968639864475,
+          "pixels": [
+            166.79391577379226,
+            198.22928047859654,
+            224.37688441365674,
+            248.27407430673205
+          ]
+        },
+        {
+          "vertices": 1259,
+          "minClearance": 0.030196860826973516,
+          "heightWorld": 0.603122249665976,
+          "heightPixels": 49.21376896930181,
+          "widthPixels": 48.69448867355413,
+          "pixels": [
+            165.31528254914508,
+            216.41397315344008,
+            214.00977122269921,
+            265.6277421227419
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.06811019786250229,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 42.848577627773864,
+          "widthPixels": 28.604882599079957,
+          "pixels": [
+            147.31743193192077,
+            201.66891101352036,
+            175.92231453100072,
+            244.51748864129422
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.02592773738149997,
+          "heightWorld": 0.6036088994585843,
+          "heightPixels": 45.616128970331516,
+          "widthPixels": 45.34611519405141,
+          "pixels": [
+            136.70643950055936,
+            219.3637238131566,
+            182.05255469461076,
+            264.9798527834881
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 54,
+          "minClearance": 0.057854156888395916
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.21655330452975113
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.26376539763595414
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.10510679210736726
+        }
+      ],
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "players": 4,
+      "level": 4,
+      "avatarShift": 0,
+      "screenshot": "1536-CE-4p-4-0.png"
+    },
+    {
+      "tileId": "DF",
+      "composition": {
+        "width": 1192,
+        "height": 794.65625
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": -0.0001891579768332134,
+          "heightWorld": 0.6162939461800113,
+          "heightPixels": 53.675297585931844,
+          "widthPixels": 60.86401021331028,
+          "pixels": [
+            1011.904100267522,
+            377.8003906757064,
+            1072.7681104808323,
+            431.47568826163825
+          ]
+        },
+        {
+          "vertices": 1259,
+          "minClearance": 0.022401911787861196,
+          "heightWorld": 0.6016658456800419,
+          "heightPixels": 50.970319040209006,
+          "widthPixels": 50.773039303639166,
+          "pixels": [
+            1014.0434524095018,
+            354.74845588593246,
+            1064.816491713141,
+            405.71877492614146
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.04235794620340748,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 44.919195673537615,
+          "widthPixels": 30.466046330350764,
+          "pixels": [
+            1063.6892401709765,
+            381.99573754016376,
+            1094.1552865013273,
+            426.9149332137014
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.04346758215011473,
+          "heightWorld": 0.6019351667660326,
+          "heightPixels": 47.23531893999916,
+          "widthPixels": 47.23987846306045,
+          "pixels": [
+            1047.9878778135878,
+            357.91243558793434,
+            1095.2277562766483,
+            405.1477545279335
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 54,
+          "minClearance": 0.1009283128394819
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.2487744745590953
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.22815628617767542
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.08035023817576266
+        }
+      ],
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "players": 4,
+      "level": 4,
+      "avatarShift": 0,
+      "screenshot": "1536-DF-4p-4-0.png"
+    },
+    {
+      "tileId": "PI",
+      "composition": {
+        "width": 1192,
+        "height": 794.65625
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": 0.03243025767280396,
+          "heightWorld": 0.6400472007496643,
+          "heightPixels": 49.83051708576306,
+          "widthPixels": 52.241459085755,
+          "pixels": [
+            180.4353043236239,
+            156.3679272622085,
+            232.6767634093789,
+            206.19844434797156
+          ]
+        },
+        {
+          "vertices": 1259,
+          "minClearance": 0.033550383502700926,
+          "heightWorld": 0.600680612537044,
+          "heightPixels": 47.83595535917672,
+          "widthPixels": 46.59864647733539,
+          "pixels": [
+            177.35400199780733,
+            173.8261057571013,
+            223.95264847514272,
+            221.662061116278
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.06862012976771459,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 42.2395564093907,
+          "widthPixels": 27.89025779877477,
+          "pixels": [
+            159.16645338707966,
+            159.23027913718028,
+            187.05671118585443,
+            201.46983554657098
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.03244731375137045,
+          "heightWorld": 0.598774734882968,
+          "heightPixels": 44.344936730862344,
+          "widthPixels": 43.39546164719448,
+          "pixels": [
+            149.35573606094854,
+            176.69117181547668,
+            192.75119770814302,
+            221.03610854633902
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 54,
+          "minClearance": 0.07817077356248611
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.23550174161173712
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.26949643918958777
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.11223383456672031
+        }
+      ],
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "players": 4,
+      "level": 4,
+      "avatarShift": 0,
+      "screenshot": "1536-PI-4p-4-0.png"
+    },
+    {
+      "tileId": "ES",
+      "composition": {
+        "width": 1192,
+        "height": 794.65625
+      },
+      "pawns": [
+        {
+          "vertices": 1259,
+          "minClearance": 0.016380667856995504,
+          "heightWorld": 0.6002829242978907,
+          "heightPixels": 53.156955922087434,
+          "widthPixels": 53.1395566750341,
+          "pixels": [
+            1039.2775667265691,
+            483.65110491612955,
+            1092.4171234016032,
+            536.808060838217
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.03686646067358583,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 45.92875331622787,
+          "widthPixels": 31.53565231928178,
+          "pixels": [
+            1048.2752067628605,
+            463.72975206812487,
+            1079.8108590821423,
+            509.65850538435274
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.0225798494038612,
+          "heightWorld": 0.6003301622321461,
+          "heightPixels": 49.28120349411881,
+          "widthPixels": 49.43403811104508,
+          "pixels": [
+            1075.3123125139803,
+            486.8546948841192,
+            1124.7463506250253,
+            536.135898378238
+          ]
+        },
+        {
+          "vertices": 1266,
+          "minClearance": -0.02520157916220348,
+          "heightWorld": 0.6066679581754216,
+          "heightPixels": 53.17189726276263,
+          "widthPixels": 56.21074813333985,
+          "pixels": [
+            1067.6445858881202,
+            456.6835911711381,
+            1123.85533402146,
+            509.85548843390075
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 176,
+          "minClearance": 0.1272084816305712
+        }
+      ],
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "players": 4,
+      "level": 5,
+      "avatarShift": 1,
+      "screenshot": "1536-ES-4p-5-1.png"
+    },
+    {
+      "tileId": "AM",
+      "composition": {
+        "width": 1192,
+        "height": 794.65625
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": 0.20153898214434654,
+          "heightWorld": 0.5908491845748663,
+          "heightPixels": 45.523650859571354,
+          "widthPixels": 55.707261234330076,
+          "pixels": [
+            328.83548157503685,
+            35.39997952220383,
+            384.5427428093669,
+            80.92363038177518
+          ]
+        }
+      ],
+      "buildings": [],
+      "viewport": {
+        "width": 1536,
+        "height": 1024
+      },
+      "players": 1,
+      "level": 0,
+      "avatarShift": 0,
+      "screenshot": "1536-AM-1p-0-0.png"
+    },
+    {
+      "tileId": "AM",
+      "composition": {
+        "width": 390,
+        "height": 260
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": 0.06652830848543254,
+          "heightWorld": 0.5947698452357024,
+          "heightPixels": 14.88177402505462,
+          "widthPixels": 17.46741613805905,
+          "pixels": [
+            112.08260098465642,
+            14.266093695435062,
+            129.55001712271547,
+            29.147867720489682
+          ]
+        },
+        {
+          "vertices": 1259,
+          "minClearance": 0.16320808460743177,
+          "heightWorld": 0.6019870781446301,
+          "heightPixels": 14.631136882037973,
+          "widthPixels": 14.169325234405292,
+          "pixels": [
+            104.50704200520642,
+            14.268750367476892,
+            118.67636723961171,
+            28.899887249514865
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.19681419654494206,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 13.096619466289969,
+          "widthPixels": 8.058036249760406,
+          "pixels": [
+            116.9225284690337,
+            10.102525339214903,
+            124.9805647187941,
+            23.199144805504872
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.24414161781428834,
+          "heightWorld": 0.5962708304818045,
+          "heightPixels": 13.450266640637174,
+          "widthPixels": 13.055810795019852,
+          "pixels": [
+            106.02955887497264,
+            10.00085240329253,
+            119.08536966999249,
+            23.451119043929705
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 54,
+          "minClearance": 0.18208490595790155
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.2148941413435118
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.24770337672912215
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.12013124389303388
+        }
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "players": 4,
+      "level": 4,
+      "avatarShift": 0,
+      "screenshot": "390-AM-4p-4-0.png"
+    },
+    {
+      "tileId": "ES",
+      "composition": {
+        "width": 390,
+        "height": 260
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": -0.04990131306011814,
+          "heightWorld": 0.6057663541670184,
+          "heightPixels": 17.029237301738448,
+          "widthPixels": 22.636111656250193,
+          "pixels": [
+            337.1713691807415,
+            159.01659518526213,
+            359.8074808369917,
+            176.04583248700058
+          ]
+        },
+        {
+          "vertices": 1259,
+          "minClearance": 0.02167482113709491,
+          "heightWorld": 0.6023685167927882,
+          "heightPixels": 17.115555287470727,
+          "widthPixels": 17.7802436354375,
+          "pixels": [
+            338.36092298483504,
+            150.26078606730542,
+            356.14116662027254,
+            167.37634135477614
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.03284729679146013,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 15.149247522322128,
+          "widthPixels": 10.533878383209071,
+          "pixels": [
+            355.6796653310215,
+            159.89302678070288,
+            366.2135437142306,
+            175.042274303025
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.028081429108272184,
+          "heightWorld": 0.5954988296961102,
+          "heightPixels": 15.866475791941042,
+          "widthPixels": 16.540433024078027,
+          "pixels": [
+            350.03955000961724,
+            151.296507915049,
+            366.57998303369527,
+            167.16298370699005
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 54,
+          "minClearance": 0.10488248389748729
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.24631233031075256
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.24640799708470354
+        },
+        {
+          "vertices": 54,
+          "minClearance": 0.10273979403632123
+        }
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "players": 4,
+      "level": 4,
+      "avatarShift": 0,
+      "screenshot": "390-ES-4p-4-0.png"
+    },
+    {
+      "tileId": "ES",
+      "composition": {
+        "width": 390,
+        "height": 260
+      },
+      "pawns": [
+        {
+          "vertices": 1259,
+          "minClearance": 0.021760626020139524,
+          "heightWorld": 0.6024818434147434,
+          "heightPixels": 17.459571607969053,
+          "widthPixels": 17.784050949379946,
+          "pixels": [
+            339.8599111850703,
+            158.17624050316255,
+            357.64396213445025,
+            175.6358121111316
+          ]
+        },
+        {
+          "vertices": 18929,
+          "minClearance": 0.03686646067358583,
+          "heightWorld": 0.6000000000000001,
+          "heightPixels": 15.02722197455725,
+          "widthPixels": 10.317872822583809,
+          "pixels": [
+            342.97594852140566,
+            151.72564934550311,
+            353.29382134398946,
+            166.75287132006036
+          ]
+        },
+        {
+          "vertices": 1239,
+          "minClearance": 0.02773927656195952,
+          "heightWorld": 0.6028750908524573,
+          "heightPixels": 16.18412253461716,
+          "widthPixels": 16.543489687339388,
+          "pixels": [
+            351.66489324602634,
+            159.2317677680664,
+            368.2083829333657,
+            175.41589030268355
+          ]
+        },
+        {
+          "vertices": 1266,
+          "minClearance": -0.014410874285966348,
+          "heightWorld": 0.6023540084440766,
+          "heightPixels": 17.19606610937464,
+          "widthPixels": 17.84587722229054,
+          "pixels": [
+            349.5355472257652,
+            149.62125520762777,
+            367.3814244480557,
+            166.8173213170024
+          ]
+        }
+      ],
+      "buildings": [
+        {
+          "vertices": 176,
+          "minClearance": 0.1272084816305712
+        }
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "players": 4,
+      "level": 5,
+      "avatarShift": 1,
+      "screenshot": "390-ES-4p-5-1.png"
+    },
+    {
+      "tileId": "AM",
+      "composition": {
+        "width": 390,
+        "height": 260
+      },
+      "pawns": [
+        {
+          "vertices": 1576,
+          "minClearance": 0.2220923812907794,
+          "heightWorld": 0.611751954384447,
+          "heightPixels": 14.478091635615716,
+          "widthPixels": 17.231654792088165,
+          "pixels": [
+            108.15270056261468,
+            11.99894657966485,
+            125.38435535470285,
+            26.477038215280565
+          ]
+        }
+      ],
+      "buildings": [],
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "players": 1,
+      "level": 0,
+      "avatarShift": 0,
+      "screenshot": "390-AM-1p-0-0.png"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "apiCalls": [],
+  "paidCredits": 0,
+  "constructionClearance": 0.057854156888395916,
+  "limitations": [
+    "Vértices capturados numa pose de idle; não cobre todo o ciclo de animação.",
+    "Sobreposição visual dos corpos não é medida pelos testes de bases.",
+    "Não verifica backend, multiplayer, saltos ou aprovação final da composição."
+  ]
+}

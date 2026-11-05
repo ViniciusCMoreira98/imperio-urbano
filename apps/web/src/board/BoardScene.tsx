@@ -1,3 +1,7 @@
+/** Referência histórica de geometria de 36 casas; não montar na partida atual.
+ * A cena ativa é GameBoard → ReferenceBoardScene. Utilitários compartilhados ainda
+ * têm consumidores ativos; conferir C4 em docs/ORIENTACOES-CODEX.md antes de remover.
+ */
 import { Canvas } from '@react-three/fiber';
 import { board, states } from '@imperio/game-data';
 import { Buildings, Pawns } from './Pieces';
