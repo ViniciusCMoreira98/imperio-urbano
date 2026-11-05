@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-04",
+  "userAuthorization": "Usuário autorizou uso do Meshy solicitando somente informação dos créditos. Informados 30 inicialmente, revisados para 50 antes da nova geração da caneca.",
+  "balanceBefore": 1000,
+  "balanceAfter": 950,
+  "totalConsumed": 50,
+  "tasks": [
+    {
+      "name": "plant-preview",
+      "key": "meshy-plant",
+      "id": "01a1a9ac-535a-7350-8199-c139aa6914b1",
+      "model": "meshy-t2.5",
+      "credits": 5,
+      "used": true,
+      "prompt": "A single premium stylized tropical potted plant prop for a colorful luxury Brazilian board game on a wooden tabletop. Dense graceful peace lily foliage: many broad glossy pointed leaves with natural curling drooping shapes and prominent center veins, varied sizes on fine curved stems, lush rounded asymmetrical canopy. Elegant round ivory glazed ceramic tapered pot with narrow embossed gold rims and visible dark potting soil. Charming polished hand-painted game art, softly rounded refined shapes, realistic botanical silhouette, no flat polygon leaves, no pedestal, no ground, no lettering. Whole separate object, clean watertight modeled leaves with thickness. Short compact pot and full lush canopy, total height twice pot width."
+    },
+    {
+      "name": "mug-discarded-preview",
+      "key": "meshy-mug",
+      "id": "01a1a9ac-6aad-7447-a563-0d3c574ea0ca",
+      "model": "meshy-t2.5",
+      "credits": 5,
+      "used": false,
+      "reason": "Geometria com alças e protuberâncias indevidas; não texturizada nem usada no jogo.",
+      "prompt": "One elegant glossy deep navy ceramic coffee mug for a premium colorful Brazilian board game tabletop. Rounded gently tapered cylindrical body, broad oval opening, visible dark coffee with subtle crema ring inside, thick comfortable curved C handle on right, fine polished golden rim and a very thin gold band near the foot. Carefully shaped ceramic thickness and softly rounded base. Front body blank for a separate game logo decal. Charming luxury hand-painted stylized game prop with realistic pleasing proportions, smooth refined silhouette, no text, no logo, no spoon, no steam, no saucer, no other objects, no ground or pedestal. Separate mug object only."
+    },
+    {
+      "name": "plant-texture",
+      "key": "meshy-plant-textured",
+      "id": "01a1a9b4-78b4-75a7-8e7b-281c83568b03",
+      "credits": 10,
+      "used": true,
+      "prompt": "Premium hand-painted stylized tropical plant. Rich glossy emerald broad leaves with subtle golden green midribs, natural varied green shades, darker undersides, fine organic leaf texture, warm clean highlights, no grey flat areas. Elegant ivory ceramic pot with smoothly shaded warm cream glaze, narrow polished gold trim rings around rim and foot, dark brown soil. Match colorful polished luxury Brazilian board game artwork. High-quality albedo, restrained PBR roughness, no text or logo."
+    },
+    {
+      "name": "mug-preview",
+      "key": "meshy-mug-final",
+      "id": "01a1a9b4-5cae-71bf-98e8-457860493186",
+      "model": "meshy-7.1",
+      "credits": 20,
+      "used": true,
+      "prompt": "One single ordinary luxury ceramic coffee mug, physically accurate smooth cylindrical gently tapered body, thick rounded lip, one and only one large curved C shaped handle attached on the RIGHT side of the body at exactly two points. Plain smooth uninterrupted front surface, no bumps, no decorations or appendages. Open top with visible dark coffee surface slightly below rim. Rounded softly bevelled base. Elegant realistic pleasing proportions with height equal to body diameter, smoothly modeled rich ceramic thickness. Premium stylized hand-painted game prop, no face, no characters, no eyes, no text, no logo, no saucer, no spoon, no ground. ONLY ONE HANDLE on the right, no second handle. Complete separate object."
+    },
+    {
+      "name": "mug-texture",
+      "key": "meshy-mug-textured",
+      "id": "01a1a9b8-9de6-72c8-ad5f-dd71776efb13",
+      "credits": 10,
+      "used": true,
+      "prompt": "Elegant glossy DEEP NAVY BLUE glazed ceramic mug, one simple curved handle navy blue, smooth rich indigo body, dark navy and warm blue reflections, very thin polished GOLD rim at the top and a thin gold line near base. Dark brown coffee surface with a delicate warm caramel crema ring, not empty and not solid white. Premium colorful hand-painted Brazilian luxury game prop. Front body completely plain navy, no text, no lettering, no logos or invented symbols. Restrained realistic ceramic roughness, clean warm highlights and subtle cool reflections, no scratches, no dirt, no rust."
+    }
+  ]
+}

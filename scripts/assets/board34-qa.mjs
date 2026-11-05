@@ -1,0 +1,35 @@
+import{createServer}from'vite';import{chromium}from'@playwright/test';import{fileURLToPath}from'node:url';import{readFile,writeFile,mkdir}from'node:fs/promises';import assert from'node:assert/strict';
+const root=fileURLToPath(new URL('../../',import.meta.url)),out=new URL('../../assets/3d/reviews/board34/',import.meta.url);await mkdir(out,{recursive:true});
+const layout=JSON.parse(await readFile(new URL('../../apps/web/src/board/board34/layout.json',import.meta.url),'utf8'));
+const server=await createServer({root,configFile:false,esbuild:{jsx:'automatic'},publicDir:fileURLToPath(new URL('../../apps/web/public/',import.meta.url)),server:{host:'127.0.0.1',port:4195,strictPort:true,watch:{ignored:['**/dist/**','**/assets/3d/reviews/**']}},optimizeDeps:{include:['react','react-dom/client','three','@react-three/fiber','@react-three/drei','zustand','three/examples/jsm/environments/RoomEnvironment.js']}});await server.listen();let browser;
+try{
+ browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:1536,height:1088},deviceScaleFactor:1});const errors=[],requests=[],apiCalls=[];
+ page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});page.on('request',r=>{requests.push(new URL(r.url()).pathname);if(new URL(r.url()).pathname.startsWith('/api/'))apiCalls.push(r.url());});
+ await page.goto('http://127.0.0.1:4195/scripts/assets/board34-preview/',{waitUntil:'networkidle',timeout:60000});await page.waitForFunction(()=>!!window.__board34&&!!window.__imperioStaticCamera,{timeout:30000});console.log("Cena carregada");
+ const initial=await page.evaluate(()=>window.__imperioStaticCamera());const info=await page.evaluate(()=>{const d=window.__board34();return{printedFaces:d.printedFaces,ids:d.layout.tiles.map(t=>t.id)};});assert.equal(info.printedFaces,34);assert.equal(new Set(info.ids).size,34);
+ const bound=await page.locator('.board-composition').boundingBox();assert.equal(bound.width,1536);assert.equal(bound.height,1024);
+ console.log("Conferindo cliques");for(const tile of layout.tiles){const x=tile.pixels.reduce((sum,p)=>sum+p[0],0)/tile.pixels.length,y=tile.pixels.reduce((sum,p)=>sum+p[1],0)/tile.pixels.length;await page.mouse.click(bound.x+x,bound.y+y);await page.waitForFunction(id=>window.board34QA.selected===id,tile.id,{timeout:5000}).catch(async e=>{console.log(JSON.stringify({failed:tile.id,selected:await page.evaluate(()=>window.board34QA.selected)}));throw e;});}
+ console.log("34 cliques verificados");await page.evaluate(()=>window.board34QA.setSelected(null));await page.mouse.move(1500,8);await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ const base=await page.screenshot({clip:bound,path:fileURLToPath(new URL('board34-1536.png',out))});
+ assert.equal(await page.locator('[data-board34-rent]').count(),26);assert.match(await page.locator('[data-board34-tax]').innerText(),/R\$ 600/);
+ // Prova que o total muda na face 3D, não apenas numa descrição HTML.
+ const rect=layout.taxPoolRect,clip={x:bound.x+rect.x,y:bound.y+rect.y,width:rect.width,height:rect.height};
+ await page.evaluate(()=>window.board34QA.setTax('R$ 0'));await page.waitForFunction(()=>document.querySelector('[data-board34-tax]').textContent.includes('R$ 0'));await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const zero=await page.screenshot({clip});
+ await page.evaluate(()=>window.board34QA.setTax('R$ 12.000'));await page.waitForFunction(()=>document.querySelector('[data-board34-tax]').textContent.includes('R$ 12.000'));await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const large=await page.screenshot({clip});assert.notDeepEqual(zero,large,'O total precisa mudar na face do modelo.');
+ await page.evaluate(()=>{window.board34QA.setTax(null);window.board34QA.setRents('hotel');});await page.waitForFunction(()=>document.querySelector('[data-board34-tax]').textContent.includes('saldo indisponível'));await page.screenshot({clip:bound,path:fileURLToPath(new URL('board34-hotel-unknown-tax.png',out))});
+ await page.evaluate(()=>{window.board34QA.setTax('R$ 600');window.board34QA.setRents('base');window.__board34().model.getObjectByName('TILE_AM').visible=false;});await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const hidden=await page.screenshot({clip:bound,path:fileURLToPath(new URL('independent-am-hidden.png',out))});assert.notDeepEqual(base,hidden);
+ await page.evaluate(()=>window.__board34().model.getObjectByName('TILE_AM').visible=true);
+ const stress=[];
+ for(const[id,level]of[['RN',4],['ES',5],['SAQUE',0]]){
+  await page.evaluate(({id,level})=>{window.board34QA.setSelected(id);window.board34QA.setLevel(level);window.board34QA.setCount(4);},{id,level});await page.waitForLoadState('networkidle');
+  await page.waitForFunction(()=>{const {scene}=window.__imperioArtScene();let loaded=0;for(let i=0;i<4;i++){const root=scene.getObjectByName(`INSPECTION_PAWN_${i}`);let model=false;root?.traverse(o=>{if(o.isMesh&&o.geometry.type==='BufferGeometry')model=true;});if(model)loaded++;}return loaded===4;});
+  await page.screenshot({clip:bound,path:fileURLToPath(new URL(`occupancy-${id}.png`,out))});stress.push({id,players:4,level});
+ }
+ await page.evaluate(()=>{window.board34QA.setCount(0);window.board34QA.setSelected(null);});
+ const mobile=[];
+ for(const[width,height]of[[844,390],[932,430],[667,375]]){
+  await page.setViewportSize({width,height});await page.waitForFunction(()=>{const r=document.querySelector('.board-composition').getBoundingClientRect();return Math.abs(r.width/r.height-1.5)<.001;});await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));assert.deepEqual(await page.evaluate(()=>window.__imperioStaticCamera()),initial);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await page.screenshot({path:fileURLToPath(new URL(`board34-${width}x${height}.png`,out)),fullPage:true});mobile.push({width,height});
+ }
+ assert.deepEqual(errors,[]);assert.deepEqual(apiCalls,[]);assert.equal(requests.some(p=>p.includes('tabuleiro-brasil-alvo.png')||p.includes('approved-concept')||p.includes('board-rn-saque-concept')),false,'Não usar pixels da referência como textura.');assert.equal(requests.some(p=>p.includes('/art/states/')),false,'A partida deve baixar o atlas pronto, não 26 PNGs de cabeçalhos.');
+ const report={physicalTiles:34,printedFaces:34,clicksVerified:34,states:26,taxTotalUpdatesOnMesh:true,unknownTaxDoesNotInventZero:true,independentMeshes:true,stress,cameraInvariant:true,mobileLandscape:mobile,sourcePhotoPixelsUsed:false,stateHeaderPngsRequestedAtRuntime:false,rulesImplemented:false,productionCatalogStill33:true,errors,apiCalls,paidMeshyCredits:50};await writeFile(new URL('report.json',out),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
+}finally{await browser?.close();await server.close();}

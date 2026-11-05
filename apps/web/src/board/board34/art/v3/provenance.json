@@ -1,0 +1,307 @@
+{
+  "tool": "image_gen built-in",
+  "createdAt": "2026-11-04",
+  "reference": "assets/3d/reviews/saque/board-rn-saque-concept-v1.png",
+  "scope": "26 novas ilustrações próprias para miniaturas de casas e 7 ícones transparentes independentes; originais panorâmicos dos modais preservados. Ícones são encaixados com escala uniforme.",
+  "assets": [
+    {
+      "file": "ac-board-v3.png",
+      "kind": "state",
+      "id": "AC",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny AC property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: a traditional Amazonian wooden riverside house on stilts with a warm terracotta roof and a wooden landing, calm reflective river and dense lush Acre rainforest, no urban high-rises. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-801648e5-b039-4a0b-a64f-bb81e63c925c.png",
+      "sha256": "39880b8a54799aba4844f091880bff66520765439d0b4866c3f684b0745b7245",
+      "bytes": 2473844
+    },
+    {
+      "file": "al-board-v3.png",
+      "kind": "state",
+      "id": "AL",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny AL property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: a brilliant turquoise Alagoas tropical coastline, pale sand beach, curved coconut palms, shallow clear natural reef pools and distant green coast, inviting sunny beach scenery. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-8a0c60ae-9e99-4fb6-8b19-c57021fe402c.png",
+      "sha256": "50a5982c361a2a298790d4ca90c5e2bf1609bf228d3df87f139db1f785c87bf6",
+      "bytes": 2416601
+    },
+    {
+      "file": "am-board-v3.png",
+      "kind": "state",
+      "id": "AM",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny AM property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: a wide Amazon rainforest river, dense deep-green tropical forest lining both banks, small traditional wooden riverboats with red and white cabins, reflections and vivid blue sky. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-f6c486cd-954c-40bc-b774-23016677c781.png",
+      "sha256": "dad7cacb9fd135a77ea3c549b3f3dbb179e1ba677b4aed6587901f6c44056904",
+      "bytes": 2395692
+    },
+    {
+      "file": "ap-board-v3.png",
+      "kind": "state",
+      "id": "AP",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny AP property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Fortaleza de São José de Macapá: large pale cream colonial stone fortress, red-tiled gatehouse, low substantial defensive walls and corner bastions, green grass and the broad Amazon estuary nearby. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-c80a26da-bd9e-418d-ae01-ffdc077b870d.png",
+      "sha256": "40b8a5e64f5107060d404434e2b6c2ad25538af94003ee57dbe2d9675a8fd525",
+      "bytes": 2124154
+    },
+    {
+      "file": "ba-board-v3.png",
+      "kind": "state",
+      "id": "BA",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny BA property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: colorful historic Salvador Pelourinho colonial facades and ornate golden-yellow baroque church towers, pale cobbled square, small tropical greenery and distant bright blue sky. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-c82c059d-9f07-45a4-a05d-32c5f15e2ccf.png",
+      "sha256": "e58bf33f54ac464702d3f3ec6b41f31ff28566450c6f41e62e8cad7873eb1cfc",
+      "bytes": 2119222
+    },
+    {
+      "file": "ce-board-v3.png",
+      "kind": "state",
+      "id": "CE",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny CE property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Pedra Furada at Jericoacoara, a monumental ochre-orange natural rock arch on a golden sand beach with turquoise sea visible through the opening, sunny blue sky and white clouds. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-41c0bcec-46e7-43b4-92b0-5479e371e204.png",
+      "sha256": "350233afe834085bdd147536c74f5a801fa248c2cd8da48c411b6f50f2937e0f",
+      "bytes": 2048352
+    },
+    {
+      "file": "df-board-v3.png",
+      "kind": "state",
+      "id": "DF",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny DF property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: the Cathedral of Brasília, unmistakable sixteen white curved rising structural ribs and glass central body, broad clean pale plaza, vivid blue sky, low modern Brasília skyline at a distance. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-6d04e385-2a9a-473d-ad16-5651d2cce9d8.png",
+      "sha256": "4641fa810fe0165a8e1409a1d0be4d93a58ec3ac6b5b416f1c5411da89b51afa",
+      "bytes": 1979356
+    },
+    {
+      "file": "es-board-v3.png",
+      "kind": "state",
+      "id": "ES",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny ES property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Convento da Penha at Vila Velha, a compact white colonial convent with orange tiled roofs on top of a steep rocky lush green hill, turquoise coast and distant city below. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-a846353d-76a7-4549-9cb9-85b0f78ee5e9.png",
+      "sha256": "71870b181615a2dbd58353c52963654ed64398b39451371761942089a83bb738",
+      "bytes": 2137624
+    },
+    {
+      "file": "go-board-v3.png",
+      "kind": "state",
+      "id": "GO",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny GO property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Igreja Matriz de Nossa Senhora do Rosário in Pirenópolis, large white colonial church with twin square towers and ochre-orange detailing, tiled roofs and a sunny cobbled square backed by green hills. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-5be50a53-0fe7-4dab-b6e5-b01723efe803.png",
+      "sha256": "d96ac15618d29fe22e624a3b2bf904183bff90b473cac218183ecda69e063712",
+      "bytes": 2137824
+    },
+    {
+      "file": "ma-board-v3.png",
+      "kind": "state",
+      "id": "MA",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny MA property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Lençóis Maranhenses, sweeping white-golden sand dunes with many intensely turquoise blue freshwater lagoons curving between the dunes, rich saturated clear sky and far green horizon. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-2ec0368c-9b3b-485c-8daf-4bfe1cd99d6c.png",
+      "sha256": "937f881242eb20eb661974254c020389c2e17a71d043c41b7691f53b401484e2",
+      "bytes": 1897800
+    },
+    {
+      "file": "mg-board-v3.png",
+      "kind": "state",
+      "id": "MG",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny MG property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Ouro Preto historic white and warm ochre colonial church with twin towers and red roofs, cobbled street, clustered colorful colonial houses and rolling green Minas hills. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-872c4150-2838-4890-a811-0baf4f0226f5.png",
+      "sha256": "6b2fcd225d7cd13ed5846b4b57f4f1dd6b5dc64a4c0610ffdbe313449dce2bf5",
+      "bytes": 2304266
+    },
+    {
+      "file": "ms-board-v3.png",
+      "kind": "state",
+      "id": "MS",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny MS property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: a bright blue hyacinth macaw with yellow eye-ring perched on a branch in the Pantanal, lush green wetland trees and calm water in the background, sunny blue sky. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-ee0d28b1-5d28-4bb5-ad22-87363ce3e281.png",
+      "sha256": "7cc22bf55d07f7f59094b3170ccc2045ebe48018fcd9a210bdbae1b34ed17cf7",
+      "bytes": 2088192
+    },
+    {
+      "file": "mt-board-v3.png",
+      "kind": "state",
+      "id": "MT",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny MT property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: a golden jaguar with accurate black rosettes reclining beside clear Pantanal wetland water, lush green vegetation and palms, distant wetland forest, calm sunlit beautiful wildlife landscape. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-b43067a9-0a40-48fb-b01e-221d1c93debc.png",
+      "sha256": "24b337c6f717497772101b3995d9aac6d5204e52fe46ebc730fd8549b67cf210",
+      "bytes": 2422046
+    },
+    {
+      "file": "pa-board-v3.png",
+      "kind": "state",
+      "id": "PA",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny PA property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Belém's Basílica de Nossa Senhora de Nazaré, warm golden yellow and cream ornate church with twin bell towers, grand symmetrical facade, green tropical trees and blue sunny sky. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-e9b961bf-6d67-4154-8752-eb2c5c677e1e.png",
+      "sha256": "da8869745d1c5370a3bf009c9abb95d606e338800d6bea2020f866555912bc1c",
+      "bytes": 2212978
+    },
+    {
+      "file": "pb-board-v3.png",
+      "kind": "state",
+      "id": "PB",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny PB property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Farol do Cabo Branco: distinct white triangular wing-shaped lighthouse with a red horizontal band, on a green coastal clifftop, João Pessoa turquoise ocean and pale sand shoreline below. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-9d4c0819-662c-4725-b638-7d0ae2be91f2.png",
+      "sha256": "36cedb40c52b933efe7acffaae569477478ad515a524011fb16aad091508d605",
+      "bytes": 1920550
+    },
+    {
+      "file": "pe-board-v3.png",
+      "kind": "state",
+      "id": "PE",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny PE property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Recife's colorful waterfront colonial buildings at Rua da Aurora, vivid yellow coral blue and white facades reflected in calm Capibaribe river, bridges faintly distant, tropical blue sky. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-d0ad1d10-aa77-4982-ae85-b2800a37fc3f.png",
+      "sha256": "c3d48e6f5712ab02384c54c1d049c712d07b35aa0e122f61f6fbb3e11078aa9e",
+      "bytes": 2163077
+    },
+    {
+      "file": "pi-board-v3.png",
+      "kind": "state",
+      "id": "PI",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny PI property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Serra da Capivara, warm reddish sandstone rock shelter with ancient red-ochre human stick-figure rock paintings clearly visible on the rock face, dry-green caatinga plants around the rocks. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-c25183b7-a6b7-4fe4-b2fd-093175d6aa94.png",
+      "sha256": "1ea1e57da186facb271c3aeaf114a477b06c98967943537a23d8590aa62b6f07",
+      "bytes": 2547870
+    },
+    {
+      "file": "pr-board-v3.png",
+      "kind": "state",
+      "id": "PR",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny PR property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Iguaçu Falls in Paraná, a majestic broad curved cascade with multiple bright white waterfalls plunging between rich emerald rainforest cliffs, blue-green river and rising luminous mist. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-30abcffa-c09e-4d06-ac37-f34d626a5ae9.png",
+      "sha256": "b52afb82bed2bc1ef2e719a918dc5f622ffe756169a9fd5a7578dd5586a88b23",
+      "bytes": 2290818
+    },
+    {
+      "file": "rn-board-v3.png",
+      "kind": "state",
+      "id": "RN",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny RN property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Forte dos Reis Magos in Natal: low white star-shaped coastal fortress with terracotta roofed internal structures, on the edge of turquoise sea, pale beach sand and lush green nearby shore. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-a9f4e774-74bf-45b8-affd-b4b12928a95a.png",
+      "sha256": "60c2c39a49cc0101173f2f8dde0d50bca826dbea3ebcc5d89c670a12c68e72e6",
+      "bytes": 2220342
+    },
+    {
+      "file": "ro-board-v3.png",
+      "kind": "state",
+      "id": "RO",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny RO property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: a long modern concrete bridge across the wide Madeira River at Porto Velho, repeating pale supporting piers, warm orange rails, lush Amazon rainforest on riverbanks, distant soft green hills. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-114a39cf-1439-4112-8dee-607b04352169.png",
+      "sha256": "dc22b81fceeabbaba5547cd32ed72b60c5781a45d91d2a3189cd56efbd848d70",
+      "bytes": 2051157
+    },
+    {
+      "file": "rr-board-v3.png",
+      "kind": "state",
+      "id": "RR",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny RR property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Mount Roraima, an immense flat-topped sandstone tepui with high sheer orange-brown vertical cliffs, lush green savanna and forest in foreground, low clouds drifting below the plateau and clear blue sky. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-0942dc38-5074-43ca-ba4b-c86b478f57ee.png",
+      "sha256": "47831a1eeee867375b4cb810d57a89fc6b4cfdb6195ea1705868f5e8dde8466f",
+      "bytes": 2273570
+    },
+    {
+      "file": "rs-board-v3.png",
+      "kind": "state",
+      "id": "RS",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny RS property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Catedral de Pedra at Canela, tall neo-Gothic brown stone cathedral with one high central pointed tower and arched main doorway, flowerbeds and lush green trees in a sunlit square. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-caa3ec23-c09c-42a7-b9b5-9979eb6d7fe4.png",
+      "sha256": "47da765c13d7507071ed04772d017819872efa2a4f828afddbb0455c6653a783",
+      "bytes": 2370517
+    },
+    {
+      "file": "sc-board-v3.png",
+      "kind": "state",
+      "id": "SC",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny SC property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Florianópolis Hercílio Luz suspension bridge, its iconic long red metal lattice towers and suspension cables across blue bay, small white-red sailboat below, green hills and low coastal buildings. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-ae6b2e2d-b91f-494d-8b34-5d7ca0290090.png",
+      "sha256": "4cbe71e46cedfad787ba6992aa28ebe820735c61c4f7b7ce6e5dc7b0bfeb4d83",
+      "bytes": 2301491
+    },
+    {
+      "file": "se-board-v3.png",
+      "kind": "state",
+      "id": "SE",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny SE property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: a vivid orange-red crab on a sunlit sandy tidal bank with green mangrove trees and turquoise estuary water, playful premium 3D cartoon wildlife tourism emblem of Sergipe, no text. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-5d5b2715-5123-4f08-b634-f9ecd6a0e486.png",
+      "sha256": "a45f1431ca4483a8345b4f5b35a63ca23faa96c3768636e284bc5bb7a9227cf8",
+      "bytes": 2237682
+    },
+    {
+      "file": "sp-board-v3.png",
+      "kind": "state",
+      "id": "SP",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny SP property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Avenida Paulista skyline, tall modern glass and concrete buildings on either side of a broad tree-lined avenue, visible red MASP suspended museum structure in midground, warm late afternoon blue and pink sky. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-a53f08dd-9216-455b-9c0f-b096dc6c5e78.png",
+      "sha256": "9b7d95b8c3b8f1baababe2073fc34fb2bd5adc06c6619a32c787543ca57058e3",
+      "bytes": 2268200
+    },
+    {
+      "file": "rj-board-v3.png",
+      "kind": "state",
+      "id": "RJ",
+      "prompt": "Use case: stylized-concept. ONE original tourism illustration for the tiny RJ property tile of a premium Brazilian board game. Style reference is the illustrated state cards in the supplied game concept, not the full scene. Subject: Rio de Janeiro: warm orange Sugarloaf mountain above a bright turquoise Guanabara bay, a few tiny white sailboats, white beach promenade, lush hills, small Christ statue high in the distant green mountain. Style: bright friendly hand-painted cartoon miniature environment, confident rounded silhouettes, simplified beautiful architectural and natural forms, clean lush foliage, vibrant turquoise/blue and emerald colors, warm upper-left sunlight, beautifully shaded dimensional gold-warm edges. It MUST remain recognizable as a 100-pixel thumbnail: ONE strong centered landmark or nature motif, restrained detail, no photographic microtexture, no clutter, no dense little buildings. Landscape 3:2, full bleed opaque scenery, no perspective skew of the image plane. Main subject entirely inside center 60% width and middle 65% height, with plenty of blue sky above and natural landscape at edges for adaptive cropping. No text, letters, numbers, state code, logo, board, UI, frame, border or watermark. Do not depict the reference board or reuse its pixels.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-0db31ac7-5741-4ee5-9119-b93084dcd4cb.png",
+      "sha256": "d51ddd441362d406becdab23caf7e63333e0ddebf321bc34e3642148d08b93d5",
+      "bytes": 2031610
+    },
+    {
+      "file": "arrow-v3.png",
+      "kind": "special",
+      "prompt": "Use case: stylized-concept. ONE isolated production illustration icon for a premium Brazilian board game. Image reference is style reference only: match the lavish colorful polished cartoon painted 3D craftsmanship of its illustrated corners. Subject: one elegant thick curved rightward GOLD ARROW with smoothly rounded bevels, gently arched shaft and broad arrowhead, rich polished gold dimensional shading. No surrounding frame or panel. Transparent background, centered with 12% empty transparent margin on every side, full subject uncropped. Soft warm key light, crisp appealing shapes, deep golden edge reflections, subtle self-shading, no ground shadow outside object. No scene, no board, no tile, no desk, no decorative border, no numbers, no words, no watermark. This is a reusable separate icon which will be placed without distortion over native colored tile backgrounds.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-14121562-d06a-4493-83ad-4231d52587df.png",
+      "sha256": "3d2b3e9c51c98b5478ca0ef09a0b30cf7aa5b17cee50147b4bc490f746105a66",
+      "bytes": 498173
+    },
+    {
+      "file": "flame-v3.png",
+      "kind": "special",
+      "prompt": "Use case: stylized-concept. ONE isolated production illustration icon for a premium Brazilian board game. Image reference is style reference only: match the lavish colorful polished cartoon painted 3D craftsmanship of its illustrated corners. Subject: one brilliant orange and gold sports flame above five interlinked colorful rings, beautifully sculpted gold outlines, clear clean silhouette, balanced compact triangular composition. No surrounding frame or panel. Transparent background, centered with 12% empty transparent margin on every side, full subject uncropped. Soft warm key light, crisp appealing shapes, deep golden edge reflections, subtle self-shading, no ground shadow outside object. No scene, no board, no tile, no desk, no decorative border, no numbers, no words, no watermark. This is a reusable separate icon which will be placed without distortion over native colored tile backgrounds.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-00ecb138-2000-4aa5-aab3-0fb799562443.png",
+      "sha256": "60318418918cbe0873c67037ca9d64e3ff2169e5447c0e9fd92f26d0d9472cfe",
+      "bytes": 931966
+    },
+    {
+      "file": "rest-v3.png",
+      "kind": "special",
+      "prompt": "Use case: stylized-concept. ONE isolated production illustration icon for a premium Brazilian board game. Image reference is style reference only: match the lavish colorful polished cartoon painted 3D craftsmanship of its illustrated corners. Subject: one bright orange and golden yellow beach parasol over an elegant small orange wooden sun lounger, on a tiny curved ivory sand island with two seashells and a little turquoise sea accent. Compact charming diorama, uncluttered. No surrounding frame or panel. Transparent background, centered with 12% empty transparent margin on every side, full subject uncropped. Soft warm key light, crisp appealing shapes, deep golden edge reflections, subtle self-shading, no ground shadow outside object. No scene, no board, no tile, no desk, no decorative border, no numbers, no words, no watermark. This is a reusable separate icon which will be placed without distortion over native colored tile backgrounds.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-45e59a8d-3697-4576-8985-77de41f6ae71.png",
+      "sha256": "34105ed9a770fff0ec1232a594b8b7a8f3c2a1cf193316a000bc358505cf21d5",
+      "bytes": 1092200
+    },
+    {
+      "file": "airport-v3.png",
+      "kind": "special",
+      "prompt": "Use case: stylized-concept. ONE isolated production illustration icon for a premium Brazilian board game. Image reference is style reference only: match the lavish colorful polished cartoon painted 3D craftsmanship of its illustrated corners. Subject: one white jet airliner with navy blue windows and gold reflections ascending toward the right above a tiny airport control tower and small turquoise landscape base, balanced wide composition with generous space around wings, clean recognizable silhouette. No surrounding frame or panel. Transparent background, centered with 12% empty transparent margin on every side, full subject uncropped. Soft warm key light, crisp appealing shapes, deep golden edge reflections, subtle self-shading, no ground shadow outside object. No scene, no board, no tile, no desk, no decorative border, no numbers, no words, no watermark. This is a reusable separate icon which will be placed without distortion over native colored tile backgrounds.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-53a76cf6-9214-4138-a8b6-dcae2a796f6c.png",
+      "sha256": "9582816b9dfb08892143ccad05f27d9e73b96c70898c71df310e4a62235d00fd",
+      "bytes": 1072598
+    },
+    {
+      "file": "event-v3.png",
+      "kind": "special",
+      "prompt": "Use case: stylized-concept. ONE isolated production illustration icon for a premium Brazilian board game. Image reference is style reference only: match the lavish colorful polished cartoon painted 3D craftsmanship of its illustrated corners. Subject: one simple sculpted deep royal blue QUESTION MARK centered on a small ivory shield with a rounded polished gold bevel. Upright, balanced symmetrical shield and question mark, near square compact silhouette. No other panels, no scrollwork, no lettering beyond the question mark. Transparent background, centered with 12% empty transparent margin on every side, full subject uncropped. Soft warm key light, crisp appealing shapes, deep golden edge reflections, subtle self-shading, no ground shadow outside object. No scene, no board, no tile, no desk, no decorative border, no numbers, no words, no watermark. This is a reusable separate icon which will be placed without distortion over native colored tile backgrounds.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-73d160e9-15af-4200-a1db-f211af7de66c.png",
+      "sha256": "b368179393805aad8aa3b685e798a9766a424e29d43552262abb9176263d671f",
+      "bytes": 1047228
+    },
+    {
+      "file": "tax-v3.png",
+      "kind": "special",
+      "prompt": "Use case: stylized-concept. ONE isolated production illustration icon for a premium Brazilian board game. Image reference is style reference only: match the lavish colorful polished cartoon painted 3D craftsmanship of its illustrated corners. Subject: one elegant round open polished golden treasury bowl with a small golden money sack emerging from it, an embossed dollar symbol on the sack, and a few neatly stacked embossed gold coins. Compact balanced silhouette with highly legible shapes. No UI plaque, no surrounding frame, no other text. Transparent background, centered with 12% empty transparent margin on every side, full subject uncropped. Soft warm key light, crisp appealing shapes, deep golden edge reflections, subtle self-shading, no ground shadow outside object. No scene, no board, no tile, no desk, no decorative border, no numbers, no words, no watermark. This is a reusable separate icon which will be placed without distortion over native colored tile backgrounds.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-102e7bac-a676-42be-935f-4b4f6ca8fbb5.png",
+      "sha256": "eb6ba02ba68ac00ddf45fe312c808b384eed44c7831964a10f617088e5f54e8c",
+      "bytes": 1270004
+    },
+    {
+      "file": "chest-v3.png",
+      "kind": "special",
+      "prompt": "Use case: stylized-concept. ONE isolated production illustration icon for a premium Brazilian board game. Image reference is style reference only: match the lavish colorful polished cartoon painted 3D craftsmanship of its illustrated corners. Subject: one small open green and polished gold treasure coffer, elegantly rounded gold rails and hinges, filled with neatly modeled shiny gold coins, a few coins at its feet, slightly three-quarter view facing left, compact balanced clean silhouette. No UI plaque, no surrounding frame, no lettering. Transparent background, centered with 12% empty transparent margin on every side, full subject uncropped. Soft warm key light, crisp appealing shapes, deep golden edge reflections, subtle self-shading, no ground shadow outside object. No scene, no board, no tile, no desk, no decorative border, no numbers, no words, no watermark. This is a reusable separate icon which will be placed without distortion over native colored tile backgrounds.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-f9481e97-b0f6-41c5-900d-0eb1e88e52e9.png",
+      "sha256": "175c597f37500f1a7926feb0869c73a1cd6e63f7c66b7d42c2e5b4ed7d316ea0",
+      "bytes": 966085
+    },
+    {
+      "file": "brand-v3.png",
+      "kind": "brand",
+      "prompt": "Use case: logo-brand. One isolated compact game emblem on a genuinely transparent background, for printing on a navy coffee mug and future game branding. Match the central game logo from the supplied reference exactly in spirit: thick friendly bold slightly slanted block letters, upper line 'IMPÉRIO' in lustrous gold, lower line 'URBANO' in white, a simple gold crown above, dark emerald shield backing and a beautifully rounded sculpted gold outline, small yellow ribbon below reading 'EDIÇÃO BRASIL'. Polished colorful 3D cartoon game art, balanced compact silhouette, beautifully legible at small size. No surrounding scene, no mockup, no mug, no board, no texture backdrop, no extra words, no watermark. Keep full logo inside 10% transparent margins, correct Portuguese accents.",
+      "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-774cda8d-f9f1-4c27-ac85-a7ec5c56aee6.png",
+      "sha256": "6d8ed30a716db1f8ef17d5d9aeea606e91fc7a8079b97df7b66f5472b1d70552",
+      "bytes": 1766175
+    }
+  ],
+  "meshyLedger": "assets/3d/reviews/decor-v3/meshy-ledger.json"
+}

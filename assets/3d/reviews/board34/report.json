@@ -1,0 +1,48 @@
+{
+  "physicalTiles": 34,
+  "printedFaces": 34,
+  "clicksVerified": 34,
+  "states": 26,
+  "taxTotalUpdatesOnMesh": true,
+  "unknownTaxDoesNotInventZero": true,
+  "independentMeshes": true,
+  "stress": [
+    {
+      "id": "RN",
+      "players": 4,
+      "level": 4
+    },
+    {
+      "id": "ES",
+      "players": 4,
+      "level": 5
+    },
+    {
+      "id": "SAQUE",
+      "players": 4,
+      "level": 0
+    }
+  ],
+  "cameraInvariant": true,
+  "mobileLandscape": [
+    {
+      "width": 844,
+      "height": 390
+    },
+    {
+      "width": 932,
+      "height": 430
+    },
+    {
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "sourcePhotoPixelsUsed": false,
+  "stateHeaderPngsRequestedAtRuntime": false,
+  "rulesImplemented": false,
+  "productionCatalogStill33": true,
+  "errors": [],
+  "apiCalls": [],
+  "paidMeshyCredits": 50
+}

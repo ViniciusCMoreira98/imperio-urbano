@@ -1,0 +1,9 @@
+{
+  "tool": "image_gen built-in",
+  "asset": {
+    "file": "brand-v3.png",
+    "kind": "brand",
+    "prompt": "Use case: logo-brand. One isolated compact game emblem on a genuinely transparent background, for printing on a navy coffee mug and future game branding. Match the central game logo from the supplied reference exactly in spirit: thick friendly bold slightly slanted block letters, upper line 'IMPÉRIO' in lustrous gold, lower line 'URBANO' in white, a simple gold crown above, dark emerald shield backing and a beautifully rounded sculpted gold outline, small yellow ribbon below reading 'EDIÇÃO BRASIL'. Polished colorful 3D cartoon game art, balanced compact silhouette, beautifully legible at small size. No surrounding scene, no mockup, no mug, no board, no texture backdrop, no extra words, no watermark. Keep full logo inside 10% transparent margins, correct Portuguese accents.",
+    "source": "C:\\Users\\Plust\\.codex\\generated_images\\01a1a51b-4e6b-7ce3-ac89-98009e1d1617\\exec-774cda8d-f9f1-4c27-ac85-a7ec5c56aee6.png"
+  }
+}
