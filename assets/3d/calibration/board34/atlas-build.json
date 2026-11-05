@@ -1,0 +1,150 @@
+{
+  "runtimeBytes": 1301978,
+  "width": 3072,
+  "height": 2048,
+  "stateCount": 26,
+  "bytes": 8123310,
+  "sha256": "e355a202f2cfdbf5813cfb2ffc7df82457d46817f734d1f84fcd3610d9f50fc7",
+  "sourcePhotoPixelsUsed": false,
+  "sources": "26 original v3 board illustrations, 7 independent transparent special icons, own center-brasil-v2. Header photos retained only in property modals. One homography for printed art and dynamic values. No triangle seams.",
+  "iconsUniformScale": true,
+  "placements": [
+    {
+      "id": "START",
+      "asset": "arrow",
+      "source": {
+        "x": 246,
+        "y": 182,
+        "width": 1179,
+        "height": 558
+      },
+      "destination": {
+        "x": 12,
+        "y": 15.28676786948219,
+        "width": 150.05051157551617,
+        "height": 71.01627265406108
+      },
+      "uniformScale": 0.1272693058316507
+    },
+    {
+      "id": "EVENT_NORTH",
+      "asset": "event",
+      "source": {
+        "x": 191,
+        "y": 138,
+        "width": 866,
+        "height": 994
+      },
+      "destination": {
+        "x": 14.490024171726546,
+        "y": 10,
+        "width": 68.25147005822089,
+        "height": 78.33944715689557
+      },
+      "uniformScale": 0.07881232108339595
+    },
+    {
+      "id": "OLYMPICS",
+      "asset": "flame",
+      "source": {
+        "x": 255,
+        "y": 59,
+        "width": 921,
+        "height": 984
+      },
+      "destination": {
+        "x": 46.934341976582786,
+        "y": 10,
+        "width": 74.78372550025298,
+        "height": 79.89922463870677
+      },
+      "uniformScale": 0.08119839902307599
+    },
+    {
+      "id": "EVENT_EAST",
+      "asset": "event",
+      "source": {
+        "x": 191,
+        "y": 138,
+        "width": 866,
+        "height": 994
+      },
+      "destination": {
+        "x": 16.469119867733404,
+        "y": 7,
+        "width": 46.941528210267606,
+        "height": 53.879767945734415
+      },
+      "uniformScale": 0.05420499793333442
+    },
+    {
+      "id": "REST",
+      "asset": "rest",
+      "source": {
+        "x": 223,
+        "y": 103,
+        "width": 887,
+        "height": 942
+      },
+      "destination": {
+        "x": 63.423171141546256,
+        "y": 10,
+        "width": 93.00379602592407,
+        "height": 98.77066049201858
+      },
+      "uniformScale": 0.10485208120171824
+    },
+    {
+      "id": "TAX",
+      "asset": "tax",
+      "source": {
+        "x": 179,
+        "y": 95,
+        "width": 968,
+        "height": 1007
+      },
+      "destination": {
+        "x": 21.989206735567834,
+        "y": 8,
+        "width": 66.35342699940999,
+        "height": 69.02675721942754
+      },
+      "uniformScale": 0.06854692871839875
+    },
+    {
+      "id": "AIRPORT",
+      "asset": "airport",
+      "source": {
+        "x": 148,
+        "y": 142,
+        "width": 1280,
+        "height": 673
+      },
+      "destination": {
+        "x": 17.616791316690552,
+        "y": 10,
+        "width": 192.09011123417338,
+        "height": 100.99737879734272
+      },
+      "uniformScale": 0.15007039940169795
+    },
+    {
+      "id": "SAQUE",
+      "asset": "chest",
+      "source": {
+        "x": 315,
+        "y": 122,
+        "width": 803,
+        "height": 840
+      },
+      "destination": {
+        "x": 21.38652618020148,
+        "y": 8,
+        "width": 58.39386323289207,
+        "height": 61.08448955869159
+      },
+      "uniformScale": 0.07271963042701379
+    }
+  ],
+  "errors": []
+}

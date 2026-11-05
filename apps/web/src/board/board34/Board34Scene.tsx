@@ -1,0 +1,58 @@
+import{Suspense,useEffect,useLayoutEffect,useMemo,useRef,type ReactNode}from'react';
+import{Canvas,type ThreeEvent}from'@react-three/fiber';
+import{useGLTF,useTexture}from'@react-three/drei';
+import{BufferAttribute,CanvasTexture,DoubleSide,LinearFilter,Matrix4,Mesh,PerspectiveCamera,ShaderMaterial,SRGBColorSpace,Vector3,Vector4,type Object3D,type Texture}from'three';
+import{CameraRig}from'../CameraRig';import{FixedBoardViewport}from'../camera/FixedBoardViewport';import{applyFixedCamera,FIXED_CAMERA}from'../camera/fixedCamera';
+import{DiceVisual}from'../../dice/DiceVisual';import type{DiceFace}from'../../dice/diceOrientation';
+import{TabletopEnvironment}from'./TabletopEnvironment';import layout from'./layout.json';
+import{paintPanel}from'./panelProjection';
+
+export{layout as board34Layout};
+export interface BoardRentLabel{stateId:string;rentLabel:string}
+export interface Board34SceneProps{selectedId?:string|null;onSelect?:(id:string)=>void;rentLabels?:BoardRentLabel[];taxPoolLabel?:string|null;diceValues?:[DiceFace,DiceFace]|null;children?:ReactNode}
+export function board34TileAnchor(id:string){const tile=layout.tiles.find(t=>t.id===id);if(!tile)throw Error(`Casa desconhecida na cena de 34 casas: ${id}`);return tile.anchor;}
+const nodes=new Set(layout.tiles.map(t=>t.modelNode));
+function tileOf(object:Object3D,root:Object3D){for(let node:Object3D|null=object;node&&node!==root;node=node.parent)if(nodes.has(node.name))return node.name.slice(5);return null;}
+function labelTexture(labels:BoardRentLabel[],taxPoolLabel:string|null){
+ const c=document.createElement('canvas');c.width=3072;c.height=2048;const x=c.getContext('2d')!;x.scale(2,2);x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff7d4';
+ const values=new Map(labels.map(l=>[l.stateId,l.rentLabel]));
+ for(const tile of layout.tiles){const rect=tile.panel.rent,label=values.get(tile.id);if(!rect||label===undefined)continue;paintPanel(x,tile.panel,ctx=>{let font=rect.height*.66;ctx.font=`900 ${font}px Arial,sans-serif`;while(ctx.measureText(label).width>rect.width*.83&&font>7){font-=.25;ctx.font=`900 ${font}px Arial,sans-serif`;}ctx.fillStyle='#fff5d3';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,rect.x+rect.width/2,rect.y+rect.height/2+.3);},rect);}
+ const tax=layout.tiles.find(t=>t.id==='TAX')!;paintPanel(x,tax.panel,ctx=>{const rect=tax.panel.pool!;let size=14;const amount=taxPoolLabel??'—';ctx.font=`900 ${size}px Arial,sans-serif`;while(ctx.measureText(amount).width>rect.width*.88&&size>8){size-=.5;ctx.font=`900 ${size}px Arial,sans-serif`;}ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#ffe47b';ctx.fillText(amount,rect.x+rect.width/2,rect.y+rect.height*.70);},tax.panel.pool!);
+ const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;texture.magFilter=texture.minFilter=LinearFilter;texture.generateMipmaps=false;return texture;
+}
+function material(atlas:Texture,overlay:Texture){return new ShaderMaterial({side:DoubleSide,toneMapped:false,uniforms:{atlas:{value:atlas},overlay:{value:overlay},highlight:{value:0}},vertexShader:'attribute vec3 sourceQ;varying vec3 q;void main(){q=sourceQ;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'uniform sampler2D atlas;uniform sampler2D overlay;uniform float highlight;varying vec3 q;void main(){vec2 uv=q.xy/q.z;vec4 a=texture2D(atlas,uv);vec4 b=texture2D(overlay,uv);gl_FragColor=vec4(mix(a.rgb,b.rgb,b.a)*(1.0+highlight),1.0);\n#include <colorspace_fragment>\n}'});}
+function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null}:Board34SceneProps){
+ const {scene}=useGLTF(layout.model),atlas=useTexture(layout.atlas),hovered=useRef<string|null>(null);
+ const labelsKey=JSON.stringify([rentLabels,taxPoolLabel]);
+ const overlay=useMemo(()=>labelTexture(rentLabels,taxPoolLabel),[labelsKey]);
+ useEffect(()=>()=>overlay.dispose(),[overlay]);
+ const prepared=useMemo(()=>{
+  atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=8;
+  const model=scene.clone(true);model.updateMatrixWorld(true);
+  const camera=new PerspectiveCamera();applyFixedCamera(camera);const projector=new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);
+  const materials:ShaderMaterial[]=[],geometries:Mesh['geometry'][]=[];
+  model.traverse(object=>{
+   if(!(object instanceof Mesh))return;
+   const originals=Array.isArray(object.material)?object.material:[object.material];
+   if(originals.some(m=>m.name==='TileFace'||m.name==='CenterArtwork')){
+    object.geometry=object.geometry.clone();geometries.push(object.geometry);const p=object.geometry.getAttribute('position'),q=new Float32Array(p.count*3);
+    for(let i=0;i<p.count;i++){const world=new Vector3().fromBufferAttribute(p,i).applyMatrix4(object.matrixWorld),clip=new Vector4(world.x,world.y,world.z,1).applyMatrix4(projector);q[i*3]=(clip.x+clip.w)/2;q[i*3+1]=(clip.y+clip.w)/2;q[i*3+2]=clip.w;}object.geometry.setAttribute('sourceQ',new BufferAttribute(q,3));
+    const next=originals.map(m=>{if(m.name!=='TileFace'&&m.name!=='CenterArtwork')return m;const result=material(atlas,overlay);result.userData.tileId=tileOf(object,model);materials.push(result);return result;});object.material=Array.isArray(object.material)?next:next[0];
+   }
+   object.castShadow=true;object.receiveShadow=true;
+  });return{model,materials,geometries};
+ },[scene,atlas]);
+ useLayoutEffect(()=>{prepared.materials.forEach(m=>{m.uniforms.overlay.value=overlay;});},[prepared,overlay]);
+ const highlight=(id:string|null)=>prepared.materials.forEach(m=>{const tile=m.userData.tileId;m.uniforms.highlight.value=tile&&tile===selectedId? .12:tile&&tile===id?.toString()? .04:0;});
+ useEffect(()=>{highlight(hovered.current);},[selectedId,prepared]);
+ useEffect(()=>()=>{prepared.materials.forEach(m=>m.dispose());prepared.geometries.forEach(g=>g.dispose());document.body.style.cursor='';},[prepared]);
+ useEffect(()=>{if(import.meta.env.DEV){const inspect=()=>({model:prepared.model,layout,printedFaces:prepared.materials.filter(m=>m.userData.tileId).length});(window as any).__board34=inspect;return()=>{delete(window as any).__board34;};}},[prepared]);
+ const click=(event:ThreeEvent<MouseEvent>)=>{const id=tileOf(event.object,prepared.model);if(id){event.stopPropagation();onSelect?.(id);}};
+ const move=(event:ThreeEvent<PointerEvent>)=>{const id=tileOf(event.object,prepared.model);hovered.current=id;highlight(id);document.body.style.cursor=id?'pointer':'';};
+ return <primitive object={prepared.model} onClick={click} onPointerMove={move} onPointerOut={()=>{hovered.current=null;highlight(null);document.body.style.cursor='';}}/>;
+}
+/** Cena real de 34 casas. Estado, regras, comandos e peças vêm do host. */
+export function Board34Scene({children,diceValues=null,...props}:Board34SceneProps){return <FixedBoardViewport><Canvas shadows dpr={[1,2]} camera={{position:FIXED_CAMERA.position as[number,number,number],fov:FIXED_CAMERA.fov,far:FIXED_CAMERA.far}}>
+ <color attach="background" args={['#5e321e']}/><ambientLight intensity={.75}/><directionalLight position={[-8,18,8]} intensity={1.8} color="#fff0dc" castShadow shadow-mapSize={[2048,2048]} shadow-camera-left={-12} shadow-camera-right={12} shadow-camera-top={12} shadow-camera-bottom={-12} shadow-camera-far={60} shadow-normalBias={.03} shadow-bias={-.0001}/>
+ <Suspense fallback={null}><TabletopEnvironment/><BoardModel {...props}/>{diceValues&&layout.dice.map((die,i)=><group key={i} position={die.position as[number,number,number]} rotation={[0,die.yaw,0]}><DiceVisual face={diceValues[i]} size={die.size}/></group>)}{children}</Suspense><CameraRig/>
+ </Canvas><section aria-label="Valores do tabuleiro" style={{position:'absolute',width:1,height:1,overflow:'hidden',clipPath:'inset(50%)',whiteSpace:'nowrap'}}>{props.rentLabels?.map(label=><p key={label.stateId} data-board34-rent={label.stateId}>{label.stateId}: {label.rentLabel}</p>)}<p data-board34-tax>Fundo da Taxa: {props.taxPoolLabel??'saldo indisponível'}</p></section></FixedBoardViewport>;}

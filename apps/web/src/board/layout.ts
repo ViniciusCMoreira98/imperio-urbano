@@ -1,10 +1,11 @@
 // Geometria do tabuleiro: converte o índice da casa em posição na cena.
-// Fonte: o manifesto da arte de 33 casas (reference33/layout.json), consultado pelo id estável da casa
+// Fonte: manifesto visual de 33 ou 34 casas, escolhido pela sequência completa do catálogo e consultado pelo id estável da casa
 // no catálogo (board.json). Eixos: x para a direita, z em direção à câmera; o +z local de cada casa
 // aponta para fora do tabuleiro.
 
 import { board } from '@imperio/game-data';
-import manifest from './reference33/layout.json';
+import {boardVisualManifest} from './boardVisualManifest';
+const manifest = boardVisualManifest(board.tiles);
 
 /**
  * Retângulo no sistema da casa: x ao longo da largura, z ao longo da profundidade (+z para fora do

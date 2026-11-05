@@ -1,5 +1,51 @@
 # 11 — Contratos entre engenharia (Claude) e arte 3D (Codex)
 
+## Registro do commit da arte v3 — 04/11/2026
+
+Entrega registrada em **`6d1de1a`**, branch **`develop_arte_3d`**, com commit e integração à `develop` autorizados pelo usuário. Base remota conferida: `2fc2c3e`. Verificação antes do commit: **107 testes, TypeScript, build e auditoria de credenciais aprovados**, sem arquivos acima de 100 MiB. O histórico Git registra a integração e este registro documental complementar. As menções a “sem commit/merge” abaixo são históricas. A publicação da arte não ativa por si só as regras/partida de 34 casas; consultar o contrato v3 a seguir.
+
+## V3 — redesenho após rejeição do acabamento (04/11/2026)
+
+**Este é o estado vigente da arte, ainda para revisão estética do usuário.** A montagem anterior foi rejeitada por desalinhamentos, distorção dos ícones, Taxa e decoração insatisfatórias. Os registros de aprovação de testes nas seções históricas não aprovam o acabamento rejeitado.
+
+### Alterações desta revisão
+
+- **34 PNGs originais novos** em `apps/web/src/board/board34/art/v3/`: 26 ilustrações próprias para as miniaturas dos estados, sete ícones transparentes independentes (seta, chama, descanso, aeroporto, evento, tesouro da Taxa e baú) e uma marca para a caneca. Os cabeçalhos panorâmicos aprovados dos modais foram preservados. Prompts e hashes no `provenance.json` desse diretório.
+- **Grade física regular e margens consistentes**, com contornos arredondados. Alteradas deliberadamente as posições/polígonos da cena de 34 para corrigir o alinhamento solicitado; a câmera e as matrizes calibradas continuam intactas. Modelo/atlas novos e manifesto são um conjunto inseparável.
+- Manifesto `board34/layout.json` agora com `schemaVersion:2`, `id:board34-v03`, `integration.anchorsRevision:3` e `panel` por casa. RN permanece antes de AM; Saque e ordem lógica de 34 preservados. **Não reutilizar âncoras anteriores da cena de 34 ou deslocamentos de 33**: personagens/construções consultam o manifesto vigente pelo id.
+- Arte, preço e saldo usam a mesma projeção em `panelProjection.ts`. Ícones encaixados com **escala uniforme**, sem esticar quadrados em retângulos; Evento norte e leste têm diagramações próprias. Rasterização sem as costuras diagonais das tentativas com triângulos Canvas2D. Valores continuam independentes e dinâmicos.
+- Taxa com nova ilustração, título e placa própria para total disponível. Saque recebe baú separado e título nativo. Não foram implementadas regras monetárias locais.
+- **Decoração real Meshy:** planta T2.5 e caneca 7.1, inspecionadas, texturizadas e preparadas localmente; marca aplicada na superfície da caneca, café e moedas complementados na cena. GLBs finais em `apps/web/public/models/decor/`, fontes integrais em `assets/3d/calibration/decor-v3/`, processo reproduzível em `scripts/assets/prepare-meshy-decor.py`. Tangentes exportadas e degeneração de uma tangente da planta corrigida antes da validação.
+- Custos Meshy informados ao usuário antes das gerações: previsão inicial 30, revisada para 50 após descarte da primeira caneca defeituosa. **Consumidos exatamente 50 créditos**, incluindo 5 da tentativa descartada; saldo de 1.000 para 950. Registro de tarefas/modelos/prompts em `assets/3d/reviews/decor-v3/meshy-ledger.json`. Nenhuma geração adicional está autorizada silenciosamente neste registro.
+- Runtime: tabuleiro 444.384 bytes/9.496 triângulos; atlas 1.301.978 bytes; planta 1.065.892 bytes/6.497 triângulos; caneca 737.652 bytes/6.244 triângulos; marca WebP 47.186 bytes. Texturas de decoração reduzidas para uso no navegador; fontes completas preservadas.
+
+### Verificação e integração
+
+107 testes, TypeScript e build aprovados. Validador Khronos: tabuleiro, planta e caneca finais sem erros ou avisos; relatórios `khronos-v3.json` e `decor-v3/khronos-*-verified.json`. QA no navegador: 34 cliques, 26 aluguéis, alteração do fundo na face, saldo desconhecido sem inventar zero, quatro personagens em RN/ES/Saque e três resoluções móveis em paisagem com câmera invariável. Isto não mede desempenho em aparelho físico nem ausência de encobrimento das letras por personagens.
+
+Capturas reais atuais: `assets/3d/reviews/board34/board34-v3.png` e `detail-north-v3.png`, `detail-tax-v3.png`, `detail-event-v3.png` (2×). Os arquivos anteriores documentam versões rejeitadas; não apresentá-los como a revisão vigente.
+
+**Para Claude:** integrar este conjunto de GLB, atlas, decoração, marca e manifesto v3. A partida de produção ainda usa catálogo de 33 e permanece protegida pelo seletor exato; a migração para 34, contratos do fundo/Saque, HUD integrado e restrição de celular a paisagem continuam responsabilidades de engenharia. Não ativar só o visual com lógica/âncoras antigas. Sem commit, push ou merge nesta revisão.
+
+
+
+## Revisão visual — retorno ao estilo anterior (04/11/2026)
+
+Validação desta revisão concluída: 105 testes, TypeScript e build aprovados; GLB sem erros ou avisos no validador Khronos (`khronos-restored-final.json`). QA real do navegador com 34 cliques, mudança do fundo na face da Taxa, valor desconhecido, aluguéis, quatro personagens em RN/ES/Saque e câmera invariável nas três telas móveis em paisagem. Relatório atualizado em `assets/3d/reviews/board34/report.json`, sem erros de página. Aprovação estética final e desempenho em aparelho físico continuam a ser avaliados separadamente.
+
+**Pedido vigente do usuário:** preservar as fotos dos estados e retomar o acabamento da arte anterior. A primeira montagem simplificada de 34 casas foi rejeitada visualmente; testes geométricos não constituem aprovação de arte. Esta revisão é a nova entrega para avaliação do usuário, sem alegar reprodução idêntica do conceito.
+
+- Mantidos os 26 cabeçalhos/fotos dos estados, preços variáveis, RN antes de AM, Saque, Taxa e a câmera/calibração existente.
+- Criadas seis artes originais individuais: `center-brasil-v2.png`, `start-v1.png`, `olympics-v1.png`, `rest-v1.png`, `airport-v1.png` e `event-v1.png`, em `apps/web/src/board/board34/art/`. Centro com letras de bloco, “URBANO” branco, coroa e paisagem azul; cantos com ilustrações detalhadas em vez de símbolos de sistema.
+- Moldura física em madeira com filetes dourados arredondados e frisos. Folhagem curva com nervuras discretas, vaso cerâmico, caneca identificada e moedas com estrela. Esses elementos são geometria/material próprios; nenhuma imagem inteira de tabuleiro é projetada na cena.
+- Fontes, prompts exatos e hashes: `apps/web/src/board/board34/art/restoration-provenance.json`. Geração pelo image_gen integrado. Meshy foi consultado, mas não houve geração nem consumo de créditos nesta revisão.
+- Modelo com 10.801 triângulos e 555.420 bytes; atlas pronto de 1.496.112 bytes. As seis fontes novas não são baixadas separadamente durante a partida; os 26 PNGs dos estados também continuam fora do carregamento da cena.
+- Captura real para revisão: `assets/3d/reviews/board34/board34-1536.png`. Não confundir com o conceito gerado `assets/3d/reviews/saque/board-rn-saque-concept-v1.png`. O screenshot novo mostra o tabuleiro; não certifica conclusão do HUD completo ou da partida conectada.
+
+**Para Claude:** usar o GLB/atlas regenerados desta revisão ao ativar o catálogo de 34 casas. Continuam necessários os contratos de Saque/fundo de Taxa, snapshot autoritativo, HUD integrado e restrição de celular a paisagem descritos abaixo. Não voltar ao atlas simplificado, aos ícones de sistema nem ao centro de letras serifadas `center-brasil-v1.png`. Não alterar as fotos aprovadas. A seleção do novo layout continua condicionada à correspondência exata do catálogo; a produção de 33 casas não foi migrada silenciosamente.
+
+
+
 **Orientações operacionais e fila atual da engenharia:** [ORIENTACOES-CLAUDE.md](ORIENTACOES-CLAUDE.md). O Codex deve atualizar esse único arquivo sempre que uma entrega exigir ação do Claude; este contrato mantém os detalhes das interfaces. Pedidos da engenharia para a arte: [ORIENTACOES-CODEX.md](ORIENTACOES-CODEX.md).
 
 ## Regra vigente de criação — referências não são assets finais
@@ -303,3 +349,20 @@ A nova decisão acrescenta uma casa especial SAQUE: START → RN → AM no come�
 O fundo de Taxa é estado oficial do servidor: acumula pagamentos efetivados de Taxa, é recebido integralmente ao parar em Saque e zera nessa operação. O marcador na Taxa mostra o saldo disponível, com atualização por snapshot/eventos, sem contagem ou transferência local. R$600 no conceito é exemplo. A engenharia define o schema e valida dívida, idempotência, persistência e multiplayer.
 
 `special-tiles/SpecialTileArtwork.tsx`: `SaqueTileArtwork()` fornece a arte/título da casa e `TaxPoolMarker({collectedLabel:string})` fornece pote e total já formatado. Sem stores/regras/comandos. Imagens originais transparentes, texto e valor separados. Saque não tem plaquinha de aluguel; RN mantém seu aluguel e deve ganhar novas coordenadas na futura calibração. As posições de 33 casas não aprovam ocupação ou preços na proposta de 34. Conceito e assets em `assets/3d/reviews/saque/` e `special-tiles/art/`; detalhes no pedido vigente dos dois arquivos de orientação.
+
+## Implementação visual de 34 casas — contrato em execução (04/11/2026)
+
+Novo módulo `board/board34`: geometria/GLB e atlas próprios, manifesto com 34 IDs/índices/polígonos/âncoras e área de aluguel por UF. A sequência vem de `special-tiles/proposedBoard34.json`; START→RN→AM e AL→SAQUE→CE. Preservar a calibração fixa e as coordenadas mundiais da mesa/dados C1.
+
+O seletor do frontend só ativa a cena de 34 casas se o catálogo inteiro (IDs e índices em ordem) corresponder ao novo manifesto; com catálogo de 33, mantém cena/âncoras atuais. Não ativar só pela contagem nem simular a regra Saque no cliente. `Board34Scene` recebe seleção/callback, `rentLabels`, `taxPoolLabel`, dados e `children` da engenharia, sem stores/comandos. O host usa os helpers existentes para calcular/formatar aluguéis e fornece o saldo oficial da Taxa; valor ausente é informação indisponível, não zero inventado.
+
+As artes do novo atlas vêm dos assets originais das UFs/Saque/Taxa e de um novo centro autoral; não usar o screenshot conceitual nem pixels do tabuleiro de referência como textura. Seleção, geometria e peças continuam independentes de qualquer imagem. A ativação na partida requer catálogo/motor/snapshot de 34 casas pelo Claude, sem misturar índices de 33 e 34.
+
+
+## Entrega do contrato 34 em código (04/11/2026)
+
+O manifesto concreto agora é `board/board34/layout.json`, com GLB próprio `board34-v01.glb`, atlas original WebP e `Board34Scene`. A arte de 34 está implementada; a migração do motor/catálogo/snapshots segue pendente. `boardVisualManifest` ativa por IDs, índices e sequência inteira, com as 26 associações de propriedades. `layout.ts` e `GameBoard` já adotam essa escolha; catálogo atual de 33 permanece no cenário antigo. Não contornar o seletor para misturar índices.
+
+API visual: `selectedId`, `onSelect(id)`, `rentLabels: {stateId,rentLabel}[]`, `taxPoolLabel: string|null`, `diceValues`, `children`. Totais e aluguéis ficam na face real, sem regra local. Valor desconhecido da Taxa não equivale a zero. O host precisa fornecer o saldo público formatado via `GameBoard({taxPoolLabel})`; seus cálculos/transferências pertencem ao servidor.
+
+`rentRect` e `taxPoolRect` usam pixels nativos 1536×1024; o atlas tem resolução 2×, sem alterar posições. Âncoras mantêm os campos/significados anteriores. Valores não estão gravados no atlas estático; a cena mistura uma textura de texto atualizável. Não sobrepor as posições antigas de 33 casas à nova cena. Câmera e envelope dos dados C1 preservados. Fontes, geometria e QA detalhados na nova seção de entrega dos dois arquivos de orientação.
