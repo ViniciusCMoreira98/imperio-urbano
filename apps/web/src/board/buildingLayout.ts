@@ -8,11 +8,6 @@ const HOTEL = { width: 0.5, height: 0.42, depth: 0.26 };
 /** Folga entre casinhas vizinhas e entre a construção e a borda da faixa. */
 const GAP = 0.01;
 
-/** Faixa do dono: logo depois da área de personagens, do lado de fora, mais curta que ela (cabe no contorno inclinado). */
-export function ownerStrip(anchor: TileAnchor): { z: number; width: number; depth: number } {
-  const area = anchor.pawnArea;
-  return { z: area.z + area.depth / 2, width: area.width * 0.8, depth: 0.1 };
-}
 
 export interface BuildingPlacement {
   /** Centro de cada casinha (x, z) no sistema da casa, sempre nos mesmos lugares (a 1ª não muda quando chega a 2ª). */

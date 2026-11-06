@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { board } from '@imperio/game-data';
 import { boardVisualManifest } from './boardVisualManifest';
-import { buildingPlacement, ownerStrip } from './buildingLayout';
+import { buildingPlacement } from './buildingLayout';
 import { type TileAnchor, type TileArea, anchorToWorld, tileAnchor, tileIndexOf } from './layout';
 import { PAWN_RADIUS, pawnSpots } from './pawnLayout';
 
@@ -51,7 +51,7 @@ describe('âncoras das casas do manifesto ativo', () => {
   // As áreas do manifesto são retângulos de referência e, nas casas inclinadas, passam um pouco do
   // contorno; por isso os testes abaixo conferem o que de fato é desenhado (personagens, construções,
   // faixa do dono) contra o polígono real da casa.
-  it('construções do lado do centro, personagens do lado de fora, sem se sobrepor', () => {
+  it('construções e personagens em faixas separadas da casa', () => {
     for (const tile of board.tiles) {
       const a = tileAnchor(tile.index);
       expect(a.selectedLift).toBeGreaterThanOrEqual(0);
@@ -60,8 +60,10 @@ describe('âncoras das casas do manifesto ativo', () => {
         continue;
       }
       const b = a.buildingArea!;
-      // Faixas separadas na profundidade: construções do lado do centro, personagens do lado de fora.
-      expect(b.z + b.depth / 2).toBeLessThanOrEqual(a.pawnArea.z - a.pawnArea.depth / 2 + 1e-9);
+      // Faixas separadas na profundidade (a construção fica junto da placa de aluguel, que muda de lado).
+      const p = a.pawnArea;
+      const apart = b.z + b.depth / 2 <= p.z - p.depth / 2 + 1e-9 || p.z + p.depth / 2 <= b.z - b.depth / 2 + 1e-9;
+      expect(apart, tile.id).toBe(true);
     }
   });
 
@@ -77,14 +79,12 @@ describe('âncoras das casas do manifesto ativo', () => {
     }
   });
 
-  it('casas, hotel e faixa do dono cabem inteiros na casa de cada estado, sem casinhas sobrepostas', () => {
+  it('casas e hotel cabem inteiros na casa de cada estado, sem casinhas sobrepostas', () => {
     const fits = (a: TileAnchor, box: TileArea, what: string) => {
       for (const c of corners(a, box)) expect(insideDistance(a.polygon, c.x, c.z), what).toBeGreaterThanOrEqual(0);
     };
     for (const tile of board.tiles.filter((t) => t.type === 'PROPERTY')) {
       const a = tileAnchor(tile.index);
-      const strip = ownerStrip(a);
-      fits(a, { x: 0, z: strip.z, width: strip.width, depth: strip.depth }, `faixa do dono em ${tile.id}`);
       for (let level = 1; level <= 5; level++) {
         const { houses, houseSize, hotel } = buildingPlacement(a, level);
         expect(level === 5 ? hotel !== null : houses.length === level).toBe(true);

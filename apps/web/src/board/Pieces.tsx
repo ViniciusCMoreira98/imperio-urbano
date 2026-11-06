@@ -1,10 +1,10 @@
 // Construções e marcadores desenhados a partir do snapshot do servidor (arte: Codex).
 // Os personagens moram em Pawns.tsx (engenharia); a reexportação mantém o import da cena.
+import { Line } from '@react-three/drei';
 import { useMemo } from 'react';
 import { board } from '@imperio/game-data';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
-import { ownerStrip } from './buildingLayout';
 import { PropertyBuildingModel } from './BuildingModels';
 import { propertyBuildingPlacement } from './buildings/buildingPresentation';
 import { tileAnchor } from './layout';
@@ -24,7 +24,8 @@ export function Buildings() {
         property,
         anchor,
         building: property.ownerId ? propertyBuildingPlacement(anchor.buildingArea, property.buildingLevel) : null,
-        strip: ownerStrip(anchor),
+        // Contorno real da casa, um pouco acima da superfície para não piscar com ela.
+        outline: [...anchor.polygon, anchor.polygon[0]].map(([x, z]) => [x, anchor.surfaceY + 0.004, z] as [number, number, number]),
         ownerColor: colorOf.get(property.ownerId ?? '') ?? '#ffffff',
         hostMultiplier: snapshot.olympics.hostStateId === property.stateId ? snapshot.olympics.multiplier : null,
       };
@@ -33,25 +34,24 @@ export function Buildings() {
 
   return (
     <>
-      {items.map(({ property, anchor, building, strip, ownerColor, hostMultiplier }) => (
-        <group key={property.stateId} position={[anchor.x, anchor.surfaceY, anchor.z]} rotation={[0, anchor.rotationY, 0]}>
-          {/* Cor do dono na faixa e na base; fachada mantém a paleta original do modal. */}
-          <mesh position={[0, 0.006, strip.z]}>
-            <boxGeometry args={[strip.width, 0.012, strip.depth]} />
-            <meshStandardMaterial color={ownerColor} />
-          </mesh>
-          {/* Construções na faixa interna da casa (buildingArea), de frente para fora. */}
-          {building && (
-            <group position={[building.x, 0, building.z]}>
-              <PropertyBuildingModel level={building.level} color={ownerColor} scale={building.scale}/>
-            </group>
-          )}
-          {hostMultiplier !== null && (
-            <OlympicHost
-              placement={{ index: anchor.index, x: anchor.x, z: anchor.z, rotationY: anchor.rotationY, width: anchor.width, depth: anchor.depth, isCorner: false }}
-              multiplier={hostMultiplier}
-            />
-          )}
+      {items.map(({ property, anchor, building, outline, ownerColor, hostMultiplier }) => (
+        <group key={property.stateId}>
+          {/* Dono marcado pelo contorno da casa na cor dele, sem cobrir o nome nem a arte do estado. */}
+          {property.ownerId && <Line points={outline} color={ownerColor} lineWidth={3.5} />}
+          <group position={[anchor.x, anchor.surfaceY, anchor.z]} rotation={[0, anchor.rotationY, 0]}>
+            {/* Construções na faixa interna da casa (buildingArea), de frente para fora. */}
+            {building && (
+              <group position={[building.x, 0, building.z]}>
+                <PropertyBuildingModel level={building.level} color={ownerColor} scale={building.scale}/>
+              </group>
+            )}
+            {hostMultiplier !== null && (
+              <OlympicHost
+                placement={{ index: anchor.index, x: anchor.x, z: anchor.z, rotationY: anchor.rotationY, width: anchor.width, depth: anchor.depth, isCorner: false }}
+                multiplier={hostMultiplier}
+              />
+            )}
+          </group>
         </group>
       ))}
     </>

@@ -11,7 +11,7 @@ vi.mock('@imperio/game-data',async importOriginal=>{
 });
 import{tileAnchor,anchorToWorld}from'../layout';
 import{pawnSpots,PAWN_RADIUS}from'../pawnLayout';
-import{buildingPlacement,ownerStrip}from'../buildingLayout';
+import{buildingPlacement}from'../buildingLayout';
 function clearance(x:number,z:number,polygon:[number,number][]){let odd=false,nearest=Infinity;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){const[a,b]=polygon[i],[c,d]=polygon[j];if((b>z)!==(d>z)&&x<(c-a)*(z-b)/(d-b)+a)odd=!odd;const dx=c-a,dz=d-b,t=Math.max(0,Math.min(1,((x-a)*dx+(z-b)*dz)/(dx*dx+dz*dz)));nearest=Math.min(nearest,Math.hypot(x-a-t*dx,z-b-t*dz));}return odd?nearest:-nearest;}
 
 describe('tabuleiro físico de 34 casas',()=>{
@@ -26,7 +26,7 @@ describe('tabuleiro físico de 34 casas',()=>{
   for(const tile of layout.tiles){const anchor=tileAnchor(tile.index);for(let count=1;count<=4;count++){const pawns=Array.from({length:count},(_,seat)=>({id:`p${seat}`,position:tile.index,seat}));for(const spot of pawnSpots(pawns).values())expect(clearance(spot.x,spot.z,anchor.polygon),`${tile.id}: ${count} jogadores`).toBeGreaterThanOrEqual(PAWN_RADIUS-1e-6);}}
  });
  it('acomoda construções e faixas dos donos nos polígonos reais',()=>{
-  for(const tile of layout.tiles.filter(t=>t.type==='PROPERTY')){const anchor=tileAnchor(tile.index);const fits=(x:number,z:number,w:number,d:number)=>{for(const sx of[-1,1])for(const sz of[-1,1]){const point=anchorToWorld(anchor,x+sx*w/2,z+sz*d/2);expect(clearance(point.x,point.z,anchor.polygon),tile.id).toBeGreaterThanOrEqual(-1e-6);}};const strip=ownerStrip(anchor);fits(0,strip.z,strip.width,strip.depth);for(let level=1;level<=5;level++){const b=buildingPlacement(anchor,level);for(const[x,z]of b.houses)fits(x,z,b.houseSize,b.houseSize);if(b.hotel)fits(b.hotel.x,b.hotel.z,b.hotel.width,b.hotel.depth);}}
+  for(const tile of layout.tiles.filter(t=>t.type==='PROPERTY')){const anchor=tileAnchor(tile.index);const fits=(x:number,z:number,w:number,d:number)=>{for(const sx of[-1,1])for(const sz of[-1,1]){const point=anchorToWorld(anchor,x+sx*w/2,z+sz*d/2);expect(clearance(point.x,point.z,anchor.polygon),tile.id).toBeGreaterThanOrEqual(-1e-6);}};for(let level=1;level<=5;level++){const b=buildingPlacement(anchor,level);for(const[x,z]of b.houses)fits(x,z,b.houseSize,b.houseSize);if(b.hotel)fits(b.hotel.x,b.hotel.z,b.hotel.width,b.hotel.depth);}}
  });
  it('publica 34 objetos físicos independentes, corpo, centro e moldura no GLB',()=>{
   const path=new URL('../../../public/models/board/board34-v01.glb',import.meta.url),bytes=readFileSync(path),doc=JSON.parse(bytes.subarray(20,20+bytes.readUInt32LE(12)).toString());

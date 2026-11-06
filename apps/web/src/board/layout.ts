@@ -5,6 +5,7 @@
 
 import { board } from '@imperio/game-data';
 import {boardVisualManifest} from './boardVisualManifest';
+import { type ZoneTile, tileZones } from './board34/buildingZone';
 const manifest = boardVisualManifest(board.tiles);
 
 /**
@@ -50,6 +51,9 @@ const anchors: TileAnchor[] = board.tiles.map((tile) => {
   const art = manifestById.get(tile.id);
   if (!art) throw new Error(`Casa ${tile.index} (${tile.id}) sem arte no manifesto do tabuleiro`);
   const a = art.anchor;
+  // No tabuleiro de 34 casas a construção vem da arte de cada casa (fora do nome e da placa de aluguel)
+  // e os personagens ficam do outro lado dela.
+  const zones = tile.type === 'PROPERTY' && 'panel' in art && art.panel ? tileZones(art as unknown as ZoneTile, a.pawnArea) : null;
   return {
     index: tile.index,
     id: tile.id,
@@ -59,8 +63,8 @@ const anchors: TileAnchor[] = board.tiles.map((tile) => {
     rotationY: a.rotationY,
     width: a.width,
     depth: a.depth,
-    pawnArea: a.pawnArea,
-    buildingArea: tile.type === 'PROPERTY' ? a.buildingArea : null,
+    pawnArea: zones?.pawns ?? a.pawnArea,
+    buildingArea: tile.type !== 'PROPERTY' ? null : (zones?.building ?? a.buildingArea),
     selectedLift: a.selectedLift,
     polygon: art.polygon.map(([x, , z]) => [x, z]),
   };
