@@ -1,0 +1,34 @@
+import{createServer}from'vite';import{chromium}from'@playwright/test';import{readFile,writeFile,mkdir}from'node:fs/promises';import{fileURLToPath}from'node:url';import assert from'node:assert/strict';
+const root=fileURLToPath(new URL('../../',import.meta.url)),out=new URL('../../assets/3d/reviews/c9/',import.meta.url),layout=JSON.parse(await readFile(new URL('../../apps/web/src/board/board34/layout.json',import.meta.url),'utf8'));await mkdir(out,{recursive:true});
+const server=await createServer({root,configFile:false,esbuild:{jsx:'automatic'},publicDir:fileURLToPath(new URL('../../apps/web/public/',import.meta.url)),server:{host:'127.0.0.1',port:4199,strictPort:true,watch:{ignored:['**/assets/3d/**','**/dist/**']}},optimizeDeps:{include:['react','react-dom/client','three','@react-three/fiber','@react-three/drei','zustand','three/examples/jsm/environments/RoomEnvironment.js']}});await server.listen();let browser;
+try{
+ browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:1536,height:1088}}),errors=[],failed=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});page.on('response',r=>{if(r.status()>=400)failed.push(new URL(r.url()).pathname);});
+ await page.goto('http://127.0.0.1:4199/scripts/assets/board34-preview/',{waitUntil:'networkidle'});await page.waitForFunction(()=>window.__imperioArtScene?.().scene.getObjectsByProperty('name','DiceBody').length===2);
+ const pose=await page.evaluate(()=>window.__imperioStaticCamera().world),sizes=[];
+ for(const[width,height]of[[1280,720],[1536,1024],[1280,800],[2560,1080],[2560,1440],[3840,2160],[2000,740],[844,390]]){
+  await page.setViewportSize({width,height:height+64});await page.waitForFunction(({width,height})=>{const d=window.__board34?.();return d?.viewport.width===width&&d.viewport.height===height&&d.atlas.width===(d.viewport.large?6144:3072);},{width,height},{timeout:60000});
+  const data=await page.evaluate(()=>{
+   const{scene,camera,raycaster}=window.__imperioArtScene(),rect=document.querySelector('.board-composition').getBoundingClientRect(),visible=o=>{for(let p=o;p;p=p.parent)if(!p.visible)return false;return true;},meshes=[];scene.updateMatrixWorld(true);scene.traverse(o=>{if(o.isMesh&&visible(o))meshes.push(o);});
+   const dice=[0,1].map(i=>{const group=scene.getObjectByName(`BOARD_STATIC_DIE_${i}`),points=[];group.traverse(mesh=>{if(!mesh.isMesh)return;mesh.geometry.computeBoundingBox();const b=mesh.geometry.boundingBox;for(const x of[b.min.x,b.max.x])for(const y of[b.min.y,b.max.y])for(const z of[b.min.z,b.max.z])points.push(camera.position.clone().set(x,y,z).applyMatrix4(mesh.matrixWorld).project(camera));});const center=group.getWorldPosition(camera.position.clone()).project(camera);raycaster.setFromCamera({x:center.x,y:center.y},camera);const first=raycaster.intersectObjects(meshes,false)[0]?.object.name;return{width:(Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)))*rect.width/2,left:Math.min(...points.map(p=>p.x)),right:Math.max(...points.map(p=>p.x)),top:Math.max(...points.map(p=>p.y)),bottom:Math.min(...points.map(p=>p.y)),firstHit:first};});
+   const shadow=scene.getObjectByName('CENTER_CONTACT_SHADOW');return{dice,shadow:{receives:shadow.receiveShadow,opacity:shadow.material.opacity},world:camera.matrixWorld.toArray()};
+  });
+  assert.deepEqual(data.world,pose);assert.ok(data.shadow.receives&&data.shadow.opacity>0);for(const d of data.dice){assert.ok(d.width>=20&&d.left>-1&&d.right<1&&d.top<1&&d.bottom>-1);assert.match(d.firstHit,/DiceBody|DicePips/);}
+  const bound=await page.locator('.board-composition').boundingBox();await page.screenshot({clip:bound,path:fileURLToPath(new URL(`rest-${width}x${height}.png`,out)),timeout:90000});sizes.push({width,height,...data});console.log(JSON.stringify({width,height,diceWidths:data.dice.map(d=>Math.round(d.width))}));
+ }
+ await page.setViewportSize({width:1536,height:1088});const stress=[];
+ for(const tile of layout.tiles){
+  await page.evaluate(id=>{window.board34QA.setSelected(id);window.board34QA.setCount(4);window.board34QA.setLevel(5);},tile.id);await page.waitForFunction(id=>window.board34QA.selected===id&&!!window.__imperioArtScene().scene.getObjectByName('INSPECTION_PAWN_3'),tile.id);await page.waitForLoadState('networkidle');
+  const result=await page.evaluate(()=>{
+   const{scene,camera,raycaster}=window.__imperioArtScene(),data=window.__board34().layout,results=[];const visible=o=>{for(let p=o;p;p=p.parent)if(!p.visible)return false;return true;};
+   // Repouso e oito extremos dos limites, com orientações inclinadas: usa os meshes reais.
+   for(let sample=-1;sample<8;sample++){
+    const groups=[0,1].map(i=>scene.getObjectByName(`BOARD_STATIC_DIE_${i}`));groups.forEach((g,i)=>{const p=data.dice[i],b=data.diceRoll.centerBounds[i],n=i?7-sample:sample;if(sample<0){g.position.fromArray(p.position);g.rotation.set(0,p.yaw,0);}else{g.position.set(n&1?b.max[0]:b.min[0],n&2?b.max[1]:b.min[1],n&4?b.max[2]:b.min[2]);g.rotation.set(.43*(sample+1),p.yaw+.71*sample,.37*sample);}});scene.updateMatrixWorld(true);const meshes=[];scene.traverse(o=>{if(o.isMesh&&visible(o))meshes.push(o);});
+    results.push(groups.map(g=>{const point=g.getWorldPosition(camera.position.clone()).project(camera);raycaster.setFromCamera({x:point.x,y:point.y},camera);return raycaster.intersectObjects(meshes,false)[0]?.object.name;}));
+   }
+   [0,1].forEach(i=>{const g=scene.getObjectByName(`BOARD_STATIC_DIE_${i}`),p=data.dice[i];g.position.fromArray(p.position);g.rotation.set(0,p.yaw,0);});return results;
+  });
+  for(const hits of result)for(const hit of hits)assert.match(hit,/DiceBody|DicePips/,tile.id);stress.push({tile:tile.id,players:4,buildingLevel:tile.type==='PROPERTY'?5:null,samples:result.length,dieCentersUnoccluded:true});
+ }
+ await page.evaluate(()=>{window.board34QA.setSelected('PR');window.board34QA.setCount(4);window.board34QA.setLevel(5);const d=window.__board34().layout;[0,1].forEach(i=>{const g=window.__imperioArtScene().scene.getObjectByName(`BOARD_STATIC_DIE_${i}`),b=d.diceRoll.centerBounds[i];g.position.set((b.min[0]+b.max[0])/2,b.max[1],(b.min[2]+b.max[2])/2);g.rotation.set(.65,d.dice[i].yaw+.9,.4);});});await page.screenshot({clip:await page.locator('.board-composition').boundingBox(),path:fileURLToPath(new URL('flight-limit-stress.png',out)),timeout:60000});
+ assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);await writeFile(new URL('report.json',out),JSON.stringify({kind:'controlled-art-preview-with-real-models',sizes,stress,posesPreserved:true,contactShadow:true,animationCodeChanged:false,newMeshyCredits:0,errors,failed},null,2)+'\n');console.log('C9 aprovado: oito telas e 34 casas com quatro personagens.');
+}finally{await browser?.close();await server.close();}

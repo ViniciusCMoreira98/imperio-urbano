@@ -56,8 +56,16 @@ function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null}:Board3
  const move=(event:ThreeEvent<PointerEvent>)=>{const id=tileOf(event.object,prepared.model);hovered.current=id;highlight(id);document.body.style.cursor=id?'pointer':'';};
  return <primitive object={prepared.model} onClick={click} onPointerMove={move} onPointerOut={()=>{hovered.current=null;highlight(null);document.body.style.cursor='';}}/>;
 }
+/** A arte projetada usa shader próprio; este receptor separado dá contato real às peças no miolo. */
+function CenterShadows(){
+ const points=layout.layers.center.polygon,xs=points.map(p=>p[0]),zs=points.map(p=>p[2]);
+ const left=Math.min(...xs),right=Math.max(...xs),back=Math.min(...zs),front=Math.max(...zs);
+ return <mesh name="CENTER_CONTACT_SHADOW" position={[(left+right)/2,layout.layers.center.surfaceY+.001,(back+front)/2]} rotation={[-Math.PI/2,0,0]} receiveShadow>
+  <planeGeometry args={[right-left-.12,front-back-.12]}/><shadowMaterial transparent opacity={.30} depthWrite={false}/>
+ </mesh>;
+}
 /** Cena real de 34 casas. Estado, regras, comandos e peças vêm do host. */
 export function Board34Scene({children,diceValues=null,...props}:Board34SceneProps){return <FixedBoardViewport expanded><Canvas shadows dpr={[1,2]} camera={{position:FIXED_CAMERA.position as[number,number,number],fov:FIXED_CAMERA.fov,far:FIXED_CAMERA.far}}>
  <color attach="background" args={['#5e321e']}/><ambientLight intensity={.75}/><directionalLight position={[-8,18,8]} intensity={1.8} color="#fff0dc" castShadow shadow-mapSize={[2048,2048]} shadow-camera-left={-12} shadow-camera-right={12} shadow-camera-top={12} shadow-camera-bottom={-12} shadow-camera-far={60} shadow-normalBias={.03} shadow-bias={-.0001}/>
- <Suspense fallback={null}><TabletopEnvironment/><BoardModel {...props}/>{diceValues&&layout.dice.map((die,i)=><group key={i} position={die.position as[number,number,number]} rotation={[0,die.yaw,0]}><DiceVisual face={diceValues[i]} size={die.size}/></group>)}{children}</Suspense><CameraRig expanded/>
+ <Suspense fallback={null}><TabletopEnvironment/><BoardModel {...props}/><CenterShadows/>{diceValues&&layout.dice.map((die,i)=><group name={`BOARD_STATIC_DIE_${i}`} key={i} position={die.position as[number,number,number]} rotation={[0,die.yaw,0]}><DiceVisual face={diceValues[i]} size={die.size}/></group>)}{children}</Suspense><CameraRig expanded/>
  </Canvas><section aria-label="Valores do tabuleiro" style={{position:'absolute',width:1,height:1,overflow:'hidden',clipPath:'inset(50%)',whiteSpace:'nowrap'}}>{props.rentLabels?.map(label=><p key={label.stateId} data-board34-rent={label.stateId}>{label.stateId}: {label.rentLabel}</p>)}<p data-board34-tax>Fundo da Taxa: {props.taxPoolLabel??'saldo indisponível'}</p></section></FixedBoardViewport>;}

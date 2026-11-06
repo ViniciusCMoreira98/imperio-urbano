@@ -3,16 +3,16 @@ import{states}from'@imperio/game-data';
 import{Board34Scene,board34Layout}from'../../../apps/web/src/board/board34/Board34Scene';
 import{AvatarFigure}from'../../../apps/web/src/avatars/AvatarFigure';import{PlayerBase}from'../../../apps/web/src/avatars/PlayerBase';
 import{PropertyBuildingModel}from'../../../apps/web/src/board/BuildingModels';import{propertyBuildingPlacement}from'../../../apps/web/src/board/buildings/buildingPresentation';
-import{anchorToWorld,type TileAnchor}from'../../../apps/web/src/board/layout';import{PAWN_SCALE,PAWN_RADIUS}from'../../../apps/web/src/board/pawnLayout';
+import{tileAnchor}from'../../../apps/web/src/board/layout';import{PAWN_SCALE,pawnSpots}from'../../../apps/web/src/board/pawnLayout';
 import{formatCredits}from'../../../apps/web/src/property-card/tileInfo';
 import './preview.css';
 function InspectionPieces({tileId,count,level}:{tileId:string;count:number;level:number}){
- const tile=board34Layout.tiles.find(t=>t.id===tileId)!;const a={...tile.anchor,index:tile.index,id:tile.id,polygon:tile.polygon.map(([x,,z])=>[x,z])}as TileAnchor;
- const d=PAWN_RADIUS+.005;const slots=count===1?[[0,0]]:count===2?[[-d,-d*.5],[d,d*.5]]:count===3?[[-d,-d],[d,-d],[0,d]]:[[-d,-d],[d,-d],[-d,d],[d,d]];
+ const tile=board34Layout.tiles.find(t=>t.id===tileId)!;const a=tileAnchor(tile.index);
+ const pawns=Array.from({length:count},(_,seat)=>({id:`inspection-${seat}`,position:tile.index,seat})),spots=pawnSpots(pawns);
  const colors=['#a264e6','#479cec','#51c280','#e65b71'],avatars=['avatar-1','avatar-2','avatar-3','avatar-4']as const;
  const b=propertyBuildingPlacement(a.buildingArea,level);
  return <>
- {slots.slice(0,count).map(([x,z],i)=>{const spot=anchorToWorld(a,a.pawnArea.x+x,a.pawnArea.z+z);return <group name={`INSPECTION_PAWN_${i}`} key={i} position={[spot.x,a.surfaceY,spot.z]} scale={PAWN_SCALE}><PlayerBase color={colors[i]} active={false}/><AvatarFigure avatarId={avatars[i]} color={colors[i]}/></group>;})}
+ {pawns.map((pawn,i)=>{const spot=spots.get(pawn.id)!;return <group name={`INSPECTION_PAWN_${i}`} key={i} position={[spot.x,spot.y,spot.z]} scale={PAWN_SCALE}><PlayerBase color={colors[i]} active={false}/><AvatarFigure avatarId={avatars[i]} color={colors[i]}/></group>;})}
  <group name="INSPECTION_BUILDINGS" position={[a.x,a.surfaceY,a.z]} rotation={[0,a.rotationY,0]}>{b&&<group position={[b.x,0,b.z]}><PropertyBuildingModel level={b.level} color="#9c72d6" scale={b.scale}/></group>}</group>
  </>;
 }
