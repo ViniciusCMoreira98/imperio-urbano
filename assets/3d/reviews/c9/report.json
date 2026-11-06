@@ -1,0 +1,603 @@
+{
+  "kind": "controlled-art-preview-with-real-models",
+  "sizes": [
+    {
+      "width": 1280,
+      "height": 720,
+      "dice": [
+        {
+          "width": 57.60576946360555,
+          "left": -0.299676799610858,
+          "right": -0.20966778482397436,
+          "top": -0.0322991806978909,
+          "bottom": -0.2365045717413854,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 56.24395746640957,
+          "left": 0.21232587988213242,
+          "right": 0.30020706342339737,
+          "top": -0.03494930701118533,
+          "bottom": -0.23707227544016762,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    },
+    {
+      "width": 1536,
+      "height": 1024,
+      "dice": [
+        {
+          "width": 89.21615559525911,
+          "left": -0.3867669886674432,
+          "right": -0.2706001194027829,
+          "top": -0.042674621128879854,
+          "bottom": -0.26504516908097037,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 87.10706770068488,
+          "left": 0.27403069334968333,
+          "right": 0.38745135441828343,
+          "top": -0.04556049028942527,
+          "bottom": -0.2656633730467302,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "dice": [
+        {
+          "width": 65.92429212983014,
+          "left": -0.34295142771350895,
+          "right": -0.23994472126064936,
+          "top": -0.03579406589569761,
+          "bottom": -0.24611824663471915,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 64.36582858069252,
+          "left": 0.24298665676041867,
+          "right": 0.34355826391775074,
+          "top": -0.038523600325960805,
+          "bottom": -0.24670296094974647,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    },
+    {
+      "width": 2560,
+      "height": 1080,
+      "dice": [
+        {
+          "width": 95.03912146161636,
+          "left": -0.24720631303639373,
+          "right": -0.17295699939450596,
+          "top": -0.04394879802391377,
+          "bottom": -0.26855015471916527,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 92.79237748068286,
+          "left": 0.17514968791721033,
+          "right": 0.24764373282399382,
+          "top": -0.04686361806043738,
+          "bottom": -0.26917456047209776,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    },
+    {
+      "width": 2560,
+      "height": 1440,
+      "dice": [
+        {
+          "width": 132.4724734596272,
+          "left": -0.3445742262673583,
+          "right": -0.24108010637702454,
+          "top": -0.04977360668692515,
+          "bottom": -0.28457294620805507,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 129.3407974949563,
+          "left": 0.2441364358933547,
+          "right": 0.3451839339362893,
+          "top": -0.0528207735850633,
+          "bottom": -0.28522570298806277,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    },
+    {
+      "width": 3840,
+      "height": 2160,
+      "dice": [
+        {
+          "width": 207.3391774556488,
+          "left": -0.35954003515285843,
+          "right": -0.25155088022804134,
+          "top": -0.05559841534993639,
+          "bottom": -0.30059573769694475,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 202.43763752350293,
+          "left": 0.25473995456376186,
+          "right": 0.360176224107253,
+          "top": -0.05877792910968915,
+          "bottom": -0.30127684550402756,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    },
+    {
+      "width": 2000,
+      "height": 740,
+      "dice": [
+        {
+          "width": 59.68540013016169,
+          "left": -0.1987170922473733,
+          "right": -0.1390316921172116,
+          "top": -0.033243744264865656,
+          "bottom": -0.2391028622530971,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 58.27442524498031,
+          "left": 0.14079428742509056,
+          "right": 0.19906871267007087,
+          "top": -0.03591533223139486,
+          "bottom": -0.2396751634157294,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "dice": [
+        {
+          "width": 29.530755465097435,
+          "left": -0.23298567547209262,
+          "right": -0.16300758195290438,
+          "top": -0.023329336615313858,
+          "bottom": -0.2165900899272353,
+          "firstHit": "DiceBody"
+        },
+        {
+          "width": 28.832642455704537,
+          "left": 0.16507413523096287,
+          "right": 0.23339793251936225,
+          "top": -0.025837426167023794,
+          "bottom": -0.2171273668518256,
+          "firstHit": "DiceBody"
+        }
+      ],
+      "shadow": {
+        "receives": true,
+        "opacity": 0.3
+      },
+      "world": [
+        0.999944639392858,
+        0.008653150295943351,
+        0.005986746983361565,
+        0,
+        -0.0024603765860829697,
+        0.7454667860355835,
+        -0.6665382340607569,
+        0,
+        -0.010230576549815169,
+        0.6664866044473312,
+        0.7454468065500883,
+        0,
+        0.5707362033272436,
+        18.579599872994663,
+        20.374700351298902,
+        1
+      ]
+    }
+  ],
+  "stress": [
+    {
+      "tile": "START",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "RN",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "AM",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "RR",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "EVENT_NORTH",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "AP",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "PA",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "RO",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "OLYMPICS",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "AC",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "MT",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "MS",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "GO",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "EVENT_EAST",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "DF",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "MG",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "ES",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "REST",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "RJ",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "PR",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "SP",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "TAX",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "RS",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "SC",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "PE",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "PB",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "AIRPORT",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "BA",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "SE",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "AL",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "SAQUE",
+      "players": 4,
+      "buildingLevel": null,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "CE",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "PI",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    },
+    {
+      "tile": "MA",
+      "players": 4,
+      "buildingLevel": 5,
+      "samples": 9,
+      "dieCentersUnoccluded": true
+    }
+  ],
+  "posesPreserved": true,
+  "contactShadow": true,
+  "animationCodeChanged": false,
+  "newMeshyCredits": 0,
+  "errors": [],
+  "failed": []
+}

@@ -1,5 +1,6 @@
 import{readFile,writeFile,mkdir}from'node:fs/promises';
 import{PerspectiveCamera,Vector3}from'three';
+import{board34Dice}from'./board34-dice.mjs';
 const root=new URL('../../',import.meta.url);
 const read=async p=>JSON.parse(await readFile(new URL(p,root),'utf8'));
 const old=await read('apps/web/src/board/reference33/layout.json');
@@ -35,5 +36,5 @@ const frameBox=scaleBox({left:-6.52,right:6.27,back:-6.52,front:5.77}),innerBox=
 const outer=rounded(frameBox,.4,0),frame={pixels:outer.map(project),polygon:outer,innerPixels:rounded(innerBox,.28,.025).map(project),surfaceY:.025,inner:rounded(innerBox,.28,.025),top:rounded(frameBox,.4,.025)};
 const centerPolygon=rounded(scaleBox({left:-4.20,right:4,back:-3.9,front:3.9}),.05,.035),center={pixels:centerPolygon.map(project),polygon:centerPolygon,surfaceY:.035};
 const tax=tiles.find(t=>t.id==='TAX'),taxPanel=tax.panel;taxPanel.pool={x:taxPanel.width*.12,y:taxPanel.height-40,width:taxPanel.width*.76,height:30};
-const out={schemaVersion:2,id:'board34-v03',tileCount:34,model:'/models/board/board34-v01.glb',atlas:'/models/board/board34-atlas-v01.webp',nativeReference:{width:1536,height:1024},tileHeight:.08,tiles,layers:{frame,center},dice:old.dice,diceRoll:old.diceRoll,taxPoolRect:globalRect(taxPanel,taxPanel.pool),integration:{catalogRequired:34,cameraLocked:true,rulesIncluded:false,sourcePhotoPixelsUsed:false,anchorsRevision:3},paidMeshyCredits:50};
+const out={schemaVersion:2,id:'board34-v03',tileCount:34,model:'/models/board/board34-v01.glb',atlas:'/models/board/board34-atlas-v01.webp',nativeReference:{width:1536,height:1024},tileHeight:.08,tiles,layers:{frame,center},...board34Dice(center.surfaceY,project),taxPoolRect:globalRect(taxPanel,taxPanel.pool),integration:{catalogRequired:34,cameraLocked:true,rulesIncluded:false,sourcePhotoPixelsUsed:false,anchorsRevision:3},paidMeshyCredits:50};
 await mkdir(new URL('apps/web/src/board/board34/',root),{recursive:true});await writeFile(new URL('apps/web/src/board/board34/layout.json',root),JSON.stringify(out,null,2)+'\n');console.log(JSON.stringify({tiles:tiles.length,uniformSideSpacing:true,states:tiles.filter(t=>t.type==='PROPERTY').length}));

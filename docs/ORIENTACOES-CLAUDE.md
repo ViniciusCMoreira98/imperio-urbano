@@ -1,5 +1,39 @@
 # Orientações e pendências para o Claude Code
 
+## C9 — dados 3D no miolo: entrega de arte (06/11/2026)
+
+**Estado: implementado e validado na `develop_arte_3d`, sobre `6aa9d62`; commit e integração à `develop` solicitados e autorizados pelo usuário. Identificadores no histórico Git.** Os dados foram retirados da região atrás da barra e colocados no primeiro plano do miolo, flanqueando a faixa inferior do logotipo. Em repouso, o título e “EDIÇÃO BRASIL” continuam legíveis. Tamanho dobrado de 0,34 para **0,68**; as mesmas faces, materiais e GLB foram preservados.
+
+### Contrato para Claude — manifesto ativo como única fonte
+
+`apps/web/src/board/board34/layout.json` conserva o formato existente de `dice` e `diceRoll`. Câmera, casas, âncoras, ordem de 34 e `reference33` preservados. Os campos `face/pixel` servem à prévia/calibração; a partida continua desenhando somente o resultado recebido do servidor.
+
+| Campo | Dado 0 | Dado 1 |
+|---|---|---|
+| `position` de repouso | `[-2.45, 0.375, 2.4]` | `[2.3, 0.375, 2.4]` |
+| `yaw` | `0.25` | `-0.22` |
+| `size` | `0.68` | `0.68` |
+| `centerBounds.min` | `[-2.85, 0.6438972746, 2.0]` | `[1.9, 0.6438972746, 2.0]` |
+| `centerBounds.max` | `[-2.05, 1.1438972746, 2.8]` | `[2.7, 1.1438972746, 2.8]` |
+
+Valores completos no JSON são autoritativos. `supportY = 0.035`, igual à superfície do miolo, e não à mesa (`-0.505`). O centro parado fica em `supportY + size/2 = 0.375`. `horizontalTravel = 0.40` por eixo (antes 0,03); `bounceHeight = 0.50` acima do mínimo de giro (antes 0,03). A subida total do centro até o ponto mais alto é cerca de 0,769 unidade a partir do repouso.
+
+**Segurança do giro:** esfera conservadora de raio `sqrt(3) × size/2 = 0.5888972746`. O mínimo de giro deixa 0,02 unidade entre essa esfera e o piso. A esfera inteira permanece dentro do polígono do miolo nos extremos X/Z; as faixas dos dois dados são separadas, sem colisão entre eles, com casas ou moldura. Repouso fica abaixo do mínimo do giro: manter a subida inicial sem rotação extra e o pouso vertical já existentes no `rollPlan/RollingDice`.
+
+**Sombras: sim, permanecem ativas.** Como o miolo usa um shader de arte projetada, foi acrescentado o receptor transparente `CENTER_CONTACT_SHADOW`, 0,001 acima da superfície, com opacidade 0,30 e recuo de 0,06 nas bordas. Ele recebe sombras reais sem pintar o atlas nem modificar a ilustração. Os dados continuam lançando sombra. Nenhuma casa, peão ou construção ocupa fisicamente a área de giro.
+
+**Integração:** a animação atual já consome este manifesto. Não foram alterados `DiceVisual`, `diceOrientation`, `RollingDice`, tempos, sorteio, eventos, sincronização do peão, reconexão ou movimento reduzido. A barra conserva o resultado 2D e a regra de ocultá-lo durante o lance. A responsabilidade de animação continua com a engenharia. A garantia referente aos peões considera suas posições nas casas; preservar a espera do lance antes do movimento. Travessias aéreas de viagens e comemorações continuam sob a coordenação da engenharia, sem introduzir simultaneidade com o giro na área reservada.
+
+### Reprodução e evidências
+
+- Definição de arte em `scripts/assets/board34-dice.mjs`, usada também pelo gerador completo de layout. `node scripts/assets/update-board34-dice.mjs` atualiza somente `dice/diceRoll`, preservando todos os outros campos.
+- A prévia de peças agora usa `tileAnchor/pawnSpots` da partida, incluindo as faixas de construção da revisão `6aa9d62`, em vez das antigas áreas brutas.
+- **126 testes, TypeScript e build aprovados.** Testes geométricos verificam apoio, projeção calibrada, esfera de giro, separação dos dados, enquadramento e planos extremos da animação existente. Em repouso, a projeção dos dados fica livre das caixas conservadoras dos quatro peões por casa (até 1,05 de altura) e de todos os seis níveis de propriedade.
+- QA controlado com modelos reais em **1280×720, 1536×1024, 1280×800, 2560×1080, 2560×1440, 3840×2160, 2000×740 e 844×390**. Largura medida de cerca de **30 e 29 px no celular em paisagem**; 58 e 56 px em 1280×720. A matriz de mundo da câmera permanece igual.
+- Nas **34 casas**, quatro personagens e hotel onde aplicável: repouso e oito extremos inclinados do envelope, com raios de visibilidade atingindo os meshes dos próprios dados. Sem erros de página ou requisições falhas. Isto amostra a visibilidade no ar; não é uma nova simulação física nem medição em celular físico.
+- Capturas `assets/3d/reviews/c9/rest-1536x1024.png`, `rest-844x390.png` e `flight-limit-stress.png`; relatório completo em `report.json`. Executar `node scripts/assets/c9-qa.mjs`. A validação desta etapa é uma prévia controlada de arte; não foi criada uma partida conectada nova.
+- **Zero créditos Meshy adicionais e nenhuma geração de arte raster nesta etapa.**
+
 ## C8 — entrega local de tela inteira, HUD e nitidez (05/11/2026)
 
 Implementação na `develop_arte_3d`, sobre `afbfbed`; commit e integração à `develop` solicitados e autorizados pelo usuário. Identificadores registrados no histórico Git. **A arte v3, os estados, o miolo, a moldura e o percurso de 34 casas foram preservados.** A referência de tela serve somente ao enquadramento e à posição dos controles.

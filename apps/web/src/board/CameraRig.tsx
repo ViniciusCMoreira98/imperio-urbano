@@ -8,6 +8,7 @@ import {applyTabletopCamera,tabletopDpr} from './camera/tabletopViewport';
 export function CameraRig({expanded=false}:{expanded?:boolean}) {
   const camera=useThree(state=>state.camera);
   const scene=useThree(state=>state.scene);
+  const raycaster=useThree(state=>state.raycaster);
   const size=useThree(state=>state.size);
   const setDpr=useThree(state=>state.setDpr);
   const actualDpr=useThree(state=>state.viewport.dpr);
@@ -18,11 +19,11 @@ export function CameraRig({expanded=false}:{expanded?:boolean}) {
       const debug=()=>({position:camera.position.toArray(),world:camera.matrixWorld.toArray(),projection:camera.projectionMatrix.toArray(),aspect:camera.aspect});
       const target=window as unknown as {__imperioStaticCamera?:typeof debug};
       target.__imperioStaticCamera=debug;
-      const inspect=()=>({camera,scene});
+      const inspect=()=>({camera,scene,raycaster});
       const artTarget=window as unknown as {__imperioArtScene?:typeof inspect};
       artTarget.__imperioArtScene=inspect;
       return()=>{if(target.__imperioStaticCamera===debug)delete target.__imperioStaticCamera;if(artTarget.__imperioArtScene===inspect)delete artTarget.__imperioArtScene;};
     }
-  },[camera,scene,size.width,size.height,expanded,setDpr,actualDpr]);
+  },[camera,scene,raycaster,size.width,size.height,expanded,setDpr,actualDpr]);
   return null;
 }
