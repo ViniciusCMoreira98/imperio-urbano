@@ -13,7 +13,9 @@ import { type AvatarMotion, AvatarFigure } from '../avatars/AvatarFigure';
 import { characterFor } from '../avatars/characterManifest';
 import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
 import { type PawnMove, enqueueMoves, hopTiles } from '../game/moves';
-import { ROLL_SECONDS, rollAnimates } from '../dice/rollPlan';
+import { playSound } from '../audio/audio';
+import { useDiceStore } from '../store/diceStore';
+import { usePawnStore } from '../store/pawnStore';
 import { useGameStore } from '../store/gameStore';
 import { forgetPawn, reportPawn } from './pawnDebug';
 import { PAWN_SCALE, type PawnSpot, pawnCenter } from './pawnLayout';
@@ -75,9 +77,13 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
   const queue = useRef<PawnMove[]>([]);
   const timeline = useRef<gsap.core.Timeline | null>(null);
   const shift = useRef<gsap.core.Tween | null>(null);
+  /** Cancela a espera pelos dados do lance (ressincronia, aba oculta, saída da partida). */
+  const stopWaiting = useRef<(() => void) | null>(null);
 
   /** Vai já para o lugar oficial, abandonando animações (reconexão, eventos perdidos, falha). */
   const snap = () => {
+    stopWaiting.current?.();
+    stopWaiting.current = null;
     timeline.current?.kill();
     timeline.current = null;
     shift.current?.kill();
@@ -112,7 +118,9 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
     });
   };
 
-  const land = () => {
+  /** Pouso de um salto: o agogô alterna duas notas a cada casa, como um ritmo de samba. */
+  const land = (hop: number) => {
+    playSound('saltoPeao', { rate: hop % 2 === 0 ? 1 : 1.19 });
     const ring = ringRef.current;
     if (!ring) return;
     gsap.fromTo(ring.scale, { x: 0.6, y: 0.6, z: 0.6 }, { x: 1.7, y: 1.7, z: 1.7, duration: 0.35, ease: 'power2.out' });
@@ -132,8 +140,26 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
     const tiles = hopTiles(move, TILE_COUNT);
     const style = move.kind === 'jump' ? LEAP : HOP;
     reportPawn(playerId, { tile: move.to, resting: false });
-    // Movimento que vem de um lance: espera os dados 3D pararem antes do primeiro salto.
-    const tl = gsap.timeline({ onComplete: runNext, delay: move.afterRoll && rollAnimates() ? ROLL_SECONDS : 0 });
+    // Movimento que vem de um lance: o primeiro salto espera esses dados pararem na mesa.
+    if (move.rollId !== null && useDiceStore.getState().shownRollId < move.rollId) {
+      usePawnStore.getState().setWaiting(playerId, true);
+      const rollId = move.rollId;
+      const off = useDiceStore.subscribe((dice) => {
+        if (dice.shownRollId < rollId) return;
+        off();
+        stopWaiting.current = null;
+        usePawnStore.getState().setWaiting(playerId, false);
+        queue.current.unshift(move);
+        runNext();
+      });
+      stopWaiting.current = () => {
+        off();
+        usePawnStore.getState().setWaiting(playerId, false);
+      };
+      timeline.current = gsap.timeline({ paused: true }); // marca a fila como ocupada
+      return;
+    }
+    const tl = gsap.timeline({ onComplete: runNext });
     tiles.forEach((tile, i) => {
       // Decidido na hora do salto (o snapshot chega logo depois dos eventos): a última casa do último
       // movimento pendente pousa direto no lugar oficial dentro dela; as outras, no centro.
@@ -147,7 +173,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
         .to(root.position, { x: () => target().x, y: () => target().y, z: () => target().z, duration: style.air, ease: 'power1.inOut' }, label)
         .to(body.position, { y: BASE_HEIGHT + style.height, duration: style.air / 2, ease: 'power2.out' }, label)
         .to(body.position, { y: BASE_HEIGHT - CROUCH, duration: style.air / 2, ease: 'power2.in' }, `${label}+=${style.air / 2}`)
-        .call(land)
+        .call(land, [i])
         .to(body.position, { y: BASE_HEIGHT, duration: style.land, ease: 'power2.out' });
     });
     tl.call(() => {
@@ -162,6 +188,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
     handled.current = state.moves.reduce((max, m) => (m.playerId === playerId ? Math.max(max, m.id) : max), -1);
     snap();
     return () => {
+      stopWaiting.current?.();
       timeline.current?.kill();
       shift.current?.kill();
       forgetPawn(playerId);

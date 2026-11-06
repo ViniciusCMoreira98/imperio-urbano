@@ -2,6 +2,10 @@
 
 ## Publicação das entregas de interface (06/11/2026)
 
+Validação após incorporar a develop: **135 testes, TypeScript, build e auditoria dos 35 WebP no pacote aprovados**. Commit de entrega: `df14e45`.
+
+Integração com a engenharia `0dda111`: preservados os sons de abertura e o resumo calculado de aluguel olímpico nos três modos, além do preço de compra na consulta de estado livre. A identidade/nível do proprietário usa a nova apresentação nativa. O novo pedido C10 permanece aberto, fora desta entrega.
+
 Commit e integração/publicação na `develop` solicitados pelo usuário. Inclui C6.1/C6.2, pacote do menu inicial e kit das três abas de configurações. Os registros anteriores de “sem commit/merge” descrevem o estado antes desta solicitação. Assets de menu e configurações continuam como kits com prévias isoladas; somente o modal de propriedade foi integrado à interface de produção. Identificadores da publicação ficam no histórico Git.
 
 ## Configurações — assets das três abas (06/11/2026)
@@ -46,6 +50,43 @@ Valores em MB decimais. Fontes PNG e seus registros de procedência preservados 
 **Validação:** 126 testes, TypeScript e build aprovados. Prévia controlada em `scripts/assets/property-view-preview/`, QA em `scripts/assets/property-view-qa.mjs` e capturas/relatório em `assets/3d/reviews/property-view/`: proprietário, imóvel livre, hotel, nome longo, seis aluguéis, nenhuma ação financeira disparada, fechamento e cinco tamanhos (1280×720, 1024×768, 844×390, 667×375 e 390×844). As duas telas pequenas em paisagem cabem integralmente. Retrato foi apenas uma verificação de robustez; a restrição do jogo para paisagem permanece. Regressão visual de compra/construção e dos 26 cabeçalhos aprovada pelo roteiro existente. Esta rodada usou prévia controlada, sem nova partida conectada.
 
 Sem geração de imagens, uso do Meshy ou consumo de créditos: composição feita com as artes próprias já aprovadas. **C6.2 concluído na revisão de otimização registrada acima.** Nenhum commit ou merge desta entrega foi executado.
+
+## C10 — Estado-sede das Olimpíadas: arte no tabuleiro e no modal (06/11/2026)
+
+**Estado: pedido aberto.** O usuário quer uma arte **mais bonita** para o estado que sedia as Olimpíadas e a informação do aluguel **mais clara no modal**.
+
+### O que já está decidido (não refazer)
+
+- **Sem selo de multiplicador no tabuleiro.** O usuário pediu explicitamente que o “🔥×N” não apareça sobre o tabuleiro, porque tapava outras partes. A placa de aluguel da sede já mostra o valor **multiplicado** (`GameBoard → rentLabels`, via `currentRent`). O multiplicador só aparece quando o jogador toca na casa.
+- Hoje o destaque é provisório, da engenharia: `apps/web/src/board/OlympicHost.tsx` desenha uma moldura dourada pulsante e uma tocha cilíndrica no canto. Ele é montado por `Pieces.tsx` (`isHost`) dentro do grupo da casa (`anchor.x/z/rotationY`). **Este arquivo passa para você:** pode substituir tudo.
+
+### Pedido 1 — destaque 3D da sede no tabuleiro
+
+1. Criar um destaque de sede olímpica claramente festivo e com cara de Brasil, no estilo da arte v3. Exemplos que o usuário aceitaria: pira/tocha estilizada, anéis ou louros dourados, brilho ou confete sutil no contorno da casa. Você decide.
+2. **Não cobrir:** o nome do estado, a placa de aluguel (`panel.rent`), a faixa das construções (`anchor.buildingArea`/`buildingPanelBox`), os personagens (`anchor.pawnArea`) nem as casas vizinhas. O contorno real da casa está em `anchor.polygon`. As funções `panelBoxCorners`/`pixelToWorld` de `board34/buildingZone.ts` convertem um retângulo do painel para o sistema da casa.
+3. Legível em 1280×720 e 844×390, sem nada flutuando alto na frente do tabuleiro: a câmera é fixa e um objeto alto tampa as casas de trás.
+4. Animação leve é bem-vinda, mas deve respeitar movimento reduzido (`prefers-reduced-motion`: deixar estático). Sem custo alto de GPU.
+5. Contrato: manter a assinatura `OlympicHost({ placement })` (o `placement` traz `width`/`depth` da casa), ou propor outra em `ORIENTACOES-CLAUDE.md` se precisar de `anchor.polygon`/`panel`. A engenharia só decide **qual** estado é sede (snapshot `olympics.hostStateId`).
+6. Sem créditos Meshy nem geração paga sem autorização do usuário. Geometria procedural ou assets já licenciados resolvem.
+
+### Pedido 2 — sede olímpica no modal do estado (`PropertyEvolutionPanel`)
+
+Hoje a engenharia explica a sede só pelo texto `message` (rodapé do painel), por exemplo: “🔥 Sede das Olimpíadas: aluguel ×2. Com terreno, R$ 20 vira R$ 40. Seu estado · sem construção…”. Os `rentLabel` de cada etapa e o `newRentLabel` **já vêm multiplicados**. Falta a arte deixar isso evidente:
+
+1. Um selo ou faixa “Sede das Olimpíadas ×N” no cabeçalho do modal quando o estado for sede.
+2. Em cada etapa, mostrar o aluguel multiplicado em destaque e o valor sem Olimpíadas riscado ou menor (“~~R$ 20~~ R$ 40”), para o jogador entender de onde vem o número.
+3. Contrato proposto (props **opcionais**, a serem acrescentadas por você em `PropertyEvolutionPanel.tsx`):
+   - `olympics?: { multiplier: number; edition: number; label: string }`, em que `label` é um texto pronto, ex. “Sede das Olimpíadas ×2”.
+   - `PropertyEvolutionStage.baseRentLabel?: string`: o aluguel da etapa sem o multiplicador; ausente fora da sede.
+
+   A engenharia já calcula esses valores em `game/propertyDecision.ts` (`olympicRent`, `rentAt`). Assim que as props existirem na `develop`, eu preencho no `PropertyDecisionDialog` e enxugo o texto do `message`. Se preferir outro formato, registre em `ORIENTACOES-CLAUDE.md`.
+4. Valer nos três modos: consulta, compra (não ocorre na sede, mas não deve quebrar) e construção.
+
+### Validação
+
+- Use o **dado de desenvolvedor** para chegar à sede: na partida em modo dev há o botão “🎲 dev” no topo, com a API iniciada com `--app.dev-tools.enabled=true`. Escolha a casa 8 (Olimpíadas) tendo um estado, depois toque no estado e em “Sediar”.
+- Conferir os quatro lados do tabuleiro (casas em pé e deitadas) em 1280×720 e 844×390, com o hotel e quatro personagens na casa-sede.
+- Registrar a entrega em `ORIENTACOES-CLAUDE.md`.
 
 ## C9 — dados 3D no miolo: entrega de arte (06/11/2026)
 

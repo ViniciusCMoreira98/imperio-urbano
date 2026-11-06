@@ -2,6 +2,10 @@
 
 ## Publicação das entregas de interface (06/11/2026)
 
+Validação após incorporar a develop: **135 testes, TypeScript, build e auditoria dos 35 WebP no pacote aprovados**. Commit de entrega: `df14e45`.
+
+Integração com a engenharia `0dda111`: preservados os sons de abertura e o resumo calculado de aluguel olímpico nos três modos, além do preço de compra na consulta de estado livre. A identidade/nível do proprietário usa a nova apresentação nativa. O novo pedido C10 permanece aberto, fora desta entrega.
+
 Commit e integração/publicação na `develop` solicitados pelo usuário. Inclui C6.1/C6.2, pacote do menu inicial e kit das três abas de configurações. Os registros anteriores de “sem commit/merge” descrevem o estado antes desta solicitação. Assets de menu e configurações continuam como kits com prévias isoladas; somente o modal de propriedade foi integrado à interface de produção. Identificadores da publicação ficam no histórico Git.
 
 ## Configurações — assets das três abas (06/11/2026)

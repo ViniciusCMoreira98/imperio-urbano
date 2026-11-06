@@ -1,42 +1,18 @@
 // Destaque do estado-sede das Olimpíadas, no próprio território (não no centro da mesa):
-// moldura dourada pulsando, tocha e um selo com o multiplicador virado para a câmera.
-import { Billboard } from '@react-three/drei';
+// moldura dourada pulsando e tocha. O multiplicador já entra no aluguel mostrado na placa; o valor
+// dele aparece ao tocar na casa.
 import { useFrame } from '@react-three/fiber';
 import { useEffect, useMemo } from 'react';
-import { CanvasTexture, MeshStandardMaterial, SRGBColorSpace } from 'three';
+import { MeshStandardMaterial } from 'three';
 import type { TilePlacement } from './layout';
 
 const GOLD = '#f5b301';
 const FRAME = 0.06;
 
-function badgeTexture(multiplier: number): CanvasTexture {
-  const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 128;
-  const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#7c2d12';
-  ctx.beginPath();
-  ctx.roundRect(4, 4, 248, 120, 40);
-  ctx.fill();
-  ctx.lineWidth = 8;
-  ctx.strokeStyle = GOLD;
-  ctx.stroke();
-  ctx.fillStyle = '#fde68a';
-  ctx.font = '900 76px system-ui, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`🔥×${multiplier}`, 128, 68);
-  const texture = new CanvasTexture(canvas);
-  texture.colorSpace = SRGBColorSpace;
-  return texture;
-}
-
-export function OlympicHost({ placement, multiplier }: { placement: TilePlacement; multiplier: number }) {
+export function OlympicHost({ placement }: { placement: TilePlacement }) {
   // Um material para a moldura inteira e outro para a chama: o pulso muda os dois de uma vez.
   const frame = useMemo(() => new MeshStandardMaterial({ color: GOLD, emissive: GOLD, emissiveIntensity: 0.8 }), []);
   const flame = useMemo(() => new MeshStandardMaterial({ color: '#fb923c', emissive: '#f97316', emissiveIntensity: 1.2 }), []);
-  const texture = useMemo(() => badgeTexture(multiplier), [multiplier]);
-  useEffect(() => () => texture.dispose(), [texture]);
   useEffect(
     () => () => {
       frame.dispose();
@@ -79,12 +55,6 @@ export function OlympicHost({ placement, multiplier }: { placement: TilePlacemen
         </mesh>
       </group>
 
-      <Billboard position={[0, 1, 0]}>
-        <mesh>
-          <planeGeometry args={[1.1, 0.55]} />
-          <meshBasicMaterial map={texture} transparent toneMapped={false} />
-        </mesh>
-      </Billboard>
     </group>
   );
 }

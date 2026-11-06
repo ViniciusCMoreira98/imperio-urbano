@@ -5,6 +5,7 @@ import { HOTEL_LEVEL, isMyTurn, saleRefunds } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
+import { usePawnStore } from '../store/pawnStore';
 import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 import { DiceFaces } from './DiceFaces';
@@ -27,6 +28,8 @@ export function ActionBar({ myId }: { myId: string }) {
   const deadline = useGameStore((s) => s.turnDeadline);
   // Enquanto os dados 3D rolam, a barra não antecipa o resultado.
   const diceRolling = useDiceStore((s) => s.rolling);
+  // Ninguém rola enquanto a jogada anterior ainda aparece na mesa (dados ou personagens andando).
+  const tableMoving = usePawnStore((s) => Object.keys(s.moving).length > 0);
   const [selling, setSelling] = useState(false);
   const inDebt = !!snapshot && isMyTurn(snapshot, myId) && snapshot.phase === 'AWAITING_DEBT_RESOLUTION';
   // A venda só existe para pagar dívida: abre sozinha quando a dívida aparece e fecha quando é quitada.
@@ -39,6 +42,7 @@ export function ActionBar({ myId }: { myId: string }) {
   const offline = connection !== 'open';
   const act = (command: Command) => send(command);
   const canRoll = mine && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
+  const tableBusy = diceRolling || tableMoving;
 
   return (
     <div className="hud-action-shell relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
@@ -63,7 +67,7 @@ export function ActionBar({ myId }: { myId: string }) {
         {snapshot.status === 'IN_PROGRESS' && deadline !== null && <Countdown deadline={deadline} />}
 
         {canRoll && (
-          <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline} onClick={() => act({ type: 'ROLL_DICE' })}>
+          <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline || tableBusy} title={tableBusy ? 'Aguarde a jogada anterior terminar na mesa' : undefined} onClick={() => act({ type: 'ROLL_DICE' })}>
             ROLAR DADOS
           </Button>
         )}

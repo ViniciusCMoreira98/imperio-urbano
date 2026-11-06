@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
+import { GameSounds } from '../audio/GameSounds';
 import { GameBoard } from '../board/GameBoard';
 import { ActionBar } from '../hud/ActionBar';
 import { CardReveal } from '../hud/CardReveal';
+import { DevDicePanel } from '../hud/DevDicePanel';
 import { EventLog } from '../hud/EventLog';
 import { PlayersPanel } from '../hud/PlayersPanel';
 import { PropertyDecisionDialog } from '../hud/PropertyDecisionDialog';
 import { PropertyPanel } from '../hud/PropertyPanel';
+import { SoundControl } from '../hud/SoundControl';
 import { RotateDeviceNotice, useAskToRotate } from '../hud/RotateDeviceNotice';
 import { GameConnection } from '../net/gameSocket';
 import { formatCredits } from '../property-card/tileInfo';
@@ -43,6 +46,7 @@ export function GameScreen() {
 
   return (
     <>
+      <GameSounds myId={session.playerId} />
       <div className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
         {/* Canvas de mesa em toda a janela; HUD flutua sobre o cenário. */}
         <div className="game-hud-board absolute inset-0">
@@ -53,6 +57,9 @@ export function GameScreen() {
           <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
             ←<span className="hidden sm:inline"> Menu</span>
           </Button>
+          <SoundControl />
+          {/* Só no build de desenvolvimento; some do build de produção. */}
+          {import.meta.env.DEV && snapshot && <DevDicePanel />}
           {connection !== 'open' && !unavailable && (
             <p className="rounded-lg bg-slate-900/80 px-3 py-1 text-sm text-amber-300">reconectando…</p>
           )}

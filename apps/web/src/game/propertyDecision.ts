@@ -67,6 +67,35 @@ export function rentAt(snapshot: GameSnapshot, definition: StateDefinition, leve
   return snapshot.olympics.hostStateId === definition.id ? base * snapshot.olympics.multiplier : base;
 }
 
+/** Sede das Olimpíadas: o multiplicador e o aluguel com e sem ele, para o modal explicar o valor. */
+export interface OlympicRent {
+  multiplier: number;
+  edition: number;
+  /** Aluguel do nível atual sem as Olimpíadas. */
+  baseLabel: string;
+  /** Aluguel do nível atual já multiplicado (o que se paga). */
+  rentLabel: string;
+  /** Frase pronta para o jogador. */
+  summary: string;
+}
+
+export function olympicRent(snapshot: GameSnapshot, definition: StateDefinition, level: number): OlympicRent | null {
+  const { hostStateId, multiplier, edition } = snapshot.olympics;
+  if (hostStateId !== definition.id) return null;
+  const at = Math.max(0, level);
+  const r = definition.rent;
+  const baseLabel = formatCredits([r.base, r.house1, r.house2, r.house3, r.house4, r.hotel][at]);
+  const rentLabel = formatCredits(rentAt(snapshot, definition, at));
+  const stageName = STAGE_LABELS[at].toLowerCase();
+  return {
+    multiplier,
+    edition,
+    baseLabel,
+    rentLabel,
+    summary: `🔥 Sede das Olimpíadas: aluguel ×${multiplier}. Com ${stageName}, ${baseLabel} vira ${rentLabel}.`,
+  };
+}
+
 function stage(snapshot: GameSnapshot, definition: StateDefinition, level: (typeof LEVELS)[number], status: PropertyEvolutionStage['status'], note?: string): PropertyEvolutionStage {
   return { level, label: STAGE_LABELS[level], rentLabel: formatCredits(rentAt(snapshot, definition, level)), status, ...(note ? { note } : {}) };
 }

@@ -54,15 +54,17 @@ public class GameService {
     private final Dice dice;
     private final TurnTimeouts timeouts;
     private final ApplicationEventPublisher publisher;
+    private final RiggedDice rigged;
     private final Map<String, ReentrantLock> locks = new ConcurrentHashMap<>();
 
     GameService(GameEngine engine, GameStore store, Dice dice, TurnTimeouts timeouts,
-            ApplicationEventPublisher publisher) {
+            ApplicationEventPublisher publisher, RiggedDice rigged) {
         this.engine = engine;
         this.store = store;
         this.dice = dice;
         this.timeouts = timeouts;
         this.publisher = publisher;
+        this.rigged = rigged;
     }
 
     public Optional<GameState> current(String gameId) {
@@ -155,7 +157,7 @@ public class GameService {
 
     /** Aplica o comando, passa a vez se não restou decisão, grava e avisa quem acompanha a partida. */
     private Applied apply(String gameId, GameState state, String playerId, GameCommand command, String commandId) {
-        GameEngine.Result result = engine.execute(state, playerId, command, dice);
+        GameEngine.Result result = engine.execute(state, playerId, command, rigged.forGame(gameId, dice));
         store.append(gameId, state.version(), result.events(), result.state(), commandId, playerId);
         List<GameEvent> events = new ArrayList<>(result.events());
         GameState current = passTurnIfIdle(gameId, result.state(), events);
@@ -166,7 +168,7 @@ public class GameService {
     /** Sem decisão restante no turno, a vez passa sozinha (inclui a nova jogada da dupla). */
     private GameState passTurnIfIdle(String gameId, GameState state, List<GameEvent> events) {
         if (state.status() != GameStatus.IN_PROGRESS || state.phase() != TurnPhase.AWAITING_END_TURN) return state;
-        GameEngine.Result ended = engine.execute(state, state.currentPlayer().id(), new GameCommand.EndTurn(), dice);
+        GameEngine.Result ended = engine.execute(state, state.currentPlayer().id(), new GameCommand.EndTurn(), rigged.forGame(gameId, dice));
         store.append(gameId, state.version(), ended.events(), ended.state(), null, null);
         events.addAll(ended.events());
         return ended.state();

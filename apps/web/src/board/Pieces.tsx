@@ -27,14 +27,14 @@ export function Buildings() {
         // Contorno real da casa, um pouco acima da superfície para não piscar com ela.
         outline: [...anchor.polygon, anchor.polygon[0]].map(([x, z]) => [x, anchor.surfaceY + 0.004, z] as [number, number, number]),
         ownerColor: colorOf.get(property.ownerId ?? '') ?? '#ffffff',
-        hostMultiplier: snapshot.olympics.hostStateId === property.stateId ? snapshot.olympics.multiplier : null,
+        isHost: snapshot.olympics.hostStateId === property.stateId,
       };
     });
   }, [snapshot]);
 
   return (
     <>
-      {items.map(({ property, anchor, building, outline, ownerColor, hostMultiplier }) => (
+      {items.map(({ property, anchor, building, outline, ownerColor, isHost }) => (
         <group key={property.stateId}>
           {/* Dono marcado pelo contorno da casa na cor dele, sem cobrir o nome nem a arte do estado. */}
           {property.ownerId && <Line points={outline} color={ownerColor} lineWidth={3.5} />}
@@ -45,10 +45,9 @@ export function Buildings() {
                 <PropertyBuildingModel level={building.level} color={ownerColor} scale={building.scale}/>
               </group>
             )}
-            {hostMultiplier !== null && (
+            {isHost && (
               <OlympicHost
                 placement={{ index: anchor.index, x: anchor.x, z: anchor.z, rotationY: anchor.rotationY, width: anchor.width, depth: anchor.depth, isCorner: false }}
-                multiplier={hostMultiplier}
               />
             )}
           </group>

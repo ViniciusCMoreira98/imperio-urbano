@@ -1,5 +1,6 @@
 // Peças visuais comuns às telas (estilo da referência: painel azul-marinho, botões saturados).
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { playSound } from '../audio/audio';
 
 type Variant = 'primary' | 'confirm' | 'secondary' | 'danger' | 'roll' | 'neon';
 
@@ -17,11 +18,22 @@ const VARIANTS: Record<Variant, string> = {
 export function Button({
   variant = 'secondary',
   className = '',
+  onClick,
+  onPointerEnter,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
   return (
     <button
       type="button"
+      // Rolar dados já tem o som do lance; os demais confirmam com um toque curto.
+      onClick={(e) => {
+        if (variant !== 'roll') playSound('confirmarAcao');
+        onClick?.(e);
+      }}
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'mouse' && !e.currentTarget.disabled) playSound('passarBotao');
+        onPointerEnter?.(e);
+      }}
       className={`rounded-lg px-4 py-2 font-bold shadow transition disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-amber-300 ${VARIANTS[variant]} ${className}`}
       {...props}
     />

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { board, states } from '@imperio/game-data';
 import type { GameSnapshot, PlayerState, PropertyState } from '@imperio/shared-types';
-import { actionLabel, commandFor, costFor, defaultSelection, pendingDecision, refuseCommand, viewDecision } from './propertyDecision';
+import { actionLabel, commandFor, costFor, defaultSelection, olympicRent, pendingDecision, refuseCommand, viewDecision } from './propertyDecision';
 
 const ap = states.find((s) => s.id === 'AP')!;
 const apTile = board.tiles.find((t) => t.stateId === 'AP')!.index;
@@ -140,5 +140,20 @@ describe('modal de consulta', () => {
       expect(viewDecision(game({ phase }), 'ana', apTile)).toBeNull();
       expect(viewDecision(game({ phase, currentPlayerId: 'bia' }), 'ana', apTile)).not.toBeNull();
     }
+  });
+});
+
+describe('aluguel da sede olímpica', () => {
+  const brl = (n: number) => `R$ ${n.toLocaleString('pt-BR')}`;
+  const host: GameSnapshot['olympics'] = { edition: 1, hostStateId: 'AP', hostPlayerId: 'ana', multiplier: 3 };
+
+  it('explica o multiplicador com o aluguel antes e depois, no nível atual', () => {
+    const info = olympicRent(game({ properties: [owned(2)], olympics: host }), ap, 2)!;
+    expect(info).toMatchObject({ multiplier: 3, baseLabel: brl(ap.rent.house2), rentLabel: brl(3 * ap.rent.house2) });
+    expect(info.summary).toBe(`🔥 Sede das Olimpíadas: aluguel ×3. Com casa 2, ${brl(ap.rent.house2)} vira ${brl(3 * ap.rent.house2)}.`);
+  });
+
+  it('não aparece em estado que não é a sede', () => {
+    expect(olympicRent(game({ properties: [owned(2)] }), ap, 2)).toBeNull();
   });
 });
