@@ -133,4 +133,3 @@ function FinishedOverlay({ onLeave }: { onLeave: () => void }) {
     </div>
   );
 }
-

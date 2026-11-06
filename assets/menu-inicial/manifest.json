@@ -1,0 +1,160 @@
+{
+  "date": "2026-11-06",
+  "provider": "OpenAI image_gen built-in",
+  "prompts": "assets/menu-inicial/prompts.json",
+  "referenceUsage": "Style and composition reference; no portrait crop reused",
+  "encoder": "Chromium 141.0.7390.37 Canvas WebP quality 93",
+  "meshyCredits": 0,
+  "vectors": [
+    {
+      "file": "apps/web/src/main-menu/art/book-v1.svg",
+      "bytes": 890,
+      "sha256": "7ad8e14e4849e4e1e8fcb3758319389028c2a3c7b22b5f84c90636be5f38b2d4",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/button-blue-v1.svg",
+      "bytes": 876,
+      "sha256": "cfa1c16c2a9e1f6b68c9ebce84a6c310887f528f5151b18ad17ef41b96136c32",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/button-green-v1.svg",
+      "bytes": 876,
+      "sha256": "468ac1832f8ac1b9631739efdc41335da1d0a5080376cb4234746e331a0fa74a",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/button-navy-v1.svg",
+      "bytes": 874,
+      "sha256": "b93d368c59a6989dfceb07832157bcbd26055b50ae04f8dd19b5eaef299a81d1",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/coin-v1.svg",
+      "bytes": 839,
+      "sha256": "ee5c80c8da64953cf3980db670ec9d577a0db560e5721e84cf21c6f2b938adae",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/crown-v1.svg",
+      "bytes": 861,
+      "sha256": "0d67f9117de4b32d9682fc4e466ee3bda4e52cc8e4ea834b82f784c0d08b9d7f",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/diamond-v1.svg",
+      "bytes": 848,
+      "sha256": "f4655beae7e2702b2e0b12f2772531cb93f5700b46647bea9889ad03b51f664d",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/gear-v1.svg",
+      "bytes": 973,
+      "sha256": "3e652c3427b501dc1f69f9bb55ce2e0143120d2651ac177fef9525b77903f827",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/laurel-left-v1.svg",
+      "bytes": 1256,
+      "sha256": "7d5fd2006a5c6f91efa47247fe72f453d6757c83697d99a292f8be877ce5a608",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/laurel-right-v1.svg",
+      "bytes": 1304,
+      "sha256": "e9eff861e73f75278f72a84156a89b14dc0ce375e040942dc2cd67715a432c62",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/players-v1.svg",
+      "bytes": 870,
+      "sha256": "3fbe678d71ec41ddf1edbf3766ed880349c4e254c650149eb64cbc1660aa1198",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    },
+    {
+      "file": "apps/web/src/main-menu/art/plus-v1.svg",
+      "bytes": 839,
+      "sha256": "cd6d903ed34b42a1a2ddc5dfdf997efc5164a78496aff3963a18742a99b0a9cb",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "source": "scripts/assets/main-menu-vectors.mjs"
+    }
+  ],
+  "records": [
+    {
+      "name": "background",
+      "file": "apps/web/src/main-menu/art/background-v1.webp",
+      "source": "assets/menu-inicial/source/background-v1.png",
+      "width": 1672,
+      "height": 941,
+      "transparentPixels": 0,
+      "clearPixels": 0,
+      "minAlpha": 255,
+      "maxAlpha": 255,
+      "cornerAlpha": 255,
+      "bytes": 469440,
+      "sourceBytes": 2361082,
+      "sha256": "52e539056e89f37713649811082fc4929b9f70e48f8b1eb0a49a8b6e46cb5b92",
+      "sourceSha256": "b3a4e6284b31299545e84648ca2111ea443755d984a5616f626f3171dd24f16a"
+    },
+    {
+      "name": "logo",
+      "file": "apps/web/src/main-menu/art/logo-v1.webp",
+      "source": "assets/menu-inicial/source/logo-v1.png",
+      "width": 1280,
+      "height": 853,
+      "transparentPixels": 1091840,
+      "clearPixels": 465814,
+      "minAlpha": 0,
+      "maxAlpha": 254,
+      "cornerAlpha": 0,
+      "bytes": 206390,
+      "sourceBytes": 1855377,
+      "sha256": "9b5d74f006513fe3bd1a13dd72242b34ade402e159121e3d80ee863ed74202cb",
+      "sourceSha256": "87333d165277e73d88c645a82c1b016eea89296fe2ad77838fad77554556ccdd"
+    },
+    {
+      "name": "mascot",
+      "file": "apps/web/src/main-menu/art/mascot-v1.webp",
+      "source": "assets/menu-inicial/source/mascot-v1.png",
+      "width": 800,
+      "height": 1000,
+      "transparentPixels": 800000,
+      "clearPixels": 413963,
+      "minAlpha": 0,
+      "maxAlpha": 254,
+      "cornerAlpha": 0,
+      "bytes": 166672,
+      "sourceBytes": 1454261,
+      "sha256": "f6ca06e41f81c9d161d7b5dd0e77f9cf63e4dde0493d0775b234cdc843509053",
+      "sourceSha256": "a10a224e7da72e607e62a036255df6cb2573f90af4e1e113c05a9a4171f2066d"
+    },
+    {
+      "name": "dice",
+      "file": "apps/web/src/main-menu/art/dice-v1.webp",
+      "source": "assets/menu-inicial/source/dice-v1.png",
+      "width": 512,
+      "height": 512,
+      "transparentPixels": 262144,
+      "clearPixels": 153513,
+      "minAlpha": 0,
+      "maxAlpha": 254,
+      "cornerAlpha": 0,
+      "bytes": 36312,
+      "sourceBytes": 982588,
+      "sha256": "a3c09ff62da37d7c8aeae87bc20087b194f20cb201466bb0c1b9024a24e92f23",
+      "sourceSha256": "a71942aa270614d3a4f67c2fac32d18a6d4347c1ea969019ad2a1b174d682184"
+    }
+  ]
+}

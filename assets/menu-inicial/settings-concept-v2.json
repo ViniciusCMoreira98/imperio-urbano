@@ -1,0 +1,18 @@
+{
+  "type": "Visual proposal only; not implemented",
+  "tool": "built-in image_gen",
+  "date": "2026-11-06",
+  "file": "assets/menu-inicial/settings-concept-v2.png",
+  "referenceRoles": {
+    "style": "assets/menu-inicial/settings-concept-v1.png",
+    "options": "User-supplied options screenshot"
+  },
+  "shownTab": "Geral",
+  "plannedTabs": {
+    "Geral": "Avatares, emojis, zoom, previsão de turnos, limite de FPS, idioma e ping",
+    "Som": "Música e efeitos sonoros",
+    "Conta": "Conta, privacidade e suporte; proposed only"
+  },
+  "prompt": "Use case: ui-mockup. Create a revised polished landscape 16:9 SETTINGS screen proposal for Brazilian board game Império Urbano. Image 1 is the existing original project's navy/royal-blue and polished gold settings mockup: preserve its premium 3D cartoon finish, tropical dimmed menu backdrop, thick layered gold rounded panel frame, cyan fine inner rim and round red X close button. Image 2 is ONLY a reference for the richer choice of settings and organization, do NOT use its flat beige design or its background. New composition: a centered wide settings panel filling about 82% width and 82% height, large header \"CONFIGURAÇÕES\" with silver gear and subtle skyline strip. Under header put three horizontal spacious tabs \"Geral\", \"Som\", \"Conta\", with Geral clearly active in green and gold, other tabs navy and gold. Content in TWO BALANCED COLUMNS of clean aligned rows. Left column heading \"INTERFACE\": four rows with exact labels \"Avatares dos jogadores\", \"Emojis\", \"Botão de zoom\", \"Previsão de turnos\". Each has a green pill switch with white check to its right, not four repeated descriptions. Right column heading \"DESEMPENHO\": first row \"Limite de FPS\", below it a three-choice segmented selector \"30\" \"60\" \"Auto\", with 60 highlighted gold; second row \"Idioma\", below it a navy gold selector \"Português (Brasil)\" and down chevron; last row \"Mostrar ping\" with green check switch. Keep every item evenly spaced and readable. Avoid excessive gold borders around each row; just two blue inset content regions, delicate blue separators. Footer separated by subtle thin blue line: small left secondary navy/gold button \"Regras\", middle secondary button \"Restaurar padrão\", right large green/gold button with check and text \"Salvar\". Controls large, uncluttered, mobile landscape-friendly, strong white typography and restrained dark shadows, tasteful rich depth, beautiful gold bevels matching first reference. Correct Portuguese accents. No VSync setting, no unrelated settings, no extra buttons or microtext. This image shows only the Geral tab; Som and Conta are visible navigation tabs, not expanded. Keep backdrop, menu crest and mascot partially visible darkened around edges. Fully contained panel, no cropping, no watermarks.",
+  "meshyCredits": 0
+}

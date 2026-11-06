@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "date": "2026-11-06",
+  "provider": "Imperio Urbano original SVG pipeline",
+  "source": "scripts/assets/settings-vectors.mjs",
+  "designReferences": [
+    "assets/menu-inicial/settings-concept-v2.png",
+    "assets/menu-inicial/settings-sound-concept-v1.png",
+    "assets/menu-inicial/settings-account-concept-v1.png"
+  ],
+  "meshyCredits": 0,
+  "newImageGeneration": false,
+  "records": [
+    {
+      "file": "apps/web/src/settings-art/art/button-green-v1.svg",
+      "bytes": 1740,
+      "sha256": "2c8fa77862c0a0b27bc4281fbe4966f433e11cd72cfdd3a1cb7a3f055107103e"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/button-navy-v1.svg",
+      "bytes": 1739,
+      "sha256": "db1fc22d60dc0e6b0fdbc27e9a58f3b645bbf88e7c096deb4baca3d2404a5c41"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/button-red-v1.svg",
+      "bytes": 1738,
+      "sha256": "6934fb541d897f29ea303fb49debfe5afade759eaf86b97c47251844976e8caf"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/check-v1.svg",
+      "bytes": 1528,
+      "sha256": "3d2980fa68298cf3e4bc0ed77822b486382db7ace33f352836d731d9100aeec4"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/chevron-v1.svg",
+      "bytes": 1533,
+      "sha256": "6ccc8b3bccc5f3768392abd18a125850ea2ed10dfd58b09b19dad8a545a76d23"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/close-v1.svg",
+      "bytes": 1566,
+      "sha256": "95fede2aecc11a48217380a87da95e23db53d8d9ac5b1fe01aa4a96cb35800bf"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/document-v1.svg",
+      "bytes": 1537,
+      "sha256": "c3f77e65af5d213357c05669ba26b7680acc15a6190fc8f97e03dbcc57c35c48"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/heading-frame-v1.svg",
+      "bytes": 1741,
+      "sha256": "79dbe9982b5c83d5682a0edee9a7b5f06feac85c5af71b6433367f800e75fb93"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/headset-v1.svg",
+      "bytes": 1662,
+      "sha256": "6fe54903ac781413ffe788ee457ae82932c1dfdeb7d7820319ebb79222760f2a"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/link-v1.svg",
+      "bytes": 1606,
+      "sha256": "f2088236c2940d85a3dcdcbe61cbaf3e74d7b087330756e91b40564f69bf6703"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/lock-v1.svg",
+      "bytes": 1650,
+      "sha256": "eb77df74623538edebc7b2b38a4a5d8004890232443fa6095adbfb6a889a9a49"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/logout-v1.svg",
+      "bytes": 1619,
+      "sha256": "bc71de3f8db80549a9184afea1bc6f81e513826932231c6ced62e932e449ea78"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/monitor-v1.svg",
+      "bytes": 1562,
+      "sha256": "6fc7846474c75d2d4b544e914ffc8f2d139d5d5c37f6d010fe78ba987757c54a"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/music-v1.svg",
+      "bytes": 1604,
+      "sha256": "9f715cfc9fc2823d3ee7ce723dc27c6b1de5f7568cf79c283ca07263ef842aec"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/panel-frame-v1.svg",
+      "bytes": 1749,
+      "sha256": "d12e65e51b710d3322b46abbb9d2a8677c56d3373de4a2e3ea2d69b23b0f9f4c"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/performance-v1.svg",
+      "bytes": 1636,
+      "sha256": "c270b1999480359ea17815328a03bc59ef9828a42f204e9b1d9d75cc419f78b8"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/profile-v1.svg",
+      "bytes": 1481,
+      "sha256": "639d174b9d1ceede4ebd7559ad15636301d52730c29fc08f82a239ef63a8fa5f"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/reset-v1.svg",
+      "bytes": 1549,
+      "sha256": "048da30c7412c77795bc5c73f0691023b6981d652e1315e57888708cabd71acc"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/section-frame-v1.svg",
+      "bytes": 1592,
+      "sha256": "b38b1e22e59e09d6da0efef0fe3654889a2cd46c50edcaa94c991d9049524301"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/segment-selected-v1.svg",
+      "bytes": 1736,
+      "sha256": "dc5b5b9c36b3a87e65f91dc0aa4464b952bda827ebe817b095b4307e79ff9f36"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/select-frame-v1.svg",
+      "bytes": 1737,
+      "sha256": "e2b9b2bb0c1cc2235a863d90a71f4793a4b931c7e3de269c7b812b7743d67ae9"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/shield-v1.svg",
+      "bytes": 1572,
+      "sha256": "9e45c4ba63fc5f5265eb026b36cb704a8009f724145d7838f3931bf2ff9388aa"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/skyline-v1.svg",
+      "bytes": 1803,
+      "sha256": "81e2a6774e382c7a633df6aa0475253487ebee2c70f0e40bfd6599d62606abaf"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/slider-fill-v1.svg",
+      "bytes": 1430,
+      "sha256": "f760d0f371330aff9bf33627fd446d26f82ffdaae51619d03039322921ec3371"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/slider-thumb-v1.svg",
+      "bytes": 1448,
+      "sha256": "57b4974a3689631d9554d71126781127e612433ca392b6788ab87c926ebade22"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/slider-track-v1.svg",
+      "bytes": 1430,
+      "sha256": "7e399ec8286106de399e8739cd3184cc0c10ab230f10ed7ccc1763e50db4c041"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/speaker-v1.svg",
+      "bytes": 1562,
+      "sha256": "e2dddf3b62f15236ff41fce1d632b0a095c38500652b36a1a2200a8bc64b9353"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/tab-active-v1.svg",
+      "bytes": 1739,
+      "sha256": "6f2740f2c811d67ffa320e13c3eff0d998996711d3aa788bccb4717bd490278f"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/tab-inactive-v1.svg",
+      "bytes": 1738,
+      "sha256": "0717797cbae29fc776cf4d53e92fa267f05943203a1ef64456846f36d181c8b8"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/toggle-off-v1.svg",
+      "bytes": 1652,
+      "sha256": "d8fc9d6a9b6a6992712975a21e948c6f93ef2d0fee4a30613f93a6275d59c73b"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/toggle-on-v1.svg",
+      "bytes": 1831,
+      "sha256": "0dee95e37672bde74b924d2e1d92e617e2d5e05d597eb609f5395364f543cda8"
+    },
+    {
+      "file": "apps/web/src/settings-art/art/trash-v1.svg",
+      "bytes": 1611,
+      "sha256": "846f61a10d94e09032bf08f88c0af43862a147edea1123be9dd6f92531cada2b"
+    }
+  ]
+}

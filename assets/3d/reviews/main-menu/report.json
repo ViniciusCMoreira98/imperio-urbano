@@ -1,0 +1,26 @@
+{
+  "screens": [
+    {
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "width": 844,
+      "height": 390
+    },
+    {
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "imagesDecoded": true,
+  "buttons": 6,
+  "previewOnly": true,
+  "noCommandsOrPayments": true,
+  "noPageErrors": true,
+  "failedRequests": []
+}

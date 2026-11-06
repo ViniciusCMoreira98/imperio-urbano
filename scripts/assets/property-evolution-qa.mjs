@@ -20,6 +20,7 @@ try {
   await page.locator('.pe-panel img').evaluateAll(images=>Promise.all(images.map(image=>image.decode())));
   assert.equal(await page.locator('.pe-building').count(),6);
   assert.ok(await page.locator('.pe-building').evaluateAll(images=>images.every(image=>image.naturalWidth>=1024)));
+  assert.ok(await page.locator('.pe-panel img').evaluateAll(images=>images.every(image=>new URL(image.src).pathname.endsWith('.webp'))),'Modal deve carregar apenas WebP');
   assert.equal(await page.locator('.pe-stage').count(),6);
   assert.equal(await page.locator('.pe-stage:disabled').count(),3);
   await page.locator('.pe-stage').nth(1).click();
@@ -61,7 +62,7 @@ try {
       const image = page.locator(`[data-state-art="${code}"]`);
       await image.evaluate(image=>image.decode());
       const dimensions = await image.evaluate(image=>({width:image.naturalWidth,height:image.naturalHeight,src:image.src}));
-      assert.ok(dimensions.width>=2000 && dimensions.height>=700,`Fonte insuficiente para ${code}`);
+      assert.ok(dimensions.width===1600 && dimensions.height>=533,`Fonte insuficiente para ${code}`);
       assert.ok(Math.abs(dimensions.width/dimensions.height-3)<.06,`Proporção inesperada para ${code}`);
       headerSources.set(code,dimensions.src);
       assert.equal(await page.locator('.pe-panel .pe-code').innerText(),code);
@@ -86,7 +87,7 @@ try {
   assert.equal(provenance.assets.length,25);
   assert.equal(new Set(hashes).size,25,'Os arquivos gerados devem ser distintos');
   assert.deepEqual(errors,[]);
-  const report={stages:6,levels:'Terreno, Casa 1–4, Hotel',sizes:[320,390,768,1024,1536],stateHeaders:{created:25,total:26,codes:optionCodes,desktopAndMobileSwitches:52,distinctSources:26,sourceMinimum:[2000,700],matchesReference33:true},selectionAndPurchaseCallbacks:true,lockedCardsDisabled:true,keyboardClose:true,noHorizontalOverflow:true,originalGeneratedArtwork:true,buildingSourceMinWidth:1024,referencePixelsUsed:false,backendUsed:false,meshyCreditsUsed:0,gameIntegration:'pending Claude',errors};
+  const report={stages:6,levels:'Terreno, Casa 1–4, Hotel',sizes:[320,390,768,1024,1536],stateHeaders:{created:25,total:26,codes:optionCodes,desktopAndMobileSwitches:52,distinctSources:26,sourceMinimum:[1600,533],matchesReference33:true},selectionAndPurchaseCallbacks:true,lockedCardsDisabled:true,keyboardClose:true,noHorizontalOverflow:true,originalGeneratedArtwork:true,buildingSourceMinWidth:1024,referencePixelsUsed:false,backendUsed:false,meshyCreditsUsed:0,gameIntegration:'integrated native panel',errors};
   await writeFile(new URL('validation.json',output),JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify(report));
 } finally {await browser?.close();await server.close();}
