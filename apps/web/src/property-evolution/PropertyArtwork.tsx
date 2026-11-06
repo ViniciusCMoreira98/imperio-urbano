@@ -1,13 +1,13 @@
-import terrain from './art/terrain-v2.png';
-import house1 from './art/house-1-v2.png';
-import house2 from './art/house-2-v2.png';
-import house3 from './art/house-3-v2.png';
-import house4 from './art/house-4-v2.png';
-import hotel from './art/hotel-v2.png';
+import terrain from './art/optimized/terrain-v2.webp';
+import house1 from './art/optimized/house-1-v2.webp';
+import house2 from './art/optimized/house-2-v2.webp';
+import house3 from './art/optimized/house-3-v2.webp';
+import house4 from './art/optimized/house-4-v2.webp';
+import hotel from './art/optimized/hotel-v2.webp';
 import { StateHeaderArtwork } from './StateHeaderArtwork';
-import coins from './art/coins-v2.png';
-import rentGrowth from './art/rent-growth-v2.png';
-import buildTools from './art/build-tools-v2.png';
+import coins from './art/optimized/coins-v2.webp';
+import rentGrowth from './art/optimized/rent-growth-v2.webp';
+import buildTools from './art/optimized/build-tools-v2.webp';
 
 const buildings = [terrain, house1, house2, house3, house4, hotel] as const;
 

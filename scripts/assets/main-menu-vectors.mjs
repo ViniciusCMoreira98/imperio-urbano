@@ -1,0 +1,21 @@
+import { writeFile } from 'node:fs/promises';
+const out=new URL('../../apps/web/src/main-menu/art/',import.meta.url);
+const wrap=(body,view='0 0 128 128')=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${view}"><defs><linearGradient id="gold" x2=".3" y2="1"><stop stop-color="#fff8a2"/><stop offset=".35" stop-color="#ffe528"/><stop offset=".7" stop-color="#ffbd05"/><stop offset="1" stop-color="#c56600"/></linearGradient><linearGradient id="silver" x2=".3" y2="1"><stop stop-color="white"/><stop offset="1" stop-color="#b4cee6"/></linearGradient><filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="4" stdDeviation="1.5" flood-opacity=".8"/></filter></defs><g filter="url(#shadow)" fill="url(#gold)" stroke="#7b4300" stroke-width="2.5" stroke-linejoin="round">${body}</g></svg>`;
+const wreath = '<path d="M84 122Q26 74 35 10" fill="none" stroke="#d89000" stroke-width="4"/>'+Array.from({length:6},(_,i)=>{const x=73-i*7,y=111-i*16;return '<path d="M'+x+' '+y+'Q'+(x-46)+' '+(y-1)+' '+(x-35)+' '+(y-28)+'Q'+(x+2)+' '+(y-25)+' '+x+' '+y+'Z"/><path d="M'+x+' '+y+'Q'+(x+33)+' '+(y-10)+' '+(x+27)+' '+(y-33)+'Q'+(x-2)+' '+(y-28)+' '+x+' '+y+'Z"/>';}).join('');
+const icons={
+ 'players': '<circle cx="64" cy="27" r="19"/><circle cx="22" cy="42" r="14"/><circle cx="106" cy="42" r="14"/><path d="M3 94V81a20 20 0 0 1 38-9v22Zm84 0V81a20 20 0 0 1 38-9v22Z"/><path d="M28 111V90a36 36 0 0 1 72 0v21Z"/>',
+ 'book': '<path d="M8 22Q35 11 64 27q29-16 56-5v83q-29-10-56 2-29-12-56-2Z"/><path d="M64 28v78M20 38q17-5 32 2M20 53q17-5 32 2M20 68q17-5 32 2M76 40q15-7 31-2M76 55q15-7 31-2M76 70q15-7 31-2" fill="none" stroke="#704000" stroke-width="5"/>',
+ 'coin': '<circle cx="64" cy="61" r="53"/><circle cx="64" cy="61" r="43" fill="none" stroke="#fff7a1" stroke-width="4"/><path d="m64 24 11 23 25 4-18 18 4 26-22-12-23 12 5-26-19-18 26-4Z"/>',
+ 'diamond':'<path d="m26 18 77 0 22 29-61 68L3 47Z" fill="#06bfff" stroke="#063f79"/><path d="m26 18 19 29 19-29 19 29 20-29M3 47h122M45 47l19 68 19-68" fill="none" stroke="#bcffff" stroke-width="4"/>',
+ 'crown': '<path d="m10 38 24 20 30-38 30 38 24-20-13 65H23Z"/><path d="M26 91h76" stroke="#fff4a0" stroke-width="5"/><circle cx="10" cy="32" r="7"/><circle cx="64" cy="15" r="7"/><circle cx="118" cy="32" r="7"/>',
+ 'plus':'<circle cx="64" cy="61" r="55" fill="#18ac16" stroke="#ffe346" stroke-width="5"/><path d="M64 29v64M32 61h64" fill="none" stroke="white" stroke-width="13" stroke-linecap="round"/>',
+ 'gear':'<path d="m53 8 22 0 4 15 11 5 14-7 16 16-7 14 5 11 15 4v22l-15 4-5 11 7 14-16 16-14-7-11 5-4 15H53l-4-15-11-5-14 7-16-16 7-14-5-11-15-4V66l15-4 5-11-7-14 16-16 14 7 11-5Z" transform="translate(7 -3) scale(.88)" fill="url(#silver)" stroke="#223951"/><circle cx="64" cy="64" r="18" fill="#08233e" stroke="#7595b5"/>',
+ 'laurel-left': wreath,
+ 'laurel-right': '<g transform="translate(128 0) scale(-1 1)">'+wreath+'</g>'
+};
+for(const[name,body]of Object.entries(icons))await writeFile(new URL(`${name}-v1.svg`,out),wrap(body));
+for(const[name,colors]of Object.entries({green:['#168e0a','#00510b'],blue:['#0873da','#032d85'],navy:['#064a91','#00152c']})){
+ const h=name==='navy'?130:280;const r=name==='navy'?62:55;
+ await writeFile(new URL(`button-${name}-v1.svg`,out),`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 ${h}" preserveAspectRatio="none"><defs><linearGradient id="g" x2="0" y2="1"><stop stop-color="#ffffc4"/><stop offset=".23" stop-color="#fff700"/><stop offset=".65" stop-color="#ffba00"/><stop offset="1" stop-color="#a34d00"/></linearGradient><radialGradient id="b" cx=".5" cy=".1" r=".8"><stop stop-color="${colors[0]}"/><stop offset="1" stop-color="${colors[1]}"/></radialGradient></defs><rect x="3" y="6" width="594" height="${h-10}" rx="${r}" fill="#4d2600"/><rect x="3" y="2" width="594" height="${h-10}" rx="${r}" fill="url(#g)"/><rect x="9" y="8" width="582" height="${h-22}" rx="${r-6}" fill="none" stroke="#fffbd3" stroke-width="3"/><rect x="15" y="14" width="570" height="${h-34}" rx="${r-12}" fill="url(#b)" stroke="#ffce00" stroke-width="3"/><rect x="19" y="18" width="562" height="${h-42}" rx="${r-16}" fill="none" stroke="${name==='green'?'#a3f949':'#63dfff'}" stroke-width="2"/></svg>`);
+}
+console.log('12 SVG: 9 icons/decorations + 3 button skins');
