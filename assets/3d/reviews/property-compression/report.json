@@ -1,0 +1,31 @@
+{
+  "assets": 35,
+  "originalHashesUnchanged": true,
+  "alphaPreserved": true,
+  "derivativesInCommercialInventory": true,
+  "allDerivativesPackaged": true,
+  "originalPNGsNotPackaged": true,
+  "sourceBytes": 94253324,
+  "bytes": 10444878,
+  "reductionPercent": 88.92,
+  "groups": {
+    "headers": {
+      "assets": 26,
+      "sourceBytes": 78740179,
+      "bytes": 8684766,
+      "reductionPercent": 88.97
+    },
+    "buildings": {
+      "assets": 6,
+      "sourceBytes": 11602390,
+      "bytes": 1600746,
+      "reductionPercent": 86.2
+    },
+    "icons": {
+      "assets": 3,
+      "sourceBytes": 3910755,
+      "bytes": 159366,
+      "reductionPercent": 95.92
+    }
+  }
+}

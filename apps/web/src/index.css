@@ -75,14 +75,6 @@ body {
   .hud-dice svg { width: 27px; height: 32px; }
 }
 
-/* Modal em modo consulta (C6): sem escolha, sem custo e sem confirmar. Provisório até o Codex
-   entregar um modo de consulta no PropertyEvolutionPanel. */
-.pe-host-view .pe-summary,
-.pe-host-view .pe-confirm,
-.pe-host-view .pe-lock { display: none; }
-.pe-host-view .pe-locked { border-color: #00a7ef; background: radial-gradient(ellipse at 50% 27%, #075fb5 0, #03224d 63%, #064b82 100%); }
-.pe-host-view .pe-locked .pe-building { filter: saturate(.75) brightness(.85) drop-shadow(0 7px 4px #0006); }
-.pe-host-view .pe-message { margin: 18px 0 4px; font-size: 16px; }
 
 /* C8: a mesa ocupa a janela, com painéis flutuantes e sem coluna reservada. */
 .game-viewport { background:#59341f; }

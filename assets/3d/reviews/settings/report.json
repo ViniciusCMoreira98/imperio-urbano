@@ -1,0 +1,94 @@
+{
+  "assets": 32,
+  "bytes": 52121,
+  "screens": [
+    {
+      "tab": "general",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "tab": "sound",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "tab": "account",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "tab": "general",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "tab": "sound",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "tab": "account",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "tab": "general",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "tab": "sound",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "tab": "account",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "tab": "general",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "tab": "sound",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "tab": "account",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "tab": "general",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "tab": "sound",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "tab": "account",
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "allImagesDecoded": true,
+  "threeTabs": true,
+  "keyboardTabs": true,
+  "togglesAndFPS": true,
+  "rangeUpdates": true,
+  "saveAndResetInMemoryOnly": true,
+  "nestedDeleteConfirmation": true,
+  "disabledState": true,
+  "escapeCloseAndReopen": true,
+  "previewOnly": true,
+  "noAccountOperations": true,
+  "noPageErrors": true,
+  "failedRequests": []
+}

@@ -1,5 +1,52 @@
 # Orientações e pendências para o Codex
 
+## Publicação das entregas de interface (06/11/2026)
+
+Commit e integração/publicação na `develop` solicitados pelo usuário. Inclui C6.1/C6.2, pacote do menu inicial e kit das três abas de configurações. Os registros anteriores de “sem commit/merge” descrevem o estado antes desta solicitação. Assets de menu e configurações continuam como kits com prévias isoladas; somente o modal de propriedade foi integrado à interface de produção. Identificadores da publicação ficam no histórico Git.
+
+## Configurações — assets das três abas (06/11/2026)
+
+**Estado: kit de arte entregue localmente na develop_arte_3d, sem substituir a tela de produção.** O usuário aprovou os mockups Geral/Som/Conta e pediu a criação dos assets. Entrega: **32 SVG originais editáveis** em `apps/web/src/settings-art/art/`, incluindo moldura externa, título, cartões, skyline, botões comuns/principais/destrutivos, abas, fechar, alternâncias, volume, seletor e 15 ícones. Estilos de composição e estados em `settings-assets.css`. Retrato, coroa e engrenagem reutilizam assets próprios existentes; não houve nova geração ou consumo de créditos Meshy.
+
+**Para Claude:** guia e manifesto com hashes em `assets/settings/`. Gerador reproduzível: `scripts/assets/settings-vectors.mjs`. Prévia navegável em `scripts/assets/settings-preview/`, com HTML/JS isolados, sem store ou comandos do jogo. Textos/valores são HTML, não imagens. Conectar ações e preferências reais apenas na integração; campos e botões da prévia não implementam os serviços que representam. Excluir conta abre somente uma confirmação visual cancelável; nenhuma conta é alterada. O host deve manter foco, confirmação, persistência e restrição do jogo para paisagem. Modo disabled, foco, hover e pressionado são CSS; checkbox/range/select são nativos. Todos os 32 assets constam do inventário comercial como arte vetorial original do projeto.
+
+**Validação:** `scripts/assets/settings-qa.mjs`: 15 combinações de aba/tela, em 1672×941, 1280×720, 1024×768, 844×390 e 667×375, além de foco e desabilitado. Imagens decodificadas, sem estouro dos cartões ou controles fora da tela; alternâncias, FPS, volume, salvar/restaurar em memória, teclado e fechar/reabrir conferidos. Capturas/relatório em `assets/3d/reviews/settings/`. Sem nova partida conectada, testes de servidor, commit ou merge nesta entrega isolada de assets.
+
+## Menu inicial — pacote de assets (06/11/2026)
+
+**Estado: artes e prévia entregues localmente na `develop_arte_3d`; integração à tela inicial ainda não realizada.** Referência enviada pelo usuário: menu tropical de Império Urbano. 16 assets em `apps/web/src/main-menu/art/`: cenário de praia/deque, logotipo, cachorro e dados em WebP (três com transparência); três molduras SVG vazias para botões e nove ícones/decorações SVG. Textos, valores, avatar, medidor e molduras dos indicadores ficam em HTML/CSS, separados das imagens. As quatro ilustrações somam 878.814 bytes. PNG originais, prompts exatos, hashes e guia em `assets/menu-inicial/`. Geração pelo image_gen integrado; sem Meshy/créditos Meshy. Retrato reutilizado da família própria C8, sem recortar o avatar da referência.
+
+**Para Claude:** composição de exemplo em `scripts/assets/main-menu-preview/index.html`; estilo reutilizável em `apps/web/src/main-menu/menu-assets.css`. Preservar proporção das artes e a restrição do celular para paisagem. Nome, nível, experiência, moedas e diamantes da prévia são amostras; integrar dados e comandos oficiais separadamente. A opção “Partida Clássica (IA)” é apenas o rótulo da referência e não implementa IA. Os seis controles da prévia só mostram uma mensagem local; não executam jogo ou compra. Não substituir a tela de produção automaticamente com este protótipo.
+
+**Validação:** `scripts/assets/main-menu-qa.mjs` aprovado em 1672×941, 1280×720, 844×390 e 667×375; imagens decodificadas, controles dentro da tela, sem estouro horizontal, requisições falhas ou erros de página. Capturas/relatório em `assets/3d/reviews/main-menu/`. Fontes e derivados registrados no manifesto; inventário comercial inclui os 16 assets para uso na interface. Entrega isolada de arte, sem nova partida conectada, commit ou merge.
+
+## C6.2 — imagens do modal otimizadas (06/11/2026)
+
+**Estado: concluído localmente na `develop_arte_3d`, sobre `fdbc93d`, junto da entrega C6.1 ainda sem commit.** Os componentes `StateHeaderArtwork.tsx` e `PropertyArtwork.tsx` agora importam 35 derivados WebP de `art/optimized/`. Cabeçalhos: 1600 px de largura; terreno, casas e hotel: 1024 px; ícones: 512 px. Proporção preservada, sem ampliação, redimensionamento de alta qualidade e WebP com qualidade 92. Transparência conferida pixel a pixel contra a imagem redimensionada, sem alteração do canal alfa pela compressão.
+
+| Grupo | Antes | Depois | Redução |
+|---|---:|---:|---:|
+| 26 cabeçalhos | 78,74 MB | 8,68 MB | 88,97% |
+| 6 construções/terreno | 11,60 MB | 1,60 MB | 86,20% |
+| 3 ícones | 3,91 MB | 0,16 MB | 95,92% |
+| Total | 94,25 MB | 10,44 MB | 88,92% |
+
+Valores em MB decimais. Fontes PNG e seus registros de procedência preservados sem alteração; não são mais copiadas para o pacote do modal. `art/optimized/manifest.json` registra origem, hashes, tamanho e configuração de cada derivado. Inventário comercial e gerador atualizados com os 35 derivados. Nenhuma nova geração de arte, upload externo ou consumo de créditos.
+
+**Reprodução e validação:** `node scripts/assets/compress-property-art.mjs` gera os derivados usando o codificador WebP do Chromium instalado pelo Playwright. Depois de `npm run build`, `node scripts/assets/property-compression-qa.mjs` confere hashes das fontes e derivados, inventário, transparência registrada, presença dos 35 WebP no build e ausência dos PNG originais no pacote. Comparações antes/depois e relatório em `assets/3d/reviews/property-compression/`. Conferência visual de desktop e celular paisagem aprovada; regressão de compra/construção, 52 trocas de cabeçalho, consulta nas cinco telas, 126 testes, TypeScript e build aprovados. A validação visual desta rodada foi feita na prévia controlada, sem medição de velocidade numa rede móvel real.
+
+**Para Claude:** integração já realizada nos imports do modal; não restaurar os imports PNG. As fontes continuam disponíveis para edição ou novas conversões. C6.1 e C6.2 concluídos; nenhum commit, publicação ou merge executado nesta rodada.
+
+## C6.1 — arte do modal de consulta (06/11/2026)
+
+**Estado: implementado e validado localmente na `develop_arte_3d`, sobre `fdbc93d`.** O pedido do usuário foi criar a arte deste modal seguindo o padrão do projeto. Moldura azul e dourada, panoramas próprios dos estados e seis ilustrações originais foram preservados. A consulta ganhou identificação do proprietário (retrato, nome e cor do peão), nível e aluguel atuais, destaque verde do nível atual e aluguel legível nas seis etapas. Sem dono, mostra “Disponível para compra”. Etapas futuras ficam coloridas e neutras.
+
+**Contrato para engenharia:** `PropertyEvolutionPanel` aceita `mode: 'view'` e `owner?: { name: string; color: string; portrait?: ReactNode } | null`. As propriedades de ações são opcionais nesse modo. As etapas são conteúdo estático: não selecionam nem confirmam, não exibem cadeados, resumo de custo ou botão de construção. O host `hud/PropertyDecisionDialog.tsx` já passa o modo nativo, os dados do dono e o retrato original; a adaptação `.pe-host-view` foi removida de `index.css`. Fechamento, foco e comandos de compra/construção permanecem sob controle do host. Aluguéis continuam vindo das regras existentes, incluindo o bônus olímpico.
+
+**Validação:** 126 testes, TypeScript e build aprovados. Prévia controlada em `scripts/assets/property-view-preview/`, QA em `scripts/assets/property-view-qa.mjs` e capturas/relatório em `assets/3d/reviews/property-view/`: proprietário, imóvel livre, hotel, nome longo, seis aluguéis, nenhuma ação financeira disparada, fechamento e cinco tamanhos (1280×720, 1024×768, 844×390, 667×375 e 390×844). As duas telas pequenas em paisagem cabem integralmente. Retrato foi apenas uma verificação de robustez; a restrição do jogo para paisagem permanece. Regressão visual de compra/construção e dos 26 cabeçalhos aprovada pelo roteiro existente. Esta rodada usou prévia controlada, sem nova partida conectada.
+
+Sem geração de imagens, uso do Meshy ou consumo de créditos: composição feita com as artes próprias já aprovadas. **C6.2 concluído na revisão de otimização registrada acima.** Nenhum commit ou merge desta entrega foi executado.
+
 ## C9 — dados 3D no miolo: entrega de arte (06/11/2026)
 
 **Estado: implementado e validado na `develop_arte_3d`, sobre `6aa9d62`; commit e integração à `develop` solicitados e autorizados pelo usuário. Identificadores no histórico Git.** Os dados foram retirados da região atrás da barra e colocados no primeiro plano do miolo, flanqueando a faixa inferior do logotipo. Em repouso, o título e “EDIÇÃO BRASIL” continuam legíveis. Tamanho dobrado de 0,34 para **0,68**; as mesmas faces, materiais e GLB foram preservados.
@@ -206,7 +253,7 @@ Validação geral executada: **105 testes, TypeScript e build aprovados**; verif
 Arte registrada em **`5f502b4`**, branch `develop_arte_3d`. A base da engenharia `develop` em **`2ad6822`** foi incorporada pelo merge **`2c81b6a`**, sem conflitos. As menções anteriores a “sem commit”, “sem merge” ou bases antigas descrevem o momento de cada estudo; este registro consolida a sincronização atual.
 
 - **Arte entregue:** correção/envelope dos dados C1, respostas C2–C4, protótipos de cenário/HUD, plaquinhas de aluguel, molduras, Saque e contador da Taxa, com fontes/prompts/evidências.
-- **Modal C6 já integrado pela engenharia:** `cb8062c`, com ajustes de pouso/aba oculta em `27b0489`. Preservada também a atualização de dívida/prazo em `2ad6822`. Os estados antigos de “integração do modal pendente” são históricos; permanecem para Codex os pedidos **C6.1 (modo consulta nativo)** e **C6.2 (compressão das imagens)**, não atendidos nesta entrega.
+- **Modal C6 já integrado pela engenharia:** `cb8062c`, com ajustes de pouso/aba oculta em `27b0489`. Preservada também a atualização de dívida/prazo em `2ad6822`. Os estados antigos de “integração do modal pendente” são históricos; naquela entrega permaneceram os pedidos C6.1/C6.2. C6.1 concluído nesta revisão; **C6.2 (compressão das imagens)** também concluído na revisão registrada no topo.
 - **Ainda pendente de implementação:** cenário integrado aprovado sem prancheta, montagem dos novos assets/aluguéis, restrição de celular a paisagem, E25 e migração para 34 casas com RN/Saque/fundo de Taxa. Não confundir a entrega dos assets/propostas com regras ou layout já ativos na partida. Não implementar a coluna permanente do protótipo C5 rejeitado.
 - **Validação da combinação:** 97 testes do frontend/catálogo aprovados; verificação TypeScript da raiz e do frontend, build e auditoria pré-commit aprovados. Auditoria sem credenciais encontradas. Não houve nova rodada conectada de multiplayer/backend nesta sincronização.
 
@@ -403,7 +450,7 @@ Validação final C5: 10 testes geométricos/contratuais aprovados; navegador em
 
 ## C6 — Modal de compra e construção
 
-**Estado: respondido pelo Codex e integrado pela engenharia na `claude/engenharia`; restam os pedidos C6.1 e C6.2 abaixo.** Arte e componente em `2c17e50`, na `develop_arte_3d`, atualizada com a engenharia `97c9d54` pelo merge `f0b2148`. A engenharia montou o diálogo (`hud/PropertyDecisionDialog.tsx`) e a lógica das etapas (`game/propertyDecision.ts`, com testes).
+**Estado: respondido pelo Codex e integrado pela engenharia na `claude/engenharia`; C6.1 e C6.2 concluídos nas revisões registradas no topo.** Arte e componente em `2c17e50`, na `develop_arte_3d`, atualizada com a engenharia `97c9d54` pelo merge `f0b2148`. A engenharia montou o diálogo (`hud/PropertyDecisionDialog.tsx`) e a lógica das etapas (`game/propertyDecision.ts`, com testes).
 
 Ao parar num estado para comprar ou construir (`AWAITING_PURCHASE` / `AWAITING_BUILD`, na vez do jogador), abre um modal no centro, no estilo da referência enviada pelo usuário (cabeçalho com foto e sigla do estado, trilha Terreno → casas → Hotel, custo e novo aluguel, botão de confirmar). Hoje isso aparece no painel lateral (`PropertyPanel` + `TileActions`).
 
@@ -430,15 +477,15 @@ O que a integração fez com o componente (sem alterar arquivos da arte):
 - O "Não comprar" / "Não construir" da barra de ações saiu: quem recusa é o "×" do modal. O Esc não recusa (fechar sem querer pelo teclado não deve tomar a decisão).
 - O prazo oficial (`Countdown` da barra) aparece acima do painel. A mensagem mostra o saldo, a recusa do servidor ou a falta de conexão.
 - Em tela larga e baixa (1366×768, 1024×768) o painel inteiro é reduzido por `transform: scale` para o botão caber sem rolar; no celular a sobreposição rola. Conferido em 1536×1024, 1024×768 e 390×844 numa partida real.
-- **Provisório para a consulta:** o componente só tem `mode: 'purchase' | 'build'`; o host esconde resumo, botão e cadeados com a classe `.pe-host-view` em `index.css` e passa as etapas futuras como `locked`.
+- **Histórico, substituído pelo C6.1 nativo nesta revisão:** o componente só tem `mode: 'purchase' | 'build'`; o host esconde resumo, botão e cadeados com a classe `.pe-host-view` em `index.css` e passa as etapas futuras como `locked`.
 
 ### C6.1 — Modo consulta no `PropertyEvolutionPanel`
 
-- [ ] Um `mode: 'view'` (ou equivalente) sem resumo de custo, sem botão de confirmar e com as etapas futuras com aparência neutra (sem cadeado nem cinza). Subtítulo sugerido: "Evolução da propriedade". Espaço para dono (nome + cor do peão) e "Disponível para compra" quando não há dono. Ao entregar, a engenharia remove `.pe-host-view` do `index.css`.
+- [x] Entregue nesta revisão (registro no topo): um `mode: 'view'` (ou equivalente) sem resumo de custo, sem botão de confirmar e com as etapas futuras com aparência neutra (sem cadeado nem cinza). Subtítulo sugerido: "Evolução da propriedade". Espaço para dono (nome + cor do peão) e "Disponível para compra" quando não há dono. O host já usa o modo nativo e `.pe-host-view` foi removido do `index.css`.
 
 ### C6.2 — Peso dos cabeçalhos das UFs
 
-- [ ] Os `states/*-header-v1.png` têm de 2,6 a 3,3 MB cada (≈ 73 MB no total; o build copia todos). Cada abertura do modal baixa um no celular. Pedido: versões comprimidas (ex.: WebP ou PNG/JPEG otimizado, ~1600 px de largura) mantendo a qualidade do cabeçalho. Mesmo cuidado para `art/*-v2.png` (1,2 a 2,3 MB cada).
+- [x] Otimização entregue (registro no topo). Pedido original: os `states/*-header-v1.png` têm de 2,6 a 3,3 MB cada (≈ 73 MB no total; o build copia todos). Cada abertura do modal baixa um no celular. Pedido: versões comprimidas (ex.: WebP ou PNG/JPEG otimizado, ~1600 px de largura) mantendo a qualidade do cabeçalho. Mesmo cuidado para `art/*-v2.png` (1,2 a 2,3 MB cada).
 
 ## Ao atender um pedido
 

@@ -13,7 +13,9 @@ import {
   rentAt,
   viewDecision,
 } from '../game/propertyDecision';
-import { HOTEL_LEVEL, playerOf } from '../game/rules';
+import { playerOf } from '../game/rules';
+import { PAWN_COLORS } from '../game/presentation';
+import { AvatarPortrait } from './AvatarPortrait';
 import { formatCredits } from '../property-card/tileInfo';
 import { PropertyEvolutionPanel } from '../property-evolution/PropertyEvolutionPanel';
 import { useGameStore } from '../store/gameStore';
@@ -91,7 +93,7 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
   // Só a recusa do que saiu deste modal; uma anterior (ex.: rolar fora de hora) não é sobre esta decisão.
   else if (decide && rejection && sentAt !== null) message = rejection;
   else if (decide) message = me ? `Seu saldo: ${formatCredits(me.credits)}` : undefined;
-  else message = viewMessage(decision, owner?.id === myId ? 'você' : owner?.nickname, snapshot.olympics.hostStateId === definition.id ? snapshot.olympics.multiplier : null);
+  else if (snapshot.olympics.hostStateId === definition.id) message = `Aluguéis com o bônus de sede olímpica (×${snapshot.olympics.multiplier}).`;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/65 backdrop-blur-[2px]" onClick={decide ? undefined : clearSelection}>
@@ -101,7 +103,7 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
           role="dialog"
           aria-modal="true"
           aria-label={`${definition.name}: ${decide ? (decision.mode === 'purchase' ? 'comprar' : 'construir') : 'consulta'}`}
-          className={`relative w-full max-w-[1100px] ${decide ? '' : 'pe-host-view'}`}
+          className="relative w-full max-w-[1100px]"
           style={{ height: fit.height }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -114,7 +116,8 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
           <PropertyEvolutionPanel
             stateCode={definition.abbreviation}
             stateName={definition.name}
-            mode={decision.mode === 'purchase' ? 'purchase' : 'build'}
+            mode={decision.mode}
+            owner={owner ? {name: `${owner.nickname}${owner.id === myId ? ' (você)' : ''}`,color: PAWN_COLORS[owner.pawnColor].hex,portrait: <AvatarPortrait avatarId={owner.avatarId}/>} : null}
             stages={decision.stages}
             selectedLevel={selected}
             costLabel={decide && selected !== null ? formatCredits(costFor(decision, selected)) : '—'}
@@ -132,15 +135,6 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
       </div>
     </div>
   );
-}
-
-function viewMessage(decision: PropertyDecision, ownerName: string | undefined, olympicMultiplier: number | null): string {
-  const { definition, property, currentLevel } = decision;
-  if (!property?.ownerId) return `Disponível para compra por ${formatCredits(definition.price)}.`;
-  const built = currentLevel === HOTEL_LEVEL ? 'hotel' : currentLevel === 0 ? 'sem construção' : `${currentLevel} casa(s)`;
-  const olympics = olympicMultiplier ? ` · sede olímpica (×${olympicMultiplier})` : '';
-  const who = ownerName === 'você' ? 'Seu estado' : `De ${ownerName ?? 'outro jogador'}`;
-  return `${who} · ${built}${olympics}. Casa ${formatCredits(definition.houseCost)} · hotel ${formatCredits(definition.hotelCost)}.`;
 }
 
 /** Espaço vertical do diálogo fora do painel: prazo acima e margem abaixo. */

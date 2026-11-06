@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedOn": "2026-11-05",
+  "reviewedOn": "2026-11-06",
   "scope": "Packaged models and original source art used by the board, HUD and property modals",
   "meshyPaidPlanEvidence": {
     "source": "Explicit user answer in current Codex chat",
@@ -736,6 +736,150 @@
       "bytes": 93002
     },
     {
+      "file": "apps/web/src/main-menu/art/background-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "52e539056e89f37713649811082fc4929b9f70e48f8b1eb0a49a8b6e46cb5b92",
+      "bytes": 469440
+    },
+    {
+      "file": "apps/web/src/main-menu/art/book-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "7ad8e14e4849e4e1e8fcb3758319389028c2a3c7b22b5f84c90636be5f38b2d4",
+      "bytes": 890
+    },
+    {
+      "file": "apps/web/src/main-menu/art/button-blue-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "cfa1c16c2a9e1f6b68c9ebce84a6c310887f528f5151b18ad17ef41b96136c32",
+      "bytes": 876
+    },
+    {
+      "file": "apps/web/src/main-menu/art/button-green-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "468ac1832f8ac1b9631739efdc41335da1d0a5080376cb4234746e331a0fa74a",
+      "bytes": 876
+    },
+    {
+      "file": "apps/web/src/main-menu/art/button-navy-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "b93d368c59a6989dfceb07832157bcbd26055b50ae04f8dd19b5eaef299a81d1",
+      "bytes": 874
+    },
+    {
+      "file": "apps/web/src/main-menu/art/coin-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "ee5c80c8da64953cf3980db670ec9d577a0db560e5721e84cf21c6f2b938adae",
+      "bytes": 839
+    },
+    {
+      "file": "apps/web/src/main-menu/art/crown-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "0d67f9117de4b32d9682fc4e466ee3bda4e52cc8e4ea834b82f784c0d08b9d7f",
+      "bytes": 861
+    },
+    {
+      "file": "apps/web/src/main-menu/art/diamond-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "f4655beae7e2702b2e0b12f2772531cb93f5700b46647bea9889ad03b51f664d",
+      "bytes": 848
+    },
+    {
+      "file": "apps/web/src/main-menu/art/dice-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "a3c09ff62da37d7c8aeae87bc20087b194f20cb201466bb0c1b9024a24e92f23",
+      "bytes": 36312
+    },
+    {
+      "file": "apps/web/src/main-menu/art/gear-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "3e652c3427b501dc1f69f9bb55ce2e0143120d2651ac177fef9525b77903f827",
+      "bytes": 973
+    },
+    {
+      "file": "apps/web/src/main-menu/art/laurel-left-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "7d5fd2006a5c6f91efa47247fe72f453d6757c83697d99a292f8be877ce5a608",
+      "bytes": 1256
+    },
+    {
+      "file": "apps/web/src/main-menu/art/laurel-right-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "e9eff861e73f75278f72a84156a89b14dc0ce375e040942dc2cd67715a432c62",
+      "bytes": 1304
+    },
+    {
+      "file": "apps/web/src/main-menu/art/logo-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "9b5d74f006513fe3bd1a13dd72242b34ade402e159121e3d80ee863ed74202cb",
+      "bytes": 206390
+    },
+    {
+      "file": "apps/web/src/main-menu/art/mascot-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "f6ca06e41f81c9d161d7b5dd0e77f9cf63e4dde0493d0775b234cdc843509053",
+      "bytes": 166672
+    },
+    {
+      "file": "apps/web/src/main-menu/art/players-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "3fbe678d71ec41ddf1edbf3766ed880349c4e254c650149eb64cbc1660aa1198",
+      "bytes": 870
+    },
+    {
+      "file": "apps/web/src/main-menu/art/plus-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/menu-inicial/manifest.json",
+      "commercialUse": true,
+      "sha256": "cd6d903ed34b42a1a2ddc5dfdf997efc5164a78496aff3963a18742a99b0a9cb",
+      "bytes": 839
+    },
+    {
       "file": "apps/web/src/property-evolution/art/build-tools-v2.png",
       "provider": "OpenAI image_gen built-in",
       "license": "OpenAI generated output, project ownership under service terms",
@@ -797,6 +941,321 @@
       "commercialUse": true,
       "sha256": "81715cb49867c91a3c4bb9df80391bef453245d056703c6dc3e2d4a0d663849f",
       "bytes": 1927520
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/ac-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "962c4685e1270b1ee380e88e47184e7c0a82e6abcb3b91b9f33a5de1f9430a68",
+      "bytes": 349138
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/al-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "29b66b56ea43c05e7089bc38a6215306b96a0e00bacf61866b2921f6c5215049",
+      "bytes": 363834
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/am-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "0252f723d2c1ecdefbef17d9f745cbe81a0d934dc68aab36897558eb8fd58b63",
+      "bytes": 405978
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/ap-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "e9083ea1a59e355f843b1b0affb30d5dea1f93cf59de20e3a5e146748e76bd3d",
+      "bytes": 359780
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/ba-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "fb9382facafa055814bba407f3678db96e019b4b7e550137735d05cefcced194",
+      "bytes": 314860
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/build-tools-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "fcaba2b3ca3d1ce5b9cbe9af80bdd88554150a7f458512a35fe3713cdd57eba3",
+      "bytes": 55124
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/ce-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "be8ba21717d027a5ee63302e4e8c75a61fe9bc29b68c0324830684f840d2b386",
+      "bytes": 260256
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/coins-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "26eb8c1c7db665e2963db343109e340d40c04b2c752fbcc6419e9683208f2e3d",
+      "bytes": 59054
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/df-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "a332ab3c219a69fe027ad6d39e90b8f9e14ea01f27479ec55609db4090657d1a",
+      "bytes": 299396
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/es-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "1aa776b1660e692c75a37dd21b473c991121157875ac6654a4a6ddb77af2147e",
+      "bytes": 301996
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/go-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "9b45f3985374d280dc2381cf7e3ff6d6dd48b14c16c3fdd9db240bd38898345f",
+      "bytes": 333260
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/hotel-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "b30e26a55b6cdf3d33f1b5dae3d6aac6ac792ba0c49c76000c5331fd4087e647",
+      "bytes": 329296
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/house-1-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "5bd3fcb6a869672e526386a5c7789b1854654e8ad10b9f99365f996a916e0c4e",
+      "bytes": 257750
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/house-2-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "580810ce3a3747938dc036029cfc73b081972e97d5643523f94872fad2ef34cc",
+      "bytes": 247714
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/house-3-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "4dee2230dac23330995723b7bc676a0cdb1ff746da5761f8d27b9632183c32ed",
+      "bytes": 251572
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/house-4-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "624072c58a38d521b3e2e98bc6d497d9d9ab1626381c7e871f8db5f94c099994",
+      "bytes": 262256
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/ma-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "63da9b8a0f6a7747b00a9944c067a2460cac91d2eca55d3799720e96a8d1140e",
+      "bytes": 266002
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/mg-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "ce602e3095a656509085b529899295d6adb0fd135d931ba9b80fdc30877b49a1",
+      "bytes": 354012
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/ms-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "00a57da210a4875fbed53be7170a1f7b97910f987de8b52a07037129bda8485a",
+      "bytes": 352572
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/mt-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "221e63a9781abd945ec6b2cda0cf075fbe1b6ced24d093f3f320cc19c7f55244",
+      "bytes": 332560
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/pa-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "f0852d36a2545be29ab22e539253925f163d01ca77159bc2e059ac0d62dc3eff",
+      "bytes": 322644
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/pb-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "af6b98342624aeb76ad336107b6097f229dbdd03a94d99db296edc640660e977",
+      "bytes": 329518
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/pe-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "9ae121016d6504bda8ddcd79d79f6e72594ca5f9a617650bb0a51c8f49032176",
+      "bytes": 344588
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/pi-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "0946d78eb5a6f9ee2c8691232f55438568760bf8de8abce14d47d79bf642af9f",
+      "bytes": 371420
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/pr-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "86e80832fe0492b754863f24b83516b26ef3c3dc0934cf649971065f0598e73f",
+      "bytes": 367454
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/rent-growth-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "80cc53275612f0b60dc0fcb721896a514f2f78a83f4723bb2b7e7870bdc2828b",
+      "bytes": 45188
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/rio-header-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "5f17c0c9f367bf24d19c613d7146fdc2d121e2825416ba9a754f0298c14e0f40",
+      "bytes": 306946
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/rn-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "54424d271bdf2fe71e69100f119cb5f87bd6365cfb55a0c4d3660e6fc4fe8aca",
+      "bytes": 368928
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/ro-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "a9f2294b7e619b02ae982245ce44180e403ea208e0f43636de7fb19ce204946c",
+      "bytes": 316288
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/rr-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "b827ef13d4472d2b86e37cc2e5d8aa7e3d0b57f8d7e426bc766e7ae1530d48d4",
+      "bytes": 336588
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/rs-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "65983ce09f71b8dac29a9f0c1b6722035912d3951dcf6e22684012c082e4c324",
+      "bytes": 356936
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/sc-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "726e9ffc8e7c1c626b0aead22614812d55fc44d588b53acb97a061c6194d61f1",
+      "bytes": 326550
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/se-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "4ea0979957a155742dadb4991462877f8e01cfec590d2dca9fcee7c1c219ec99",
+      "bytes": 303164
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/sp-header-v1.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "55c57ef072d132af7c97bd773e97f28fe27ab678fa15037b1dbb16e116df879e",
+      "bytes": 340098
+    },
+    {
+      "file": "apps/web/src/property-evolution/art/optimized/terrain-v2.webp",
+      "provider": "Imperio Urbano WebP derivative of original OpenAI artwork",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "apps/web/src/property-evolution/art/optimized/manifest.json",
+      "commercialUse": true,
+      "sha256": "64e0217abec15721bad95eefc8aa52252af4e89766d80d9fea80aa09716bc5c0",
+      "bytes": 252158
     },
     {
       "file": "apps/web/src/property-evolution/art/rent-growth-v2.png",
@@ -1049,6 +1508,294 @@
       "commercialUse": true,
       "sha256": "78f5597201be2e66b708bd184f7f43f59132c405a37a36abf54370d2a91b9490",
       "bytes": 1671684
+    },
+    {
+      "file": "apps/web/src/settings-art/art/button-green-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "2c8fa77862c0a0b27bc4281fbe4966f433e11cd72cfdd3a1cb7a3f055107103e",
+      "bytes": 1740
+    },
+    {
+      "file": "apps/web/src/settings-art/art/button-navy-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "db1fc22d60dc0e6b0fdbc27e9a58f3b645bbf88e7c096deb4baca3d2404a5c41",
+      "bytes": 1739
+    },
+    {
+      "file": "apps/web/src/settings-art/art/button-red-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "6934fb541d897f29ea303fb49debfe5afade759eaf86b97c47251844976e8caf",
+      "bytes": 1738
+    },
+    {
+      "file": "apps/web/src/settings-art/art/check-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "3d2980fa68298cf3e4bc0ed77822b486382db7ace33f352836d731d9100aeec4",
+      "bytes": 1528
+    },
+    {
+      "file": "apps/web/src/settings-art/art/chevron-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "6ccc8b3bccc5f3768392abd18a125850ea2ed10dfd58b09b19dad8a545a76d23",
+      "bytes": 1533
+    },
+    {
+      "file": "apps/web/src/settings-art/art/close-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "95fede2aecc11a48217380a87da95e23db53d8d9ac5b1fe01aa4a96cb35800bf",
+      "bytes": 1566
+    },
+    {
+      "file": "apps/web/src/settings-art/art/document-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "c3f77e65af5d213357c05669ba26b7680acc15a6190fc8f97e03dbcc57c35c48",
+      "bytes": 1537
+    },
+    {
+      "file": "apps/web/src/settings-art/art/heading-frame-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "79dbe9982b5c83d5682a0edee9a7b5f06feac85c5af71b6433367f800e75fb93",
+      "bytes": 1741
+    },
+    {
+      "file": "apps/web/src/settings-art/art/headset-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "6fe54903ac781413ffe788ee457ae82932c1dfdeb7d7820319ebb79222760f2a",
+      "bytes": 1662
+    },
+    {
+      "file": "apps/web/src/settings-art/art/link-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "f2088236c2940d85a3dcdcbe61cbaf3e74d7b087330756e91b40564f69bf6703",
+      "bytes": 1606
+    },
+    {
+      "file": "apps/web/src/settings-art/art/lock-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "eb77df74623538edebc7b2b38a4a5d8004890232443fa6095adbfb6a889a9a49",
+      "bytes": 1650
+    },
+    {
+      "file": "apps/web/src/settings-art/art/logout-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "bc71de3f8db80549a9184afea1bc6f81e513826932231c6ced62e932e449ea78",
+      "bytes": 1619
+    },
+    {
+      "file": "apps/web/src/settings-art/art/monitor-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "6fc7846474c75d2d4b544e914ffc8f2d139d5d5c37f6d010fe78ba987757c54a",
+      "bytes": 1562
+    },
+    {
+      "file": "apps/web/src/settings-art/art/music-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "9f715cfc9fc2823d3ee7ce723dc27c6b1de5f7568cf79c283ca07263ef842aec",
+      "bytes": 1604
+    },
+    {
+      "file": "apps/web/src/settings-art/art/panel-frame-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "d12e65e51b710d3322b46abbb9d2a8677c56d3373de4a2e3ea2d69b23b0f9f4c",
+      "bytes": 1749
+    },
+    {
+      "file": "apps/web/src/settings-art/art/performance-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "c270b1999480359ea17815328a03bc59ef9828a42f204e9b1d9d75cc419f78b8",
+      "bytes": 1636
+    },
+    {
+      "file": "apps/web/src/settings-art/art/profile-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "639d174b9d1ceede4ebd7559ad15636301d52730c29fc08f82a239ef63a8fa5f",
+      "bytes": 1481
+    },
+    {
+      "file": "apps/web/src/settings-art/art/reset-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "048da30c7412c77795bc5c73f0691023b6981d652e1315e57888708cabd71acc",
+      "bytes": 1549
+    },
+    {
+      "file": "apps/web/src/settings-art/art/section-frame-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "b38b1e22e59e09d6da0efef0fe3654889a2cd46c50edcaa94c991d9049524301",
+      "bytes": 1592
+    },
+    {
+      "file": "apps/web/src/settings-art/art/segment-selected-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "dc5b5b9c36b3a87e65f91dc0aa4464b952bda827ebe817b095b4307e79ff9f36",
+      "bytes": 1736
+    },
+    {
+      "file": "apps/web/src/settings-art/art/select-frame-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "e2b9b2bb0c1cc2235a863d90a71f4793a4b931c7e3de269c7b812b7743d67ae9",
+      "bytes": 1737
+    },
+    {
+      "file": "apps/web/src/settings-art/art/shield-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "9e45c4ba63fc5f5265eb026b36cb704a8009f724145d7838f3931bf2ff9388aa",
+      "bytes": 1572
+    },
+    {
+      "file": "apps/web/src/settings-art/art/skyline-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "81e2a6774e382c7a633df6aa0475253487ebee2c70f0e40bfd6599d62606abaf",
+      "bytes": 1803
+    },
+    {
+      "file": "apps/web/src/settings-art/art/slider-fill-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "f760d0f371330aff9bf33627fd446d26f82ffdaae51619d03039322921ec3371",
+      "bytes": 1430
+    },
+    {
+      "file": "apps/web/src/settings-art/art/slider-thumb-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "57b4974a3689631d9554d71126781127e612433ca392b6788ab87c926ebade22",
+      "bytes": 1448
+    },
+    {
+      "file": "apps/web/src/settings-art/art/slider-track-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "7e399ec8286106de399e8739cd3184cc0c10ab230f10ed7ccc1763e50db4c041",
+      "bytes": 1430
+    },
+    {
+      "file": "apps/web/src/settings-art/art/speaker-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "e2dddf3b62f15236ff41fce1d632b0a095c38500652b36a1a2200a8bc64b9353",
+      "bytes": 1562
+    },
+    {
+      "file": "apps/web/src/settings-art/art/tab-active-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "6f2740f2c811d67ffa320e13c3eff0d998996711d3aa788bccb4717bd490278f",
+      "bytes": 1739
+    },
+    {
+      "file": "apps/web/src/settings-art/art/tab-inactive-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "0717797cbae29fc776cf4d53e92fa267f05943203a1ef64456846f36d181c8b8",
+      "bytes": 1738
+    },
+    {
+      "file": "apps/web/src/settings-art/art/toggle-off-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "d8fc9d6a9b6a6992712975a21e948c6f93ef2d0fee4a30613f93a6275d59c73b",
+      "bytes": 1652
+    },
+    {
+      "file": "apps/web/src/settings-art/art/toggle-on-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "0dee95e37672bde74b924d2e1d92e617e2d5e05d597eb609f5395364f543cda8",
+      "bytes": 1831
+    },
+    {
+      "file": "apps/web/src/settings-art/art/trash-v1.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/settings/manifest.json",
+      "commercialUse": true,
+      "sha256": "846f61a10d94e09032bf08f88c0af43862a147edea1123be9dd6f92531cada2b",
+      "bytes": 1611
     },
     {
       "file": "apps/web/src/special-tiles/art/saque-tile-v1.png",

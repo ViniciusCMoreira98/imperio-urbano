@@ -1,0 +1,32 @@
+{
+  "nativeViewMode": true,
+  "neutralFutureStages": true,
+  "allSixRentsVisible": true,
+  "ownerAndAvailability": true,
+  "viewActionsDispatched": 0,
+  "currentLevelAndHotel": true,
+  "screens": [
+    {
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "width": 844,
+      "height": 390
+    },
+    {
+      "width": 667,
+      "height": 375
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "closeWorks": true,
+  "errors": []
+}

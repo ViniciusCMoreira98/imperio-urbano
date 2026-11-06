@@ -42,8 +42,8 @@
     "desktopAndMobileSwitches": 52,
     "distinctSources": 26,
     "sourceMinimum": [
-      2000,
-      700
+      1600,
+      533
     ],
     "matchesReference33": true
   },
@@ -56,6 +56,6 @@
   "referencePixelsUsed": false,
   "backendUsed": false,
   "meshyCreditsUsed": 0,
-  "gameIntegration": "pending Claude",
+  "gameIntegration": "integrated native panel",
   "errors": []
 }
