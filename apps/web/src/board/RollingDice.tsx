@@ -1,5 +1,7 @@
 // Dados 3D da partida: rolam a cada lance recebido ao vivo e param exatamente no resultado do
 // servidor. Reconexão, aba em segundo plano e movimento reduzido mostram o resultado já parado.
+// Um lance que chega com personagens ainda andando espera a mesa parar; o peão de quem rolou espera
+// estes dados pararem (diceStore.shownRollId).
 // Pose e envelope vêm do manifesto ativo (layout.dice / layout.diceRoll), sem copiar números.
 import gsap from 'gsap';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -8,8 +10,16 @@ import layout from './board34/layout.json';
 import { DiceVisual } from '../dice/DiceVisual';
 import type { DiceFace } from '../dice/diceOrientation';
 import { LAND_SECONDS, LIFT_SECONDS, ROLL_SECONDS, SPIN_SECONDS, rollAnimates, rollPlan } from '../dice/rollPlan';
+import { playSound } from '../audio/audio';
 import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
+import { usePawnStore } from '../store/pawnStore';
+
+/** Algum personagem anda na mesa (quem só espera os próprios dados não conta). */
+const tableBusy = () => {
+  const { moving, waiting } = usePawnStore.getState();
+  return Object.keys(moving).some((id) => !waiting[id]);
+};
 
 type Faces = [DiceFace, DiceFace];
 const TURN = Math.PI * 2;
@@ -27,9 +37,12 @@ export function RollingDice() {
   const timeline = useRef<gsap.core.Timeline | null>(null);
   const deadline = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handled = useRef<number>(useGameStore.getState().roll?.id ?? -1);
+  /** Lance recebido esperando a mesa parar. */
+  const pending = useRef<{ official: Faces; id: number } | null>(null);
 
   /** Direto no repouso oficial, sem giro extra. */
-  const snap = (official: Faces | null) => {
+  const snap = (official: Faces | null, rollId = handled.current) => {
+    pending.current = null;
     timeline.current?.kill();
     timeline.current = null;
     if (deadline.current !== null) clearTimeout(deadline.current);
@@ -40,11 +53,13 @@ export function RollingDice() {
     });
     setFaces(official);
     useDiceStore.getState().setRolling(false);
+    useDiceStore.getState().setShown(rollId);
   };
 
-  const play = (official: Faces) => {
+  const play = (official: Faces, rollId: number) => {
+    pending.current = null;
     timeline.current?.kill();
-    const tl = gsap.timeline({ onComplete: () => snap(official) });
+    const tl = gsap.timeline({ onComplete: () => snap(official, rollId) });
     useDiceStore.getState().setRolling(true);
     // Primeiro lance da partida: os dados ainda não estavam na mesa; entram com faces quaisquer.
     setFaces((f) => f ?? [randomFace(), randomFace()]);
@@ -67,9 +82,11 @@ export function RollingDice() {
     // Troca para a face oficial já girando, para não revelar o resultado antes do lance.
     tl.call(() => setFaces(official), [], LIFT_SECONDS + SPIN_SECONDS * 0.2);
     timeline.current = tl;
+    // O impacto da faixa coincide com o pouso dos dados na mesa.
+    playSound('dado', { delay: LIFT_SECONDS + SPIN_SECONDS - 0.04 });
     // Sem quadros de animação (janela encoberta, painel oculto) o gsap não avança: o relógio garante
     // que os dados param no resultado e a barra volta a mostrá-lo.
-    deadline.current = setTimeout(() => snap(official), ROLL_SECONDS * 1000 + 250);
+    deadline.current = setTimeout(() => snap(official, rollId), ROLL_SECONDS * 1000 + 250);
   };
 
   // Snapshot novo sem lance ao vivo (entrada, reconexão): mostra o resultado oficial parado.
@@ -90,16 +107,30 @@ export function RollingDice() {
         handled.current = roll.id;
         const official = asFaces(roll.dice);
         if (!official) return;
-        if (!rollAnimates()) snap(official);
-        else play(official);
+        if (!rollAnimates()) return snap(official, roll.id);
+        // A barra já esconde o valor e o botão de rolar enquanto o lance espera a vez de aparecer.
+        useDiceStore.getState().setRolling(true);
+        if (tableBusy()) pending.current = { official, id: roll.id };
+        else play(official, roll.id);
       }),
     [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+  // Mesa parou: o lance que esperava rola agora.
+  useEffect(() => {
+    useDiceStore.getState().setShown(handled.current);
+    return usePawnStore.subscribe(() => {
+      const next = pending.current;
+      if (!next || tableBusy()) return;
+      if (rollAnimates()) play(next.official, next.id);
+      else snap(next.official, next.id);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Aba escondida no meio do lance: termina parado no resultado, sem replay atrasado ao voltar.
   useEffect(() => {
     const onVisibility = () => {
-      if (document.hidden && timeline.current) snap(asFaces(useGameStore.getState().snapshot?.lastDice) ?? faces);
+      if (document.hidden && (timeline.current || pending.current)) snap(asFaces(useGameStore.getState().snapshot?.lastDice) ?? faces);
     };
     document.addEventListener('visibilitychange', onVisibility);
     return () => {

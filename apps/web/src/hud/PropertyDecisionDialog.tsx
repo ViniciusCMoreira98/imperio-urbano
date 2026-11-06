@@ -3,11 +3,13 @@
 // diálogo, o foco, o prazo e os comandos.
 import { type RefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
+  type OlympicRent,
   type PropertyDecision,
   actionLabel,
   commandFor,
   costFor,
   defaultSelection,
+  olympicRent,
   pendingDecision,
   refuseCommand,
   rentAt,
@@ -17,6 +19,7 @@ import { HOTEL_LEVEL, playerOf } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { PropertyEvolutionPanel } from '../property-evolution/PropertyEvolutionPanel';
 import { useGameStore } from '../store/gameStore';
+import { playSound } from '../audio/audio';
 import { usePawnStore } from '../store/pawnStore';
 import { useViewStore } from '../store/viewStore';
 import { Countdown } from './ActionBar';
@@ -43,6 +46,8 @@ export function PropertyDecisionDialog({ myId }: { myId: string }) {
 }
 
 function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: string }) {
+  // Cada abertura (a chave muda com o modo e a casa) toca o som da janela.
+  useEffect(() => playSound('abrirJanela'), []);
   const snapshot = useGameStore((s) => s.snapshot)!;
   const send = useGameStore((s) => s.send);
   const rejection = useGameStore((s) => s.rejection);
@@ -86,12 +91,16 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
   const me = playerOf(snapshot, myId);
   const target = selected ?? decision.currentLevel;
 
+  // Sede olímpica: os aluguéis do modal já vêm multiplicados; a frase diz por quanto e de quanto era.
+  const olympics = olympicRent(snapshot, definition, decision.currentLevel);
   let message: string | undefined;
   if (decide && offline) message = 'Sem conexão com o servidor. Aguarde a reconexão para decidir.';
   // Só a recusa do que saiu deste modal; uma anterior (ex.: rolar fora de hora) não é sobre esta decisão.
   else if (decide && rejection && sentAt !== null) message = rejection;
-  else if (decide) message = me ? `Seu saldo: ${formatCredits(me.credits)}` : undefined;
-  else message = viewMessage(decision, owner?.id === myId ? 'você' : owner?.nickname, snapshot.olympics.hostStateId === definition.id ? snapshot.olympics.multiplier : null);
+  else if (decide) {
+    const balance = me ? `Seu saldo: ${formatCredits(me.credits)}` : '';
+    message = olympics ? `${olympics.summary} Os aluguéis acima já incluem o ×${olympics.multiplier}. ${balance}`.trim() : balance || undefined;
+  } else message = viewMessage(decision, owner?.id === myId ? 'você' : owner?.nickname, olympics);
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/65 backdrop-blur-[2px]" onClick={decide ? undefined : clearSelection}>
@@ -134,13 +143,13 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
   );
 }
 
-function viewMessage(decision: PropertyDecision, ownerName: string | undefined, olympicMultiplier: number | null): string {
+function viewMessage(decision: PropertyDecision, ownerName: string | undefined, olympics: OlympicRent | null): string {
   const { definition, property, currentLevel } = decision;
   if (!property?.ownerId) return `Disponível para compra por ${formatCredits(definition.price)}.`;
   const built = currentLevel === HOTEL_LEVEL ? 'hotel' : currentLevel === 0 ? 'sem construção' : `${currentLevel} casa(s)`;
-  const olympics = olympicMultiplier ? ` · sede olímpica (×${olympicMultiplier})` : '';
   const who = ownerName === 'você' ? 'Seu estado' : `De ${ownerName ?? 'outro jogador'}`;
-  return `${who} · ${built}${olympics}. Casa ${formatCredits(definition.houseCost)} · hotel ${formatCredits(definition.hotelCost)}.`;
+  const details = `${who} · ${built}. Casa ${formatCredits(definition.houseCost)} · hotel ${formatCredits(definition.hotelCost)}.`;
+  return olympics ? `${olympics.summary} ${details}` : details;
 }
 
 /** Espaço vertical do diálogo fora do painel: prazo acima e margem abaixo. */

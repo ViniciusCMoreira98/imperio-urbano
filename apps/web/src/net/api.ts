@@ -10,7 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(method: string, path: string, token: string | null, body?: unknown): Promise<T> {
+export async function request<T>(method: string, path: string, token: string | null, body?: unknown): Promise<T> {
   let response: Response;
   try {
     response = await fetch(`/api${path}`, {
@@ -29,6 +29,7 @@ async function request<T>(method: string, path: string, token: string | null, bo
     const problem = (await response.json().catch(() => null)) as { detail?: string } | null;
     throw new ApiError(problem?.detail ?? 'Algo deu errado. Tente de novo.', response.status);
   }
+  if (response.status === 204) return undefined as T;
   return (await response.json()) as T;
 }
 
