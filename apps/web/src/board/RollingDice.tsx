@@ -1,0 +1,126 @@
+// Dados 3D da partida: rolam a cada lance recebido ao vivo e param exatamente no resultado do
+// servidor. Reconexão, aba em segundo plano e movimento reduzido mostram o resultado já parado.
+// Pose e envelope vêm do manifesto ativo (layout.dice / layout.diceRoll), sem copiar números.
+import gsap from 'gsap';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import type { Group } from 'three';
+import layout from './board34/layout.json';
+import { DiceVisual } from '../dice/DiceVisual';
+import type { DiceFace } from '../dice/diceOrientation';
+import { LAND_SECONDS, LIFT_SECONDS, ROLL_SECONDS, SPIN_SECONDS, rollAnimates, rollPlan } from '../dice/rollPlan';
+import { useDiceStore } from '../store/diceStore';
+import { useGameStore } from '../store/gameStore';
+
+type Faces = [DiceFace, DiceFace];
+const TURN = Math.PI * 2;
+
+const asFaces = (dice: readonly number[] | null | undefined): Faces | null =>
+  dice && dice.length === 2 && dice.every((v) => Number.isInteger(v) && v >= 1 && v <= 6) ? [dice[0] as DiceFace, dice[1] as DiceFace] : null;
+
+const randomFace = () => (1 + Math.floor(Math.random() * 6)) as DiceFace;
+
+export function RollingDice() {
+  const lastDice = useGameStore((s) => s.snapshot?.lastDice ?? null);
+  const [faces, setFaces] = useState<Faces | null>(() => asFaces(lastDice));
+  const bodies = useRef<(Group | null)[]>([]);
+  const spins = useRef<(Group | null)[]>([]);
+  const timeline = useRef<gsap.core.Timeline | null>(null);
+  const deadline = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const handled = useRef<number>(useGameStore.getState().roll?.id ?? -1);
+
+  /** Direto no repouso oficial, sem giro extra. */
+  const snap = (official: Faces | null) => {
+    timeline.current?.kill();
+    timeline.current = null;
+    if (deadline.current !== null) clearTimeout(deadline.current);
+    deadline.current = null;
+    layout.dice.forEach((pose, i) => {
+      bodies.current[i]?.position.set(pose.position[0], pose.position[1], pose.position[2]);
+      spins.current[i]?.rotation.set(0, 0, 0);
+    });
+    setFaces(official);
+    useDiceStore.getState().setRolling(false);
+  };
+
+  const play = (official: Faces) => {
+    timeline.current?.kill();
+    const tl = gsap.timeline({ onComplete: () => snap(official) });
+    useDiceStore.getState().setRolling(true);
+    // Primeiro lance da partida: os dados ainda não estavam na mesa; entram com faces quaisquer.
+    setFaces((f) => f ?? [randomFace(), randomFace()]);
+    layout.dice.forEach((pose, i) => {
+      const body = bodies.current[i];
+      const spin = spins.current[i];
+      if (!body || !spin) return;
+      const plan = rollPlan(i, pose, layout.diceRoll);
+      body.position.set(...plan.rest);
+      spin.rotation.set(0, 0, 0);
+      const [first, ...rest] = plan.air;
+      tl.to(body.position, { x: first[0], y: first[1], z: first[2], duration: LIFT_SECONDS, ease: 'power2.out' }, 0);
+      const step = SPIN_SECONDS / rest.length;
+      rest.forEach((p, k) => tl.to(body.position, { x: p[0], y: p[1], z: p[2], duration: step, ease: 'sine.inOut' }, LIFT_SECONDS + k * step));
+      // Voltas completas: ao terminar, a rotação extra é zero e vale a face oficial do DiceVisual.
+      tl.to(spin.rotation, { x: plan.turns[0] * TURN, y: plan.turns[1] * TURN, z: plan.turns[2] * TURN, duration: SPIN_SECONDS, ease: 'power2.out' }, LIFT_SECONDS);
+      // Pouso vertical depois dos giros (exigência do envelope).
+      tl.to(body.position, { x: plan.rest[0], y: plan.rest[1], z: plan.rest[2], duration: LAND_SECONDS, ease: 'power2.in' }, LIFT_SECONDS + SPIN_SECONDS);
+    });
+    // Troca para a face oficial já girando, para não revelar o resultado antes do lance.
+    tl.call(() => setFaces(official), [], LIFT_SECONDS + SPIN_SECONDS * 0.2);
+    timeline.current = tl;
+    // Sem quadros de animação (janela encoberta, painel oculto) o gsap não avança: o relógio garante
+    // que os dados param no resultado e a barra volta a mostrá-lo.
+    deadline.current = setTimeout(() => snap(official), ROLL_SECONDS * 1000 + 250);
+  };
+
+  // Snapshot novo sem lance ao vivo (entrada, reconexão): mostra o resultado oficial parado.
+  useEffect(() => {
+    if (!timeline.current) setFaces(asFaces(lastDice));
+  }, [lastDice]);
+
+  useLayoutEffect(
+    () =>
+      useGameStore.subscribe((state, previous) => {
+        if (state.resync !== previous.resync) {
+          handled.current = state.roll?.id ?? handled.current;
+          snap(asFaces(state.snapshot?.lastDice));
+          return;
+        }
+        const roll = state.roll;
+        if (!roll || roll.id <= handled.current) return;
+        handled.current = roll.id;
+        const official = asFaces(roll.dice);
+        if (!official) return;
+        if (!rollAnimates()) snap(official);
+        else play(official);
+      }),
+    [], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  // Aba escondida no meio do lance: termina parado no resultado, sem replay atrasado ao voltar.
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden && timeline.current) snap(asFaces(useGameStore.getState().snapshot?.lastDice) ?? faces);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      timeline.current?.kill();
+      if (deadline.current !== null) clearTimeout(deadline.current);
+      useDiceStore.getState().setRolling(false);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <group visible={faces !== null}>
+      {layout.dice.map((pose, i) => (
+        <group key={i} ref={(g) => { bodies.current[i] = g; }} position={pose.position as [number, number, number]}>
+          <group rotation={[0, pose.yaw, 0]}>
+            <group ref={(g) => { spins.current[i] = g; }}>
+              <DiceVisual face={faces?.[i] ?? 1} size={pose.size} />
+            </group>
+          </group>
+        </group>
+      ))}
+    </group>
+  );
+}

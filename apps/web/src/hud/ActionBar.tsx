@@ -3,6 +3,7 @@ import { board, rules, states } from '@imperio/game-data';
 import type { Command, TurnPhase } from '@imperio/shared-types';
 import { HOTEL_LEVEL, isMyTurn, saleRefunds } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
+import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
@@ -24,6 +25,8 @@ export function ActionBar({ myId }: { myId: string }) {
   const rejection = useGameStore((s) => s.rejection);
   const connection = useGameStore((s) => s.connection);
   const deadline = useGameStore((s) => s.turnDeadline);
+  // Enquanto os dados 3D rolam, a barra não antecipa o resultado.
+  const diceRolling = useDiceStore((s) => s.rolling);
   const [selling, setSelling] = useState(false);
   const inDebt = !!snapshot && isMyTurn(snapshot, myId) && snapshot.phase === 'AWAITING_DEBT_RESOLUTION';
   // A venda só existe para pagar dívida: abre sozinha quando a dívida aparece e fecha quando é quitada.
@@ -44,7 +47,7 @@ export function ActionBar({ myId }: { myId: string }) {
 
       <div className="hud-action-tray flex w-full flex-wrap items-center justify-center gap-2 hud-panel rounded-2xl px-2 py-1.5 sm:w-auto sm:px-3 sm:py-2">
         <TurnBadge myId={myId}/>
-        <DiceFaces values={snapshot.lastDice} />
+        <DiceFaces values={diceRolling ? null : snapshot.lastDice} />
         {/* Em telas largas a vez aparece no quadro "Turno de" (TurnBadge); aqui só nas menores. */}
         <span className={`text-sm text-white/90 ${snapshot.status === 'FINISHED' ? '' : 'hidden'}`}>
           {snapshot.status === 'FINISHED' ? (

@@ -27,6 +27,19 @@ O usuário confirmou **plano pago do Meshy na geração** e informou que **não 
 Branch develop_arte_3d atualizada para afbfbed, incorporando a partida de 34 casas (16f7705) e o aviso de orientação no celular. As referências abaixo à produção ainda usar 33 casas são históricas e foram superadas por esta atualização. Casas e terreno Meshy locais preservados; o C8 foi executado posteriormente, conforme a entrega acima.
 
 
+## C9 — Dados 3D no centro do tabuleiro (06/11/2026)
+
+**Estado: decisão do usuário, aberto para o Codex.** Com o HUD do C8, a pose atual dos dados (`board34/layout.json → dice`, pixels `[690,982]` e `[810,982]`) fica **atrás da barra de ação**. O usuário decidiu: **os dados 3D rolam no centro do tabuleiro**, sobre o miolo, visíveis para todos. A barra continua mostrando o resultado em 2D (a engenharia só esconde o valor enquanto os dados rolam).
+
+Pedido, mantendo o formato do C1 (`dice[i].position/yaw/size` e `diceRoll` com `supportY`, `horizontalTravel`, `bounceHeight`, `centerBounds[i]`):
+
+1. Mover as duas poses de repouso para o centro do miolo, apoiadas na superfície do miolo (não na mesa), lado a lado, sem cobrir o logotipo de forma que incomode; você decide o ponto exato e o tamanho (legíveis em 1280×720 e 844×390).
+2. Publicar um envelope de rolagem **maior** que o atual (0,03 é pouco para parecer um lance): espaço para os dados subirem, girarem e quicarem sobre o miolo sem atravessar a moldura interna, as casas, um ao outro ou sair do quadro, em todas as proporções do C8.
+3. Confirmar que nada da cena (peões, construções, casas) fica por cima dos dados nessa área, e se a sombra deve continuar.
+4. Atualizar `reference33` não é necessário (cena fora da partida).
+
+A engenharia já lê `dice` e `diceRoll` do manifesto ativo, sem copiar números: quando o manifesto mudar, a animação passa a acontecer no centro sem nova alteração de código. Animação, tempo, sincronia com o peão, reconexão e movimento reduzido ficam com o Claude. Não alterar `DiceVisual`/`diceOrientation` por causa deste pedido. Registrar a entrega em `ORIENTACOES-CLAUDE.md` com os novos limites.
+
 ## C8 — Tabuleiro de 34 casas na partida real: tamanho, nitidez e faixas de aluguel (05/11/2026)
 
 **Estado: implementado localmente; requisitos originais preservados abaixo.** Consultar a entrega C8 no início deste arquivo. A cena v3 está ativa na `develop` (`16f7705`), com `GameScreen` passando `taxPoolLabel`. Na tela real do usuário (janela larga, cerca de 2000×740), foram apontados três problemas:

@@ -13,6 +13,7 @@ import { type AvatarMotion, AvatarFigure } from '../avatars/AvatarFigure';
 import { characterFor } from '../avatars/characterManifest';
 import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
 import { type PawnMove, enqueueMoves, hopTiles } from '../game/moves';
+import { ROLL_SECONDS, rollAnimates } from '../dice/rollPlan';
 import { useGameStore } from '../store/gameStore';
 import { forgetPawn, reportPawn } from './pawnDebug';
 import { PAWN_SCALE, type PawnSpot, pawnCenter } from './pawnLayout';
@@ -131,7 +132,8 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
     const tiles = hopTiles(move, TILE_COUNT);
     const style = move.kind === 'jump' ? LEAP : HOP;
     reportPawn(playerId, { tile: move.to, resting: false });
-    const tl = gsap.timeline({ onComplete: runNext });
+    // Movimento que vem de um lance: espera os dados 3D pararem antes do primeiro salto.
+    const tl = gsap.timeline({ onComplete: runNext, delay: move.afterRoll && rollAnimates() ? ROLL_SECONDS : 0 });
     tiles.forEach((tile, i) => {
       // Decidido na hora do salto (o snapshot chega logo depois dos eventos): a última casa do último
       // movimento pendente pousa direto no lugar oficial dentro dela; as outras, no centro.

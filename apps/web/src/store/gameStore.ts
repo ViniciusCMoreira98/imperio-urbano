@@ -9,6 +9,14 @@ export const LOG_LIMIT = 40;
 /** Movimentos guardados para os personagens consumirem (os antigos já foram animados). */
 export const MOVES_LIMIT = 30;
 
+/** Lance recebido ao vivo (não vem de snapshot): os dados 3D animam até esse resultado oficial. */
+export interface LiveRoll {
+  /** Versão do evento DICE_ROLLED: identifica o lance. */
+  id: number;
+  playerId: string;
+  dice: [number, number];
+}
+
 export interface ServerState {
   snapshot: GameSnapshot | null;
   log: DomainEvent[];
@@ -24,6 +32,8 @@ export interface ServerState {
    * abandonam as animações e vão direto para a posição do snapshot.
    */
   resync: number;
+  /** Último lance recebido em sequência; null no 1º snapshot e na ressincronia (dados já parados). */
+  roll: LiveRoll | null;
   /** Motivo de a partida não poder continuar (ex.: tabuleiro antigo); null enquanto pode. */
   unavailable: string | null;
 }
@@ -44,23 +54,31 @@ export function reduceServerMessage(state: ServerState, message: ServerMessage, 
       const next = { ...state, snapshot: message.snapshot, turnDeadline: left === null ? null : now + left };
       if (state.eventsVersion !== null && message.snapshot.version <= state.eventsVersion) return next;
       // Primeiro snapshot ou eventos perdidos (ex.: reconexão): sem animar, direto para o estado oficial.
-      return { ...next, moves: [], eventsVersion: message.snapshot.version, resync: state.resync + 1 };
+      return { ...next, moves: [], roll: null, eventsVersion: message.snapshot.version, resync: state.resync + 1 };
     }
     case 'EVENTS': {
       if (state.eventsVersion !== null && message.version <= state.eventsVersion) return state;
       const firstVersion = message.version - message.events.length + 1;
       const base = { ...state, log: [...state.log, ...message.events].slice(-LOG_LIMIT), rejection: null, eventsVersion: message.version };
       if (state.eventsVersion !== null && firstVersion !== state.eventsVersion + 1) {
-        return { ...base, moves: [], resync: state.resync + 1 };
+        return { ...base, moves: [], roll: null, resync: state.resync + 1 };
       }
       const moves = movesFromEvents(message.events, firstVersion, board.tiles.length);
-      return { ...base, moves: [...state.moves, ...moves].slice(-MOVES_LIMIT) };
+      return { ...base, moves: [...state.moves, ...moves].slice(-MOVES_LIMIT), roll: lastRoll(message.events, firstVersion) ?? state.roll };
     }
     case 'COMMAND_REJECTED':
       return { ...state, rejection: message.reason };
     case 'GAME_UNAVAILABLE':
       return { ...state, unavailable: message.reason };
   }
+}
+
+function lastRoll(events: DomainEvent[], firstVersion: number): LiveRoll | null {
+  for (let i = events.length - 1; i >= 0; i--) {
+    const event = events[i];
+    if (event.type === 'DICE_ROLLED') return { id: firstVersion + i, playerId: event.playerId, dice: [event.dice.first, event.dice.second] };
+  }
+  return null;
 }
 
 interface GameStoreState extends ServerState {
@@ -74,7 +92,7 @@ interface GameStoreState extends ServerState {
   reset: () => void;
 }
 
-const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, unavailable: null };
+const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
 
 export const useGameStore = create<GameStoreState>()((set) => ({
   ...empty,

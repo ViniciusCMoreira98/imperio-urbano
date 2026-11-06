@@ -26,7 +26,7 @@ const snapshot = (version: number, extra: Partial<GameSnapshot> = {}): GameSnaps
 });
 
 describe('mensagens do servidor', () => {
-  const empty = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, unavailable: null };
+  const empty = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
 
   it('ignora snapshot mais antigo que o atual', () => {
     const current = reduceServerMessage(empty, { kind: 'SNAPSHOT', snapshot: snapshot(5) });
