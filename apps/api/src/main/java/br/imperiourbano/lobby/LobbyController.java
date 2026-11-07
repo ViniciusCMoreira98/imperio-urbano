@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/games")
 class LobbyController {
 
-    record CreateGameRequest(GameMode mode) {
+    /** {@code stake} ausente = a menor aposta. */
+    record CreateGameRequest(GameMode mode, Integer stake) {
     }
 
     record JoinRequest(String inviteCode) {
@@ -42,7 +43,8 @@ class LobbyController {
     @ResponseStatus(HttpStatus.CREATED)
     LobbyView create(@AuthenticationPrincipal GuestPrincipal player, @RequestBody(required = false) CreateGameRequest request) {
         GameMode mode = request == null || request.mode() == null ? GameMode.CLASSIC : request.mode();
-        return lobby.create(player, mode);
+        Integer stake = request == null ? null : request.stake();
+        return lobby.create(player, mode, stake == null ? lobby.lowestStake() : stake);
     }
 
     @PostMapping("/join")

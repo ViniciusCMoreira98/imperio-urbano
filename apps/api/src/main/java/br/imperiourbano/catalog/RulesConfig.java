@@ -16,6 +16,7 @@ public record RulesConfig(
         TaxRules tax,
         TurnTimers turnTimers,
         AbandonmentRules abandonment,
+        EconomyRules economy,
         Map<GameMode, ModeConfig> modes) {
 
     public RulesConfig {
@@ -70,6 +71,20 @@ public record RulesConfig(
 
     /** Partida em andamento sem ninguém conectado por {@code seconds} é encerrada sem vencedor. */
     public record AbandonmentRules(int seconds) {
+    }
+
+    /**
+     * Moedas fora da partida: apostas permitidas ao criar a sala, saldo inicial do convidado e a recarga
+     * diária grátis de quem ficou abaixo de {@code dailyRefill.below} (vai a {@code dailyRefill.amount}).
+     */
+    public record EconomyRules(List<Integer> stakes, int guestStartingCoins, DailyRefill dailyRefill) {
+
+        public EconomyRules {
+            stakes = List.copyOf(stakes);
+        }
+    }
+
+    public record DailyRefill(int below, int amount) {
     }
 
     /** {@code roundLimit} nulo = sem limite de rodadas. */

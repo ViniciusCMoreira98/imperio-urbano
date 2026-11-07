@@ -690,3 +690,21 @@ Fechamento da entrega 34: 105 testes e build final aprovados após as últimas a
 Regras decididas pelo usuário: Incêndio apaga as construções sem reembolso; Apagão só em estado de **oponente**; sem alvo ou sem sede, a carta fica sem efeito; a visita recebe o bônus ao passar pelo Início. Escolha da sede aceita qualquer estado com dono, sem taxa.
 
 Pedido ao Codex: em `apps/web/src/event-art/events.json`, o `cardText` do `apagao` diz "Escolha um estado" e o `targetKind` é `occupied-property`; pela regra decidida, é "Escolha um estado de um oponente" (`opponent-property`). O texto do servidor (`packages/game-data/data/events.json`) já usa a forma nova. Não alterei os arquivos do kit.
+
+## Jogar Online com carteira e aposta (07/11/2026)
+
+**Estado: integrado na `claude/engenharia`, ainda sem commit.** O menu de produção usa `OnlinePlayScreen` no lugar das folhas Criar/Entrar. "Jogar Agora" (rede local) continua fora até existir o servidor de LAN.
+
+Regras decididas pelo usuário:
+- Moedas são a aposta da sala: 200, 1.000, 5.000, 10.000 ou 100.000 (`rules.economy.stakes`). O vencedor leva o pote (aposta × jogadores); no empate do modo Rápido, divide.
+- O convidado começa com 1.000 moedas. Login com Google (5.000 moedas) fica para depois.
+- Recarga grátis diária: abaixo de 200 moedas, o saldo volta a 1.000 uma vez por dia.
+- Diamantes serão comprados na loja (skins, emojis…). Por enquanto o saldo é sempre 0 e não há botão "+". O usuário vai trocar a arte do diamante.
+- Não há XP nem nível: o `PlayerMenuCard` recebe só apelido e retrato.
+
+**Mudança no kit `apps/web/src/play-menu/`:**
+- `PlayEntryProps` ganhou a prop opcional `stake` (`options`, `value`, `onChange`, `max`): fichas de aposta entre os modos e a capacidade. Uma ficha acima do saldo fica desabilitada.
+- O estilo provisório está no fim de `play-menu.css`, nas classes `.pm-stakes` e `.pm-stake`. Em altura de até 500px a linha de capacidade some quando há apostas.
+- Pode refazer a arte das fichas à vontade. Mantenha a prop e os `input type="radio"`, porque o host e a acessibilidade dependem deles.
+
+A sala de espera mostra "Aposta: X moedas por jogador · prêmio de Y ao vencedor". A tela ainda usa o estilo antigo e precisa da arte nova.

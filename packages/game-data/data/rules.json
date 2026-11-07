@@ -19,6 +19,11 @@
   "tax": { "amount": 100 },
   "turnTimers": { "rollSeconds": 5, "decisionSeconds": 7, "debtSeconds": 10, "automaticSeconds": 2 },
   "abandonment": { "seconds": 120 },
+  "economy": {
+    "stakes": [200, 1000, 5000, 10000, 100000],
+    "guestStartingCoins": 1000,
+    "dailyRefill": { "below": 200, "amount": 1000 }
+  },
   "modes": {
     "CLASSIC": { "roundLimit": null },
     "QUICK": { "roundLimit": 15 }

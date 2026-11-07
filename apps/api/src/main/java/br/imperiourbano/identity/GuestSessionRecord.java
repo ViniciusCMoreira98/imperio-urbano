@@ -24,6 +24,10 @@ class GuestSessionRecord {
     @Column(name = "token_hash", nullable = false, unique = true, columnDefinition = "bpchar(64)")
     private String tokenHash;
 
+    /** Só gravado na criação; depois o saldo muda pela WalletService (UPDATE atômico). */
+    @Column(nullable = false, updatable = false)
+    private long coins;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -33,8 +37,9 @@ class GuestSessionRecord {
     protected GuestSessionRecord() {
     }
 
-    GuestSessionRecord(String playerId, String nickname, String tokenHash) {
+    GuestSessionRecord(String playerId, String nickname, String tokenHash, long coins) {
         this.playerId = playerId;
+        this.coins = coins;
         this.nickname = nickname;
         this.tokenHash = tokenHash;
         this.createdAt = Instant.now();

@@ -1,6 +1,11 @@
 // Cliente REST do servidor (/api, repassado pelo Vite em desenvolvimento).
 import type { AvatarId, GameMode, GuestSession, LobbyView, PawnColor } from '@imperio/shared-types';
 
+export interface Wallet {
+  coins: number;
+  diamonds: number;
+}
+
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -36,7 +41,9 @@ export async function request<T>(method: string, path: string, token: string | n
 export const api = {
   createSession: (nickname: string) => request<GuestSession>('POST', '/sessions', null, { nickname }),
   me: (token: string) => request<{ playerId: string; nickname: string }>('GET', '/sessions/me', token),
-  createGame: (token: string, mode: GameMode) => request<LobbyView>('POST', '/games', token, { mode }),
+  createGame: (token: string, mode: GameMode, stake: number) => request<LobbyView>('POST', '/games', token, { mode, stake }),
+  /** Moedas e diamantes; o servidor aplica a recarga grátis do dia se o saldo estiver baixo. */
+  wallet: (token: string) => request<Wallet>('GET', '/wallet', token),
   joinGame: (token: string, inviteCode: string) => request<LobbyView>('POST', '/games/join', token, { inviteCode }),
   lobby: (token: string, gameId: string) => request<LobbyView>('GET', `/games/${gameId}`, token),
   /** Salas e partidas não encerradas do jogador. */

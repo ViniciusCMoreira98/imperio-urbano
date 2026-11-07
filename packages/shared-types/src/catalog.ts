@@ -108,5 +108,10 @@ export interface RulesConfig {
   turnTimers: { rollSeconds: number; decisionSeconds: number; debtSeconds: number; automaticSeconds: number };
   /** Partida em andamento sem ninguém conectado por esse tempo é encerrada sem vencedor. */
   abandonment: { seconds: number };
+  /**
+   * Moedas fora da partida: apostas permitidas ao criar a sala (o vencedor leva aposta × jogadores),
+   * saldo inicial do convidado e recarga diária grátis de quem ficou abaixo de dailyRefill.below.
+   */
+  economy: { stakes: number[]; guestStartingCoins: number; dailyRefill: { below: number; amount: number } };
   modes: Record<GameMode, { roundLimit: number | null }>;
 }

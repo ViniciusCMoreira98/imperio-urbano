@@ -73,6 +73,12 @@ export function validateCatalog(
     errors.push('Casas da primeira visita excedem o máximo');
   }
 
+  const economy = rules.economy;
+  if (economy.stakes.length === 0 || economy.stakes.some((v) => !(v > 0))) errors.push("Apostas devem ser positivas");
+  if (economy.guestStartingCoins < 0 || economy.dailyRefill.amount < economy.dailyRefill.below) {
+    errors.push("Saldo inicial e recarga diária inválidos");
+  }
+
   return errors;
 }
 

@@ -38,8 +38,8 @@ public class GameStore {
     }
 
     @Transactional
-    public void createGame(String gameId, String inviteCode, GameMode mode, String hostPlayerId) {
-        games.save(new GameRecord(gameId, inviteCode, mode.name(), GameStatus.LOBBY.name(), hostPlayerId));
+    public void createGame(String gameId, String inviteCode, GameMode mode, String hostPlayerId, int stake) {
+        games.save(new GameRecord(gameId, inviteCode, mode.name(), GameStatus.LOBBY.name(), hostPlayerId, stake));
     }
 
     @Transactional(readOnly = true)
