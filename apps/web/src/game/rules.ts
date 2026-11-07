@@ -57,7 +57,7 @@ export function saleRefunds(definition: StateDefinition, property: PropertyState
   };
 }
 
-/** Patrimônio como no modo Rápido: saldo + preço dos estados + investido em construções. */
+/** Patrimônio (fim do Rápido e dos modos por tempo): saldo + preço + construções + aluguel atual de cada estado. */
 export function netWorth(snapshot: GameSnapshot, playerId: string): number {
   const player = playerOf(snapshot, playerId);
   if (!player) return 0;
@@ -65,7 +65,7 @@ export function netWorth(snapshot: GameSnapshot, playerId: string): number {
     .filter((p) => p.ownerId === playerId)
     .reduce((total, p) => {
       const definition = statesById.get(p.stateId);
-      return definition ? total + definition.price + investedIn(definition, p) : total;
+      return definition ? total + definition.price + investedIn(definition, p) + currentRent(snapshot, definition) : total;
     }, player.credits);
 }
 

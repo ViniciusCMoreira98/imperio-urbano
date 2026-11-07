@@ -34,6 +34,7 @@ import br.imperiourbano.engine.GameEvent.DebtIncurred;
 import br.imperiourbano.engine.GameEvent.DebtSettled;
 import br.imperiourbano.engine.GameEvent.DiceRolled;
 import br.imperiourbano.engine.GameEvent.GameAbandoned;
+import br.imperiourbano.engine.GameEvent.TimeLimitReached;
 import br.imperiourbano.engine.GameEvent.EventCardDrawn;
 import br.imperiourbano.engine.GameEvent.EventCardWithoutEffect;
 import br.imperiourbano.engine.GameEvent.EventTargetRequested;
@@ -123,6 +124,11 @@ public final class GameEngine {
 
     /** Evento inicial da partida, com os jogadores já na ordem de jogo. */
     public GameStarted start(String gameId, GameMode mode, List<StartingPlayer> turnOrder) {
+        return start(gameId, mode, turnOrder, java.time.Instant.now());
+    }
+
+    /** {@code now}: início da partida, base do relógio dos modos por tempo. */
+    public GameStarted start(String gameId, GameMode mode, List<StartingPlayer> turnOrder, java.time.Instant now) {
         int count = turnOrder.size();
         if (count < rules.players().min() || count > rules.players().max()) {
             throw new RuleViolationException("A partida precisa de %d a %d jogadores."
@@ -133,7 +139,9 @@ public final class GameEngine {
         }
         List<String> deck = new ArrayList<>(catalog.eventCards().stream().map(EventCard::id).toList());
         Collections.shuffle(deck, shuffler);
-        return new GameStarted(gameId, mode, turnOrder, rules.startingCredits(), deck);
+        Integer minutes = rules.modes().get(mode).timeLimitMinutes();
+        Long endsAt = minutes == null ? null : now.plus(java.time.Duration.ofMinutes(minutes)).toEpochMilli();
+        return new GameStarted(gameId, mode, turnOrder, rules.startingCredits(), deck, endsAt);
     }
 
     /** Encerramento por abandono (decidido pelo servidor, não por um jogador). */
@@ -142,6 +150,20 @@ public final class GameEngine {
             throw new RuleViolationException("A partida não está em andamento.");
         }
         return List.of(new GameAbandoned());
+    }
+
+    /**
+     * Relógio esgotado (decidido pelo servidor). Antes de o jogador da vez agir (rolar ou viajar), encerra
+     * já; no meio da vez, só marca o fim e a partida encerra quando a vez passar.
+     */
+    public List<GameEvent> timeUp(GameState state) {
+        if (state.status() != GameStatus.IN_PROGRESS || state.endsAt() == null || state.timeUp()) {
+            throw new RuleViolationException("A partida não tem relógio a encerrar.");
+        }
+        if (state.phase() == TurnPhase.AWAITING_ROLL || state.phase() == TurnPhase.AWAITING_TRAVEL_DESTINATION) {
+            return List.of(new TimeLimitReached(), new GameFinished(winnersByEquity(state)));
+        }
+        return List.of(new TimeLimitReached());
     }
 
     public List<GameEvent> decide(GameState state, String playerId, GameCommand command, Dice dice) {
@@ -263,6 +285,7 @@ public final class GameEngine {
             case PlayerBankrupt e -> applyBankruptcy(state, e);
             case GameFinished e -> state.finished(e.winnerIds());
             case GameAbandoned e -> state.finished(List.of());
+            case TimeLimitReached e -> state.withTimeUp();
             case TurnEnded e -> {
                 int nextIndex = state.indexOf(e.nextPlayerId());
                 boolean sameTurn = nextIndex == state.currentPlayerIndex();
@@ -327,7 +350,7 @@ public final class GameEngine {
                 .toList();
         return new GameState(e.gameId(), e.mode(), GameStatus.IN_PROGRESS, 0, 1, players, 0,
                 TurnPhase.AWAITING_ROLL, null, 0, Map.of(), OlympicsState.NONE,
-                new EventDeck(e.eventDeck(), 0), null, List.of(), 0);
+                new EventDeck(e.eventDeck(), 0), null, List.of(), 0, e.endsAt(), false);
     }
 
     /** D11: credor recebe saldo e estados (com construções); banco como credor libera os estados. D8: sede perde o marcador. */
@@ -677,14 +700,14 @@ public final class GameEngine {
         GameState state = d.state;
         PlayerState player = state.currentPlayer();
         boolean extraRoll = state.lastDice() != null && state.lastDice().isDouble() && state.doublesInRow() > 0;
-        if (extraRoll) {
+        if (extraRoll && !state.timeUp()) {
             d.emit(new TurnEnded(player.id(), player.id(), state.round()));
             return;
         }
         passTurn(d);
     }
 
-    /** Passa a vez ou encerra a partida: resta um jogador (ambos os modos) ou o limite de rodadas do modo Rápido. */
+    /** Passa a vez ou encerra a partida: resta um jogador, o limite de rodadas do Rápido ou o fim do relógio. */
     private void passTurn(Decision d) {
         GameState state = d.state;
         List<PlayerState> active = state.activePlayers();
@@ -696,7 +719,7 @@ public final class GameEngine {
         int next = nextActivePlayer(state, current);
         int round = next <= current ? state.round() + 1 : state.round();
         Integer roundLimit = rules.modes().get(state.mode()).roundLimit();
-        if (roundLimit != null && round > roundLimit) {
+        if (state.timeUp() || (roundLimit != null && round > roundLimit)) {
             d.emit(new GameFinished(winnersByEquity(state)));
             return;
         }
@@ -713,10 +736,13 @@ public final class GameEngine {
         return active.stream().filter(p -> ranking.compare(p, best) == 0).map(PlayerState::id).toList();
     }
 
-    /** Patrimônio = saldo + preço dos estados + valor investido em construções. */
+    /**
+     * Patrimônio = saldo + para cada estado: preço + valor investido em construções + aluguel que cobra hoje
+     * (com sede olímpica; zero no apagão). O aluguel faz quem investiu valer mais que o custo (07/11/2026).
+     */
     public int equity(GameState state, String playerId) {
         int assets = state.propertiesOf(playerId).stream()
-                .mapToInt(p -> catalog.state(p.stateId()).price() + investedIn(p))
+                .mapToInt(p -> catalog.state(p.stateId()).price() + investedIn(p) + rentFor(state, p.stateId()))
                 .sum();
         return state.player(playerId).credits() + assets;
     }

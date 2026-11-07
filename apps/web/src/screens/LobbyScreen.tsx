@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { AvatarId, LobbyView, PawnColor } from '@imperio/shared-types';
 import { AvatarPreview } from '../avatars/AvatarPreview';
+import { modeDescription } from '../game/modes';
 import { AVATARS, PAWN_COLORS } from '../game/presentation';
 import { api, ApiError } from '../net/api';
 import { useAppStore } from '../store/appStore';
@@ -119,7 +120,7 @@ export function LobbyScreen() {
           </ul>
 
           <p className="mt-3 text-sm text-white/70">
-            Modo: <strong>{lobby.mode === 'CLASSIC' ? 'Clássico (sem limite de rodadas)' : 'Rápido (15 rodadas)'}</strong>
+            Modo: <strong>{modeDescription(lobby.mode)}</strong>
           </p>
           {lobby.stake > 0 && (
             <p className="mt-1 text-sm text-white/70">

@@ -21,7 +21,8 @@ class GameJsonTest {
 
     /** Um exemplo de cada tipo de evento do motor. */
     private static final List<GameEvent> ONE_OF_EACH = List.of(
-            new GameEvent.GameStarted("g1", GameMode.QUICK, List.of(new StartingPlayer("ana", "Ana")), 1500, List.of("carona")),
+            new GameEvent.GameStarted("g1", GameMode.QUICK, List.of(new StartingPlayer("ana", "Ana")), 1500, List.of("carona"), 1_700_000_000_000L),
+            new GameEvent.TimeLimitReached(),
             new GameEvent.DiceRolled("ana", new DiceRoll(3, 3)),
             new GameEvent.PlayerMoved("ana", 30, 2, 200, false),
             new GameEvent.RestTurnLost("ana"),

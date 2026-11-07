@@ -26,7 +26,11 @@ public record GameState(
         Debt pendingDebt,
         List<String> winnerIds,
         /** Fundo da Taxa: tudo que foi pago na casa Taxa até alguém parar no Saque. */
-        int taxPool) {
+        int taxPool,
+        /** Modos por tempo: fim do relógio (epoch ms); nulo nos outros modos. */
+        Long endsAt,
+        /** O tempo acabou: a vez atual termina e a partida encerra ao passar a vez. */
+        boolean timeUp) {
 
     public GameState {
         players = List.copyOf(players);
@@ -71,22 +75,22 @@ public record GameState(
 
     GameState withPlayers(List<PlayerState> value) {
         return new GameState(gameId, mode, status, version, round, value, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withTurn(int playerIndex, int roundValue, TurnPhase phaseValue, int doubles) {
         return new GameState(gameId, mode, status, version, roundValue, players, playerIndex, phaseValue, lastDice,
-                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
+                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withPhase(TurnPhase value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, value, lastDice,
-                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withDice(DiceRoll dice, int doubles) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, dice,
-                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
+                doubles, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withProperty(PropertyState property) {
@@ -103,36 +107,41 @@ public record GameState(
 
     GameState withProperties(Map<String, PropertyState> value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, value, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
+                doublesInRow, value, olympics, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withOlympics(OlympicsState value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, value, eventDeck, pendingDebt, winnerIds, taxPool);
+                doublesInRow, properties, value, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withEventDeck(EventDeck value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, value, pendingDebt, winnerIds, taxPool);
+                doublesInRow, properties, olympics, value, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withPendingDebt(Debt value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, eventDeck, value, winnerIds, taxPool);
+                doublesInRow, properties, olympics, eventDeck, value, winnerIds, taxPool, endsAt, timeUp);
     }
 
     GameState withTaxPool(int value) {
         return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, value);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, value, endsAt, timeUp);
     }
 
     GameState finished(List<String> winners) {
         return new GameState(gameId, mode, GameStatus.FINISHED, version, round, players, currentPlayerIndex, null,
-                lastDice, doublesInRow, properties, olympics, eventDeck, null, winners, taxPool);
+                lastDice, doublesInRow, properties, olympics, eventDeck, null, winners, taxPool, endsAt, timeUp);
+    }
+
+    GameState withTimeUp() {
+        return new GameState(gameId, mode, status, version, round, players, currentPlayerIndex, phase, lastDice,
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, true);
     }
 
     GameState nextVersion() {
         return new GameState(gameId, mode, status, version + 1, round, players, currentPlayerIndex, phase, lastDice,
-                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool);
+                doublesInRow, properties, olympics, eventDeck, pendingDebt, winnerIds, taxPool, endsAt, timeUp);
     }
 }

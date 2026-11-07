@@ -22,6 +22,8 @@ const snapshot = (version: number, extra: Partial<GameSnapshot> = {}): GameSnaps
   winnerIds: [],
   taxPool: 0,
   pendingEventCardId: null,
+  gameTimeLeftMs: null,
+  timeUp: false,
   turnTimeLeftMs: null,
   ...extra,
 });
@@ -101,7 +103,7 @@ describe('regras de apoio à interface', () => {
       players: [player('ana', 1000), player('bia', 1000)],
       properties: [property(2, 1, 1)],
     });
-    expect(netWorth(game, 'ana')).toBe(1000 + ap.price + 2 * ap.houseCost);
+    expect(netWorth(game, 'ana')).toBe(1000 + ap.price + 2 * ap.houseCost + ap.rent.house2);
     expect(leaders(game)).toEqual(['ana']);
     expect(leaders(snapshot(1, { players: [player('ana', 500), player('bia', 500)] }))).toEqual([]);
   });

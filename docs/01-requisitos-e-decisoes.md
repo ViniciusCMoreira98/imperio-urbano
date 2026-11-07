@@ -39,7 +39,7 @@ Derivado do preço `P`, arredondado para múltiplos de 5, e gravado explicitamen
 | Custo por casa | 0,50 P | 50 | 250 |
 | Custo do hotel | 1,00 P | 100 | 500 |
 
-Patrimônio (modo Rápido) = saldo + preço dos estados + valor investido em construções.
+Patrimônio (fim do modo Rápido e dos modos por tempo de 25 min e 1 h) = saldo + preço dos estados + valor investido em construções + aluguel que cada estado cobra no momento (com sede olímpica; zero durante o apagão). Empate: vence quem tem mais saldo; persistindo, todos os empatados vencem. O aluguel no patrimônio foi decidido pelo usuário em 07/11/2026, para que bens valham mais que o custo.
 
 ## 3. Inconsistências e lacunas encontradas
 

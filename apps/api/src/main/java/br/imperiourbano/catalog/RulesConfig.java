@@ -87,7 +87,7 @@ public record RulesConfig(
     public record DailyRefill(int below, int amount) {
     }
 
-    /** {@code roundLimit} nulo = sem limite de rodadas. */
-    public record ModeConfig(Integer roundLimit) {
+    /** {@code roundLimit} / {@code timeLimitMinutes} nulos = sem limite de rodadas / de tempo. */
+    public record ModeConfig(Integer roundLimit, Integer timeLimitMinutes) {
     }
 }

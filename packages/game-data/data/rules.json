@@ -25,7 +25,9 @@
     "dailyRefill": { "below": 200, "amount": 1000 }
   },
   "modes": {
-    "CLASSIC": { "roundLimit": null },
-    "QUICK": { "roundLimit": 15 }
+    "CLASSIC": { "roundLimit": null, "timeLimitMinutes": null },
+    "QUICK": { "roundLimit": 15, "timeLimitMinutes": null },
+    "TIMED_25": { "roundLimit": null, "timeLimitMinutes": 25 },
+    "TIMED_60": { "roundLimit": null, "timeLimitMinutes": 60 }
   }
 }

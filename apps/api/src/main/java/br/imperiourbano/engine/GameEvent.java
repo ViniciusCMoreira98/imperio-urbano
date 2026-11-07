@@ -10,8 +10,9 @@ public sealed interface GameEvent {
     }
 
     /** {@code eventDeck}: ids das cartas já embaralhadas, sorteadas uma única vez aqui. */
+    /** {@code endsAt}: fim do relógio nos modos por tempo (epoch ms); nulo nos outros e nas partidas antigas. */
     record GameStarted(String gameId, GameMode mode, List<StartingPlayer> turnOrder, int startingCredits,
-            List<String> eventDeck) implements GameEvent {
+            List<String> eventDeck, Long endsAt) implements GameEvent {
 
         public GameStarted {
             turnOrder = List.copyOf(turnOrder);
@@ -132,6 +133,10 @@ public sealed interface GameEvent {
 
     /** Bens vão para o credor; com o banco como credor, os estados voltam livres (D11). */
     record PlayerBankrupt(String playerId, String creditorId) implements GameEvent {
+    }
+
+    /** Modo por tempo: o relógio acabou. A vez atual termina; ao passar a vez, vence o maior patrimônio. */
+    record TimeLimitReached() implements GameEvent {
     }
 
     /** Todos saíram e ninguém voltou a tempo: partida encerrada sem vencedor. */

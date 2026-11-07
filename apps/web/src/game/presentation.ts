@@ -93,6 +93,8 @@ export function describeEvent(event: DomainEvent, name: (playerId: string) => st
       return `${name(event.debtorId)} quitou a dívida.`;
     case 'PLAYER_BANKRUPT':
       return `${name(event.playerId)} faliu.`;
+    case 'TIME_LIMIT_REACHED':
+      return 'Acabou o tempo! A partida termina ao fim desta vez.';
     case 'GAME_ABANDONED':
       return `Partida encerrada: todos saíram por mais de ${Math.round(rules.abandonment.seconds / 60)} minutos.`;
     case 'GAME_FINISHED':

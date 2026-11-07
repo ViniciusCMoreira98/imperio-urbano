@@ -226,7 +226,7 @@ class DebtBankruptcyAndVictoryTest {
 
         GameEngine.Result result = run("bia", new EndTurn());
 
-        assertThat(engine.equity(state, "ana")).isEqualTo(1500 + AP.price() + AP.houseCost());
+        assertThat(engine.equity(state, "ana")).isEqualTo(1500 + AP.price() + AP.houseCost() + AP.rent().forLevel(1));
         assertThat(result.events()).containsExactly(new GameFinished(List.of("ana")));
         assertThat(state.status()).isEqualTo(GameStatus.FINISHED);
     }
@@ -234,10 +234,10 @@ class DebtBankruptcyAndVictoryTest {
     @Test
     void quickGameTieIsBrokenByCredits() {
         start(GameMode.QUICK, "ana", "bia");
-        // Mesmo patrimônio: Ana tem o Amapá, Bia tem o valor dele em dinheiro.
+        // Mesmo patrimônio: Ana tem o Amapá (preço + aluguel atual), Bia tem esse valor em dinheiro.
         state = state.withProperty(PropertyState.purchased("AP", "ana"))
                 .withTurn(1, 15, TurnPhase.AWAITING_END_TURN, 0);
-        setCredits("bia", 1500 + AP.price());
+        setCredits("bia", 1500 + AP.price() + AP.rent().base());
 
         run("bia", new EndTurn());
 

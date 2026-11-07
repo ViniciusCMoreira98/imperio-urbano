@@ -41,7 +41,11 @@ record SnapshotView(
         /** Carta de evento revelada que espera o jogador da vez escolher um estado; nula sem escolha pendente. */
         String pendingEventCardId,
         /** Tempo até o servidor agir pelo jogador da vez; nulo quando não há prazo. */
-        Long turnTimeLeftMs) {
+        Long turnTimeLeftMs,
+        /** Modos por tempo: quanto falta no relógio da partida (relativo, sem depender do relógio do aparelho). */
+        Long gameTimeLeftMs,
+        /** O relógio acabou: a partida encerra ao fim da vez atual. */
+        boolean timeUp) {
 
     record Player(
             String id,
@@ -80,7 +84,9 @@ record SnapshotView(
                 state.winnerIds(),
                 state.taxPool(),
                 state.eventDeck() == null ? null : state.eventDeck().pendingCardId(),
-                turnTimeLeftMs);
+                turnTimeLeftMs,
+                state.endsAt() == null ? null : Math.max(0, state.endsAt() - System.currentTimeMillis()),
+                state.timeUp());
     }
 
     private static Player player(PlayerState p, LobbyView.Member member, Set<String> connected) {

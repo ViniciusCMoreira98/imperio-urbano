@@ -155,6 +155,22 @@ public class GameService {
         });
     }
 
+    /** Relógio do modo por tempo esgotado: marca o fim (e encerra, se a vez ainda não começou). */
+    public void timeUp(String gameId) {
+        withLock(gameId, () -> {
+            store.loadSnapshot(gameId)
+                    .filter(s -> s.status() == GameStatus.IN_PROGRESS && s.endsAt() != null && !s.timeUp())
+                    .ifPresent(state -> {
+                        List<GameEvent> events = engine.timeUp(state);
+                        GameState next = state;
+                        for (GameEvent event : events) next = engine.apply(next, event);
+                        store.append(gameId, state.version(), events, next, null, null);
+                        publisher.publishEvent(new GameUpdated(gameId, events, next));
+                    });
+            return null;
+        });
+    }
+
     /** Aplica o comando, passa a vez se não restou decisão, grava e avisa quem acompanha a partida. */
     private Applied apply(String gameId, GameState state, String playerId, GameCommand command, String commandId) {
         GameEngine.Result result = engine.execute(state, playerId, command, rigged.forGame(gameId, dice));

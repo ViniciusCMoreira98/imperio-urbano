@@ -79,7 +79,8 @@ export interface EventCard {
   effect: CardEffect;
 }
 
-export type GameMode = 'CLASSIC' | 'QUICK';
+/** Por tempo: TIMED_25 e TIMED_60 (25 min e 1 h); ao fim do relógio vence o maior patrimônio. */
+export type GameMode = 'CLASSIC' | 'QUICK' | 'TIMED_25' | 'TIMED_60';
 
 export interface RulesConfig {
   version: number;
@@ -113,5 +114,5 @@ export interface RulesConfig {
    * saldo inicial do convidado e recarga diária grátis de quem ficou abaixo de dailyRefill.below.
    */
   economy: { stakes: number[]; guestStartingCoins: number; dailyRefill: { below: number; amount: number } };
-  modes: Record<GameMode, { roundLimit: number | null }>;
+  modes: Record<GameMode, { roundLimit: number | null; timeLimitMinutes: number | null }>;
 }

@@ -88,4 +88,8 @@ export interface GameSnapshot {
   pendingEventCardId: string | null;
   /** Tempo até o servidor jogar pelo jogador da vez (rolar, recusar compra...); null sem prazo. */
   turnTimeLeftMs: number | null;
+  /** Modos por tempo: quanto falta no relógio da partida quando o snapshot saiu; null nos outros modos. */
+  gameTimeLeftMs: number | null;
+  /** O relógio acabou: a partida encerra ao fim da vez atual. */
+  timeUp: boolean;
 }

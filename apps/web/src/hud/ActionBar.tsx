@@ -11,6 +11,7 @@ import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 import { DiceFaces } from './DiceFaces';
 import { TurnBadge } from './TurnBadge';
+import { RoundSeal } from './RoundSeal';
 
 const statesById = new Map(states.map((s) => [s.id, s]));
 
@@ -43,7 +44,7 @@ export function ActionBar({ myId }: { myId: string }) {
 
   return (
     <div className="hud-action-shell relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
-      <p className="hud-round-seal rounded-full border border-amber-200/40 bg-slate-950/85 px-3 py-0.5 text-[11px] font-bold text-amber-100">Rodada {snapshot.round} · {snapshot.mode === 'QUICK' ? 'Rápido' : 'Clássico'}</p>
+      <RoundSeal snapshot={snapshot} />
       {selling && inDebt && <SellDrawer myId={myId} onClose={() => setSelling(false)} />}
 
       <div className="hud-action-tray flex w-full flex-wrap items-center justify-center gap-2 hud-panel rounded-2xl px-2 py-1.5 sm:w-auto sm:px-3 sm:py-2">

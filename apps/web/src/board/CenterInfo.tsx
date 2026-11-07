@@ -4,6 +4,8 @@
 import { useEffect, useMemo } from 'react';
 import { CanvasTexture, SRGBColorSpace } from 'three';
 import type { GameSnapshot } from '@imperio/shared-types';
+import { rules } from '@imperio/game-data';
+import { modeName } from '../game/modes';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
 import { centerSlots } from './BoardCenter';
@@ -57,7 +59,8 @@ function drawPanel(width: number, depth: number, background: [string, string], b
 
 function gameLines(snapshot: GameSnapshot): Line[] {
   const current = snapshot.players.find((p) => p.id === snapshot.currentPlayerId);
-  const mode = snapshot.mode === 'QUICK' ? `de 15 · Rápido` : '· Clássico';
+  const rounds = rules.modes[snapshot.mode].roundLimit;
+  const mode = rounds !== null ? `de ${rounds} · ${modeName(snapshot.mode)}` : `· ${modeName(snapshot.mode)}`;
   const second: Line =
     snapshot.status === 'FINISHED'
       ? { text: 'Partida encerrada', color: '#fcd34d', size: 34, weight: 800 }
