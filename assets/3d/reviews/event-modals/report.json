@@ -1,0 +1,140 @@
+{
+  "version": 5,
+  "events": 6,
+  "screens": [
+    {
+      "id": "assalto",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "caramelo-viral",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "incendio",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "visita-olimpica",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "escolha-sede",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "apagao",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "assalto",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "caramelo-viral",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "incendio",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "visita-olimpica",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "escolha-sede",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "apagao",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "assalto",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "caramelo-viral",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "incendio",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "visita-olimpica",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "escolha-sede",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "apagao",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "assalto",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "caramelo-viral",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "incendio",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "visita-olimpica",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "escolha-sede",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "apagao",
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "passiveReactComponent": true,
+  "noButtonsOrSelectors": true,
+  "noDialogOrBackdrop": true,
+  "pointerEventsPassThrough": true,
+  "hostControlsVisibility": true,
+  "noTimerInCard": true,
+  "boardVisibleAfterCard": true,
+  "illustrationsPreserved": true,
+  "allTextFits": true,
+  "sourceAssetHashesChecked": true,
+  "backendRulesNotImplemented": true,
+  "boardIsCompositionScreenshot": true,
+  "errors": [],
+  "failedRequests": []
+}

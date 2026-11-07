@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "date": "2026-11-06",
+  "provider": "Imperio Urbano original SVG pipeline",
+  "source": "scripts/assets/event-original-vectors.mjs",
+  "referenceUsage": "Only the portrait 420:600 proportions retained. No reference layout, ribbon or frame copied.",
+  "records": [
+    {
+      "file": "apps/web/src/event-art/art/card-original-v4.svg",
+      "bytes": 1872,
+      "sha256": "6cad8594a19c107eac21f81d01270ccfc8ee96b529b1a8e94ccc842b110538f6"
+    }
+  ],
+  "meshyCredits": 0
+}

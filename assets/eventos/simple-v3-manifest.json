@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "date": "2026-11-06",
+  "provider": "Imperio Urbano original SVG pipeline",
+  "source": "scripts/assets/event-simple-vectors.mjs",
+  "direction": "User requested a simple portrait notification card, no controls, no timer, board selection after notification is hidden",
+  "meshyCredits": 0,
+  "records": [
+    {
+      "file": "apps/web/src/event-art/art/card-simple-v3.svg",
+      "bytes": 981,
+      "sha256": "d75098dd04aa583684a987c1032db7ae52158c407b4cac922e90a0325cff0e9c"
+    },
+    {
+      "file": "apps/web/src/event-art/art/ribbon-simple-v3.svg",
+      "bytes": 301,
+      "sha256": "a6df79fe2c87d76d33ce92966607adc2e8dcff2677a0c47ba74d66df8d9e4794"
+    }
+  ]
+}
