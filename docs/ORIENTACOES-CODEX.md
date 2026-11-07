@@ -1,6 +1,22 @@
 # Orientações e pendências para o Codex
 
-## PEDIDO DO USUÁRIO — arte do modal de fim de partida (07/11/2026)
+## Publicação da escolha de personagem e fim de partida (07/11/2026)
+
+Commit e merge/publicação na develop solicitados pelo usuário. Inclui os dois refinamentos visuais, assets/fontes/prompts/manifestos, prévias/QA e orientações. Registros anteriores de “sem commit/merge” descrevem o estado antes desta solicitação. Preservar as atualizações recentes da develop, incluindo o login Google opcional. As regras, o ranking, os valores e as ações existentes permanecem os mesmos. Identificadores finais no histórico Git.
+
+
+## Fim de partida — arte entregue (07/11/2026)
+
+**Pedido atendido localmente na develop_arte_3d, base 015aede.** Refinados `hud/GameOverScreen.tsx` e `gameOver.css`: painel azul/dourado, ícones originais diferentes para relógio/fim/abandono, prêmio destacado, ranking com cores do dono, coroa nos vencedores e troféu/confete para quem vence ou divide a vitória. Confete é decorativo, sem interceptar cliques, e respeita prefers-reduced-motion. Falidos permanecem apagados no fim, empates preservam posições. Nome longo tem reticências/título completo e “(você)” separado.
+
+Assets novos em `hud/art/game-over/`: troféu WebP transparente (512×496, 69.572 bytes) e três SVG originais. Fonte, prompt integral, manifesto e guia em `assets/game-over/`. image_gen integrado, sem referência externa/Meshy/créditos. Inventário de procedência atualizado.
+
+**Para Claude:** mesmas props myId/token/gameId/onLeave e consulta existente de aposta. Helpers `finalRanking`, `endedByClock`, `prizeShare`, regras, prêmio e som preservados. Só apresentação. Componente de produção já consome a arte, sem mudança de host. O ranking tem rolagem própria; não voltar a aplicar overflow ao cartão inteiro, pois o rodapé deve ficar visível. Três jogadores cabem em 800×360 e 667×375; seis rolam. A implementação visual não concede moedas.
+
+Prévia isolada criada com o componente real em `/scripts/assets/game-over-preview/`, dados/consulta de aposta simulados apenas ali, sem API real. Roteiro `scripts/assets/game-over-qa.mjs`: 28 combinações (7 situações × 4 telas), 2 a 6 jogadores, vitória/falência/tempo/empate/derrota/abandono, prêmio ausente, nomes/saldos longos, callback de retorno, botão sempre visível e hashes/alpha. Capturas/relatório em `assets/3d/reviews/game-over/`; nenhum erro ou chamada API. Quatro testes de classificação existentes e build/TypeScript aprovados; sem nova partida conectada ou celular físico. Refinamento anterior de escolha do personagem preservado. Sem commit/merge nesta entrega.
+
+
+## Pedido atendido — referência funcional do fim de partida (07/11/2026)
 
 **Pedido direto do usuário:** fazer uma arte para o modal de fim de partida, que hoje é só funcional, no
 estilo do HUD. O componente é `apps/web/src/hud/GameOverScreen.tsx` e o estilo `apps/web/src/hud/gameOver.css`
@@ -29,6 +45,14 @@ estilo do HUD. O componente é `apps/web/src/hud/GameOverScreen.tsx` e o estilo 
 
 **Para testar:** a engenharia monta uma partida encerrada no ambiente local (como na conferência de
 07/11). Se precisar de uma prévia isolada, peça em ORIENTACOES-CLAUDE.md.
+
+## Escolha do personagem — acabamento visual (07/11/2026)
+
+**Pedido do usuário atendido localmente na develop_arte_3d, base e03e66c.** Refinado `play-menu/CharacterPicker.tsx` e `character-picker.css` no componente já usado pelo menu: moldura azul/dourada, ícone de jogadores, prévia 3D com cenário tropical e nome/cor escolhidos, cinco retratos em cartões com marca de seleção, seis cores com rótulos visíveis, resumo da escolha e rodapé com ações bem separadas. Reutilizados os retratos, modelos, ícone e fundo originais existentes; sem nova geração raster/Meshy/créditos.
+
+**Contrato preservado para Claude:** mesmas props/ações dos stores de personagem, preferências e API; mesmos nomes, IDs e seis cores. Mantidos role=radio, aria-checked, rótulos, diálogo nativo, cancelamento/fechamento e confirmação. Nenhum modelo, animação, seleção salva ou regra de desempate de cor foi alterado. O refinamento já está no componente de produção, sem exigir troca de rota. O CSS do selo de troca no card e do botão do menu foi preservado. O cenário decorativo só usa a arte aprovada, sem novo Canvas.
+
+Prévia com componente e modelos reais: `/scripts/assets/character-picker-preview/`. Sessão e salvamento são simulados SOMENTE nessa prévia, sem chamadas API nem uso da conta do usuário. QA `scripts/assets/character-picker-qa.mjs`: 1280×720, 1024×768, 844×390, 800×360, 667×375; todas as escolhas, resumo, confirmação, cancelamento sem salvar, reabertura com escolha salva, Esc, erro e espera conferidos. Capturas/relatório em `assets/3d/reviews/character-picker/`. Build/TypeScript aprovados; sem teste em celular físico ou nova chamada ao servidor. Sem commit/merge nesta entrega. Contagem da sala de espera e apresentação dos itens continuam refinamentos separados.
 
 
 ## Publicação das três novas cartas (07/11/2026)
