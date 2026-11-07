@@ -28,14 +28,14 @@ describe('catálogo de jogo', () => {
   });
 
   it('tem um baralho de eventos consistente', () => {
-    expect(eventCards).toHaveLength(16);
+    expect(eventCards.map((c) => c.id)).toEqual(['assalto', 'caramelo-viral', 'incendio', 'visita-olimpica', 'escolha-sede', 'apagao']);
     expect(validateEventCards(eventCards, board)).toEqual([]);
   });
 
-  it('detecta carta duplicada e destino inexistente', () => {
-    const broken = [...eventCards, { ...eventCards[0] }, { id: 'x', title: 'X', text: 'X', effect: { type: 'MOVE_TO' as const, tile: 'TO' } }];
+  it('detecta carta duplicada e parâmetros inválidos', () => {
+    const broken = [...eventCards, { ...eventCards[0] }, { id: 'x', title: 'X', text: 'X', effect: { type: 'BLACKOUT' as const, visits: 0 } }];
     const errors = validateEventCards(broken, board);
     expect(errors).toContain(`Carta duplicada: ${eventCards[0].id}`);
-    expect(errors).toContain('x: casa de destino inexistente');
+    expect(errors).toContain('x: visitas devem ser positivas');
   });
 });

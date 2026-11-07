@@ -2,12 +2,15 @@
 import { create } from 'zustand';
 import { board } from '@imperio/game-data';
 import type { Command, DomainEvent, GameSnapshot, ServerMessage } from '@imperio/shared-types';
+import { type CardShow, cardsFromEvents } from '../game/eventCards';
 import { type PawnMove, movesFromEvents } from '../game/moves';
 import type { ConnectionStatus } from '../net/gameSocket';
 
 export const LOG_LIMIT = 40;
 /** Movimentos guardados para os personagens consumirem (os antigos já foram animados). */
 export const MOVES_LIMIT = 30;
+/** Cartas guardadas para a tela mostrar (as antigas já apareceram). */
+export const CARDS_LIMIT = 10;
 
 /** Lance recebido ao vivo (não vem de snapshot): os dados 3D animam até esse resultado oficial. */
 export interface LiveRoll {
@@ -25,6 +28,8 @@ export interface ServerState {
   turnDeadline: number | null;
   /** Movimentos a animar, em ordem de versão (ids crescentes). */
   moves: PawnMove[];
+  /** Cartas de evento reveladas ao vivo, em ordem de versão (a tela mostra uma de cada vez). */
+  cards: CardShow[];
   /** Versão da partida até onde os eventos foram recebidos em sequência; null antes do 1º snapshot. */
   eventsVersion: number | null;
   /**
@@ -54,17 +59,22 @@ export function reduceServerMessage(state: ServerState, message: ServerMessage, 
       const next = { ...state, snapshot: message.snapshot, turnDeadline: left === null ? null : now + left };
       if (state.eventsVersion !== null && message.snapshot.version <= state.eventsVersion) return next;
       // Primeiro snapshot ou eventos perdidos (ex.: reconexão): sem animar, direto para o estado oficial.
-      return { ...next, moves: [], roll: null, eventsVersion: message.snapshot.version, resync: state.resync + 1 };
+      return { ...next, moves: [], cards: [], roll: null, eventsVersion: message.snapshot.version, resync: state.resync + 1 };
     }
     case 'EVENTS': {
       if (state.eventsVersion !== null && message.version <= state.eventsVersion) return state;
       const firstVersion = message.version - message.events.length + 1;
       const base = { ...state, log: [...state.log, ...message.events].slice(-LOG_LIMIT), rejection: null, eventsVersion: message.version };
       if (state.eventsVersion !== null && firstVersion !== state.eventsVersion + 1) {
-        return { ...base, moves: [], roll: null, resync: state.resync + 1 };
+        return { ...base, moves: [], cards: [], roll: null, resync: state.resync + 1 };
       }
       const moves = movesFromEvents(message.events, firstVersion, board.tiles.length);
-      return { ...base, moves: [...state.moves, ...moves].slice(-MOVES_LIMIT), roll: lastRoll(message.events, firstVersion) ?? state.roll };
+      const cards = cardsFromEvents(message.events, firstVersion);
+      return {
+        ...base,
+        moves: [...state.moves, ...moves].slice(-MOVES_LIMIT),
+        cards: cards.length ? [...state.cards, ...cards].slice(-CARDS_LIMIT) : state.cards,
+        roll: lastRoll(message.events, firstVersion) ?? state.roll };
     }
     case 'COMMAND_REJECTED':
       return { ...state, rejection: message.reason };
@@ -92,7 +102,7 @@ interface GameStoreState extends ServerState {
   reset: () => void;
 }
 
-const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
+const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], cards: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
 
 export const useGameStore = create<GameStoreState>()((set) => ({
   ...empty,

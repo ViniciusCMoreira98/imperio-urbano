@@ -16,6 +16,8 @@ export interface PawnMove {
   kind: 'walk' | 'jump';
   /** Versão do lance (DICE_ROLLED) que gerou o movimento; o peão espera esses dados pararem. Null: sem lance. */
   rollId: number | null;
+  /** Versão da carta de evento (EVENT_CARD_DRAWN) que gerou o movimento; o peão espera a carta sumir. Null: sem carta. */
+  cardId: number | null;
 }
 
 /**
@@ -25,17 +27,21 @@ export interface PawnMove {
 export function movesFromEvents(events: DomainEvent[], firstVersion: number, tileCount: number): PawnMove[] {
   const traveling = new Set<string>();
   const rolled = new Map<string, number>();
+  const carded = new Map<string, number>();
   const moves: PawnMove[] = [];
   events.forEach((event, i) => {
     if (event.type === 'TRAVEL_CHOSEN') traveling.add(event.playerId);
     if (event.type === 'DICE_ROLLED') rolled.set(event.playerId, firstVersion + i);
+    if (event.type === 'EVENT_CARD_DRAWN') carded.set(event.playerId, firstVersion + i);
     if (event.type !== 'PLAYER_MOVED') return;
     const steps = (event.to - event.from + tileCount) % tileCount;
     const flew = traveling.delete(event.playerId);
     const walk = !event.sentToRest && !flew && steps > 0 && steps <= MAX_WALK_STEPS;
     const rollId = rolled.get(event.playerId) ?? null;
     rolled.delete(event.playerId);
-    moves.push({ id: firstVersion + i, playerId: event.playerId, from: event.from, to: event.to, kind: walk ? 'walk' : 'jump', rollId });
+    const cardId = carded.get(event.playerId) ?? null;
+    carded.delete(event.playerId);
+    moves.push({ id: firstVersion + i, playerId: event.playerId, from: event.from, to: event.to, kind: walk ? 'walk' : 'jump', rollId, cardId });
   });
   return moves;
 }
@@ -69,7 +75,7 @@ export function enqueueMoves(
   }
   if (next.length > MAX_QUEUED) {
     const final = next[next.length - 1];
-    return { queue: [{ ...final, from: shownTile, kind: 'jump', rollId: null }], handled: last };
+    return { queue: [{ ...final, from: shownTile, kind: 'jump', rollId: null, cardId: null }], handled: last };
   }
   return { queue: next, handled: last };
 }

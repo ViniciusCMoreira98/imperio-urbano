@@ -14,6 +14,8 @@ export type Command =
   | { type: 'HOST_OLYMPICS'; stateId: StateId }
   | { type: 'SKIP_OLYMPICS' }
   | { type: 'CHOOSE_TRAVEL'; tileIndex: number }
+  /** Carta de evento que pede um estado (Incêndio, Apagão, Escolha da sede). */
+  | { type: 'CHOOSE_EVENT_TARGET'; stateId: StateId }
   | { type: 'SELL_BUILDING'; stateId: StateId }
   | { type: 'SELL_PROPERTY'; stateId: StateId }
   | { type: 'DECLARE_BANKRUPTCY' }
@@ -52,6 +54,18 @@ export type DomainEvent =
   | { type: 'OLYMPICS_HOST_SELECTED'; playerId: string; stateId: StateId; edition: number; multiplier: number; fee: number }
   | { type: 'OLYMPICS_SKIPPED'; playerId: string }
   | { type: 'EVENT_CARD_DRAWN'; playerId: string; cardId: string }
+  /** A carta pede um estado: o jogador escolhe no tabuleiro. */
+  | { type: 'EVENT_TARGET_REQUESTED'; playerId: string; cardId: string }
+  /** Sem alvo agora (ninguém para atingir, sem sede): a carta fica sem efeito. */
+  | { type: 'EVENT_CARD_WITHOUT_EFFECT'; playerId: string; cardId: string }
+  /** O prazo para escolher acabou: a carta fica sem efeito. */
+  | { type: 'EVENT_TARGET_SKIPPED'; playerId: string; cardId: string }
+  /** Incêndio: o estado volta ao banco sem construções. */
+  | { type: 'PROPERTY_BURNED'; playerId: string; stateId: StateId; ownerId: string }
+  /** Escolha da sede (carta): nova edição no estado de ownerId, sem taxa. */
+  | { type: 'OLYMPICS_HOST_APPOINTED'; playerId: string; stateId: StateId; ownerId: string; edition: number; multiplier: number }
+  /** Apagão: sem aluguel até o dono parar no estado `visits` vezes. */
+  | { type: 'BLACKOUT_STARTED'; playerId: string; stateId: StateId; visits: number }
   | { type: 'CREDITS_FROM_BANK'; playerId: string; amount: number }
   | { type: 'CREDITS_TO_BANK'; playerId: string; amount: number }
   /** Pagamento na Taxa, que vai para o fundo do Saque. */

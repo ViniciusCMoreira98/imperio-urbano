@@ -59,14 +59,18 @@ export interface BoardDefinition {
   tiles: TileDefinition[];
 }
 
+/** Baralho brasileiro (06/11/2026). Incêndio, Apagão e Escolha da sede pedem um estado no tabuleiro. */
 export type CardEffect =
   | { type: 'GAIN'; amount: number }
   | { type: 'PAY'; amount: number }
-  | { type: 'PAY_PER_BUILDING'; perHouse: number; perHotel: number }
-  | { type: 'COLLECT_FROM_EACH'; amount: number }
-  | { type: 'MOVE_TO'; tile: string }
-  | { type: 'MOVE_BY'; steps: number }
-  | { type: 'GO_TO_REST' };
+  /** Incêndio: estado de oponente volta ao banco, sem construções e sem reembolso. */
+  | { type: 'BURN_PROPERTY' }
+  /** Vai até a sede atual das Olimpíadas (bônus ao passar pelo Início); sem sede, sem efeito. */
+  | { type: 'VISIT_OLYMPICS_HOST' }
+  /** Escolhe, sem taxa, qualquer estado com dono para sediar a próxima edição. */
+  | { type: 'CHOOSE_OLYMPICS_HOST' }
+  /** Apagão: estado de oponente sem aluguel até o dono parar nele `visits` vezes. */
+  | { type: 'BLACKOUT'; visits: number };
 
 export interface EventCard {
   id: string;

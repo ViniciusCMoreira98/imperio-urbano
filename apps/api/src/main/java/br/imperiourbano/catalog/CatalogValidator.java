@@ -43,11 +43,9 @@ public final class CatalogValidator {
             if (!ids.add(card.id())) errors.add("Carta duplicada: " + card.id());
             CardEffect e = card.effect();
             boolean valid = switch (e.type()) {
-                case GAIN, PAY, COLLECT_FROM_EACH -> positive(e.amount());
-                case PAY_PER_BUILDING -> positive(e.perHouse()) && positive(e.perHotel());
-                case MOVE_TO -> e.tile() != null && catalog.board().tiles().stream().anyMatch(t -> e.tile().equals(t.id()));
-                case MOVE_BY -> e.steps() != null && e.steps() != 0;
-                case GO_TO_REST -> true;
+                case GAIN, PAY -> positive(e.amount());
+                case BLACKOUT -> positive(e.visits());
+                case BURN_PROPERTY, VISIT_OLYMPICS_HOST, CHOOSE_OLYMPICS_HOST -> true;
             };
             if (!valid) errors.add(card.id() + ": parâmetros inválidos para " + e.type());
         }

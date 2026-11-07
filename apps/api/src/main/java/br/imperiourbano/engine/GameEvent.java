@@ -67,6 +67,31 @@ public sealed interface GameEvent {
     record EventCardDrawn(String playerId, String cardId) implements GameEvent {
     }
 
+    /** A carta pede um estado e há candidatos: o jogador escolhe no tabuleiro. */
+    record EventTargetRequested(String playerId, String cardId) implements GameEvent {
+    }
+
+    /** A carta não tem alvo agora (ninguém para atingir, sem sede): fica sem efeito. */
+    record EventCardWithoutEffect(String playerId, String cardId) implements GameEvent {
+    }
+
+    /** O prazo para escolher o estado acabou: a carta fica sem efeito. */
+    record EventTargetSkipped(String playerId, String cardId) implements GameEvent {
+    }
+
+    /** Incêndio: o estado volta ao banco sem as construções; o dono não recebe nada. */
+    record PropertyBurned(String playerId, String stateId, String ownerId) implements GameEvent {
+    }
+
+    /** Escolha da sede (carta): nova edição das Olimpíadas no estado de {@code ownerId}, sem taxa. */
+    record OlympicsHostAppointed(String playerId, String stateId, String ownerId, int edition, int multiplier)
+            implements GameEvent {
+    }
+
+    /** Apagão: sem aluguel no estado até o dono parar nele {@code visits} vezes. */
+    record BlackoutStarted(String playerId, String stateId, int visits) implements GameEvent {
+    }
+
     record CreditsFromBank(String playerId, int amount) implements GameEvent {
     }
 

@@ -35,7 +35,13 @@ class GameJsonTest {
             new GameEvent.BuildSkipped("ana", "SP"),
             new GameEvent.OlympicsHostSelected("ana", "SP", 2, 3, 50),
             new GameEvent.OlympicsSkipped("ana"),
-            new GameEvent.EventCardDrawn("ana", "carona"),
+            new GameEvent.EventCardDrawn("ana", "incendio"),
+            new GameEvent.EventTargetRequested("ana", "incendio"),
+            new GameEvent.EventCardWithoutEffect("ana", "apagao"),
+            new GameEvent.EventTargetSkipped("ana", "incendio"),
+            new GameEvent.PropertyBurned("ana", "AC", "bia"),
+            new GameEvent.OlympicsHostAppointed("ana", "AC", "bia", 2, 3),
+            new GameEvent.BlackoutStarted("ana", "AC", 3),
             new GameEvent.CreditsFromBank("ana", 100),
             new GameEvent.CreditsToBank("ana", 75),
             new GameEvent.TaxPaid("ana", 100),
@@ -72,5 +78,18 @@ class GameJsonTest {
         state = engine.execute(state, "ana", new GameCommand.BuyProperty(2), () -> null).state();
 
         assertThat(GameJson.readState(GameJson.write(state))).isEqualTo(state);
+    }
+
+    @Test
+    void stateSavedBeforeBlackoutAndPendingCardStillLoads() {
+        GameEngine engine = new GameEngine(CATALOG, new Random(7));
+        GameState state = engine.apply(null, engine.start("g1", GameMode.CLASSIC, List.of(
+                new StartingPlayer("ana", "Ana"), new StartingPlayer("bia", "Bia"))));
+        state = engine.execute(state, "ana", new GameCommand.RollDice(), () -> new DiceRoll(4, 6)).state();
+        state = engine.execute(state, "ana", new GameCommand.BuyProperty(0), () -> null).state();
+        String old = GameJson.write(state).replace(",\"blackoutVisitsLeft\":0", "").replace(",\"pendingCardId\":null", "");
+        assertThat(old).doesNotContain("blackoutVisitsLeft").doesNotContain("pendingCardId");
+
+        assertThat(GameJson.readState(old)).isEqualTo(state);
     }
 }

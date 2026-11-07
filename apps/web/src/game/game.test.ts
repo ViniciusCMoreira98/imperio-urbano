@@ -21,12 +21,13 @@ const snapshot = (version: number, extra: Partial<GameSnapshot> = {}): GameSnaps
   pendingDebt: null,
   winnerIds: [],
   taxPool: 0,
+  pendingEventCardId: null,
   turnTimeLeftMs: null,
   ...extra,
 });
 
 describe('mensagens do servidor', () => {
-  const empty = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
+  const empty = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], cards: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
 
   it('ignora snapshot mais antigo que o atual', () => {
     const current = reduceServerMessage(empty, { kind: 'SNAPSHOT', snapshot: snapshot(5) });

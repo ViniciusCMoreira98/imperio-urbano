@@ -86,9 +86,8 @@ export function GameScreen() {
                 <ActionBar myId={session.playerId} />
               </div>
             </footer>
-            <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center">
-              <CardReveal />
-            </div>
+            {/* Carta de evento no meio da tela, sem bloquear o tabuleiro; some sozinha. */}
+            <CardReveal />
             {/* Sediar ou viajar: aviso no meio da tela e casas destacadas no tabuleiro. */}
             <BoardChoicePrompt myId={session.playerId} />
             {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}

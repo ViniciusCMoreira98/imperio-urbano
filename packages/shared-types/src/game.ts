@@ -14,6 +14,8 @@ export type TurnPhase =
   | 'AWAITING_OLYMPICS_HOST'
   | 'AWAITING_TRAVEL_DESTINATION'
   | 'AWAITING_DEBT_RESOLUTION'
+  /** Carta de evento revelada: o jogador escolhe um estado no tabuleiro. */
+  | 'AWAITING_EVENT_TARGET'
   | 'AWAITING_END_TURN';
 
 /** 0–3: primeira etapa; 4: quarta casa; 5: hotel. */
@@ -43,6 +45,8 @@ export interface PropertyState {
   ownerVisits: number;
   /** Número da visita em que o nível atual foi alcançado; limita uma etapa por visita. */
   levelReachedAtVisit: number;
+  /** > 0: apagão (carta de evento), sem aluguel até o dono parar aqui essa quantidade de vezes. */
+  blackoutVisitsLeft: number;
 }
 
 /** edition 0 e multiplier 1 = nenhuma edição realizada. */
@@ -80,6 +84,8 @@ export interface GameSnapshot {
   winnerIds: string[];
   /** Fundo da Taxa: quem parar no Saque leva tudo. */
   taxPool: number;
+  /** Carta de evento que espera o jogador da vez escolher um estado; null sem escolha pendente. */
+  pendingEventCardId: string | null;
   /** Tempo até o servidor jogar pelo jogador da vez (rolar, recusar compra...); null sem prazo. */
   turnTimeLeftMs: number | null;
 }

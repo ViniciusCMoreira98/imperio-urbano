@@ -2,6 +2,8 @@ import { PAWN_COLORS } from '../game/presentation';
 import { AvatarPortrait, LeaderCrown } from './AvatarPortrait';
 import { HOTEL_LEVEL, leaders, netWorth } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
+import { heldCredits } from '../game/eventCards';
+import { useCardStore } from '../store/cardStore';
 import { useGameStore } from '../store/gameStore';
 
 /**
@@ -12,7 +14,11 @@ import { useGameStore } from '../store/gameStore';
  */
 export function PlayersPanel({ myId }: { myId: string }) {
   const snapshot = useGameStore((s) => s.snapshot);
+  // Dinheiro de carta de evento só aparece quando a carta some da tela.
+  const cards = useGameStore((s) => s.cards);
+  const doneId = useCardStore((s) => s.doneId);
   if (!snapshot) return null;
+  const held = heldCredits(cards, doneId);
   const leading = new Set(leaders(snapshot));
   // Falidos vão para o fim; os demais pelo patrimônio, mantendo o assento como desempate.
   const ranked = [...snapshot.players].sort(
@@ -74,7 +80,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
                 {p.nickname}
                 {p.id === myId && <span className="font-normal text-white/60"> (você)</span>}
               </p>
-              <p className="hud-player-balance text-sm font-black text-amber-300 drop-shadow sm:text-lg">{formatCredits(p.credits)}</p>
+              <p className="hud-player-balance text-sm font-black text-amber-300 drop-shadow sm:text-lg">{formatCredits(p.credits - (held[p.id] ?? 0))}</p>
             </div>
             {status && (
               <span className="text-base" aria-label={details}>

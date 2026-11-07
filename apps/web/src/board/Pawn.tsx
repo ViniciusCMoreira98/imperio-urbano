@@ -14,6 +14,7 @@ import { characterFor } from '../avatars/characterManifest';
 import { ActiveMarker, BASE_HEIGHT, PlayerBase } from '../avatars/PlayerBase';
 import { type PawnMove, enqueueMoves, hopTiles } from '../game/moves';
 import { playSound } from '../audio/audio';
+import { useCardStore } from '../store/cardStore';
 import { useDiceStore } from '../store/diceStore';
 import { usePawnStore } from '../store/pawnStore';
 import { useGameStore } from '../store/gameStore';
@@ -135,6 +136,21 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
     if (!move || !root || !body || !face) {
       timeline.current = null;
       settle();
+      return;
+    }
+    // Movimento que vem de uma carta (visita às Olimpíadas): parado em Eventos até a carta sumir da tela.
+    if (move.cardId !== null && useCardStore.getState().doneId < move.cardId) {
+      reportPawn(playerId, { tile: shownTile.current, resting: true });
+      const cardId = move.cardId;
+      const off = useCardStore.subscribe((cards) => {
+        if (cards.doneId < cardId) return;
+        off();
+        stopWaiting.current = null;
+        queue.current.unshift(move);
+        runNext();
+      });
+      stopWaiting.current = off;
+      timeline.current = gsap.timeline({ paused: true }); // marca a fila como ocupada
       return;
     }
     const tiles = hopTiles(move, TILE_COUNT);

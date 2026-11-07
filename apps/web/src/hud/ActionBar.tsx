@@ -3,6 +3,7 @@ import { board, rules, states } from '@imperio/game-data';
 import type { Command } from '@imperio/shared-types';
 import { HOTEL_LEVEL, isMyTurn, saleRefunds } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
+import { useCardBusy } from '../store/cardStore';
 import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
 import { usePawnStore } from '../store/pawnStore';
@@ -24,6 +25,8 @@ export function ActionBar({ myId }: { myId: string }) {
   const diceRolling = useDiceStore((s) => s.rolling);
   // Ninguém rola enquanto a jogada anterior ainda aparece na mesa (dados ou personagens andando).
   const tableMoving = usePawnStore((s) => Object.keys(s.moving).length > 0);
+  // Carta de evento na tela também segura o prazo e a passagem da vez até sumir.
+  const cardBusy = useCardBusy();
   const [selling, setSelling] = useState(false);
   const inDebt = !!snapshot && isMyTurn(snapshot, myId) && snapshot.phase === 'AWAITING_DEBT_RESOLUTION';
   // A venda só existe para pagar dívida: abre sozinha quando a dívida aparece e fecha quando é quitada.
@@ -36,7 +39,7 @@ export function ActionBar({ myId }: { myId: string }) {
   const offline = connection !== 'open';
   const act = (command: Command) => send(command);
   const canRoll = mine && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
-  const tableBusy = diceRolling || tableMoving;
+  const tableBusy = diceRolling || tableMoving || cardBusy;
 
   return (
     <div className="hud-action-shell relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
@@ -80,7 +83,7 @@ export function ActionBar({ myId }: { myId: string }) {
           </>
         )}
         {mine && phase === 'AWAITING_END_TURN' && (
-          <Button variant="confirm" disabled={offline} onClick={() => act({ type: 'END_TURN' })}>
+          <Button variant="confirm" disabled={offline || cardBusy} onClick={() => act({ type: 'END_TURN' })}>
             Passar a vez
           </Button>
         )}

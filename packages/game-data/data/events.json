@@ -1,21 +1,11 @@
 {
-  "version": 2,
+  "version": 3,
   "cards": [
-    { "id": "festa-junina", "title": "Festa Junina", "text": "Sua quadrilha venceu o concurso da cidade. Receba 100.", "effect": { "type": "GAIN", "amount": 100 } },
-    { "id": "safra-recorde", "title": "Safra recorde", "text": "A colheita superou todas as previsões. Receba 150.", "effect": { "type": "GAIN", "amount": 150 } },
-    { "id": "restituicao", "title": "Restituição", "text": "Seu imposto foi devolvido. Receba 50.", "effect": { "type": "GAIN", "amount": 50 } },
-    { "id": "premio-turismo", "title": "Prêmio de turismo", "text": "Seu roteiro foi eleito o melhor do ano. Receba 200.", "effect": { "type": "GAIN", "amount": 200 } },
-    { "id": "multa-transito", "title": "Multa de trânsito", "text": "Estacionou em local proibido. Pague 50.", "effect": { "type": "PAY", "amount": 50 } },
-    { "id": "oficina", "title": "Oficina mecânica", "text": "O carro quebrou na estrada. Pague 100.", "effect": { "type": "PAY", "amount": 100 } },
-    { "id": "churrasco", "title": "Churrasco de domingo", "text": "Você bancou a carne para todo mundo. Pague 75.", "effect": { "type": "PAY", "amount": 75 } },
-    { "id": "reforma-urbana", "title": "Reforma urbana", "text": "A prefeitura exige reformas. Pague 25 por casa e 100 por hotel.", "effect": { "type": "PAY_PER_BUILDING", "perHouse": 25, "perHotel": 100 } },
-    { "id": "aniversario", "title": "Aniversário", "text": "Hoje é seu aniversário! Cada jogador lhe dá 50.", "effect": { "type": "COLLECT_FROM_EACH", "amount": 50 } },
-    { "id": "volta-ao-inicio", "title": "De volta ao começo", "text": "Avance até o Início.", "effect": { "type": "MOVE_TO", "tile": "START" } },
-    { "id": "voo-sao-paulo", "title": "Voo para São Paulo", "text": "Avance até São Paulo. Se passar pelo Início, receba o bônus.", "effect": { "type": "MOVE_TO", "tile": "SP" } },
-    { "id": "tocha-olimpica", "title": "Tocha olímpica", "text": "Você foi chamado para conduzir a tocha. Avance até as Olimpíadas.", "effect": { "type": "MOVE_TO", "tile": "OLYMPICS" } },
-    { "id": "convite-brasilia", "title": "Convite em Brasília", "text": "Uma reunião importante no Planalto. Avance até o Distrito Federal.", "effect": { "type": "MOVE_TO", "tile": "DF" } },
-    { "id": "estrada-interditada", "title": "Estrada interditada", "text": "A ponte caiu. Volte 3 casas.", "effect": { "type": "MOVE_BY", "steps": -3 } },
-    { "id": "carona", "title": "Carona", "text": "Um amigo passou de carro. Avance 3 casas.", "effect": { "type": "MOVE_BY", "steps": 3 } },
-    { "id": "feriado-prolongado", "title": "Feriado prolongado", "text": "Hora de relaxar. Vá direto para o Descanso.", "effect": { "type": "GO_TO_REST" } }
+    { "id": "assalto", "title": "Assalto", "text": "Você bobeou na rua à noite e foi assaltado. Pague R$ 200,00.", "effect": { "type": "PAY", "amount": 200 } },
+    { "id": "caramelo-viral", "title": "Dança viral", "text": "Seu vídeo dançando com o cachorro caramelo viralizou! Ganhe R$ 300,00.", "effect": { "type": "GAIN", "amount": 300 } },
+    { "id": "incendio", "title": "Incêndio", "text": "Uma casa foi incendiada! Escolha um estado de um oponente. Ele ficará desocupado e poderá ser comprado novamente.", "effect": { "type": "BURN_PROPERTY" } },
+    { "id": "visita-olimpica", "title": "Visita às Olimpíadas", "text": "Sua visita às Olimpíadas foi paga! Vá até o estado que está sediando os jogos.", "effect": { "type": "VISIT_OLYMPICS_HOST" } },
+    { "id": "escolha-sede", "title": "Escolha da sede", "text": "O Comitê Olímpico convidou você para escolher um estado para sediar as Olimpíadas.", "effect": { "type": "CHOOSE_OLYMPICS_HOST" } },
+    { "id": "apagao", "title": "Apagão", "text": "Roubaram os fios de uma casa! Escolha um estado de um oponente. Ninguém paga aluguel nele até que o dono pare no estado 3 vezes.", "effect": { "type": "BLACKOUT", "visits": 3 } }
   ]
 }

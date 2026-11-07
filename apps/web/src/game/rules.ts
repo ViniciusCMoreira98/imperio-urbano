@@ -82,7 +82,7 @@ export function leaders(snapshot: GameSnapshot): string[] {
 /** Aluguel atual como o servidor calcula (sem o bônus de grupo, desligado nas regras atuais). */
 export function currentRent(snapshot: GameSnapshot, definition: StateDefinition): number {
   const property = snapshot.properties.find((p) => p.stateId === definition.id);
-  if (!property) return 0;
+  if (!property || property.blackoutVisitsLeft > 0) return 0; // apagão: sem aluguel
   const r = definition.rent;
   const base = [r.base, r.house1, r.house2, r.house3, r.house4, r.hotel][property.buildingLevel];
   return snapshot.olympics.hostStateId === definition.id ? base * snapshot.olympics.multiplier : base;

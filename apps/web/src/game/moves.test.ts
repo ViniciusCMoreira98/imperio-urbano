@@ -17,7 +17,7 @@ const rolled = (playerId: string): DomainEvent => ({ type: 'DICE_ROLLED', player
 describe('movimentos a partir dos eventos', () => {
   it('lance de dados vira um salto por casa, com id igual à versão do evento', () => {
     const [move] = movesFromEvents([rolled('ana'), moved('ana', 3, 8)], 41, N);
-    expect(move).toEqual({ id: 42, playerId: 'ana', from: 3, to: 8, kind: 'walk', rollId: 41 });
+    expect(move).toEqual({ id: 42, playerId: 'ana', from: 3, to: 8, kind: 'walk', rollId: 41, cardId: null });
     expect(hopTiles(move, N)).toEqual([4, 5, 6, 7, 8]);
   });
 
@@ -45,16 +45,17 @@ describe('movimentos a partir dos eventos', () => {
   });
 
   it('carta em sequência ao lance gera dois movimentos em ordem', () => {
-    const moves = movesFromEvents([rolled('ana'), moved('ana', 0, 5), { type: 'EVENT_CARD_DRAWN', playerId: 'ana', cardId: 'carona' }, moved('ana', 5, 8)], 1, N);
-    expect(moves.map((m) => [m.id, m.from, m.to, m.kind])).toEqual([
-      [2, 0, 5, 'walk'],
-      [4, 5, 8, 'walk'],
+    const moves = movesFromEvents([rolled('ana'), moved('ana', 0, 5), { type: 'EVENT_CARD_DRAWN', playerId: 'ana', cardId: 'visita-olimpica' }, moved('ana', 5, 8)], 1, N);
+    // O segundo movimento vem da carta: o peão espera a carta (versão 3) sumir antes de sair.
+    expect(moves.map((m) => [m.id, m.from, m.to, m.kind, m.rollId, m.cardId])).toEqual([
+      [2, 0, 5, 'walk', 1, null],
+      [4, 5, 8, 'walk', null, 3],
     ]);
   });
 });
 
 describe('fila de movimentos no store', () => {
-  const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
+  const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], cards: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
   const snapshot = (version: number) => ({ version, turnTimeLeftMs: null }) as GameSnapshot;
   const start = reduceServerMessage(empty, { kind: 'SNAPSHOT', snapshot: snapshot(10) });
 
@@ -66,7 +67,7 @@ describe('fila de movimentos no store', () => {
 
   it('eventos em sequência entram na fila; o snapshot da mesma versão não ressincroniza', () => {
     const afterEvents = reduceServerMessage(start, { kind: 'EVENTS', version: 12, events: [rolled('ana'), moved('ana', 0, 5)] });
-    expect(afterEvents.moves).toEqual([{ id: 12, playerId: 'ana', from: 0, to: 5, kind: 'walk', rollId: 11 }]);
+    expect(afterEvents.moves).toEqual([{ id: 12, playerId: 'ana', from: 0, to: 5, kind: 'walk', rollId: 11, cardId: null }]);
     expect(afterEvents.roll).toEqual({ id: 11, playerId: 'ana', dice: [2, 3] });
     const afterSnapshot = reduceServerMessage(afterEvents, { kind: 'SNAPSHOT', snapshot: snapshot(12) });
     expect(afterSnapshot.resync).toBe(start.resync);
@@ -98,7 +99,7 @@ describe('fila de movimentos no store', () => {
 });
 
 describe('fila de um personagem', () => {
-  const move = (id: number, playerId: string, from: number, to: number): PawnMove => ({ id, playerId, from, to, kind: 'walk', rollId: null });
+  const move = (id: number, playerId: string, from: number, to: number): PawnMove => ({ id, playerId, from, to, kind: 'walk', rollId: null, cardId: null });
 
   it('pega só os movimentos novos do próprio jogador, em ordem', () => {
     const all = [move(5, 'ana', 0, 4), move(6, 'bia', 0, 3), move(9, 'ana', 4, 9)];
@@ -117,7 +118,7 @@ describe('fila de um personagem', () => {
   it('atrasado demais: um salto direto da casa mostrada ao último destino', () => {
     const all = [move(1, 'ana', 0, 4), move(3, 'ana', 4, 9), move(5, 'ana', 9, 15)];
     const { queue, handled } = enqueueMoves([], all, 'ana', -1, 0);
-    expect(queue).toEqual([{ id: 5, playerId: 'ana', from: 0, to: 15, kind: 'jump', rollId: null }]);
+    expect(queue).toEqual([{ id: 5, playerId: 'ana', from: 0, to: 15, kind: 'jump', rollId: null, cardId: null }]);
     expect(handled).toBe(5);
   });
 });

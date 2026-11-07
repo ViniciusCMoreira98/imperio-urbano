@@ -20,7 +20,7 @@ export function GameBoard({taxPoolLabel=null}:{taxPoolLabel?:string|null}){
  const selectedId=selectedTile===null?null:board.tiles[selectedTile]?.id??null;
  const rents=useMemo<BoardRentLabel[]>(()=>{
   if(!active34||!snapshot)return[];
-  return states.filter(state=>board.tiles.some(t=>t.stateId===state.id)&&snapshot.properties.some(p=>p.stateId===state.id&&p.ownerId!==null)).map(state=>({stateId:state.id,rentLabel:formatCredits(currentRent(snapshot,state))}));
+  return states.filter(state=>board.tiles.some(t=>t.stateId===state.id)&&snapshot.properties.some(p=>p.stateId===state.id&&p.ownerId!==null)).map(state=>({stateId:state.id,rentLabel:snapshot.properties.some(p=>p.stateId===state.id&&p.blackoutVisitsLeft>0)?'Apagão':formatCredits(currentRent(snapshot,state))}));
  },[snapshot]);
  const onSelect=(id:string)=>{const index=tileIndexOf(id);if(index!==null)selectTile(index);};
  const pieces=<><Buildings/><RentTags labels={rents}/><ChoiceHighlights/><Pawns/><RollingDice/></>;

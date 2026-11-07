@@ -18,9 +18,6 @@ export function eventSounds(events: readonly DomainEvent[], myId: string): Sound
   let myTurn = false;
   for (const event of events) {
     switch (event.type) {
-      case 'EVENT_CARD_DRAWN':
-        add('cartaEvento');
-        break;
       case 'PROPERTY_PURCHASED':
         add('comprar');
         break;
@@ -29,6 +26,7 @@ export function eventSounds(events: readonly DomainEvent[], myId: string): Sound
         add('construir');
         break;
       case 'OLYMPICS_HOST_SELECTED':
+      case 'OLYMPICS_HOST_APPOINTED':
         add('olimpiadas');
         break;
       case 'RENT_PAID':

@@ -28,6 +28,7 @@ const game = (extra: Partial<GameSnapshot>): GameSnapshot => ({
   pendingDebt: null,
   winnerIds: [],
   taxPool: 0,
+  pendingEventCardId: null,
   turnTimeLeftMs: null,
   ...extra,
 });

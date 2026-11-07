@@ -89,19 +89,14 @@ export function validateEventCards(cards: EventCard[], board: BoardDefinition): 
     switch (e.type) {
       case 'GAIN':
       case 'PAY':
-      case 'COLLECT_FROM_EACH':
         if (!(e.amount > 0)) errors.push(`${card.id}: valor deve ser positivo`);
         break;
-      case 'PAY_PER_BUILDING':
-        if (!(e.perHouse > 0 && e.perHotel > 0)) errors.push(`${card.id}: valores por construção devem ser positivos`);
+      case 'BLACKOUT':
+        if (!(Number.isInteger(e.visits) && e.visits > 0)) errors.push(`${card.id}: visitas devem ser positivas`);
         break;
-      case 'MOVE_TO':
-        if (!board.tiles.some((t) => t.id === e.tile)) errors.push(`${card.id}: casa de destino inexistente`);
-        break;
-      case 'MOVE_BY':
-        if (!Number.isInteger(e.steps) || e.steps === 0) errors.push(`${card.id}: deslocamento inválido`);
-        break;
-      case 'GO_TO_REST':
+      case 'BURN_PROPERTY':
+      case 'VISIT_OLYMPICS_HOST':
+      case 'CHOOSE_OLYMPICS_HOST':
         break;
       default:
         errors.push(`${(card as EventCard).id}: tipo de efeito desconhecido`);

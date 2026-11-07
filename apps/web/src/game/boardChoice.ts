@@ -1,12 +1,13 @@
-// Escolha feita tocando no tabuleiro: sede das Olimpíadas (um estado do jogador) ou destino da viagem
-// pelo Aeroporto (qualquer estado). Diz quais casas valem e o comando de cada uma; o
-// servidor confere tudo de novo.
+// Escolha feita tocando no tabuleiro: sede das Olimpíadas (um estado do jogador), destino da viagem
+// pelo Aeroporto (qualquer estado) ou o estado pedido por uma carta de evento (Incêndio, Apagão,
+// Escolha da sede). Diz quais casas valem e o comando de cada uma; o servidor confere tudo de novo.
 import { board, rules } from '@imperio/game-data';
 import type { Command, GameSnapshot } from '@imperio/shared-types';
 import { formatCredits, tileInfo } from '../property-card/tileInfo';
+import { cardEffect, eventTargets, tilesOf } from './eventCards';
 import { isMyTurn, playerOf } from './rules';
 
-export type BoardChoiceKind = 'olympics' | 'travel';
+export type BoardChoiceKind = 'olympics' | 'travel' | 'event';
 
 export interface BoardChoice {
   kind: BoardChoiceKind;
@@ -15,7 +16,17 @@ export interface BoardChoice {
   title: string;
   instruction: string;
   fee: number;
+  /** Escolha de carta de evento: qual efeito (muda o rótulo do botão). */
+  effect?: 'BURN_PROPERTY' | 'BLACKOUT' | 'CHOOSE_OLYMPICS_HOST';
+  /** Aviso quando a casa tocada não vale. */
+  invalidHint: string;
 }
+
+const EVENT_CHOICES = {
+  BURN_PROPERTY: { title: '🔥 Incêndio', instruction: 'Toque no estado de um oponente: ele volta a ficar livre, sem as construções.', invalidHint: 'Escolha um estado de um oponente, destacado.' },
+  BLACKOUT: { title: '💡 Apagão', instruction: 'Toque no estado de um oponente: ninguém paga aluguel nele até o dono parar lá 3 vezes.', invalidHint: 'Escolha um estado de um oponente, destacado.' },
+  CHOOSE_OLYMPICS_HOST: { title: '🏅 Escolha da sede', instruction: 'Toque no estado que vai sediar as Olimpíadas (sem taxa).', invalidHint: 'Só um estado com dono pode sediar. Escolha um destacado.' },
+} as const;
 
 export const tileName = (index: number): string => {
   const info = tileInfo(index);
@@ -35,6 +46,7 @@ export function boardChoice(snapshot: GameSnapshot, myId: string): BoardChoice |
       title: '🔥 Sediar as Olimpíadas',
       instruction: `Toque num dos seus estados destacados para sediar os jogos (${formatCredits(fee)}).`,
       fee,
+      invalidHint: 'Esse estado não é seu. Escolha um estado destacado.',
     };
   }
   if (snapshot.phase === 'AWAITING_TRAVEL_DESTINATION') {
@@ -46,7 +58,14 @@ export function boardChoice(snapshot: GameSnapshot, myId: string): BoardChoice |
       title: '✈️ Viagem pelo Aeroporto',
       instruction: `Toque no estado para onde quer viajar (${formatCredits(fee)}) ou role os dados para seguir normalmente.`,
       fee,
+      invalidHint: 'Só dá para viajar para um estado. Escolha um destacado.',
     };
+  }
+  if (snapshot.phase === 'AWAITING_EVENT_TARGET') {
+    const effect = cardEffect(snapshot.pendingEventCardId);
+    if (!effect || !(effect.type in EVENT_CHOICES)) return null;
+    const type = effect.type as keyof typeof EVENT_CHOICES;
+    return { kind: 'event', effect: type, tiles: tilesOf(eventTargets(snapshot, myId, effect)), fee: 0, ...EVENT_CHOICES[type] };
   }
   return null;
 }
@@ -58,6 +77,11 @@ export function choiceAction(choice: BoardChoice, tileIndex: number | null): { l
   if (choice.kind === 'olympics') {
     const stateId = board.tiles[tileIndex].stateId!;
     return { label: `Sediar em ${name} — ${formatCredits(choice.fee)}`, command: { type: 'HOST_OLYMPICS', stateId } };
+  }
+  if (choice.kind === 'event') {
+    const stateId = board.tiles[tileIndex].stateId!;
+    const label = choice.effect === 'BURN_PROPERTY' ? `Incendiar ${name}` : choice.effect === 'BLACKOUT' ? `Apagão em ${name}` : `Sede em ${name}`;
+    return { label, command: { type: 'CHOOSE_EVENT_TARGET', stateId } };
   }
   return { label: `Viajar para ${name} — ${formatCredits(choice.fee)}`, command: { type: 'CHOOSE_TRAVEL', tileIndex } };
 }

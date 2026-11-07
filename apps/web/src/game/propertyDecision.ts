@@ -23,8 +23,8 @@ const STAGE_LABELS = ['Terreno', 'Casa 1', 'Casa 2', 'Casa 3', 'Casa 4', 'Hotel'
 const LEVELS = [0, 1, 2, 3, 4, 5] as const;
 const NO_FUNDS = 'Saldo insuficiente';
 
-/** Fases em que o clique numa casa serve a outra ação (sediar, viajar, vender): fica no painel lateral. */
-const BOARD_CHOICE_PHASES = new Set(['AWAITING_OLYMPICS_HOST', 'AWAITING_TRAVEL_DESTINATION', 'AWAITING_DEBT_RESOLUTION']);
+/** Fases em que o clique numa casa serve a outra ação (sediar, viajar, vender, carta de evento): fica no painel lateral. */
+const BOARD_CHOICE_PHASES = new Set(['AWAITING_OLYMPICS_HOST', 'AWAITING_TRAVEL_DESTINATION', 'AWAITING_DEBT_RESOLUTION', 'AWAITING_EVENT_TARGET']);
 
 /** Decisão pendente do jogador: comprar ou construir onde ele parou. */
 export function pendingDecision(snapshot: GameSnapshot, myId: string): PropertyDecision | null {

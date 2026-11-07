@@ -55,6 +55,8 @@ public record TurnTimeouts(Duration roll, Duration decision, Duration debt, Dura
             case AWAITING_PURCHASE -> new GameCommand.DeclinePurchase();
             case AWAITING_BUILD -> new GameCommand.SkipBuild();
             case AWAITING_OLYMPICS_HOST -> new GameCommand.SkipOlympics();
+            // Sem escolha a tempo, a carta fica sem efeito.
+            case AWAITING_EVENT_TARGET -> new GameCommand.SkipEventTarget();
             case AWAITING_DEBT_RESOLUTION -> debtStep(state);
             case AWAITING_END_TURN -> null;
         };

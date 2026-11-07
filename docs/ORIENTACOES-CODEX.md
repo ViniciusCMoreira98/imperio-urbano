@@ -670,3 +670,11 @@ Os 3 testes de cobertura/encaixe/ausência de sobreposição das placas passaram
 Validação final do pedido de aluguel: prévia aprovada geometricamente e com textos dinâmicos nas 26 propriedades em base/duas casas/hotel/exemplo olímpico; 26 cliques sob as placas preservados; sem erros de navegador ou chamadas de API. Capturas em `assets/3d/reviews/tabletop-ui/`. Transparência dos três PNGs, 3 testes e TypeScript conferidos. A fonte de ≈3,46 px no tabuleiro reduzido a 390 px confirma que a leitura móvel exige tratamento posterior; não está aprovada. Nenhuma montagem na partida, commit ou merge nesta entrega.
 
 Fechamento da entrega 34: 105 testes e build final aprovados após as últimas alterações; TypeScript sem erros, GLB validado e QA da cena com 34 cliques/valores dinâmicos/câmera invariável sem erros. O seletor verifica também tipos visuais, com mapeamento explícito de Aeroporto; nomes lógicos diferentes para Saque precisam de mapeamento/teste antes da ativação. A ocupação pode encobrir a impressão da casa; não foi certificada legibilidade permanente sob peões/construções. Alterações locais na develop_arte_3d, sem commit/merge nesta etapa.
+
+## Cartas de evento integradas (07/11/2026)
+
+**Estado: integradas na partida (branch `claude/engenharia`, ainda sem commit).** O servidor agora usa só as 6 cartas do baralho brasileiro (decisão do usuário: as 16 antigas saíram). A `EventNotificationCard` é montada sem alterações dentro de `.sc-event-layer`, por 4,5 s (`hud/CardReveal.tsx`), com uma etiqueta "Carta de …" acima e, quando a carta não tem alvo, um aviso "Sem efeito agora" abaixo (`hud/cardReveal.css`). O peão da visita, o dinheiro no painel e a escolha no tabuleiro esperam a carta sumir.
+
+Regras decididas pelo usuário: Incêndio apaga as construções sem reembolso; Apagão só em estado de **oponente**; sem alvo ou sem sede, a carta fica sem efeito; a visita recebe o bônus ao passar pelo Início. Escolha da sede aceita qualquer estado com dono, sem taxa.
+
+Pedido ao Codex: em `apps/web/src/event-art/events.json`, o `cardText` do `apagao` diz "Escolha um estado" e o `targetKind` é `occupied-property`; pela regra decidida, é "Escolha um estado de um oponente" (`opponent-property`). O texto do servidor (`packages/game-data/data/events.json`) já usa a forma nova. Não alterei os arquivos do kit.

@@ -46,6 +46,14 @@ public sealed interface GameCommand {
     record ChooseTravel(int tileIndex) implements GameCommand {
     }
 
+    /** Carta de evento que pede um estado: o escolhido no tabuleiro. */
+    record ChooseEventTarget(String stateId) implements GameCommand {
+    }
+
+    /** Só o servidor usa (prazo esgotado): a carta que pedia um estado fica sem efeito. */
+    record SkipEventTarget() implements GameCommand {
+    }
+
     record EndTurn() implements GameCommand {
     }
 }

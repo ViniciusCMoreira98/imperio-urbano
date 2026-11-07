@@ -2,6 +2,7 @@
 // quando a mesa mostra o resultado: depois do lance dos dados e dos saltos dos personagens. Ressincronia
 // (reconexão, eventos perdidos) descarta a fila: o estado aparece pronto, sem replay sonoro.
 import { useEffect } from 'react';
+import { cardPending, useCardStore } from '../store/cardStore';
 import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
 import { usePawnStore } from '../store/pawnStore';
@@ -20,7 +21,11 @@ export function GameSounds({ myId }: { myId: string }) {
     const flush = () => {
       timer = null;
       if (pending.length === 0) return;
-      const busy = useDiceStore.getState().rolling || Object.keys(usePawnStore.getState().moving).length > 0;
+      // Carta de evento na tela: o som do dinheiro vem quando ela some (o da carta toca ao aparecer).
+      const busy =
+        useDiceStore.getState().rolling ||
+        Object.keys(usePawnStore.getState().moving).length > 0 ||
+        cardPending(useCardStore.getState().doneId, useGameStore.getState().cards);
       if (busy) return; // As stores de movimento chamam de novo quando a mesa parar.
       pending.forEach((id, i) => playSound(id, { delay: i * SPACING_SECONDS }));
       pending = [];
@@ -45,10 +50,14 @@ export function GameSounds({ myId }: { myId: string }) {
       if (p.rolling && !s.rolling) schedule();
     });
     const offPawns = usePawnStore.subscribe(schedule);
+    const offCards = useCardStore.subscribe((s, p) => {
+      if (s.doneId !== p.doneId) schedule();
+    });
     return () => {
       offGame();
       offDice();
       offPawns();
+      offCards();
       if (timer !== null) clearTimeout(timer);
     };
   }, [myId]);

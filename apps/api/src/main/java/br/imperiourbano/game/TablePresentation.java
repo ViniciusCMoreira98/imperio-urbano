@@ -10,7 +10,8 @@ import java.util.Set;
  * Quanto tempo a mesa leva para mostrar um lote de eventos (dados rolando e personagens andando), para
  * o prazo do turno só começar a contar quando a jogada termina na tela. Espelha os tempos do cliente:
  * {@code dice/rollPlan.ts} (ROLL_SECONDS) e {@code board/Pawn.tsx} (HOP e LEAP) com a regra de
- * {@code game/moves.ts} (até 12 casas anda casa a casa; viagem, Descanso e mais que isso são um salto).
+ * {@code game/moves.ts} (até 12 casas anda casa a casa; viagem, Descanso e mais que isso são um salto),
+ * mais o tempo da carta de evento na tela.
  */
 final class TablePresentation {
 
@@ -19,6 +20,8 @@ final class TablePresentation {
     static final Duration HOP = Duration.ofMillis(440);
     /** O salto direto ao destino: virar (0,18) + voo (0,7) + pouso (0,12). */
     static final Duration LEAP = Duration.ofMillis(1_000);
+    /** Carta de evento na tela ({@code hud/CardReveal.tsx}, CARD_MS): o que vem depois dela espera ela sumir. */
+    static final Duration CARD = Duration.ofMillis(4_500);
     /** Folga para a rede e para o jogador ver onde parou. */
     static final Duration MARGIN = Duration.ofMillis(500);
     /** Teto: um lote muito longo não segura a partida indefinidamente. */
@@ -34,6 +37,7 @@ final class TablePresentation {
         for (GameEvent event : events) {
             switch (event) {
                 case GameEvent.DiceRolled rolled -> total = total.plus(ROLL);
+                case GameEvent.EventCardDrawn card -> total = total.plus(CARD);
                 case GameEvent.TravelChosen travel -> traveling.add(travel.playerId());
                 case GameEvent.PlayerMoved moved -> {
                     int steps = Math.floorMod(moved.to() - moved.from(), tileCount);

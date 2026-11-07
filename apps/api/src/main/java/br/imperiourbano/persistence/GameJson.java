@@ -25,6 +25,8 @@ public final class GameJson {
                     .toArray(NamedType[]::new))
             // Métodos como DiceRoll.isDouble() viram propriedades derivadas no JSON; ignoradas na leitura.
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            // Snapshots salvos antes de um campo novo (ex.: apagão nas propriedades) leem o campo ausente como 0.
+            .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
             .build();
 
     private GameJson() {

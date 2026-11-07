@@ -73,6 +73,16 @@ export function describeEvent(event: DomainEvent, name: (playerId: string) => st
       const card = cardsById.get(event.cardId);
       return card ? `${name(event.playerId)} tirou "${card.title}": ${card.text}` : null;
     }
+    case 'EVENT_CARD_WITHOUT_EFFECT':
+      return `A carta de ${name(event.playerId)} ficou sem efeito.`;
+    case 'EVENT_TARGET_SKIPPED':
+      return `${name(event.playerId)} não escolheu a tempo; a carta ficou sem efeito.`;
+    case 'PROPERTY_BURNED':
+      return `Incêndio! ${stateNames.get(event.stateId)} de ${name(event.ownerId)} voltou a ficar livre.`;
+    case 'BLACKOUT_STARTED':
+      return `Apagão em ${stateNames.get(event.stateId)}: sem aluguel até o dono parar lá ${event.visits} vezes.`;
+    case 'OLYMPICS_HOST_APPOINTED':
+      return `${name(event.playerId)} escolheu ${stateNames.get(event.stateId)} como sede da ${event.edition}ª Olimpíada (×${event.multiplier})!`;
     case 'CREDITS_TRANSFERRED':
       return `${name(event.fromId)} pagou ${formatCredits(event.amount)} a ${name(event.toId)}.`;
     case 'BUILDING_SOLD':

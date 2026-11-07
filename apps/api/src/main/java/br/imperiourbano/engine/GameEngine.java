@@ -1,6 +1,7 @@
 package br.imperiourbano.engine;
 
 import br.imperiourbano.catalog.CardEffect;
+import br.imperiourbano.catalog.CardEffectType;
 import br.imperiourbano.catalog.Catalog;
 import br.imperiourbano.catalog.EventCard;
 import br.imperiourbano.catalog.GameMode;
@@ -11,6 +12,7 @@ import br.imperiourbano.catalog.TileType;
 import br.imperiourbano.engine.GameCommand.Build;
 import br.imperiourbano.engine.GameCommand.BuildHotel;
 import br.imperiourbano.engine.GameCommand.BuyProperty;
+import br.imperiourbano.engine.GameCommand.ChooseEventTarget;
 import br.imperiourbano.engine.GameCommand.ChooseTravel;
 import br.imperiourbano.engine.GameCommand.DeclareBankruptcy;
 import br.imperiourbano.engine.GameCommand.DeclinePurchase;
@@ -20,7 +22,9 @@ import br.imperiourbano.engine.GameCommand.RollDice;
 import br.imperiourbano.engine.GameCommand.SellBuilding;
 import br.imperiourbano.engine.GameCommand.SellProperty;
 import br.imperiourbano.engine.GameCommand.SkipBuild;
+import br.imperiourbano.engine.GameCommand.SkipEventTarget;
 import br.imperiourbano.engine.GameCommand.SkipOlympics;
+import br.imperiourbano.engine.GameEvent.BlackoutStarted;
 import br.imperiourbano.engine.GameEvent.BuildSkipped;
 import br.imperiourbano.engine.GameEvent.BuildingSold;
 import br.imperiourbano.engine.GameEvent.CreditsFromBank;
@@ -31,15 +35,20 @@ import br.imperiourbano.engine.GameEvent.DebtSettled;
 import br.imperiourbano.engine.GameEvent.DiceRolled;
 import br.imperiourbano.engine.GameEvent.GameAbandoned;
 import br.imperiourbano.engine.GameEvent.EventCardDrawn;
+import br.imperiourbano.engine.GameEvent.EventCardWithoutEffect;
+import br.imperiourbano.engine.GameEvent.EventTargetRequested;
+import br.imperiourbano.engine.GameEvent.EventTargetSkipped;
 import br.imperiourbano.engine.GameEvent.GameFinished;
 import br.imperiourbano.engine.GameEvent.GameStarted;
 import br.imperiourbano.engine.GameEvent.HotelBuilt;
 import br.imperiourbano.engine.GameEvent.HouseBuilt;
+import br.imperiourbano.engine.GameEvent.OlympicsHostAppointed;
 import br.imperiourbano.engine.GameEvent.OlympicsHostSelected;
 import br.imperiourbano.engine.GameEvent.OlympicsSkipped;
 import br.imperiourbano.engine.GameEvent.PlayerBankrupt;
 import br.imperiourbano.engine.GameEvent.PlayerMoved;
 import br.imperiourbano.engine.GameEvent.PropertyPurchased;
+import br.imperiourbano.engine.GameEvent.PropertyBurned;
 import br.imperiourbano.engine.GameEvent.PropertySold;
 import br.imperiourbano.engine.GameEvent.RestLeft;
 import br.imperiourbano.engine.GameEvent.RestTurnLost;
@@ -208,6 +217,19 @@ public final class GameEngine {
                     .withPendingDebt(new Debt(e.debtorId(), e.creditorId(), e.amount(), e.toTaxPool()))
                     .withPhase(TurnPhase.AWAITING_DEBT_RESOLUTION);
             case EventCardDrawn e -> state.withEventDeck(state.eventDeck().advanced());
+            case EventTargetRequested e -> state
+                    .withEventDeck(state.eventDeck().withPending(e.cardId()))
+                    .withPhase(TurnPhase.AWAITING_EVENT_TARGET);
+            case EventCardWithoutEffect e -> state;
+            case EventTargetSkipped e -> cardResolved(state);
+            case PropertyBurned e -> {
+                GameState burned = cardResolved(state).withoutProperty(e.stateId());
+                yield state.olympics().isHost(e.stateId()) ? burned.withOlympics(burned.olympics().withoutHost()) : burned;
+            }
+            case OlympicsHostAppointed e -> cardResolved(state)
+                    .withOlympics(new OlympicsState(e.edition(), e.stateId(), e.ownerId(), e.multiplier()));
+            case BlackoutStarted e -> cardResolved(state)
+                    .withProperty(state.property(e.stateId()).orElseThrow().withBlackout(e.visits()));
             case CreditsFromBank e -> state.updatePlayer(e.playerId(), p -> p.withCredits(p.credits() + e.amount()));
             case CreditsToBank e -> state.updatePlayer(e.playerId(), p -> p.withCredits(p.credits() - e.amount()));
             case TaxPaid e -> state
@@ -251,9 +273,14 @@ public final class GameEngine {
         return next.nextVersion();
     }
 
-    /** Aluguel atual do estado (zero se pertence ao banco), já com bônus de grupo e multiplicador olímpico. */
+    /** Carta que pedia um estado foi resolvida (ou perdeu o prazo): o turno segue para o fim. */
+    private static GameState cardResolved(GameState state) {
+        return state.withEventDeck(state.eventDeck().withPending(null)).withPhase(TurnPhase.AWAITING_END_TURN);
+    }
+
+    /** Aluguel atual do estado (zero se pertence ao banco ou está no apagão), já com bônus de grupo e multiplicador olímpico. */
     public int rentFor(GameState state, String stateId) {
-        return state.property(stateId).map(property -> {
+        return state.property(stateId).filter(property -> !property.blackout()).map(property -> {
             StateDefinition definition = catalog.state(stateId);
             int rent = definition.rent().forLevel(property.buildingLevel());
             if (property.buildingLevel() == 0 && ownsWholeGroup(state, property.ownerId(), definition.colorGroup())) {
@@ -284,6 +311,8 @@ public final class GameEngine {
             case SkipBuild ignored -> skipBuild(decision);
             case HostOlympics c -> hostOlympics(decision, c.stateId());
             case SkipOlympics ignored -> skipOlympics(decision);
+            case ChooseEventTarget c -> chooseEventTarget(decision, c.stateId());
+            case SkipEventTarget ignored -> skipEventTarget(decision);
             case SellBuilding c -> sellBuilding(decision, c.stateId());
             case SellProperty c -> sellProperty(decision, c.stateId());
             case DeclareBankruptcy ignored -> declareBankruptcy(decision);
@@ -409,41 +438,91 @@ public final class GameEngine {
         }
     }
 
+    /**
+     * Revela a carta do topo e aplica o efeito. Cartas que pedem um estado abrem a escolha no tabuleiro;
+     * sem candidato (ou, na visita, sem sede), a carta fica sem efeito (decisão do usuário, 06/11/2026).
+     */
     private void drawEventCard(Decision d, int depth) {
         PlayerState player = d.state.currentPlayer();
-        EventCard card = catalog.eventCard(d.state.eventDeck().peek());
+        EventCard card = topCard(d.state.eventDeck());
         d.emit(new EventCardDrawn(player.id(), card.id()));
         CardEffect effect = card.effect();
         switch (effect.type()) {
             case GAIN -> d.emit(new CreditsFromBank(player.id(), effect.amount()));
             case PAY -> payBank(d, player, effect.amount());
-            case PAY_PER_BUILDING -> {
-                int total = d.state.propertiesOf(player.id()).stream()
-                        .mapToInt(p -> p.buildingLevel() == PropertyState.HOTEL_LEVEL
-                                ? effect.perHotel()
-                                : p.buildingLevel() * effect.perHouse())
-                        .sum();
-                if (total > 0) payBank(d, player, total);
-            }
-            case COLLECT_FROM_EACH -> d.state.activePlayers().stream()
-                    .filter(other -> !other.id().equals(player.id()))
-                    .forEach(other -> {
-                        // Quem não tem o valor inteiro paga o que tem; não gera dívida fora do próprio turno.
-                        int paid = Math.min(effect.amount(), Math.max(0, d.state.player(other.id()).credits()));
-                        if (paid > 0) d.emit(new CreditsTransferred(other.id(), player.id(), paid));
-                    });
-            case MOVE_TO -> moveForward(d, Math.floorMod(catalog.tileIndex(effect.tile()) - player.position(), tileCount), depth + 1);
-            case MOVE_BY -> {
-                if (effect.steps() > 0) {
-                    moveForward(d, effect.steps(), depth + 1);
+            case VISIT_OLYMPICS_HOST -> {
+                String host = d.state.olympics().hostStateId();
+                if (host == null) {
+                    d.emit(new EventCardWithoutEffect(player.id(), card.id()));
                 } else {
-                    int to = Math.floorMod(player.position() + effect.steps(), tileCount);
-                    d.emit(new PlayerMoved(player.id(), player.position(), to, 0, false));
-                    resolveLanding(d, depth + 1);
+                    // Passar pelo Início no caminho paga o bônus, como qualquer avanço.
+                    moveForward(d, Math.floorMod(catalog.tileIndex(host) - player.position(), tileCount), depth + 1);
                 }
             }
-            case GO_TO_REST -> d.emit(new PlayerMoved(player.id(), player.position(), restTile, 0, true));
+            case BURN_PROPERTY, CHOOSE_OLYMPICS_HOST, BLACKOUT -> {
+                if (eventTargets(d.state, player.id(), effect).isEmpty()) {
+                    d.emit(new EventCardWithoutEffect(player.id(), card.id()));
+                } else {
+                    d.emit(new EventTargetRequested(player.id(), card.id()));
+                }
+            }
         }
+    }
+
+    /**
+     * Carta do topo. Partidas criadas com um baralho que não existe mais (ids antigos) tiram a carta
+     * atual na mesma posição, para não travarem ao cair em Eventos.
+     */
+    private EventCard topCard(EventDeck deck) {
+        String id = deck.peek();
+        return catalog.eventCards().stream()
+                .filter(c -> c.id().equals(id))
+                .findFirst()
+                .orElseGet(() -> catalog.eventCards().get(deck.next() % catalog.eventCards().size()));
+    }
+
+    /**
+     * Estados que a carta permite escolher: Incêndio e Apagão, os de adversários; Escolha da sede,
+     * qualquer estado com dono (inclusive os do próprio jogador).
+     */
+    public List<String> eventTargets(GameState state, String playerId, CardEffect effect) {
+        return state.properties().values().stream()
+                .filter(p -> switch (effect.type()) {
+                    case BURN_PROPERTY, BLACKOUT -> !p.ownerId().equals(playerId);
+                    case CHOOSE_OLYMPICS_HOST -> true;
+                    default -> false;
+                })
+                .map(PropertyState::stateId)
+                .sorted()
+                .toList();
+    }
+
+    private void chooseEventTarget(Decision d, String stateId) {
+        requirePhase(d.state, TurnPhase.AWAITING_EVENT_TARGET, "Não há carta esperando a escolha de um estado.");
+        PlayerState player = d.state.currentPlayer();
+        EventCard card = catalog.eventCard(d.state.eventDeck().pendingCardId());
+        CardEffect effect = card.effect();
+        if (stateId == null || !eventTargets(d.state, player.id(), effect).contains(stateId)) {
+            throw new RuleViolationException(effect.type() == CardEffectType.CHOOSE_OLYMPICS_HOST
+                    ? "Escolha um estado que tenha dono para sediar as Olimpíadas."
+                    : "Escolha um estado de um oponente.");
+        }
+        PropertyState property = d.state.property(stateId).orElseThrow();
+        switch (effect.type()) {
+            case BURN_PROPERTY -> d.emit(new PropertyBurned(player.id(), stateId, property.ownerId()));
+            case BLACKOUT -> d.emit(new BlackoutStarted(player.id(), stateId, effect.visits()));
+            case CHOOSE_OLYMPICS_HOST -> {
+                int edition = d.state.olympics().edition() + 1;
+                d.emit(new OlympicsHostAppointed(player.id(), stateId, property.ownerId(), edition,
+                        rules.olympics().multiplierForEdition(edition)));
+            }
+            default -> throw new IllegalStateException("Carta sem escolha de estado: " + card.id());
+        }
+    }
+
+    private void skipEventTarget(Decision d) {
+        requirePhase(d.state, TurnPhase.AWAITING_EVENT_TARGET, "Não há carta esperando a escolha de um estado.");
+        d.emit(new EventTargetSkipped(d.state.currentPlayer().id(), d.state.eventDeck().pendingCardId()));
     }
 
     private void payBank(Decision d, PlayerState player, int amount) {
@@ -465,6 +544,7 @@ public final class GameEngine {
 
     private void chargeRent(Decision d, PlayerState payer, PropertyState property) {
         int rent = rentFor(d.state, property.stateId());
+        if (rent == 0) return; // apagão
         if (payer.credits() >= rent) {
             d.emit(new RentPaid(payer.id(), property.ownerId(), property.stateId(), rent));
         } else {

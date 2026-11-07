@@ -38,6 +38,8 @@ record SnapshotView(
         List<String> winnerIds,
         /** Fundo da Taxa: quem parar no Saque leva tudo. */
         int taxPool,
+        /** Carta de evento revelada que espera o jogador da vez escolher um estado; nula sem escolha pendente. */
+        String pendingEventCardId,
         /** Tempo até o servidor agir pelo jogador da vez; nulo quando não há prazo. */
         Long turnTimeLeftMs) {
 
@@ -77,6 +79,7 @@ record SnapshotView(
                 state.pendingDebt(),
                 state.winnerIds(),
                 state.taxPool(),
+                state.eventDeck() == null ? null : state.eventDeck().pendingCardId(),
                 turnTimeLeftMs);
     }
 

@@ -25,13 +25,17 @@ describe('sons dos eventos da partida', () => {
 
   it('avisa a vez só de quem vai jogar, por último, sem passar de três sons', () => {
     const events: DomainEvent[] = [
-      { type: 'EVENT_CARD_DRAWN', playerId: 'bia', cardId: 'x' } as DomainEvent,
+      { type: 'SAQUE_COLLECTED', playerId: 'bia', amount: 100 } as DomainEvent,
       { type: 'CREDITS_TO_BANK', playerId: 'bia', amount: 10 } as DomainEvent,
       { type: 'HOUSE_BUILT', playerId: 'bia', stateId: 'PA', count: 1, cost: 50 } as DomainEvent,
       { type: 'TURN_ENDED', playerId: 'bia', nextPlayerId: 'ana', round: 2 } as DomainEvent,
     ];
-    expect(eventSounds(events, 'ana')).toEqual(['cartaEvento', 'pagarAluguel', 'suaVez']);
-    expect(eventSounds(events, 'caio')).toEqual(['cartaEvento', 'pagarAluguel', 'construir']);
+    expect(eventSounds(events, 'ana')).toEqual(['receberDinheiro', 'pagarAluguel', 'suaVez']);
+    expect(eventSounds(events, 'caio')).toEqual(['receberDinheiro', 'pagarAluguel', 'construir']);
+  });
+
+  it('a carta de evento toca o próprio som ao aparecer na tela, não no lote', () => {
+    expect(eventSounds([{ type: 'EVENT_CARD_DRAWN', playerId: 'bia', cardId: 'assalto' }], 'ana')).toEqual([]);
   });
 
   it('parar na casa das Olimpíadas toca o anúncio', () => {
