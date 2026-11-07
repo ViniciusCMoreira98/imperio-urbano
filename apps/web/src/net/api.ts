@@ -9,6 +9,15 @@ export interface Wallet {
 }
 
 /** Personagem preferido, escolhido no menu; `pawnColor` nulo = sem preferência de cor. */
+/** LINKED: o convidado ganhou a conta Google; SIGNED_IN: conta de um jogador existente; CREATED: jogador novo. */
+export interface GoogleSignIn {
+  playerId: string;
+  nickname: string;
+  token: string;
+  outcome: 'LINKED' | 'SIGNED_IN' | 'CREATED';
+  email: string | null;
+}
+
 export interface Character {
   avatarId: AvatarId;
   pawnColor: PawnColor | null;
@@ -48,7 +57,12 @@ export async function request<T>(method: string, path: string, token: string | n
 
 export const api = {
   createSession: (nickname: string) => request<GuestSession>('POST', '/sessions', null, { nickname }),
-  me: (token: string) => request<{ playerId: string; nickname: string }>('GET', '/sessions/me', token),
+  me: (token: string) => request<{ playerId: string; nickname: string; google: boolean; email: string | null }>('GET', '/sessions/me', token),
+  authConfig: () => request<{ googleClientId: string | null }>('GET', '/sessions/config', null),
+  /** Com o token do convidado, a conta Google nova fica ligada a ele; sem token, cria ou recupera a conta. */
+  googleSignIn: (credential: string, token: string | null) =>
+    request<GoogleSignIn>('POST', '/sessions/google', token, { credential }),
+  logout: (token: string) => request<void>('POST', '/sessions/logout', token),
   createGame: (token: string, mode: GameMode, stake: number, publicRoom: boolean) =>
     request<LobbyView>('POST', '/games', token, { mode, stake, publicRoom }),
   /** Salas públicas em que o jogador pode entrar agora. */

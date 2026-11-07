@@ -44,3 +44,7 @@
 }
 @media (max-width:700px),(max-height:420px){.menu-mascot{display:none}}
 @media (prefers-reduced-motion:no-preference){.menu-scene :is(.menu-play,.menu-games,.menu-settings){transition:filter .15s,transform .1s}}
+/* Entrar com Google na tela do apelido (engenharia, 07/11/2026). */
+.menu-google{margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.menu-google-or{font-size:12px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em}
+.menu-google small{font-size:11px;color:rgba(255,255,255,.75);max-width:280px}

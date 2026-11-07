@@ -6,3 +6,6 @@
 .st-footer .st-button:only-child{flex:none;width:34%;margin-left:auto}
 /* O reset do Tailwind zera a margem do <dialog>: volta a centralizar na tela. */
 .st-dialog{margin:auto}
+/* Login com Google na aba Conta (engenharia, 07/11/2026). */
+.st-google-row{align-items:center;gap:1cqw}
+.st-google-notice{margin:0;font-size:1.6cqw;color:#bbf7d0}

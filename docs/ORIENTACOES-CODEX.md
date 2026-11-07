@@ -1063,3 +1063,17 @@ O aviso simples "Fulano venceu" virou `hud/GameOverScreen.tsx`, com estilo em `h
 
 Funciona em 800×360 e rola quando há muitos jogadores. É uma versão funcional no estilo do HUD: pode
 redesenhar à vontade (troféu ilustrado, confete etc.), mantendo os dados.
+
+## Login com Google (07/11/2026)
+
+Detalhes em `docs/14-login-google.md`. Elementos novos de tela, funcionais, para a arte refinar:
+
+- Tela do apelido: bloco `.menu-google` abaixo de "Continuar como…", com "ou", o botão oficial do Google
+  e uma frase curta (`menuScreen.css`).
+- Configurações › Conta: "Tipo de conta" mostra "Google · e-mail"; linha `.st-google-row` com o botão
+  "Fazer login com o Google" para o convidado; aviso `.st-google-notice`; o botão de baixo vira
+  "Sair da conta" para quem entrou com Google (`settingsHost.css`).
+
+O botão do Google é desenhado pelo próprio Google (`renderButton`), dentro de um iframe. As regras de marca
+dele não permitem redesenhar o botão; dá para mudar só o que está em volta (tema, posição e largura,
+em `auth/GoogleButton.tsx`).
