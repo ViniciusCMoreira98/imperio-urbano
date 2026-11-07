@@ -83,5 +83,50 @@
     "recoveryVisits": 3,
     "cardTitle": "Apagão",
     "cardText": "Roubaram os fios! Escolha um estado de um oponente. Sem aluguel até o dono parar nele 3 vezes."
+  },
+  {
+    "id": "descanso-merecido",
+    "title": "Descanso merecido!",
+    "category": "Pausa",
+    "tone": "gain",
+    "image": "descanso-merecido-v2.webp",
+    "description": "Descansar né ? Que o cara não é de ferro ! Vá para o Descanso.",
+    "rule": "Vá até a casa Descanso.",
+    "badge": "Vá para o Descanso",
+    "requiresTarget": false,
+    "destinationTileId": "REST",
+    "cardTitle": "Descanso merecido",
+    "cardText": "Descansar né ? Que o cara não é de ferro ! Vá para o Descanso."
+  },
+  {
+    "id": "passe-livre",
+    "title": "Passe Livre!",
+    "category": "Item guardável",
+    "tone": "gain",
+    "image": "passe-livre-v1.webp",
+    "description": "Guarde esta carta. Use para sair do Descanso sem perder a vez.",
+    "rule": "Item de uso único. Guarde e use quando estiver no Descanso.",
+    "badge": "Item · uso único",
+    "requiresTarget": false,
+    "itemId": "rest-exit-pass",
+    "itemQuantity": 1,
+    "cardTitle": "Passe Livre",
+    "cardText": "Guarde esta carta. Use para sair do Descanso sem perder a vez."
+  },
+  {
+    "id": "aluguel-zero",
+    "title": "Aluguel Zero!",
+    "category": "Item guardável",
+    "tone": "gain",
+    "image": "aluguel-zero-v1.webp",
+    "description": "Na próxima propriedade adversária, você não paga aluguel. Uso automático e único.",
+    "rule": "Usada automaticamente na primeira chegada a uma propriedade adversária após receber a carta. Consome uma unidade e isenta o aluguel dessa chegada.",
+    "badge": "Item · uso único",
+    "requiresTarget": false,
+    "itemId": "rent-waiver-pass",
+    "itemQuantity": 1,
+    "activation": "automatic-on-opponent-property",
+    "cardTitle": "Aluguel Zero",
+    "cardText": "Na próxima propriedade adversária, você não paga aluguel. Uso automático e único."
   }
 ]

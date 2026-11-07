@@ -5,9 +5,12 @@ import incendio from './art/incendio-v1.webp';
 import visita from './art/visita-olimpica-v1.webp';
 import sede from './art/escolha-sede-v1.webp';
 import apagao from './art/apagao-v1.webp';
+import descanso from './art/descanso-merecido-v2.webp';
+import passe from './art/passe-livre-v1.webp';
+import aluguel from './art/aluguel-zero-v1.webp';
 import './event-brasil-v5.css';
 
-const images: Record<string, string> = { assalto, 'caramelo-viral': viral, incendio, 'visita-olimpica': visita, 'escolha-sede': sede, apagao };
+const images: Record<string, string> = { assalto, 'caramelo-viral': viral, incendio, 'visita-olimpica': visita, 'escolha-sede': sede, apagao, 'descanso-merecido': descanso, 'passe-livre': passe, 'aluguel-zero': aluguel };
 
 /** Arte passiva: sem diálogo, foco, callbacks, comandos, seleção ou temporizador. */
 export function EventNotificationCard({ eventId }: { eventId: string }) {

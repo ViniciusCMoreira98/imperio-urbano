@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "prompt": "assets/eventos/descanso-merecido-v2-prompt.json",
+  "source": "assets/eventos/source/descanso-merecido-v2.png",
+  "file": "apps/web/src/event-art/art/descanso-merecido-v2.webp",
+  "width": 1280,
+  "height": 853,
+  "sourceBytes": 2823303,
+  "bytes": 285136,
+  "sha256": "ac1f3b093df121bebd5175c4ad079bbcefc0cc997d27ef22e88a31638dc7f105",
+  "sourceSha256": "fb454925319e072590f35fc9bed245d831732469638557c24956bb64f1f83222",
+  "encoder": "Chromium 141.0.7390.37 WebP quality 92",
+  "meshyCredits": 0
+}
