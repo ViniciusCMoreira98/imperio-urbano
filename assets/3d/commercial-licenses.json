@@ -691,6 +691,105 @@
       "bytes": 1270004
     },
     {
+      "file": "apps/web/src/event-art/art/apagao-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/manifest.json",
+      "commercialUse": true,
+      "sha256": "4133b1f8642cf3e3d7ca60cfdd170006e84d303a22bd286dbf5ffc9e5aeac007",
+      "bytes": 373632
+    },
+    {
+      "file": "apps/web/src/event-art/art/assalto-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/manifest.json",
+      "commercialUse": true,
+      "sha256": "43dfdb7d18f489c510064ac191e9f29d6a9e71e570037ff68d4c606117bfbfec",
+      "bytes": 344488
+    },
+    {
+      "file": "apps/web/src/event-art/art/caramelo-viral-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "Generated stylization of user-supplied photograph; input rights review not recorded",
+      "evidence": "assets/eventos/manifest.json",
+      "commercialUse": null,
+      "sha256": "114af308bfd1267cfeff69695a2c6fd7242743d52b58cb5de2063f81333b8af7",
+      "bytes": 343298
+    },
+    {
+      "file": "apps/web/src/event-art/art/card-brasil-v5.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/eventos/brasil-v5-manifest.json",
+      "commercialUse": true,
+      "sha256": "2a46aacae8d56236a9074b207559f9715195c0969bfe32b3925ec644bf3aac80",
+      "bytes": 2603
+    },
+    {
+      "file": "apps/web/src/event-art/art/card-original-v4.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/eventos/original-v4-manifest.json",
+      "commercialUse": true,
+      "sha256": "6cad8594a19c107eac21f81d01270ccfc8ee96b529b1a8e94ccc842b110538f6",
+      "bytes": 1872
+    },
+    {
+      "file": "apps/web/src/event-art/art/card-simple-v3.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/eventos/simple-v3-manifest.json",
+      "commercialUse": true,
+      "sha256": "d75098dd04aa583684a987c1032db7ae52158c407b4cac922e90a0325cff0e9c",
+      "bytes": 981
+    },
+    {
+      "file": "apps/web/src/event-art/art/escolha-sede-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/manifest.json",
+      "commercialUse": true,
+      "sha256": "23d7703ca8a6e41cace8552b4d2ffbfef76531f4b9c92593025142b99490b4d2",
+      "bytes": 331738
+    },
+    {
+      "file": "apps/web/src/event-art/art/event-frame-v2.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/frame-v2-manifest.json",
+      "commercialUse": true,
+      "sha256": "f97ef2a9757189525d5da1d2283139470361289be28357295f26f59e71757ea8",
+      "bytes": 219504
+    },
+    {
+      "file": "apps/web/src/event-art/art/incendio-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/manifest.json",
+      "commercialUse": true,
+      "sha256": "e58a53d17eb2aa106202959ff56066f028ae9c6d35eea77ad9ea32af72aba692",
+      "bytes": 374130
+    },
+    {
+      "file": "apps/web/src/event-art/art/ribbon-simple-v3.svg",
+      "provider": "Imperio Urbano original SVG pipeline",
+      "license": "Project original vector artwork",
+      "evidence": "assets/eventos/simple-v3-manifest.json",
+      "commercialUse": true,
+      "sha256": "a6df79fe2c87d76d33ce92966607adc2e8dcff2677a0c47ba74d66df8d9e4794",
+      "bytes": 301
+    },
+    {
+      "file": "apps/web/src/event-art/art/visita-olimpica-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/manifest.json",
+      "commercialUse": true,
+      "sha256": "1d19370b06935c11b4875c1324bb35c453c7f51ebbde4598911e09248a5e15f2",
+      "bytes": 381428
+    },
+    {
       "file": "apps/web/src/hud/art/avatars-c8/avatar-1.webp",
       "provider": "OpenAI image_gen built-in",
       "license": "OpenAI generated output, project ownership under service terms",

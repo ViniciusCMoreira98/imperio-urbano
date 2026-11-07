@@ -1,5 +1,55 @@
 # Orientações e pendências para o Codex
 
+## Publicação das cartas de evento (06/11/2026)
+
+Commit e merge/publicação na develop solicitados pelo usuário. A versão vigente é a **v5 brasileira**, com seis cartas passivas: sem botões, seletores ou temporizador; Claude controla o tempo e a escolha no tabuleiro. Inclui componente visual, assets, fontes, histórico de refinamentos, guias e prévias. Os registros anteriores de “sem commit/merge” são históricos. As regras dos seis eventos e a integração à partida continuam pendentes da engenharia. Identificadores finais da publicação no histórico Git.
+
+## Cartas de evento — identidade brasileira v5 (06/11/2026)
+
+**Versão visual vigente.** O usuário pediu cartas mais brasileiras. A moldura autoral recebeu verde-mata/azul-petróleo, filetes dourados, símbolo nas cores do Brasil, folhas tropicais, azulejaria azul/branca e ondas inspiradas nos passeios de pedra brasileiros. Proporção 420:600, cenas, texto e simplicidade preservados; sem copiar a arte da referência e sem restaurar faixa/fundo creme.
+
+**Para Claude:** `EventNotificationCard.tsx` importa `event-brasil-v5.css`. Asset ativo: `art/card-brasil-v5.svg`, 2.603 bytes; gerador `scripts/assets/event-brazil-vectors.mjs`, manifesto `assets/eventos/brasil-v5-manifest.json`, guia vigente em `assets/eventos/README.md`. Inventário atualizado. Exemplo v4 arquivado em `assets/3d/reviews/event-modals/v4/`.
+
+**Fluxo inalterado:** carta passiva, sem botões, seletores, fechar, timer, backdrop ou bloqueio de foco/cliques. Claude controla o tempo e retira a carta; a escolha de estado acontece no tabuleiro visível. A duração da carta não resolve o evento no servidor. Seis cartas em quatro telas (24 combinações) aprovadas novamente, sem erros de página, sem controles e sem texto cortado. Capturas atuais em `assets/3d/reviews/event-modals/`. Sem nova geração de imagem ou créditos Meshy, commit ou merge nesta etapa vetorial.
+
+## Histórico visual substituído pela v5 — identidade autoral v4 (06/11/2026)
+
+**Decisão vigente:** o usuário esclareceu que a referência é apenas de proporções, não de arte. A carta v3 (fundo claro/faixa azul) foi substituída por identidade própria: azul profundo/petróleo, filetes em cobre, cantos chanfrados, motivos geométricos discretos, título integrado e maior área para a ilustração. Proporção **420:600** mantida. Não copiar o fundo creme, a borda amarela ou a faixa da referência.
+
+**Para Claude:** usar `EventNotificationCard.tsx` com `event-original-v4.css` e `art/card-original-v4.svg`. O componente já importa a versão nova. Frame original do projeto com 1.872 bytes, reproduzível por `scripts/assets/event-original-vectors.mjs`; hashes em `assets/eventos/original-v4-manifest.json`, inventário atualizado. Guia vigente em `assets/eventos/README.md`; galeria v3 arquivada em `assets/3d/reviews/event-modals/v3/`.
+
+**O fluxo da v3 continua vigente:** carta passiva, sem botões, seletores, fechar, temporizador, diálogo, backdrop ou captura de cliques. Claude define a duração e remove a carta; alvos são escolhidos diretamente no tabuleiro visível. Remover a carta não resolve o evento pendente. As seis cenas e os textos foram preservados, incluindo a dança baseada na referência do usuário.
+
+**Validação:** seis cartas em quatro telas, 24 combinações aprovadas, incluindo 844×390 e 667×375; textos e títulos cabem, nenhum controle ou erro de página, camada transparente não captura cliques e tabuleiro fica visível após retirar a carta. Capturas atuais em `assets/3d/reviews/event-modals/`. Sem nova geração de imagem, uso/créditos Meshy, commit ou merge nesta revisão vetorial.
+
+## Histórico visual substituído pela v4; fluxo preservado — v3: carta simples e passiva (06/11/2026)
+
+**Esta decisão do usuário substitui as versões v1/v2 e suas instruções de botões, seletores e espera dentro do modal.** O usuário forneceu uma nova referência: carta vertical simples, borda dourada, fundo claro, faixa azul, imagem e um único texto. **Sem botão de confirmar, fechar, receber, pagar ou selecionar; sem dropdown; sem fundo escuro, diálogo modal ou bloqueio de foco.**
+
+**Entrega:** `apps/web/src/event-art/EventNotificationCard.tsx` é um componente visual controlado apenas por `eventId`, sem callbacks, temporizador, estado de decisão ou comandos. A camada opcional `sc-event-layer` não captura cliques (pointer-events none), não escurece o tabuleiro e não assume o foco. O host monta/desmonta a carta. CSS ativo: `event-simple-v3.css`. Os textos curtos ficam em `cardTitle/cardText` de `events.json`; os rótulos de ação foram removidos. As seis ilustrações, incluindo a dança corrigida pelo usuário, foram preservadas. Moldura/faixa são SVG originais, reproduzíveis por `scripts/assets/event-simple-vectors.mjs`; manifesto em `assets/eventos/simple-v3-manifest.json`.
+
+**Para Claude — fluxo autorizado:** você define o tempo de exibição. Primeiro mostrar a carta; depois retirá-la da tela. Se o evento exigir alvo (incêndio, Comitê ou apagão), o jogador seleciona um estado **diretamente no tabuleiro visível**. A carta não recebe a escolha. O evento pendente e sua validação continuam no servidor; sumir a carta não confirma, cancela ou resolve o efeito. Manter o tabuleiro disponível para essa seleção, sem backdrop/modal invisível sobre ele. Não reaplicar a antiga orientação de manter a carta aberta até escolher, nem restaurar os botões/seletores da v2. Nenhuma duração foi definida pelo Codex nesta entrega. As pendências de regra do guia continuam com a engenharia.
+
+**Validação:** componente React real na prévia, seis cartas em quatro telas (24 combinações), incluindo 844×390 e 667×375. Zero botões/campos/diálogos; texto dentro da carta, passagem de clique pela camada e tabuleiro visível após desmontagem conferidos, sem erros de página ou requisições. A imagem do tabuleiro na prévia é apenas captura de composição, sem seleção real de partida. Capturas e galeria atuais em `assets/3d/reviews/event-modals/`; v1/v2 preservadas nos subdiretórios históricos. TypeScript e build conferidos. Sem Meshy/créditos Meshy, commit ou merge nesta revisão.
+
+## Histórico substituído pela v3 — refinamento de arte v2 (06/11/2026)
+
+**Estado: entregue localmente na develop_arte_3d.** O usuário pediu cartas mais bonitas. Foi criada uma moldura ilustrada exclusiva pelo image_gen: metal dourado com relevos, cantos decorados, louros e textura azul profunda. Novo asset `apps/web/src/event-art/art/event-frame-v2.webp` (1600×900, 219.504 bytes). A composição dá mais espaço às ilustrações, fortalece títulos/categorias, organiza regras e seleção em um bloco próprio e coloca efeito/contador e ação no rodapé, dentro da moldura. As seis cenas, incluindo a dança da referência do usuário, foram preservadas.
+
+**Para Claude:** a prévia passa a usar `event-modals-v2.css`, que importa a base `event-modals.css`. O markup usa `ev-summary` no rodapé para efeito e contador de recuperação. Não restaurar a composição v1 ao integrar. Guia e prompt em `assets/eventos/README.md` e `frame-v2-prompt.json`; fonte e hashes em `frame-v2-manifest.json`; reprodução por `scripts/assets/prepare-event-frame.mjs`. O inventário comercial inclui a nova moldura. Permanecem os contratos e pendências de regras do guia dos seis eventos; esta revisão não altera efeitos ou implementa backend.
+
+**Validação:** as seis cartas foram novamente aprovadas em quatro telas, **24 combinações**, incluindo 844×390 e 667×375. QA verifica arte, texto, rodapé, estados de escolha, valores, contador e hashes, sem erros de página ou requisições. Capturas atualizadas em `assets/3d/reviews/event-modals/`; galeria e exemplo anteriores em `v1/`. Total das seis ilustrações e da nova moldura: 2.368.218 bytes. Sem Meshy, créditos Meshy, nova partida conectada, commit ou merge nesta etapa.
+
+## Seis eventos — ilustrações e modais (06/11/2026)
+
+**Estado: kit de arte entregue localmente na develop_arte_3d; regras e sorteio ainda precisam de integração.** Pedido do usuário: seis eventos independentes ao parar na casa de evento, cada um com descrição e imagem. Foram criadas seis ilustrações pelo image_gen integrado: assalto (−R$ 200,00), dança viral (+R$ 300,00), incêndio em estado de oponente, visita à sede olímpica, escolha da sede pelo Comitê e apagão por roubo de fios. A dança foi refeita conforme a fotografia enviada depois pelo usuário: rapaz de bermuda verde, cachorro pequeno e muro com a bandeira; não usar a primeira proposta genérica.
+
+Arquivos de uso em `apps/web/src/event-art/art/`: seis WebP 1280×853, total **2.148.714 bytes** (fontes PNG: 17.488.203 bytes). Textos, regras e IDs visuais propostos em `events.json`; composição em `event-modals.css`, reutilizando molduras/botões próprios do kit de configurações. Fontes, prompts exatos, manifesto e guia em `assets/eventos/`. Sem Meshy/créditos Meshy. O inventário distingue a dança baseada em foto do usuário (direitos de entrada não confirmados no registro; commercialUse null) das cinco outras artes com direção visual própria.
+
+**Para Claude:** ler `assets/eventos/README.md` antes de integrar. Cada carta precisa de ID oficial e resolução no servidor. O cliente não decide dinheiro, propriedade, movimento ou contador. Incêndio libera estado de oponente para compra; apagão zera a cobrança de aluguel até três chegadas do dono ao estado. Sede e estados elegíveis vêm do snapshot, não das amostras da prévia. Há casos de regra ainda não especificados (sem sede/alvo, construções após incêndio, pagamento por passagem no início e troca de dono durante apagão), registrados no guia. O CardReveal atual fecha em 4,5s: não aplicar esse fechamento às escolhas obrigatórias. A prévia apenas mostra ações locais, sem comandos de jogo. C10 continua pendente e separado deste kit.
+
+**Validação:** `scripts/assets/event-modals-qa.mjs`, seis cartas em quatro telas (1536×1024, 1280×720, 844×390 e 667×375), **24 combinações aprovadas**, sem erro de página ou requisição. Valores −200/+300, seletor obrigatório, estado sem alvo, visita sem sede, contador visual 2/3, fechamento, hashes, proporção e encaixe da arte/textos conferidos. Prévia em `scripts/assets/event-modals-preview/`; capturas/relatório em `assets/3d/reviews/event-modals/`. Sem nova partida conectada, commit ou merge nesta etapa.
+
 ## Publicação das entregas de interface (06/11/2026)
 
 Validação após incorporar a develop: **135 testes, TypeScript, build e auditoria dos 35 WebP no pacote aprovados**. Commit de entrega: `df14e45`.

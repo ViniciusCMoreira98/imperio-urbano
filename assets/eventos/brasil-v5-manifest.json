@@ -1,0 +1,15 @@
+{
+  "version": 5,
+  "date": "2026-11-06",
+  "provider": "Imperio Urbano original SVG pipeline",
+  "source": "scripts/assets/event-brazil-vectors.mjs",
+  "direction": "Original Brazilian identity: forest green, gold, tropical leaves, blue/white azulejaria, wave motif inspired by Brazilian stone sidewalks. Portrait proportions retained; no controls or timer.",
+  "records": [
+    {
+      "file": "apps/web/src/event-art/art/card-brasil-v5.svg",
+      "bytes": 2603,
+      "sha256": "2a46aacae8d56236a9074b207559f9715195c0969bfe32b3925ec644bf3aac80"
+    }
+  ],
+  "meshyCredits": 0
+}
