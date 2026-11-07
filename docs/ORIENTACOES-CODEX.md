@@ -945,3 +945,51 @@ do kit atual, para a arte refinar:
   5 personagens com nome, 6 cores, "Cancelar" e "Jogar com <nome>". Cabe em 800×360.
 
 O card do jogador agora mostra o avatar escolhido (antes era sempre o avatar-1).
+
+## Cartas Descanso merecido, Passe Livre e Aluguel Zero integradas (07/11/2026)
+
+As três cartas estão no baralho do servidor (`events.json` v4, nove cartas) e no HUD.
+
+- **Descanso merecido** (`GO_TO_REST`): leva o jogador direto ao Descanso, como a 3ª dupla. Não paga
+  bônus do Início e não dá nova jogada. Vale a regra normal da casa: perde a próxima jogada, e uma dupla
+  libera antes.
+- **Passe Livre** (`GRANT_REST_PASS`): o jogador guarda um passe. O snapshot do jogador tem `restPasses`.
+  O comando `USE_REST_PASS` só vale na própria vez, no Descanso e antes de rolar. Gera o evento
+  `REST_PASS_USED`, e o jogador rola normalmente. Não há uso automático.
+- **Aluguel Zero** (`GRANT_RENT_WAIVER`): o jogador guarda uma isenção. O snapshot tem `rentWaivers`.
+  A isenção é gasta sozinha na próxima chegada a um estado adversário, com o evento `RENT_WAIVED`, sem
+  débito para o visitante nem crédito para o dono. Não é gasta em estado sob apagão, porque ali o aluguel
+  já é zero, nem em estado próprio ou livre.
+
+**HUD:** `hud/ItemTray.tsx` mostra os seus componentes acima da barra de ações:
+
+- `RestExitItemButton` aparece enquanto o jogador está no Descanso com passe guardado. Fica habilitado
+  só quando dá para usar e não desconta a quantidade antes da resposta do servidor.
+- `RentWaiverItemIndicator` aparece enquanto houver Aluguel Zero guardado.
+
+Os itens ficam lado a lado com 260 px de largura e diminuem (`zoom:.72`) em telas com até 500 px de
+altura (`.hud-item-tray` em `index.css`). Pode reposicionar ou redesenhar à vontade.
+
+## Faixa do nome na cor do dono (07/11/2026)
+
+Pedido do usuário: destacar as propriedades compradas pintando a faixa branca do nome (sigla + nome do
+estado) com a cor do peão do dono. A faixa faz parte do atlas, então a engenharia repinta por cima, na
+mesma textura dinâmica das placas de aluguel:
+
+- `board34/ownerHeader.ts` (novo): retângulo da faixa em coordenadas do painel (topo das casas em pé,
+  esquerda das deitadas, ~43% da largura; o RN tem a faixa mais alta, com nome em duas linhas) e o desenho:
+  degradê na cor do dono, borda dourada, sigla e nome redesenhados. O texto fica escuro no amarelo e branco
+  nas demais cores.
+- `Board34Scene.tsx`: mudança mínima. `BoardRentLabel` ganhou `ownerColor?`, e `labelTexture` chama
+  `paintOwnerHeader` antes das placas de aluguel.
+- `GameBoard.tsx` passa a cor do dono em `rentLabels`.
+
+Se a arte das casas mudar (outra posição ou outro tamanho da faixa), ajuste `ownerHeaderRect`. Se preferir
+desenhar a faixa colorida direto na arte, pode substituir o desenho mantendo `ownerColor`.
+
+## Card do jogador na cor do peão (07/11/2026)
+
+Pedido do usuário. Em `hud/PlayersPanel.tsx`, o fundo de cada card (`.hud-player-row`) é um degradê da
+cor do peão escurecida (`playerCardBackground`), no lugar do roxo de `.hud-panel`. É escuro o bastante para
+o nome branco e o saldo amarelo continuarem legíveis, por isso o amarelo fica com tom de oliva. A borda e o
+brilho na cor do peão continuam iguais. Pode ajustar o degradê à vontade.

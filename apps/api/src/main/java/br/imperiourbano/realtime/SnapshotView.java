@@ -59,7 +59,9 @@ record SnapshotView(
             boolean connected,
             boolean bankrupt,
             int skipTurns,
-            boolean travelPending) {
+            boolean travelPending,
+            int restPasses,
+            int rentWaivers) {
     }
 
     static SnapshotView of(GameState state, String inviteCode, List<LobbyView.Member> members, Set<String> connected,
@@ -92,6 +94,6 @@ record SnapshotView(
     private static Player player(PlayerState p, LobbyView.Member member, Set<String> connected) {
         return new Player(p.id(), p.nickname(), member.avatarId(), member.pawnColor(), member.seat(),
                 p.credits(), p.position(), member.ready(), connected.contains(p.id()), p.bankrupt(),
-                p.skipTurns(), p.travelPending());
+                p.skipTurns(), p.travelPending(), p.restPasses(), p.rentWaivers());
     }
 }

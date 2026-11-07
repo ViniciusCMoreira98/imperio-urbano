@@ -24,6 +24,7 @@ import br.imperiourbano.engine.GameCommand.SellProperty;
 import br.imperiourbano.engine.GameCommand.SkipBuild;
 import br.imperiourbano.engine.GameCommand.SkipEventTarget;
 import br.imperiourbano.engine.GameCommand.SkipOlympics;
+import br.imperiourbano.engine.GameCommand.UseRestPass;
 import br.imperiourbano.engine.GameEvent.BlackoutStarted;
 import br.imperiourbano.engine.GameEvent.BuildSkipped;
 import br.imperiourbano.engine.GameEvent.BuildingSold;
@@ -52,12 +53,16 @@ import br.imperiourbano.engine.GameEvent.PropertyPurchased;
 import br.imperiourbano.engine.GameEvent.PropertyBurned;
 import br.imperiourbano.engine.GameEvent.PropertySold;
 import br.imperiourbano.engine.GameEvent.RestLeft;
+import br.imperiourbano.engine.GameEvent.RestPassGranted;
+import br.imperiourbano.engine.GameEvent.RestPassUsed;
 import br.imperiourbano.engine.GameEvent.RestTurnLost;
 import br.imperiourbano.engine.GameEvent.TaxPaid;
 import br.imperiourbano.engine.GameEvent.TravelChosen;
 import br.imperiourbano.engine.GameEvent.TravelDeclined;
 import br.imperiourbano.engine.GameEvent.PurchaseDeclined;
 import br.imperiourbano.engine.GameEvent.RentPaid;
+import br.imperiourbano.engine.GameEvent.RentWaived;
+import br.imperiourbano.engine.GameEvent.RentWaiverGranted;
 import br.imperiourbano.engine.GameEvent.SaqueCollected;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
 import br.imperiourbano.engine.GameEvent.TurnEnded;
@@ -206,6 +211,12 @@ public final class GameEngine {
             case RestLeft e -> state
                     .updatePlayer(e.playerId(), p -> p.withSkipTurns(0))
                     .withDice(state.lastDice(), 0);
+            case RestPassGranted e -> state.updatePlayer(e.playerId(), p -> p.withRestPasses(p.restPasses() + 1));
+            // A fase continua AWAITING_ROLL: o jogador rola normalmente, já fora do Descanso.
+            case RestPassUsed e -> state.updatePlayer(e.playerId(),
+                    p -> p.withSkipTurns(0).withRestPasses(p.restPasses() - 1));
+            case RentWaiverGranted e -> state.updatePlayer(e.playerId(), p -> p.withRentWaivers(p.rentWaivers() + 1));
+            case RentWaived e -> state.updatePlayer(e.playerId(), p -> p.withRentWaivers(p.rentWaivers() - 1));
             case TravelChosen e -> state.updatePlayer(e.playerId(),
                     p -> p.withCredits(p.credits() - e.fee()).withTravelPending(false));
             case TravelDeclined e -> state
@@ -339,6 +350,7 @@ public final class GameEngine {
             case SellBuilding c -> sellBuilding(decision, c.stateId());
             case SellProperty c -> sellProperty(decision, c.stateId());
             case DeclareBankruptcy ignored -> declareBankruptcy(decision);
+            case UseRestPass ignored -> useRestPass(decision);
             case EndTurn ignored -> endTurn(decision);
         }
         return decision;
@@ -401,6 +413,19 @@ public final class GameEngine {
             return;
         }
         moveForward(d, roll.total(), 0);
+    }
+
+    /** Passe Livre: só no Descanso, antes de rolar. Sai sem perder a vez; a rolagem seguinte é normal. */
+    private void useRestPass(Decision d) {
+        requirePhase(d.state, TurnPhase.AWAITING_ROLL, "Use o Passe Livre antes de rolar os dados.");
+        PlayerState player = d.state.currentPlayer();
+        if (player.skipTurns() <= 0) {
+            throw new RuleViolationException("O Passe Livre só serve para sair do Descanso.");
+        }
+        if (player.restPasses() <= 0) {
+            throw new RuleViolationException("Você não tem Passe Livre.");
+        }
+        d.emit(new RestPassUsed(player.id()));
     }
 
     private void chooseTravel(Decision d, int tileIndex) {
@@ -489,6 +514,10 @@ public final class GameEngine {
                     d.emit(new EventTargetRequested(player.id(), card.id()));
                 }
             }
+            // Descanso merecido: como a 3ª dupla, vai direto ao Descanso, sem bônus do Início e sem nova jogada.
+            case GO_TO_REST -> d.emit(new PlayerMoved(player.id(), player.position(), restTile, 0, true));
+            case GRANT_REST_PASS -> d.emit(new RestPassGranted(player.id()));
+            case GRANT_RENT_WAIVER -> d.emit(new RentWaiverGranted(player.id()));
         }
     }
 
@@ -567,7 +596,11 @@ public final class GameEngine {
 
     private void chargeRent(Decision d, PlayerState payer, PropertyState property) {
         int rent = rentFor(d.state, property.stateId());
-        if (rent == 0) return; // apagão
+        if (rent == 0) return; // apagão: não gasta o Aluguel Zero
+        if (d.state.player(payer.id()).rentWaivers() > 0) {
+            d.emit(new RentWaived(payer.id(), property.ownerId(), property.stateId(), rent));
+            return;
+        }
         if (payer.credits() >= rent) {
             d.emit(new RentPaid(payer.id(), property.ownerId(), property.stateId(), rent));
         } else {

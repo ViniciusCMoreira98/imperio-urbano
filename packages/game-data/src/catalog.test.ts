@@ -28,7 +28,7 @@ describe('catálogo de jogo', () => {
   });
 
   it('tem um baralho de eventos consistente', () => {
-    expect(eventCards.map((c) => c.id)).toEqual(['assalto', 'caramelo-viral', 'incendio', 'visita-olimpica', 'escolha-sede', 'apagao']);
+    expect(eventCards.map((c) => c.id)).toEqual(['assalto', 'caramelo-viral', 'incendio', 'visita-olimpica', 'escolha-sede', 'apagao', 'descanso-merecido', 'passe-livre', 'aluguel-zero']);
     expect(validateEventCards(eventCards, board)).toEqual([]);
   });
 

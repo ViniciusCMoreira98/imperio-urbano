@@ -35,6 +35,10 @@ export interface PlayerState {
   skipTurns: number;
   /** Parou na Viagem Nacional: na próxima jogada pode escolher o destino. */
   travelPending: boolean;
+  /** Passe Livre guardados (sair do Descanso sem perder a vez). */
+  restPasses: number;
+  /** Aluguel Zero guardados (gasto sozinho no próximo aluguel adversário). */
+  rentWaivers: number;
 }
 
 export interface PropertyState {

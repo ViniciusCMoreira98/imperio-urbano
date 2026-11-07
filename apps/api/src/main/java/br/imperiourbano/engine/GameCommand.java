@@ -54,6 +54,10 @@ public sealed interface GameCommand {
     record SkipEventTarget() implements GameCommand {
     }
 
+    /** No próprio turno, no Descanso e antes de rolar: gasta um Passe Livre e sai sem perder a vez. */
+    record UseRestPass() implements GameCommand {
+    }
+
     record EndTurn() implements GameCommand {
     }
 }

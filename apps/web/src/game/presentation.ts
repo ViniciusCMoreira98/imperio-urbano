@@ -43,6 +43,14 @@ export function describeEvent(event: DomainEvent, name: (playerId: string) => st
       return `${name(event.playerId)} descansou e perdeu a jogada.`;
     case 'REST_LEFT':
       return `${name(event.playerId)} tirou dupla e saiu do Descanso.`;
+    case 'REST_PASS_GRANTED':
+      return `${name(event.playerId)} guardou um Passe Livre.`;
+    case 'REST_PASS_USED':
+      return `${name(event.playerId)} usou o Passe Livre e saiu do Descanso.`;
+    case 'RENT_WAIVER_GRANTED':
+      return `${name(event.playerId)} guardou um Aluguel Zero.`;
+    case 'RENT_WAIVED':
+      return `${name(event.playerId)} usou o Aluguel Zero e não pagou ${formatCredits(event.amount)} a ${name(event.ownerId)} em ${stateNames.get(event.stateId)}.`;
     case 'TRAVEL_CHOSEN':
       return `${name(event.playerId)} viajou para ${tileName(event.tileIndex)}.`;
     case 'PROPERTY_PURCHASED':

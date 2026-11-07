@@ -103,6 +103,9 @@ export function validateEventCards(cards: EventCard[], board: BoardDefinition): 
       case 'BURN_PROPERTY':
       case 'VISIT_OLYMPICS_HOST':
       case 'CHOOSE_OLYMPICS_HOST':
+      case 'GO_TO_REST':
+      case 'GRANT_REST_PASS':
+      case 'GRANT_RENT_WAIVER':
         break;
       default:
         errors.push(`${(card as EventCard).id}: tipo de efeito desconhecido`);

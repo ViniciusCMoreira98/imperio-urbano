@@ -108,6 +108,10 @@ body {
 .hud-rest-chip { display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1.5px solid #c4b5fd;border-radius:999px;background:linear-gradient(#3b2a73,#221a4a);color:#ede9fe;font-size:14px;white-space:nowrap; }
 .hud-rest-chip strong { color:#fde68a; }
 .hud-rest-chip small { font-size:12px;color:#c4b5fd; }
+/* Itens guardados das cartas (Passe Livre, Aluguel Zero): acima da barra, compactos em telas baixas. */
+.hud-item-tray { display:flex;flex-wrap:wrap;justify-content:center;gap:8px;pointer-events:auto; }
+.hud-item-tray .rest-pass-item { width:min(260px,44vw);min-height:0; }
+@media (max-height:500px) { .hud-item-tray { zoom:.72; } }
 @media (max-height:699px), (max-width:900px) {
  .game-hud-players { top:3px;right:calc(var(--hud-header-w, 150px) + 6px); }
  .game-hud-players .hud-players { gap:5px;padding:2px;padding-left:var(--hud-players-pad, 2px); }

@@ -7,10 +7,12 @@ import{DiceVisual}from'../../dice/DiceVisual';import type{DiceFace}from'../../di
 import{TabletopEnvironment}from'./TabletopEnvironment';import layout from'./layout.json';
 import{paintPanel}from'./panelProjection';
 import{paintRentalPlaque}from'./rentalPlaque';
+import{ownerHeaderRect,paintOwnerHeader}from'./ownerHeader';
 import{tabletopViewport}from'../camera/tabletopViewport';
 
 export{layout as board34Layout};
-export interface BoardRentLabel{stateId:string;rentLabel:string}
+/** ownerColor: cor do dono; repinta a faixa do nome (engenharia, 07/11/2026). */
+export interface BoardRentLabel{stateId:string;rentLabel:string;ownerColor?:string}
 export interface Board34SceneProps{framing?:'standard'|'immersive';insets?:BoardInsets;environment?:'wood'|'beach';selectedId?:string|null;onSelect?:(id:string)=>void;rentLabels?:BoardRentLabel[];taxPoolLabel?:string|null;diceValues?:[DiceFace,DiceFace]|null;children?:ReactNode}
 export function board34TileAnchor(id:string){const tile=layout.tiles.find(t=>t.id===id);if(!tile)throw Error(`Casa desconhecida na cena de 34 casas: ${id}`);return tile.anchor;}
 const nodes=new Set(layout.tiles.map(t=>t.modelNode));
@@ -18,6 +20,7 @@ function tileOf(object:Object3D,root:Object3D){for(let node:Object3D|null=object
 function labelTexture(labels:BoardRentLabel[],taxPoolLabel:string|null){
  const c=document.createElement('canvas');c.width=3072;c.height=2048;const x=c.getContext('2d')!;x.scale(2,2);x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff7d4';
  const values=new Map(labels.map(l=>[l.stateId,l.rentLabel]));
+ for(const tile of layout.tiles){const owner=labels.find(l=>l.stateId===tile.id)?.ownerColor;if(!owner)continue;const rect=ownerHeaderRect(tile.panel,tile.id);paintPanel(x,tile.panel,ctx=>paintOwnerHeader(ctx,rect,tile.id,tile.label??tile.id,owner),rect);}
  for(const tile of layout.tiles){const rect=tile.panel.rent,label=values.get(tile.id);if(!rect||label===undefined)continue;paintPanel(x,tile.panel,ctx=>{paintRentalPlaque(ctx,rect);let font=rect.height*.66;ctx.font=`900 ${font}px Arial,sans-serif`;while(ctx.measureText(label).width>rect.width*.83&&font>7){font-=.25;ctx.font=`900 ${font}px Arial,sans-serif`;}ctx.fillStyle='#fff5d3';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,rect.x+rect.width/2,rect.y+rect.height/2+.3);},rect);}
  const tax=layout.tiles.find(t=>t.id==='TAX')!;paintPanel(x,tax.panel,ctx=>{const rect=tax.panel.pool!;let size=14;const amount=taxPoolLabel??'—';ctx.font=`900 ${size}px Arial,sans-serif`;while(ctx.measureText(amount).width>rect.width*.88&&size>8){size-=.5;ctx.font=`900 ${size}px Arial,sans-serif`;}ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#ffe47b';ctx.fillText(amount,rect.x+rect.width/2,rect.y+rect.height*.70);},tax.panel.pool!);
  const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;texture.magFilter=texture.minFilter=LinearFilter;texture.generateMipmaps=false;return texture;

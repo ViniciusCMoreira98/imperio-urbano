@@ -35,6 +35,22 @@ public sealed interface GameEvent {
     record RestLeft(String playerId) implements GameEvent {
     }
 
+    /** Carta Passe Livre: o jogador guarda um passe para sair do Descanso. */
+    record RestPassGranted(String playerId) implements GameEvent {
+    }
+
+    /** Usou um Passe Livre no Descanso: sai sem perder a vez e rola normalmente. */
+    record RestPassUsed(String playerId) implements GameEvent {
+    }
+
+    /** Carta Aluguel Zero: o jogador guarda uma isenção para o próximo aluguel adversário. */
+    record RentWaiverGranted(String playerId) implements GameEvent {
+    }
+
+    /** Aluguel Zero gasto sozinho: a chegada ao estado de {@code ownerId} não cobra {@code amount}. */
+    record RentWaived(String playerId, String ownerId, String stateId, int amount) implements GameEvent {
+    }
+
     record TravelChosen(String playerId, int tileIndex, int fee) implements GameEvent {
     }
 

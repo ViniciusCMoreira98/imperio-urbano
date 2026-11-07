@@ -16,7 +16,13 @@ public enum CardEffectType {
     /** Escolhe, sem taxa, um estado com dono para sediar a próxima edição das Olimpíadas. */
     CHOOSE_OLYMPICS_HOST,
     /** Apagão: estado de adversário sem aluguel até o dono parar nele {@code visits} vezes. */
-    BLACKOUT;
+    BLACKOUT,
+    /** Descanso merecido: vai direto para o Descanso, como na 3ª dupla (sem bônus do Início). */
+    GO_TO_REST,
+    /** Passe Livre: guarda um item para sair do Descanso sem perder a vez (uso manual, no turno). */
+    GRANT_REST_PASS,
+    /** Aluguel Zero: guarda um item gasto sozinho na próxima propriedade adversária com aluguel. */
+    GRANT_RENT_WAIVER;
 
     /** Efeitos em que o jogador escolhe um estado no tabuleiro. */
     public boolean needsTarget() {

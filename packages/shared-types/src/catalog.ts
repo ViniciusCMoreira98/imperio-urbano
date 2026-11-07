@@ -70,7 +70,13 @@ export type CardEffect =
   /** Escolhe, sem taxa, qualquer estado com dono para sediar a próxima edição. */
   | { type: 'CHOOSE_OLYMPICS_HOST' }
   /** Apagão: estado de oponente sem aluguel até o dono parar nele `visits` vezes. */
-  | { type: 'BLACKOUT'; visits: number };
+  | { type: 'BLACKOUT'; visits: number }
+  /** Descanso merecido: vai direto ao Descanso (sem bônus do Início). */
+  | { type: 'GO_TO_REST' }
+  /** Passe Livre: item guardado para sair do Descanso sem perder a vez. */
+  | { type: 'GRANT_REST_PASS' }
+  /** Aluguel Zero: item gasto sozinho na próxima propriedade adversária com aluguel. */
+  | { type: 'GRANT_RENT_WAIVER' };
 
 export interface EventCard {
   id: string;

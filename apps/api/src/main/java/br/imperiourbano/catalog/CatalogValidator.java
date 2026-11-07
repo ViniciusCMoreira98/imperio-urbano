@@ -45,7 +45,8 @@ public final class CatalogValidator {
             boolean valid = switch (e.type()) {
                 case GAIN, PAY -> positive(e.amount());
                 case BLACKOUT -> positive(e.visits());
-                case BURN_PROPERTY, VISIT_OLYMPICS_HOST, CHOOSE_OLYMPICS_HOST -> true;
+                case BURN_PROPERTY, VISIT_OLYMPICS_HOST, CHOOSE_OLYMPICS_HOST, GO_TO_REST, GRANT_REST_PASS,
+                        GRANT_RENT_WAIVER -> true;
             };
             if (!valid) errors.add(card.id() + ": parâmetros inválidos para " + e.type());
         }

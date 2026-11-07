@@ -75,9 +75,10 @@ class EventCardsTest {
     }
 
     @Test
-    void deckHasTheSixBrazilianCards() {
+    void deckHasTheNineBrazilianCards() {
         assertThat(CATALOG.eventCards()).extracting(EventCard::id).containsExactlyInAnyOrder(
-                "assalto", "caramelo-viral", "incendio", "visita-olimpica", "escolha-sede", "apagao");
+                "assalto", "caramelo-viral", "incendio", "visita-olimpica", "escolha-sede", "apagao",
+                "descanso-merecido", "passe-livre", "aluguel-zero");
     }
 
     @Test

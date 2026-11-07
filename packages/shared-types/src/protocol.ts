@@ -19,6 +19,8 @@ export type Command =
   | { type: 'SELL_BUILDING'; stateId: StateId }
   | { type: 'SELL_PROPERTY'; stateId: StateId }
   | { type: 'DECLARE_BANKRUPTCY' }
+  /** Passe Livre: no próprio turno, no Descanso e antes de rolar. */
+  | { type: 'USE_REST_PASS' }
   | { type: 'END_TURN' };
 
 export interface CommandEnvelope {
@@ -39,6 +41,11 @@ export type DomainEvent =
   | { type: 'REST_TURN_LOST'; playerId: string }
   /** Dupla no Descanso: sai e anda, sem jogada extra. */
   | { type: 'REST_LEFT'; playerId: string }
+  /** Cartas guardáveis (07/11/2026): Passe Livre ganho e usado; Aluguel Zero ganho e gasto sozinho. */
+  | { type: 'REST_PASS_GRANTED'; playerId: string }
+  | { type: 'REST_PASS_USED'; playerId: string }
+  | { type: 'RENT_WAIVER_GRANTED'; playerId: string }
+  | { type: 'RENT_WAIVED'; playerId: string; ownerId: string; stateId: StateId; amount: number }
   | { type: 'TRAVEL_CHOSEN'; playerId: string; tileIndex: number; fee: number }
   | { type: 'TRAVEL_DECLINED'; playerId: string }
   | { type: 'PROPERTY_PURCHASED'; playerId: string; stateId: StateId; price: number }

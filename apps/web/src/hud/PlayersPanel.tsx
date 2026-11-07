@@ -6,6 +6,18 @@ import { heldCredits } from '../game/eventCards';
 import { useCardStore } from '../store/cardStore';
 import { useGameStore } from '../store/gameStore';
 
+/** Escurece a cor (0 a 1); escura o bastante para o saldo amarelo e o nome branco seguirem legíveis. */
+function darken(hex: string, amount: number): string {
+  const n = Number.parseInt(hex.slice(1), 16);
+  const c = (v: number) => Math.round(v * (1 - amount));
+  return `rgb(${c((n >> 16) & 255)}, ${c((n >> 8) & 255)}, ${c(n & 255)})`;
+}
+
+/** Fundo do card na cor do peão do jogador (pedido do usuário, 07/11/2026). */
+export function playerCardBackground(color: string): string {
+  return `linear-gradient(145deg, ${darken(color, 0.35)}, ${darken(color, 0.72)} 75%)`;
+}
+
 /**
  * Jogadores em ordem de patrimônio (1º a 4º), como na referência: retrato, posição, nome e saldo num
  * painel roxo com borda neon na cor do peão; coroa no líder e brilho em quem joga agora.
@@ -53,6 +65,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
               p.bankrupt ? 'opacity-45 grayscale' : ''
             }`}
             style={{
+              background: playerCardBackground(color),
               borderColor: color,
               boxShadow: isTurn ? `0 0 18px ${color}, 0 0 0 2px #fde68a` : `0 0 10px ${color}66`,
             }}
