@@ -1,0 +1,102 @@
+{
+  "kind": "controlled-preview-real-models",
+  "screens": [
+    {
+      "id": "RN",
+      "width": 1280,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    },
+    {
+      "id": "AC",
+      "width": 1280,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    },
+    {
+      "id": "PB",
+      "width": 1280,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    },
+    {
+      "id": "MA",
+      "width": 1280,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    },
+    {
+      "id": "RN",
+      "width": 844,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    },
+    {
+      "id": "AC",
+      "width": 844,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    },
+    {
+      "id": "PB",
+      "width": 844,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    },
+    {
+      "id": "MA",
+      "width": 844,
+      "height": 0.03100000135600567,
+      "protectedSamples": 18,
+      "meshes": 3,
+      "minimum": 0.013000000268220901,
+      "goldIntensity": 0.17,
+      "greenIntensity": 0.16,
+      "pawns": 1
+    }
+  ],
+  "hotelAndFourPawns": true,
+  "fourSides": true,
+  "nameAndRentRaycastClear": true,
+  "maxReliefHeight": 0.031,
+  "reducedMotion": true,
+  "twoMergedMeshesAndOneThread": true,
+  "noMultiplierPlaque": true,
+  "errors": [],
+  "failed": []
+}

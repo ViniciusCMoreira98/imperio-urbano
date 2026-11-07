@@ -1,60 +1,39 @@
-// Destaque do estado-sede das Olimpíadas, no próprio território (não no centro da mesa):
-// moldura dourada pulsando e tocha. O multiplicador já entra no aluguel mostrado na placa; o valor
-// dele aparece ao tocar na casa.
-import { useFrame } from '@react-three/fiber';
-import { useEffect, useMemo } from 'react';
-import { MeshStandardMaterial } from 'three';
-import type { TilePlacement } from './layout';
+// A laurel rim in low relief: no tall torch, numbers or opaque panel over the state.
+import {useFrame,useThree} from '@react-three/fiber';
+import {Line} from '@react-three/drei';
+import {useEffect,useMemo,useState} from 'react';
+import {ExtrudeGeometry,MeshStandardMaterial,Path,Shape,ShapeGeometry,Vector2,type BufferGeometry} from 'three';
+import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import type {TilePlacement} from './layout';
+import {insetOlympicContour,olympicLeaves,OLYMPIC_RELIEF,type OlympicPoint} from './olympicPresentation';
 
-const GOLD = '#f5b301';
-const FRAME = 0.06;
+function ring(points:readonly OlympicPoint[],outer:number,inner:number){
+ const outline=insetOlympicContour(points,outer),hole=insetOlympicContour(points,inner),shape=new Shape(outline.map(([x,z])=>new Vector2(x,-z)));
+ const path=new Path(hole.map(([x,z])=>new Vector2(x,-z)));shape.holes.push(path);return shape;
+}
+function relief(shape:Shape){const g=new ExtrudeGeometry(shape,{depth:.009,bevelEnabled:true,bevelThickness:.003,bevelSize:.002,bevelSegments:1,steps:1,curveSegments:5});g.rotateX(-Math.PI/2);g.translate(0,.016,0);return g;}
 
-export function OlympicHost({ placement }: { placement: TilePlacement }) {
-  // Um material para a moldura inteira e outro para a chama: o pulso muda os dois de uma vez.
-  const frame = useMemo(() => new MeshStandardMaterial({ color: GOLD, emissive: GOLD, emissiveIntensity: 0.8 }), []);
-  const flame = useMemo(() => new MeshStandardMaterial({ color: '#fb923c', emissive: '#f97316', emissiveIntensity: 1.2 }), []);
-  useEffect(
-    () => () => {
-      frame.dispose();
-      flame.dispose();
-    },
-    [frame, flame],
-  );
-
-  // Pulso suave para chamar atenção sem poluir a tela.
-  useFrame(({ clock }) => {
-    const pulse = 0.55 + 0.45 * Math.sin(clock.elapsedTime * 3);
-    frame.emissiveIntensity = 0.4 + pulse * 0.8;
-    flame.emissiveIntensity = 0.8 + pulse;
-  });
-
-  const { width, depth } = placement;
-  const bars: { position: [number, number, number]; size: [number, number, number] }[] = [
-    { position: [0, 0, depth / 2 - FRAME / 2], size: [width, 0.05, FRAME] },
-    { position: [0, 0, -depth / 2 + FRAME / 2], size: [width, 0.05, FRAME] },
-    { position: [width / 2 - FRAME / 2, 0, 0], size: [FRAME, 0.05, depth] },
-    { position: [-width / 2 + FRAME / 2, 0, 0], size: [FRAME, 0.05, depth] },
-  ];
-
-  return (
-    <group>
-      {bars.map((bar, i) => (
-        <mesh key={i} position={bar.position} material={frame}>
-          <boxGeometry args={bar.size} />
-        </mesh>
-      ))}
-
-      {/* Tocha no canto externo da casa. */}
-      <group position={[width / 2 - 0.16, 0, depth / 2 - 0.2]}>
-        <mesh position={[0, 0.16, 0]} castShadow>
-          <cylinderGeometry args={[0.03, 0.045, 0.32, 10]} />
-          <meshStandardMaterial color="#d4d4d8" metalness={0.6} roughness={0.3} />
-        </mesh>
-        <mesh position={[0, 0.36, 0]} material={flame}>
-          <coneGeometry args={[0.07, 0.18, 12]} />
-        </mesh>
-      </group>
-
-    </group>
-  );
+export function OlympicHost({placement,contour}:{placement:TilePlacement;contour?:readonly OlympicPoint[]}){
+ const viewportHeight=useThree(state=>state.size.height);
+ const [reduced,setReduced]=useState(()=>typeof window==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+ useEffect(()=>{const media=window.matchMedia('(prefers-reduced-motion: reduce)'),update=()=>setReduced(media.matches);update();media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
+ const assets=useMemo(()=>{
+  const w=placement.width/2,d=placement.depth/2,points=contour??[[-w,-d],[w,-d],[w,d],[-w,d]];
+  const parts:BufferGeometry[]=[relief(ring(points,OLYMPIC_RELIEF.outerInset,OLYMPIC_RELIEF.goldInnerInset))];
+  for(const leaf of olympicLeaves(points)){
+   const length=OLYMPIC_RELIEF.leafLength/2,width=OLYMPIC_RELIEF.leafWidth;
+   const shape=new Shape();shape.moveTo(-length,0);shape.quadraticCurveTo(0,width,length,0);shape.quadraticCurveTo(0,-width,-length,0);
+   const g=relief(shape);g.rotateY(-leaf.angle);g.translate(leaf.x,.003,leaf.z);parts.push(g);
+  }
+  const goldGeometry=mergeGeometries(parts,false)!;parts.forEach(g=>g.dispose());
+  const greenGeometry=new ShapeGeometry(ring(points,OLYMPIC_RELIEF.greenOuterInset,OLYMPIC_RELIEF.greenInnerInset));greenGeometry.rotateX(-Math.PI/2);greenGeometry.translate(0,.012,0);
+  const gold=new MeshStandardMaterial({color:'#edc66c',metalness:.74,roughness:.34,emissive:'#9d6b16',emissiveIntensity:.17});
+  const green=new MeshStandardMaterial({color:'#16bd76',metalness:.25,roughness:.48,emissive:'#06744e',emissiveIntensity:.16});
+  const inset=insetOlympicContour(points,.032),thread=[...inset,inset[0]].map(([x,z])=>[x,.029,z] as [number,number,number]);
+  return{goldGeometry,greenGeometry,gold,green,thread};
+ },[placement.width,placement.depth,contour]);
+ useEffect(()=>()=>{assets.goldGeometry.dispose();assets.greenGeometry.dispose();assets.gold.dispose();assets.green.dispose();},[assets]);
+ useEffect(()=>{assets.gold.emissiveIntensity=.17;assets.green.emissiveIntensity=.16;},[reduced,assets]);
+ useFrame(({clock})=>{if(reduced)return;const pulse=Math.sin(clock.elapsedTime*Math.PI/2);assets.gold.emissiveIntensity=.17+pulse*.045;assets.green.emissiveIntensity=.16+pulse*.035;});
+ return <group name="OLYMPIC_LAUREL_RELIEF" userData={{tileIndex:placement.index}}><mesh name="OLYMPIC_GOLD_LAURELS" geometry={assets.goldGeometry} material={assets.gold} raycast={()=>undefined}/><mesh name="OLYMPIC_GREEN_INLAY" geometry={assets.greenGeometry} material={assets.green} raycast={()=>undefined}/><Line name="OLYMPIC_GOLD_THREAD" points={assets.thread} color="#ffe078" lineWidth={Math.min(1.4,Math.max(.55,viewportHeight/520))} raycast={()=>undefined}/></group>;
 }

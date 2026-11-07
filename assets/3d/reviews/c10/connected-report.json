@@ -1,0 +1,22 @@
+{
+  "connectedToRealApi": true,
+  "devDiceUsed": true,
+  "purchaseViaOfficialCommand": true,
+  "hostViaOfficialCommand": true,
+  "hostId": "RR",
+  "multiplier": 2,
+  "sixRentsVerified": true,
+  "modalOpenedByBoardClick": true,
+  "screens": [
+    {
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "width": 844,
+      "height": 390
+    }
+  ],
+  "errors": [],
+  "failed": []
+}

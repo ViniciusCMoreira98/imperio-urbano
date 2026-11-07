@@ -9,6 +9,7 @@ import { PropertyBuildingModel } from './BuildingModels';
 import { propertyBuildingPlacement } from './buildings/buildingPresentation';
 import { tileAnchor } from './layout';
 import { OlympicHost } from './OlympicHost';
+import { olympicLocalContour } from './olympicPresentation';
 
 export { Pawns } from './Pawns';
 
@@ -28,13 +29,14 @@ export function Buildings() {
         outline: [...anchor.polygon, anchor.polygon[0]].map(([x, z]) => [x, anchor.surfaceY + 0.004, z] as [number, number, number]),
         ownerColor: colorOf.get(property.ownerId ?? '') ?? '#ffffff',
         isHost: snapshot.olympics.hostStateId === property.stateId,
+        olympicContour: olympicLocalContour(anchor),
       };
     });
   }, [snapshot]);
 
   return (
     <>
-      {items.map(({ property, anchor, building, outline, ownerColor, isHost }) => (
+      {items.map(({ property, anchor, building, outline, ownerColor, isHost, olympicContour }) => (
         <group key={property.stateId}>
           {/* Dono marcado pelo contorno da casa na cor dele, sem cobrir o nome nem a arte do estado. */}
           {property.ownerId && <Line points={outline} color={ownerColor} lineWidth={3.5} />}
@@ -47,6 +49,7 @@ export function Buildings() {
             )}
             {isHost && (
               <OlympicHost
+                contour={olympicContour}
                 placement={{ index: anchor.index, x: anchor.x, z: anchor.z, rotationY: anchor.rotationY, width: anchor.width, depth: anchor.depth, isCorner: false }}
               />
             )}
