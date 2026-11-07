@@ -54,11 +54,11 @@ public class GuestSessionService {
      * Resultado do login com Google. {@code outcome}: LINKED (o convidado atual ganhou a conta Google),
      * SIGNED_IN (a conta já era de um jogador, que passa a valer aqui) ou CREATED (jogador novo).
      */
-    public record GoogleSignIn(NewSession session, String outcome, String email) {
+    public record GoogleSignIn(NewSession session, String outcome, String email, String photoUrl) {
     }
 
     /** Conta ligada ao jogador, para o menu mostrar "Entrar com Google" ou o e-mail. */
-    public record Account(boolean google, String email) {
+    public record Account(boolean google, String email, String photoUrl) {
     }
 
     @Transactional
@@ -130,17 +130,19 @@ public class GuestSessionService {
         if (account.email() != null) {
             jdbc.update("update guest_sessions set email = ? where player_id = ?", account.email(), playerId);
         }
+        // A foto acompanha a conta Google: a cada login vale a atual (ou some, se a pessoa tirou a foto).
+        jdbc.update("update guest_sessions set photo_url = ? where player_id = ?", safePhotoUrl(account.photoUrl()), playerId);
 
         String token = newToken();
         jdbc.update("insert into session_tokens (token_hash, player_id) values (?, ?)", hash(token), playerId);
         String nickname = jdbc.queryForObject("select nickname from guest_sessions where player_id = ?", String.class, playerId);
-        return new GoogleSignIn(new NewSession(new GuestPrincipal(playerId, nickname), token), outcome, account.email());
+        return new GoogleSignIn(new NewSession(new GuestPrincipal(playerId, nickname), token), outcome, account.email(), safePhotoUrl(account.photoUrl()));
     }
 
     public Account account(String playerId) {
-        return jdbc.query("select google_sub is not null, email from guest_sessions where player_id = ?",
-                (rs, i) -> new Account(rs.getBoolean(1), rs.getString(2)), playerId)
-                .stream().findFirst().orElse(new Account(false, null));
+        return jdbc.query("select google_sub is not null, email, photo_url from guest_sessions where player_id = ?",
+                (rs, i) -> new Account(rs.getBoolean(1), rs.getString(2), rs.getString(3)), playerId)
+                .stream().findFirst().orElse(new Account(false, null, null));
     }
 
     /** Sair neste aparelho: apaga o token do aparelho (o token original do convidado não é apagado). */
@@ -168,6 +170,18 @@ public class GuestSessionService {
     }
 
     /** Primeiro nome do Google adaptado às regras do apelido; sem nome aproveitável, "Jogador". */
+    /** Só fotos servidas pelo próprio Google (https, *.googleusercontent.com); o resto é descartado. */
+    static String safePhotoUrl(String url) {
+        if (url == null || url.length() > 1024) return null;
+        try {
+            java.net.URI uri = java.net.URI.create(url);
+            String host = uri.getHost();
+            return "https".equals(uri.getScheme()) && host != null && host.endsWith(".googleusercontent.com") ? url : null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     static String nicknameFromGoogle(String name) {
         if (name == null) return FALLBACK_NICKNAME;
         String cleaned = NOT_NICKNAME.matcher(Normalizer.normalize(name, Normalizer.Form.NFC)).replaceAll(" ")

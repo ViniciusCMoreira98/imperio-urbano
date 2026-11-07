@@ -7,7 +7,7 @@ import { api } from '../net/api';
 import { formatCredits } from '../property-card/tileInfo';
 import { useGameStore } from '../store/gameStore';
 import { Button } from '../ui/ui';
-import { AvatarPortrait, LeaderCrown } from './AvatarPortrait';
+import { LeaderCrown, PlayerPortrait } from './AvatarPortrait';
 import './gameOver.css';
 
 /**
@@ -81,7 +81,7 @@ export function GameOverScreen({ myId, token, gameId, onLeave }: { myId: string;
               <li key={r.player.id} className={`go-row${r.winner ? ' go-winner' : ''}${r.player.bankrupt ? ' go-bankrupt' : ''}`} style={{ borderColor: color }}>
                 <span className="go-place">{r.place}º</span>
                 <span className="go-avatar" style={{ background: `${color}55`, boxShadow: `0 0 0 2px ${color}` }}>
-                  <AvatarPortrait avatarId={r.player.avatarId} />
+                  <PlayerPortrait avatarId={r.player.avatarId} photoUrl={r.player.photoUrl} />
                   {r.winner && <span className="go-crown"><LeaderCrown /></span>}
                 </span>
                 <span className="go-name">

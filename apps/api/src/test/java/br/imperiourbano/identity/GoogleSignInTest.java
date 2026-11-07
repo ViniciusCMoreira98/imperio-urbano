@@ -39,7 +39,8 @@ class GoogleSignInTest {
             String credential = call.getArgument(0);
             if (!credential.startsWith("cred-")) return Optional.empty();
             String sub = credential.substring(5);
-            return Optional.of(new GoogleIdentity.GoogleAccount(sub, sub + "@gmail.com", "Maria Clara"));
+            return Optional.of(new GoogleIdentity.GoogleAccount(sub, sub + "@gmail.com", "Maria Clara",
+                    "https://lh3.googleusercontent.com/a/" + sub));
         });
     }
 
@@ -87,6 +88,9 @@ class GoogleSignInTest {
         assertThat(field(linked, "outcome")).isEqualTo("LINKED");
         assertThat(me(field(linked, "token"))).bodyJson().extractingPath("$.google").isEqualTo(true);
         assertThat(me(field(linked, "token"))).bodyJson().extractingPath("$.email").isEqualTo(sub + "@gmail.com");
+        assertThat(field(linked, "photoUrl")).isEqualTo("https://lh3.googleusercontent.com/a/" + sub);
+        assertThat(me(field(linked, "token"))).bodyJson().extractingPath("$.photoUrl").isEqualTo("https://lh3.googleusercontent.com/a/" + sub);
+        assertThat(me(field(created, "token"))).bodyJson().extractingPath("$.photoUrl").isEqualTo("https://lh3.googleusercontent.com/a/" + sub);
         // O token original do convidado continua valendo.
         assertThat(me(field(created, "token"))).hasStatusOk();
     }
@@ -160,6 +164,33 @@ class GoogleSignInTest {
 
         assertThat(me(field(phone, "token"))).hasStatus(HttpStatus.UNAUTHORIZED);
         assertThat(me(field(linked, "token"))).hasStatusOk();
+    }
+
+    @Test
+    void googlePhotoShowsUpForTheSeatedPlayer() throws Exception {
+        MvcTestResult guestOnly = guest("Hugo");
+        MvcTestResult created = guest("Iris");
+        String sub = unique();
+        MvcTestResult linked = signIn("cred-" + sub, field(created, "token"));
+
+        MvcTestResult room = mvc.post().uri("/api/games").contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + field(linked, "token")).content("{\"mode\":\"CLASSIC\"}").exchange();
+        MvcTestResult joined = mvc.post().uri("/api/games/join").contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + field(guestOnly, "token"))
+                .content("{\"inviteCode\":\"" + field(room, "inviteCode") + "\"}").exchange();
+
+        assertThat(joined).bodyJson().extractingPath("$.players[0].photoUrl").isEqualTo("https://lh3.googleusercontent.com/a/" + sub);
+        assertThat(joined).bodyJson().extractingPath("$.players[1].photoUrl").isNull();
+    }
+
+    @Test
+    void onlyGooglePhotoUrlsAreKept() {
+        assertThat(GuestSessionService.safePhotoUrl("https://lh3.googleusercontent.com/a/abc=s96-c")).isNotNull();
+        assertThat(GuestSessionService.safePhotoUrl("http://lh3.googleusercontent.com/a/abc")).isNull();
+        assertThat(GuestSessionService.safePhotoUrl("https://evil.com/googleusercontent.com.png")).isNull();
+        assertThat(GuestSessionService.safePhotoUrl("https://googleusercontent.com.evil.com/a")).isNull();
+        assertThat(GuestSessionService.safePhotoUrl("javascript:alert(1)")).isNull();
+        assertThat(GuestSessionService.safePhotoUrl(null)).isNull();
     }
 
     @Test

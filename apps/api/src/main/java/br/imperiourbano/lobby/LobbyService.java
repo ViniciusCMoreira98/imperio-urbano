@@ -332,7 +332,7 @@ public class LobbyService {
                 .map(at -> Math.max(0, Duration.between(Instant.now(), at).toMillis())).orElse(null);
         return new LobbyView(game.id(), game.inviteCode(), game.mode(), game.stake(), game.publicRoom(), game.status(), game.hostPlayerId(),
                 seated.stream().map(m -> new LobbyView.Member(m.playerId(), m.nickname(), m.seat(),
-                        m.avatarId(), m.pawnColor(), m.ready())).toList(),
+                        m.avatarId(), m.pawnColor(), m.ready(), m.photoUrl())).toList(),
                 canStart, startsInMs);
     }
 

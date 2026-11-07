@@ -39,6 +39,8 @@ export interface PlayerState {
   restPasses: number;
   /** Aluguel Zero guardados (gasto sozinho no próximo aluguel adversário). */
   rentWaivers: number;
+  /** Foto de perfil do Google (07/11/2026); ausente ou nula para convidado, que mostra o personagem. */
+  photoUrl?: string | null;
 }
 
 export interface PropertyState {

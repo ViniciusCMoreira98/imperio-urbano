@@ -69,7 +69,7 @@ class GoogleIdTokenVerifier implements GoogleIdentity {
             String email = Boolean.TRUE.equals(verified) || "true".equals(verified) ? jwt.getClaimAsString("email") : null;
             String name = jwt.getClaimAsString("given_name");
             if (name == null) name = jwt.getClaimAsString("name");
-            return Optional.of(new GoogleAccount(jwt.getSubject(), email, name));
+            return Optional.of(new GoogleAccount(jwt.getSubject(), email, name, jwt.getClaimAsString("picture")));
         } catch (JwtException e) {
             log.info("ID token do Google recusado: {}", e.getMessage());
             return Optional.empty();

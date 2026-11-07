@@ -13,7 +13,7 @@ import globeIcon from '../play-menu/art/globe-v1.svg';
 import laurelLeft from '../main-menu/art/laurel-left-v1.svg';
 import laurelRight from '../main-menu/art/laurel-right-v1.svg';
 import { playSound } from '../audio/audio';
-import { AvatarPortrait } from '../hud/AvatarPortrait';
+import { AvatarPortrait, PlayerPortrait } from '../hud/AvatarPortrait';
 import { SettingsButton } from '../hud/SettingsButton';
 import { CreateOnlineRoomScreen, OnlinePlayScreen, PrivateRoomsScreen } from '../play-menu/PlayEntryScreens';
 import { PublicRoomsScreen } from '../play-menu/PublicRoomsScreen';
@@ -22,6 +22,7 @@ import { useWallet } from '../net/useWallet';
 import { CurrencyMenuCard, PlayerMenuCard } from '../play-menu/MenuCards';
 import { loadLastSession } from '../net/session';
 import { GoogleButton, googleClientId } from '../auth/GoogleButton';
+import { useAccountSync } from '../auth/useAccountSync';
 import { useAppStore } from '../store/appStore';
 import { useCharacterStore, useMenuAvatar } from '../store/characterStore';
 import { CharacterPicker } from '../play-menu/CharacterPicker';
@@ -40,6 +41,8 @@ export function MenuScreen() {
   const wallet = useWallet(online ? undefined : session?.token);
   const avatarId = useMenuAvatar();
   const loadCharacter = useCharacterStore((s) => s.load);
+  // Completa Google, e-mail e foto das sessões guardadas antes deles.
+  useAccountSync();
   // Personagem escolhido no menu (e na última sala): aparece no card e já vale para a próxima sala.
   useEffect(() => {
     if (session) void loadCharacter(session.token);
@@ -59,7 +62,7 @@ export function MenuScreen() {
           <>
             <PlayerMenuCard
               nickname={session.nickname}
-              portrait={<AvatarPortrait avatarId={avatarId} />}
+              portrait={<PlayerPortrait avatarId={avatarId} photoUrl={session.photoUrl} />}
               wins={wallet?.wins}
               onEditCharacter={openCharacterPicker}
             />
@@ -153,7 +156,7 @@ function GoogleSignInBlock({ onError }: { onError: (message: string | null) => v
           onError(null);
           try {
             const result = await api.googleSignIn(credential, null);
-            setSession({ playerId: result.playerId, nickname: result.nickname, token: result.token, google: true, email: result.email });
+            setSession({ playerId: result.playerId, nickname: result.nickname, token: result.token, google: true, email: result.email, photoUrl: result.photoUrl });
           } catch (e) {
             onError(e instanceof ApiError ? e.message : 'Não foi possível entrar com Google.');
           }
@@ -321,7 +324,7 @@ function OnlineEntry({ onBack }: { onBack: () => void }) {
   const avatarId = useMenuAvatar();
   const player = {
     nickname: session.nickname,
-    portrait: <AvatarPortrait avatarId={avatarId} />,
+    portrait: <PlayerPortrait avatarId={avatarId} photoUrl={session.photoUrl} />,
     wins: wallet?.wins,
     onEditCharacter: openCharacterPicker,
   };

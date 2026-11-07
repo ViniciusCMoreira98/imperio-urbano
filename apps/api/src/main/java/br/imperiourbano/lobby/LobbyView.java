@@ -20,6 +20,8 @@ public record LobbyView(
         /** Milissegundos até o início automático; nulo com menos de 2 jogadores (ou fora da sala). */
         Long startsInMs) {
 
-    public record Member(String playerId, String nickname, int seat, String avatarId, PawnColor pawnColor, boolean ready) {
+    public record Member(String playerId, String nickname, int seat, String avatarId, PawnColor pawnColor, boolean ready,
+            /** Foto do Google; nula para convidado. */
+            String photoUrl) {
     }
 }

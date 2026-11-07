@@ -9,6 +9,8 @@ export interface LobbyMember {
   avatarId: AvatarId;
   pawnColor: PawnColor;
   ready: boolean;
+  /** Foto de perfil do Google; nula para convidado. */
+  photoUrl?: string | null;
 }
 
 export interface LobbyView {
@@ -36,6 +38,8 @@ export interface GuestSession {
   /** Conta Google ligada (07/11/2026); ausente nas sessões antigas = convidado. */
   google?: boolean;
   email?: string | null;
+  /** Foto de perfil do Google; aparece no card do menu e da partida. */
+  photoUrl?: string | null;
 }
 
 /** Sala na lista pública (GET /api/games/public): sem código de convite. */

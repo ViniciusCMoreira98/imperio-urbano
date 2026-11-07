@@ -23,13 +23,13 @@ class SessionController {
     record SessionResponse(String playerId, String nickname, String token) {
     }
 
-    record PlayerResponse(String playerId, String nickname, boolean google, String email) {
+    record PlayerResponse(String playerId, String nickname, boolean google, String email, String photoUrl) {
     }
 
     record GoogleRequest(String credential) {
     }
 
-    record GoogleResponse(String playerId, String nickname, String token, String outcome, String email) {
+    record GoogleResponse(String playerId, String nickname, String token, String outcome, String email, String photoUrl) {
     }
 
     /** Configuração pública do login: o Client ID do Google (nulo = botão escondido). */
@@ -54,7 +54,7 @@ class SessionController {
     @GetMapping("/me")
     PlayerResponse me(@AuthenticationPrincipal GuestPrincipal player) {
         GuestSessionService.Account account = sessions.account(player.playerId());
-        return new PlayerResponse(player.playerId(), player.nickname(), account.google(), account.email());
+        return new PlayerResponse(player.playerId(), player.nickname(), account.google(), account.email(), account.photoUrl());
     }
 
     @GetMapping("/config")
@@ -70,7 +70,7 @@ class SessionController {
     GoogleResponse google(@RequestBody GoogleRequest request, @AuthenticationPrincipal GuestPrincipal current) {
         GuestSessionService.GoogleSignIn result = sessions.signInWithGoogle(request.credential(), current);
         GuestPrincipal player = result.session().player();
-        return new GoogleResponse(player.playerId(), player.nickname(), result.session().token(), result.outcome(), result.email());
+        return new GoogleResponse(player.playerId(), player.nickname(), result.session().token(), result.outcome(), result.email(), result.photoUrl());
     }
 
     /** Sair neste aparelho. */
