@@ -9,7 +9,7 @@ import { EventLog } from '../hud/EventLog';
 import { PlayersPanel } from '../hud/PlayersPanel';
 import { PropertyDecisionDialog } from '../hud/PropertyDecisionDialog';
 import { PropertyPanel } from '../hud/PropertyPanel';
-import { SoundControl } from '../hud/SoundControl';
+import { SettingsButton } from '../hud/SettingsButton';
 import { RotateDeviceNotice, useAskToRotate } from '../hud/RotateDeviceNotice';
 import { GameConnection } from '../net/gameSocket';
 import { formatCredits } from '../property-card/tileInfo';
@@ -58,7 +58,7 @@ export function GameScreen() {
           <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
             ←<span className="hidden sm:inline"> Menu</span>
           </Button>
-          <SoundControl />
+          <SettingsButton inGame />
           {/* Só no build de desenvolvimento; some do build de produção. */}
           {import.meta.env.DEV && snapshot && <DevDicePanel />}
           {connection !== 'open' && !unavailable && (

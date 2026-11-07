@@ -58,19 +58,6 @@ export function MenuBackground({ children }: { children: ReactNode }) {
   );
 }
 
-export function Logo() {
-  return (
-    <div className="mb-6 text-center">
-      <h1 className="text-4xl font-black tracking-tight text-white drop-shadow-[0_3px_0_#14532d] sm:text-5xl">
-        IMPÉRIO <span className="text-amber-300">URBANO</span>
-      </h1>
-      <p className="mt-1 inline-block rounded-full bg-emerald-700 px-4 py-1 text-sm font-extrabold tracking-widest text-amber-200">
-        EDIÇÃO BRASIL
-      </p>
-    </div>
-  );
-}
-
 export function ErrorText({ message }: { message: string | null }) {
   if (!message) return null;
   return (

@@ -6,6 +6,7 @@
 import { board } from '@imperio/game-data';
 import {boardVisualManifest} from './boardVisualManifest';
 import { type ZoneTile, tileZones } from './board34/buildingZone';
+import { uniformBuildingScale } from './buildings/buildingPresentation';
 const manifest = boardVisualManifest(board.tiles);
 
 /**
@@ -17,6 +18,8 @@ export interface TileArea {
   z: number;
   width: number;
   depth: number;
+  /** Só na faixa de construções: escala única das construções, igual em todas as casas. */
+  scale?: number;
 }
 
 /**
@@ -69,6 +72,10 @@ const anchors: TileAnchor[] = board.tiles.map((tile) => {
     polygon: art.polygon.map(([x, , z]) => [x, z]),
   };
 });
+
+// Mesma proporção das construções em todos os estados: a escala única do tabuleiro.
+const buildingScale = uniformBuildingScale(anchors.flatMap((a) => (a.buildingArea ? [a.buildingArea] : [])));
+for (const a of anchors) if (a.buildingArea) a.buildingArea.scale = buildingScale;
 
 const indexById = new Map(board.tiles.map((t) => [t.id, t.index]));
 

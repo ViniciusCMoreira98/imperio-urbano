@@ -48,12 +48,20 @@ function loadAll(ctx: AudioContext): Promise<void> {
   return loading;
 }
 
+/** Quem precisa saber que o áudio foi liberado (a música do menu começa no primeiro gesto). */
+const unlockListeners = new Set<(ctx: AudioContext) => void>();
+export function onAudioUnlocked(listener: (ctx: AudioContext) => void): () => void {
+  unlockListeners.add(listener);
+  if (context?.state === 'running') listener(context);
+  return () => unlockListeners.delete(listener);
+}
+
 /** Libera o áudio no primeiro gesto do jogador (menus incluídos) e já carrega as faixas. */
 function installAudioUnlock(): void {
   const unlock = () => {
     const ctx = ensureContext();
     if (!ctx) return;
-    void ctx.resume();
+    void ctx.resume().then(() => unlockListeners.forEach((listener) => listener(ctx)));
     void loadAll(ctx);
   };
   const events = ['pointerdown', 'keydown', 'touchend'] as const;

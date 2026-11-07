@@ -4,7 +4,7 @@ import layout from './layout.json';
 import { tileAnchor } from '../layout';
 import { PAWN_RADIUS, pawnSpots } from '../pawnLayout';
 import { propertyBuildingPlacement } from '../buildings/buildingPresentation';
-import { LYING_NAME_END, UPRIGHT_NAME_END, type ZoneTile, buildingPanelBox, buildingZone, panelBoxCorners } from './buildingZone';
+import { LYING_NAME_END, UPRIGHT_NAME_END, type ZoneTile, buildingPanelBox, buildingZone, panelBoxCorners, rentPlaqueWorld } from './buildingZone';
 
 const properties = layout.tiles.filter((t) => t.type === 'PROPERTY') as unknown as (ZoneTile & { id: string })[];
 
@@ -36,15 +36,35 @@ describe('construções no tabuleiro de 34 casas', () => {
       const quad = panelBoxCorners(tile, buildingPanelBox(tile.panel));
       const zone = buildingZone(tile);
       const index = board.tiles.find((t) => t.id === tile.id)!.index;
-      expect(tileAnchor(index).buildingArea).toEqual(zone);
+      const area = tileAnchor(index).buildingArea!;
+      expect(area).toMatchObject(zone);
       for (let level = 0; level <= 5; level++) {
-        const b = propertyBuildingPlacement(zone, level)!;
+        const b = propertyBuildingPlacement(area, level)!;
         expect(b, `${tile.id} nível ${level}`).not.toBeNull();
         for (const sx of [-1, 1])
           for (const sz of [-1, 1]) expect(inside(quad, b.x + (sx * b.width) / 2, b.z + (sz * b.depth) / 2), `${tile.id} nível ${level}`).toBe(true);
         // Tamanho que ainda se enxerga na mesa.
-        expect(Math.min(b.width, b.depth), tile.id).toBeGreaterThan(0.25);
+        expect(Math.min(b.width, b.depth), tile.id).toBeGreaterThan(0.2);
       }
+    }
+  });
+
+  it('as construções têm a mesma proporção em todos os estados', () => {
+    for (let level = 0; level <= 5; level++) {
+      const scales = properties.map((tile) => {
+        const index = board.tiles.find((t) => t.id === tile.id)!.index;
+        return propertyBuildingPlacement(tileAnchor(index).buildingArea!, level)!.scale;
+      });
+      for (const scale of scales) expect(scale).toBeCloseTo(scales[0], 9);
+    }
+  });
+
+  it('a placa de aluguel no mundo, onde a etiqueta por cima é desenhada, fica dentro da própria casa', () => {
+    for (const tile of properties) {
+      const quad = rentPlaqueWorld(tile);
+      expect(quad, tile.id).toHaveLength(4);
+      const polygon = tile.polygon.map(([x, , z]) => [x, z] as [number, number]);
+      for (const [x, z] of quad) expect(inside(polygon, x, z), tile.id).toBe(true);
     }
   });
 

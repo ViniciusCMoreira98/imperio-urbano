@@ -118,3 +118,19 @@ export function tileZones(tile: ZoneTile, pawnArea: Area): { building: Area; paw
     building.z < 0 ? [building.z + building.depth / 2 + PAWN_GAP, zMax] : [zMin, building.z - building.depth / 2 - PAWN_GAP];
   return { building, pawns: { x: pawnArea.x, width: pawnArea.width, z: (from + to) / 2, depth: to - from } };
 }
+
+type Point = [number, number];
+
+/** Placa de aluguel da casa no mundo (x, z), a partir do retângulo dela no painel. */
+export function rentPlaqueWorld(tile: ZoneTile): Point[] {
+  const rent = tile.panel.rent;
+  if (!rent) return [];
+  const world = pixelToWorld(tile);
+  const { width, height } = tile.panel;
+  return [
+    [rent.x, rent.y],
+    [rent.x + rent.width, rent.y],
+    [rent.x + rent.width, rent.y + rent.height],
+    [rent.x, rent.y + rent.height],
+  ].map(([x, y]) => world(...panelPoint(tile.panel, x / width, y / height)));
+}
