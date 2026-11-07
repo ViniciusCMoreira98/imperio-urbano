@@ -1,5 +1,21 @@
 # Orientações e pendências para o Claude Code
 
+## Publicação da C10 (06/11/2026)
+
+Commit e merge/publicação na develop solicitados pelo usuário. Inclui o relevo da sede, o selo e comparação de aluguéis no modal, integração visual, prévias, testes e documentação. Os identificadores ficam no histórico Git. As alterações da engenharia posteriores à base 3b21774 são preservadas na integração.
+
+## C10 — sede olímpica: entrega concluída (06/11/2026)
+
+**Estado: implementado e validado localmente na develop_arte_3d, sobre 3b21774.** Destaque em louros dourados de baixo-relevo com incrustação verde, acompanhando o contorno arredondado real do estado. Sem tocha alta, painel opaco ou selo de multiplicador no tabuleiro. Altura máxima de 0,031 unidade; geometria confinada à faixa de borda até 0,054 para dentro, sem entrar nas áreas de apoio das construções/personagens. O filete dourado ajusta a largura entre 0,55 e 1,4 px pela altura da tela, para manter a placa de aluguel livre no celular. Dois meshes reunidos e uma linha; sem textura/luz nova; pulso suave respeita alterações de prefers-reduced-motion.
+
+**Contrato para Claude — já integrado:** `OlympicHost({placement, contour?})` preserva placement e recebe opcionalmente o contorno local. `Pieces.tsx` já fornece `olympicLocalContour(anchor)`; não voltar à aproximação retangular quando há polygon. O dono continua marcado no contorno externo. A geometria não captura raycast de seleção. Câmera, manifesto, âncoras, personagens e GLBs das construções foram preservados.
+
+O modal ganhou o selo `Sede das Olimpíadas ×N` e edição, com chama SVG autoral. `PropertyEvolutionPanel` aceita `olympics?: {multiplier:number; edition:number; label:string}`; `PropertyEvolutionStage.baseRentLabel?: string` contém o aluguel sem bônus. `game/propertyDecision.ts` já fornece as bases do catálogo e mantém rentLabel pela regra existente; `PropertyDecisionDialog.tsx` já passa as props e remove a frase redundante. Nos seis níveis aparece o valor original riscado e o aluguel com bônus destacado, inclusive no nível atual. Compra, construção e consulta contempladas. Nenhum cálculo financeiro foi transferido para a arte, e nenhuma regra do servidor foi alterada.
+
+**Validação:** **141 testes, TypeScript e build aprovados**. Geometria dos 26 estados testada com margem para vizinhos/áreas de apoio. Prévia real 3D: RN/AC/PB/MA, hotel e quatro personagens, em 1280×720 e 844×390; auditoria de 18 pontos de nome/aluguel em cada combinação usando as geometrias reais, incluindo o filete, sem interseção; movimento reduzido/retomada conferidos. Modal: três modos × quatro telas, ×2/×10, hotel, nome longo e estado sem sede. Partida conectada com API/banco locais, dado de desenvolvedor, compra e sede via comandos oficiais: seis pares de aluguel conferidos após clique no estado em 1280×720 e 844×390. O ajuste final da espessura do filete foi novamente conferido na prévia 3D.
+
+Guia, capturas e relatórios em `assets/3d/reviews/c10/`. Roteiros `scripts/assets/c10-board-qa.mjs`, `c10-modal-qa.mjs`, `c10-connected-qa.mjs`. Credenciais de QA apenas no staging ignorado pelo Git. Procedural 3D e SVG originais do projeto, sem Meshy ou consumo de créditos. Sem medição de GPU em celular físico. Os serviços locais de QA são encerrados ao concluir. Commit e merge/publicação desta entrega solicitados posteriormente pelo usuário. Integração das regras das seis cartas de evento permanece separada com a engenharia.
+
 ## Publicação das cartas de evento (06/11/2026)
 
 Commit e merge/publicação na develop solicitados pelo usuário. A versão vigente é a **v5 brasileira**, com seis cartas passivas: sem botões, seletores ou temporizador; Claude controla o tempo e a escolha no tabuleiro. Inclui componente visual, assets, fontes, histórico de refinamentos, guias e prévias. Os registros anteriores de “sem commit/merge” são históricos. As regras dos seis eventos e a integração à partida continuam pendentes da engenharia. Identificadores finais da publicação no histórico Git.

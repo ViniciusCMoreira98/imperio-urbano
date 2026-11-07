@@ -157,3 +157,15 @@ describe('aluguel da sede olímpica', () => {
     expect(olympicRent(game({ properties: [owned(2)] }), ap, 2)).toBeNull();
   });
 });
+
+
+describe('C10 — origem do aluguel nas seis etapas',()=>{
+ const brl=(n:number)=>`R$ ${n.toLocaleString('pt-BR')}`;
+ it('preserva base e aluguel multiplicado na consulta de sede, sem alterar outras propriedades',()=>{
+  const snap=game({properties:[owned(2)],olympics:{edition:3,hostStateId:'AP',hostPlayerId:'ana',multiplier:10}});
+  const tile=board.tiles.find(t=>t.stateId==='AP')!;const decision=viewDecision(snap,'ana',tile.index)!;
+  const base=[ap.rent.base,ap.rent.house1,ap.rent.house2,ap.rent.house3,ap.rent.house4,ap.rent.hotel];
+  decision.stages.forEach((stage,i)=>{expect(stage.baseRentLabel).toBe(brl(base[i]));expect(stage.rentLabel).toBe(brl(base[i]*10));});
+  const plain=viewDecision(game({properties:[owned(2)]}),'ana',tile.index)!;expect(plain.stages.every(s=>s.baseRentLabel===undefined)).toBe(true);
+ });
+});

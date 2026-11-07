@@ -101,8 +101,8 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
   else if (decide && rejection && sentAt !== null) message = rejection;
   else if (decide) {
     const balance = me ? `Seu saldo: ${formatCredits(me.credits)}` : '';
-    message = olympics ? `${olympics.summary} Os aluguéis acima já incluem o ×${olympics.multiplier}. ${balance}`.trim() : balance || undefined;
-  } else message = olympics?.summary ?? (!decision.property?.ownerId ? `Disponível para compra por ${formatCredits(definition.price)}.` : undefined);
+    message = balance || undefined;
+  } else message = !decision.property?.ownerId ? `Disponível para compra por ${formatCredits(definition.price)}.` : undefined;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/65 backdrop-blur-[2px]" onClick={decide ? undefined : clearSelection}>
@@ -128,6 +128,7 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
             mode={decision.mode}
             owner={owner ? {name: `${owner.nickname}${owner.id === myId ? ' (você)' : ''}`,color: PAWN_COLORS[owner.pawnColor].hex,portrait: <AvatarPortrait avatarId={owner.avatarId}/>} : null}
             stages={decision.stages}
+            olympics={olympics ? {multiplier: olympics.multiplier, edition: olympics.edition, label: `Sede das Olimpíadas ×${olympics.multiplier}`} : undefined}
             selectedLevel={selected}
             costLabel={decide && selected !== null ? formatCredits(costFor(decision, selected)) : '—'}
             newRentLabel={target >= 0 ? formatCredits(rentAt(snapshot, definition, target)) : '—'}

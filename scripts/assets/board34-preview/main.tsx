@@ -5,15 +5,18 @@ import{AvatarFigure}from'../../../apps/web/src/avatars/AvatarFigure';import{Play
 import{PropertyBuildingModel}from'../../../apps/web/src/board/BuildingModels';import{propertyBuildingPlacement}from'../../../apps/web/src/board/buildings/buildingPresentation';
 import{tileAnchor}from'../../../apps/web/src/board/layout';import{PAWN_SCALE,pawnSpots}from'../../../apps/web/src/board/pawnLayout';
 import{formatCredits}from'../../../apps/web/src/property-card/tileInfo';
+import{OlympicHost}from'../../../apps/web/src/board/OlympicHost';
+import{olympicLocalContour}from'../../../apps/web/src/board/olympicPresentation';
 import './preview.css';
 function InspectionPieces({tileId,count,level}:{tileId:string;count:number;level:number}){
  const tile=board34Layout.tiles.find(t=>t.id===tileId)!;const a=tileAnchor(tile.index);
  const pawns=Array.from({length:count},(_,seat)=>({id:`inspection-${seat}`,position:tile.index,seat})),spots=pawnSpots(pawns);
  const colors=['#a264e6','#479cec','#51c280','#e65b71'],avatars=['avatar-1','avatar-2','avatar-3','avatar-4']as const;
- const b=propertyBuildingPlacement(a.buildingArea,level);
+ const b=propertyBuildingPlacement(a.buildingArea,level);const olympics=new URLSearchParams(location.search).has('olympics');
  return <>
  {pawns.map((pawn,i)=>{const spot=spots.get(pawn.id)!;return <group name={`INSPECTION_PAWN_${i}`} key={i} position={[spot.x,spot.y,spot.z]} scale={PAWN_SCALE}><PlayerBase color={colors[i]} active={false}/><AvatarFigure avatarId={avatars[i]} color={colors[i]}/></group>;})}
  <group name="INSPECTION_BUILDINGS" position={[a.x,a.surfaceY,a.z]} rotation={[0,a.rotationY,0]}>{b&&<group position={[b.x,0,b.z]}><PropertyBuildingModel level={b.level} color="#9c72d6" scale={b.scale}/></group>}</group>
+ {olympics&&tile.type==='PROPERTY'&&<group position={[a.x,a.surfaceY,a.z]} rotation={[0,a.rotationY,0]}><OlympicHost placement={{...a,isCorner:false}} contour={olympicLocalContour(a)}/></group>}
  </>;
 }
 function Preview(){

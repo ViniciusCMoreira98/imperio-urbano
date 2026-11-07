@@ -1,0 +1,70 @@
+{
+  "screens": [
+    {
+      "mode": "view",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "mode": "build",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "mode": "purchase",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "mode": "view",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "mode": "build",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "mode": "purchase",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "mode": "view",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "mode": "build",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "mode": "purchase",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "mode": "view",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "mode": "build",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "mode": "purchase",
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "threeModes": true,
+  "sixBaseAndMultipliedRents": true,
+  "x2AndX10": true,
+  "hotelAndLongName": true,
+  "nonHostUnchanged": true,
+  "errors": []
+}

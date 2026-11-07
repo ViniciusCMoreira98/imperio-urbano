@@ -97,7 +97,7 @@ export function olympicRent(snapshot: GameSnapshot, definition: StateDefinition,
 }
 
 function stage(snapshot: GameSnapshot, definition: StateDefinition, level: (typeof LEVELS)[number], status: PropertyEvolutionStage['status'], note?: string): PropertyEvolutionStage {
-  return { level, label: STAGE_LABELS[level], rentLabel: formatCredits(rentAt(snapshot, definition, level)), status, ...(note ? { note } : {}) };
+  return { level, label: STAGE_LABELS[level], rentLabel: formatCredits(rentAt(snapshot, definition, level)), ...(snapshot.olympics.hostStateId === definition.id ? { baseRentLabel: formatCredits([definition.rent.base, definition.rent.house1, definition.rent.house2, definition.rent.house3, definition.rent.house4, definition.rent.hotel][level]) } : {}), status, ...(note ? { note } : {}) };
 }
 
 /** Na compra: terreno ou terreno com 1 a 3 casas, até onde o saldo paga. Casa 4 e hotel ficam para outras visitas. */
