@@ -12,6 +12,7 @@ import playersIcon from '../main-menu/art/players-v1.svg';
 import laurelLeft from '../main-menu/art/laurel-left-v1.svg';
 import laurelRight from '../main-menu/art/laurel-right-v1.svg';
 import { playSound } from '../audio/audio';
+import { setMenuMusic } from '../audio/music';
 import { SettingsButton } from '../hud/SettingsButton';
 import { api, ApiError } from '../net/api';
 import { loadLastSession } from '../net/session';
@@ -27,6 +28,11 @@ type Sheet = 'create' | 'join' | 'games' | null;
 
 export function MenuScreen() {
   const session = useAppStore((s) => s.session);
+  // Música do menu inicial enquanto esta tela está aberta.
+  useEffect(() => {
+    setMenuMusic(true);
+    return () => setMenuMusic(false);
+  }, []);
   return (
     <main className="menu-scene" style={{ backgroundImage: `url(${backgroundArt})` }}>
       <div className="menu-top">

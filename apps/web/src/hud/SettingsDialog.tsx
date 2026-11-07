@@ -1,5 +1,5 @@
 // Configurações com a arte do kit do Codex (settings-art). Só aparece o que o jogo já tem (decisão do
-// usuário, 06/11/2026): Som (volume e mudo dos efeitos) e, fora da partida, Conta (apelido). Música,
+// usuário, 06/11/2026): Som (música do menu, efeitos e mudo) e, fora da partida, Conta (apelido).
 // FPS, idioma, conta vinculada etc. entram quando existirem.
 // O som vale na hora e fica lembrado neste navegador (audioStore); não há "Salvar".
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
@@ -16,9 +16,6 @@ import logoutIcon from '../settings-art/art/logout-v1.svg';
 import { playSound } from '../audio/audio';
 import { useAudioStore } from '../audio/audioStore';
 import { useAppStore } from '../store/appStore';
-
-/** Volume inicial dos efeitos (o mesmo do audioStore sem nada salvo). */
-const DEFAULT_VOLUME = 0.8;
 
 type Tab = 'sound' | 'account';
 const TABS: { id: Tab; label: string; icon: string }[] = [
@@ -97,7 +94,7 @@ export function SettingsDialog({ open, onClose, inGame }: { open: boolean; onClo
           </div>
           <footer className="st-footer">
             {current === 'sound' && (
-              <button type="button" className="st-button" onClick={() => useAudioStore.getState().setVolume(DEFAULT_VOLUME)}>
+              <button type="button" className="st-button" onClick={() => useAudioStore.getState().reset()}>
                 <img src={resetIcon} alt="" />
                 Restaurar padrão
               </button>
@@ -115,13 +112,11 @@ export function SettingsDialog({ open, onClose, inGame }: { open: boolean; onClo
 
 function SoundTab() {
   const volume = useAudioStore((s) => s.volume);
+  const musicVolume = useAudioStore((s) => s.musicVolume);
   const muted = useAudioStore((s) => s.muted);
   const setVolume = useAudioStore((s) => s.setVolume);
+  const setMusicVolume = useAudioStore((s) => s.setMusicVolume);
   const toggleMute = useAudioStore((s) => s.toggleMute);
-  const percent = Math.round(volume * 100);
-  const shown = muted ? 0 : percent;
-  // Ao soltar o controle, um toque curto mostra como ficou.
-  const preview = () => playSound('confirmarAcao');
   return (
     <>
       <section className="st-card">
@@ -130,24 +125,10 @@ function SoundTab() {
           VOLUME
         </h2>
         <div className="st-fields">
-          <label className="st-row st-volume">
-            <span>Efeitos sonoros</span>
-            <input
-              className="st-range"
-              type="range"
-              min={0}
-              max={100}
-              step={5}
-              value={shown}
-              style={{ '--fill': `${shown}%` } as CSSProperties}
-              aria-label="Efeitos sonoros"
-              aria-valuetext={muted ? 'mudo' : `${percent}%`}
-              onChange={(e) => setVolume(Number(e.target.value) / 100)}
-              onPointerUp={preview}
-              onKeyUp={preview}
-            />
-            <output>{muted ? 'mudo' : `${percent}%`}</output>
-          </label>
+          {/* A música toca no menu inicial; mexer nela ali já mostra como ficou. */}
+          <VolumeRow label="Música" value={musicVolume} muted={muted} onChange={setMusicVolume} />
+          {/* Ao soltar o controle dos efeitos, um toque curto mostra como ficou. */}
+          <VolumeRow label="Efeitos sonoros" value={volume} muted={muted} onChange={setVolume} onRelease={() => playSound('confirmarAcao')} />
         </div>
       </section>
       <section className="st-card">
@@ -163,8 +144,8 @@ function SoundTab() {
               type="checkbox"
               checked={muted}
               onChange={() => {
-                // Tirar do mudo com o volume em zero volta a um nível audível.
-                if (muted && volume === 0) setVolume(0.5);
+                // Tirar do mudo com os volumes em zero volta a um nível audível.
+                if (muted && volume === 0 && musicVolume === 0) setVolume(0.5);
                 else toggleMute();
               }}
             />
@@ -172,6 +153,32 @@ function SoundTab() {
         </div>
       </section>
     </>
+  );
+}
+
+function VolumeRow({ label, value, muted, onChange, onRelease }: { label: string; value: number; muted: boolean; onChange: (value: number) => void; onRelease?: () => void }) {
+  const percent = Math.round(value * 100);
+  const shown = muted ? 0 : percent;
+  const text = muted ? 'mudo' : `${percent}%`;
+  return (
+    <label className="st-row st-volume">
+      <span>{label}</span>
+      <input
+        className="st-range"
+        type="range"
+        min={0}
+        max={100}
+        step={5}
+        value={shown}
+        style={{ '--fill': `${shown}%` } as CSSProperties}
+        aria-label={label}
+        aria-valuetext={text}
+        onChange={(e) => onChange(Number(e.target.value) / 100)}
+        onPointerUp={onRelease}
+        onKeyUp={onRelease}
+      />
+      <output>{text}</output>
+    </label>
   );
 }
 

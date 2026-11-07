@@ -1,4 +1,5 @@
-// Catálogo de efeitos sonoros (faixas do ElevenLabs em public/audio). Um som sem arquivo fica mudo
+// Catálogo de efeitos sonoros (faixas do ElevenLabs em public/audio; origem e licença em
+// assets/audio/LICENCAS.md). Um som sem arquivo fica mudo
 // até a faixa chegar; trocar uma faixa é só mudar o caminho aqui.
 
 export type SoundId =
