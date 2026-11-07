@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "prompt": "assets/eventos/aluguel-zero-prompt.json",
+  "source": "assets/eventos/source/aluguel-zero-v1.png",
+  "file": "apps/web/src/event-art/art/aluguel-zero-v1.webp",
+  "width": 1280,
+  "height": 853,
+  "sourceBytes": 2619704,
+  "bytes": 292842,
+  "sha256": "4a48e02cc3a447c8add0b2c57ff99414e0a2ca5df92ad5b65f6ef0856f3297cf",
+  "sourceSha256": "70a81c29a3bd08b3fb0d10e3881114be5f5d66c5d18c7a7da229aac5c803161b",
+  "encoder": "Chromium 141.0.7390.37 WebP quality 92",
+  "meshyCredits": 0
+}
