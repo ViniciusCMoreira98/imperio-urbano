@@ -16,7 +16,7 @@ import { playSound } from '../audio/audio';
 import { setMenuMusic } from '../audio/music';
 import { AvatarPortrait } from '../hud/AvatarPortrait';
 import { SettingsButton } from '../hud/SettingsButton';
-import { OnlinePlayScreen } from '../play-menu/PlayEntryScreens';
+import { OnlineRoomEntryScreen as OnlinePlayScreen } from '../play-menu/PlayEntryScreens';
 import { api, ApiError } from '../net/api';
 import { useWallet } from '../net/useWallet';
 import { CurrencyMenuCard, PlayerMenuCard } from '../play-menu/MenuCards';

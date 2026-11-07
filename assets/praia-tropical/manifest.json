@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "prompt": "assets/praia-tropical/prompt.json",
+  "source": "assets/praia-tropical/source/beach-environment-v1.png",
+  "file": "apps/web/src/board/board34/art/beach-environment-v1.webp",
+  "width": 1672,
+  "height": 941,
+  "sourceBytes": 2474246,
+  "bytes": 439518,
+  "sha256": "e1a0a16c7b12315f6300c8fb1dfa93b112264a9f9e42b9fb708a82469120bf69",
+  "sourceSha256": "542b78b7dffd12763f34927938b4e62522bb3d57f86d445ec7d7f4721e14afb8",
+  "encoder": "Chromium 141.0.7390.37 WebP quality 92",
+  "meshyCredits": 0
+}

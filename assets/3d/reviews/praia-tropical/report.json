@@ -1,0 +1,66 @@
+{
+  "screens": [
+    {
+      "width": 1672,
+      "height": 941,
+      "tiles": 34,
+      "repeat": [
+        1,
+        0.9994686503719449
+      ],
+      "offset": [
+        0,
+        0.0002656748140275611
+      ],
+      "oldDecor": false,
+      "shadow": true,
+      "gain": 1.0945454545454545,
+      "allTilesInside": true,
+      "canvasHeight": 720,
+      "clicks": 4
+    },
+    {
+      "width": 1672,
+      "height": 941,
+      "tiles": 34,
+      "repeat": [
+        1,
+        0.8210484963561
+      ],
+      "offset": [
+        0,
+        0.08947575182195
+      ],
+      "oldDecor": false,
+      "shadow": true,
+      "gain": 1.4454545454545455,
+      "allTilesInside": true,
+      "canvasHeight": 390,
+      "clicks": 4
+    },
+    {
+      "width": 1672,
+      "height": 941,
+      "tiles": 34,
+      "repeat": [
+        1,
+        0.9989691657890503
+      ],
+      "offset": [
+        0,
+        0.0005154171054748691
+      ],
+      "oldDecor": false,
+      "shadow": true,
+      "gain": 1.4780487804878049,
+      "allTilesInside": true,
+      "canvasHeight": 375,
+      "clicks": 4
+    }
+  ],
+  "defaultWoodPreserved": true,
+  "realBoard": true,
+  "noBackend": true,
+  "errors": [],
+  "failed": []
+}
