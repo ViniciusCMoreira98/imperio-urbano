@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { rules } from '@imperio/game-data';
 import { endedByClock, finalRanking, prizeShare } from '../game/finalRanking';
 import { modeName } from '../game/modes';
@@ -8,6 +8,11 @@ import { formatCredits } from '../property-card/tileInfo';
 import { useGameStore } from '../store/gameStore';
 import { Button } from '../ui/ui';
 import { LeaderCrown, PlayerPortrait } from './AvatarPortrait';
+import trophy from './art/game-over/trophy-v1.webp';
+import clockIcon from './art/game-over/clock-v1.svg';
+import finishIcon from './art/game-over/finish-v1.svg';
+import exitIcon from './art/game-over/exit-v1.svg';
+import coinIcon from '../main-menu/art/coin-v1.svg';
 import './gameOver.css';
 
 /**
@@ -47,19 +52,22 @@ export function GameOverScreen({ myId, token, gameId, onLeave }: { myId: string;
 
   return (
     <div className="go-backdrop" role="dialog" aria-modal="true" aria-labelledby="go-title">
-      <section className="go-card hud-panel">
+      <section className="go-card" data-outcome={abandoned ? 'abandoned' : iWon ? winners.length > 1 ? 'tie' : 'victory' : 'placed'}>
+        {iWon && <div className="go-confetti" aria-hidden="true">{Array.from({length:18},(_,i)=><i key={i} style={{left:`${(i*37)%100}%`,top:`${(i*19)%60}%`,rotate:`${(i*31)%180}deg`,background:['#f4d16b','#6fdca6','#7bbde7'][i%3],animationDelay:`${i*.055}s`}}/>)}</div>}
         <header className="go-head">
-          <span className="go-icon" aria-hidden>{abandoned ? '🚪' : byClock ? '⏱️' : '🏆'}</span>
+          <span className="go-icon" aria-hidden="true"><img src={abandoned ? exitIcon : byClock ? clockIcon : finishIcon} alt=""/></span>
           <div>
+            <span className="go-eyebrow">IMPÉRIO URBANO · RESULTADO</span>
             <h2 id="go-title" className="go-title">{title}</h2>
             <p className="go-sub">{subtitle}</p>
           </div>
+          {iWon && <img className="go-trophy" src={trophy} alt="" aria-hidden="true"/>}
         </header>
 
         {!abandoned && (
           <p className="go-result">
             {iWon ? (
-              <strong>{winners.length > 1 ? `Empate! Você divide a vitória com ${others}.` : 'Você venceu! 🎉'}</strong>
+              <strong>{winners.length > 1 ? `Empate! Você divide a vitória com ${others}.` : 'Você venceu!'}</strong>
             ) : (
               <span>
                 <strong>{names}</strong> {winners.length > 1 ? 'empataram e venceram.' : 'venceu.'}
@@ -68,17 +76,18 @@ export function GameOverScreen({ myId, token, gameId, onLeave }: { myId: string;
             )}
             {share > 0 && (
               <span className="go-prize">
-                {iWon ? 'Você leva' : winners.length > 1 ? 'Cada vencedor leva' : 'Prêmio'}: 🪙 {share.toLocaleString('pt-BR')}
+                <span>{iWon ? 'Você leva' : winners.length > 1 ? 'Cada vencedor leva' : 'Prêmio'}:</span> <img src={coinIcon} alt="moedas"/> <strong>{share.toLocaleString('pt-BR')}</strong>
               </span>
             )}
           </p>
         )}
 
+        <div className="go-ranking-label" aria-hidden="true"><span>CLASSIFICAÇÃO FINAL</span><span>{ranking.length} jogadores</span></div>
         <ol className="go-list" aria-label="Classificação final">
           {ranking.map((r) => {
             const color = PAWN_COLORS[r.player.pawnColor].hex;
             return (
-              <li key={r.player.id} className={`go-row${r.winner ? ' go-winner' : ''}${r.player.bankrupt ? ' go-bankrupt' : ''}`} style={{ borderColor: color }}>
+              <li key={r.player.id} className={`go-row${r.winner ? ' go-winner' : ''}${r.player.bankrupt ? ' go-bankrupt' : ''}`} style={{ borderColor: color,'--go-player-color':color } as CSSProperties}>
                 <span className="go-place">{r.place}º</span>
                 <span className="go-avatar" style={{ background: `${color}55`, boxShadow: `0 0 0 2px ${color}` }}>
                   <PlayerPortrait avatarId={r.player.avatarId} photoUrl={r.player.photoUrl} />
@@ -86,7 +95,7 @@ export function GameOverScreen({ myId, token, gameId, onLeave }: { myId: string;
                 </span>
                 <span className="go-name">
                   <span className="go-nick">
-                    {r.player.nickname}
+                    <span className="go-player-name" title={r.player.nickname}>{r.player.nickname}</span>
                     {r.player.id === myId && <small> (você)</small>}
                   </span>
                   <small className="go-detail">
@@ -104,7 +113,7 @@ export function GameOverScreen({ myId, token, gameId, onLeave }: { myId: string;
 
         <footer className="go-foot">
           <span className="go-mode">{modeName(snapshot.mode)} · {snapshot.round} rodada(s)</span>
-          <Button variant="primary" onClick={onLeave}>
+          <Button variant="primary" className="go-menu-button" onClick={onLeave}>
             Voltar ao menu
           </Button>
         </footer>

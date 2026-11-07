@@ -880,6 +880,42 @@
       "bytes": 93002
     },
     {
+      "file": "apps/web/src/hud/art/game-over/clock-v1.svg",
+      "provider": "Imperio Urbano original SVG artwork",
+      "license": "Project original vector artwork",
+      "evidence": "assets/game-over/manifest.json",
+      "commercialUse": true,
+      "sha256": "216c0b63aa84b208d797dbd06c0f8d43e53b35f62714b198e33dc90578c47610",
+      "bytes": 717
+    },
+    {
+      "file": "apps/web/src/hud/art/game-over/exit-v1.svg",
+      "provider": "Imperio Urbano original SVG artwork",
+      "license": "Project original vector artwork",
+      "evidence": "assets/game-over/manifest.json",
+      "commercialUse": true,
+      "sha256": "36416790ce644b110130342e999665778c26b10fe8b5bd832839dcffebaedbf6",
+      "bytes": 483
+    },
+    {
+      "file": "apps/web/src/hud/art/game-over/finish-v1.svg",
+      "provider": "Imperio Urbano original SVG artwork",
+      "license": "Project original vector artwork",
+      "evidence": "assets/game-over/manifest.json",
+      "commercialUse": true,
+      "sha256": "0a2fd63933b16ac7c076025a71b096541ed933802423aebe4274603079da6495",
+      "bytes": 638
+    },
+    {
+      "file": "apps/web/src/hud/art/game-over/trophy-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/game-over/manifest.json",
+      "commercialUse": true,
+      "sha256": "2c1fa758b64c0a69fc54070a251ad7132240755e5981ef3adadbfab217c3e99b",
+      "bytes": 69572
+    },
+    {
       "file": "apps/web/src/main-menu/art/background-v1.webp",
       "provider": "OpenAI image_gen built-in",
       "license": "OpenAI generated output, project ownership under service terms",

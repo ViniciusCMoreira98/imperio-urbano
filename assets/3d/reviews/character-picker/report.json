@@ -1,0 +1,37 @@
+{
+  "screens": [
+    {
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "width": 844,
+      "height": 390
+    },
+    {
+      "width": 800,
+      "height": 360
+    },
+    {
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "realComponentAndModels": true,
+  "avatars": 5,
+  "colors": 6,
+  "allSelections": true,
+  "saveCallback": true,
+  "cancelPreservesSavedCharacter": true,
+  "reopenUsesSavedCharacter": true,
+  "escapeCloses": true,
+  "error": true,
+  "pending": true,
+  "noApiRequests": true,
+  "errors": [],
+  "failed": []
+}

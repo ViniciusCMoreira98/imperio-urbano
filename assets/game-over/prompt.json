@@ -1,0 +1,8 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "reference": "None; original artwork from text",
+  "transparentBackground": true,
+  "prompt": "Use case: stylized-concept. Asset type: transparent-background standalone celebration trophy for the original Brazilian casual board game Imperio Urbano, shown in a victory/result modal. Create ONE premium polished 3D cartoon trophy cutout with a beautifully sculpted gold cup, modest gold crown above its rim, two symmetrical gracefully curved handles and small laurel branches framing the lower cup. Emerald-green enamel medallion on the front with a simple embossed golden geometric diamond and blue round jewel evoking Brazilian colors without letters or flags. Short elegant dark emerald pedestal with gold trim, no plaque text. Slight three-quarter front view, compact coherent silhouette, warm gold highlights and rich soft shadows contained within the object. Colorful polished family board-game visual style, not photorealistic. Trophy should remain easily recognizable at 70-120 pixels tall. No floating coins or extra objects, no confetti baked in, no people, no readable lettering or numerals, no logo, no trademark, no stage, no UI/frame, no colored background, no opaque halo or backdrop. Entire trophy and laurels fully visible with comfortable transparent margin. Genuine transparent background and alpha around the silhouette.",
+  "meshyCredits": 0
+}
