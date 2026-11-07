@@ -1,5 +1,65 @@
 # Orientações e pendências para o Claude Code
 
+## Publicação das entregas visuais (07/11/2026)
+
+Commit e integração na develop solicitados pelo usuário: correção do Apagão, ambiente de praia e enquadramento ampliado, proposta da sala de espera e fluxo online em três opções com botões compactos/lista pública. Registros anteriores de “sem commit/merge” descrevem o estado antes desta solicitação. Preservar a integração de carteira/apostas recebida na develop; serviços de salas públicas e ativação dos novos temas/fluxos permanecem conforme os contratos de engenharia. Identificadores finais no histórico Git.
+
+
+## Jogar Online — botões menores (07/11/2026)
+
+Pedido do usuário atendido em `online-menu.css`: três opções centralizadas em largura máxima de 900 px, altura de 220 px por botão no computador, ícones de 58 px e painel de 440 px. Em celular em paisagem: botões de até 145 px, ícones de 34 px e painel de até 260 px. As três rotas e os rótulos foram preservados. Prévia e capturas atualizadas em `assets/3d/reviews/public-rooms/`; QA do fluxo aprovado nas 16 combinações, sem erros. Alteração visual local, sem commit/merge ou créditos.
+
+
+## Jogar Online — três destinos separados (07/11/2026)
+
+**Decisão vigente do usuário; substitui a tela online anterior com criação/convite juntos e botão público dentro do convite.** Menu inicial → Jogar Online abre só três opções: **Criar sala**, **Salas Públicas**, **Salas Privadas**. Criar sala abre exclusivamente Clássico/Rápido e criar; Privadas abre exclusivamente código de convite/entrar; Públicas usa a listagem entregue. Todas retornam à escolha online; a escolha online retorna ao menu inicial. Jogar Agora/LAN permanece separado, com o comportamento anterior.
+
+Implementação visual: `OnlineMenuScreen.tsx` exporta `OnlinePlayScreen` (também reexportado por `PlayEntryScreens.tsx`), com callbacks obrigatórios `onCreateRoom`, `onPublicRooms`, `onPrivateRooms`, além de player, wallet opcional conforme contrato anterior e onBack. `CreateOnlineRoomScreen` e `PrivateRoomsScreen` reutilizam os componentes existentes, exibindo só a seção correspondente. Estado do modo e código pertence ao host. CSS novo `online-menu.css`; retratos, ícones e molduras originais reutilizados, cadeado vetorial próprio. Prévia conectada: `?view=online`, `?view=create-online`, `?view=private`, `?view=rooms`.
+
+**Para Claude:** ligar esses destinos às rotas/estado do host e preservar o fluxo real de lobby. A listagem pública e visibilidade público/privado ainda precisam do serviço descrito na orientação anterior; esta revisão não inventa API ou publica salas privadas. Valores e salas da prévia continuam amostras; não foram criadas salas reais. O usuário pediu manter somente Clássico/Rápido na criação; definição da visibilidade ainda precisa ser contemplada pela engenharia sem confundir esta escolha com os modos da partida.
+
+QA do fluxo em `scripts/assets/public-rooms-qa.mjs`: quatro telas × quatro tamanhos (16 capturas), os três destinos, retorno, modo/criar, código normalizado/entrar, sala lotada, atualização e estados de lista. Capturas/relatório em `assets/3d/reviews/public-rooms/`. Build/TypeScript aprovados. Sem geração raster, créditos Meshy, mudança de produção, commit ou merge.
+
+
+## Jogar Online — botão e salas públicas (07/11/2026)
+
+**Pedido direto atendido no kit visual da develop_arte_3d.** `OnlinePlayScreen` aceita `onBrowseRooms`; quando fornecido, exibe “Entrar em uma sala / Ver salas públicas”. A entrada por convite continua em “Entrar com código”. Jogar Agora/LAN permanece separado. A prévia conecta o botão ao novo `PublicRoomsScreen`, com nome/anfitrião, modo, ocupação, disponibilidade, botão Entrar e Atualizar salas; salas lotadas/indisponíveis não permitem entrada. Estados de carregamento, lista vazia, erro e entrada pendente incluídos. Nenhum asset de imagem novo; identidade do projeto reutilizada.
+
+**Para Claude — integração necessária:** a API atual só cria/entra por convite e lista partidas do próprio jogador; não existe listagem pública nem distinção público/privado. Implementar visibilidade explícita na criação, catálogo autenticado de salas públicas e entrada validada no servidor. Nunca tornar salas privadas existentes públicas automaticamente, nem expor códigos/tokens privados. `PublicRoomCard` em `apps/web/src/play-menu/PublicRoomsScreen.tsx`: id, name, hostName, mode, players, capacity, joinable. `onJoin(roomId)` e `onRefresh` são callbacks, sem API no kit. Validar atomicamente vagas/estado na entrada e tratar sala que lotou/iniciou/sumiu; após sucesso abrir o lobby real. Não inventar ping, XP, moedas ou disponibilidade. Retrato do host não é fabricado: lista usa ícone genérico de jogadores.
+
+Prévia: `/scripts/assets/play-menu-preview/?view=online` → botão → lista, ou `?view=rooms`. Salas são exemplos locais; nenhuma entrada real enviada. Roteiro `scripts/assets/public-rooms-qa.mjs`, capturas/relatório em `assets/3d/reviews/public-rooms/`: duas telas × quatro tamanhos, navegação, entrada por callback, sala lotada, atualizar, vazio, carregamento, erro e pendência. Build e TypeScript conferidos. `MenuScreen`/API de produção não alterados; sem commit/merge ou créditos Meshy.
+
+
+## Sala de espera — proposta de arte (07/11/2026)
+
+Pedido do usuário atendido com a proposta `assets/concepts/sala-de-espera/sala-de-espera-v1.png`, no estilo tropical azul/dourado do menu. Código da sala/copiar, quatro vagas, anfitrião, indicação de pronto, avatar/cor e início pelo anfitrião seguem as funções atuais de `screens/LobbyScreen.tsx`. Nomes, código e estados são exemplos gráficos. Prompt/origem em `assets/concepts/sala-de-espera/provenance.json`; geração pelo image_gen integrado, sem Meshy/créditos.
+
+**Para Claude:** esta entrega é uma proposta raster, não uma tela implementada nem atlas para recortar controles. Na implementação, textos, nomes, código, vagas e pronto devem vir do lobby; usar os retratos/modelos próprios já existentes e controles HTML acessíveis. O retrato 3D desenhado na proposta é ilustrativo, não um GLB novo. “Escolhendo” representa visualmente ainda não pronto; não inventar estado de rede novo. Não alterar capacidade, regras de início, personalização ou transporte para reproduzir a imagem. Adequar ao celular em paisagem e validar o encaixe real. Sem alterações na tela de produção, commit ou merge nesta proposta.
+
+
+## Praia — tabuleiro ampliado na apresentação (07/11/2026)
+
+Pedido do usuário: aumentar o tabuleiro da proposta. A prévia da praia agora usa toda a janela, sem a barra de inspeção, e `Board34Scene` aceita `framing="immersive"`. O enquadramento reduz a reserva superior/inferior para 32/40 px em telas de altura menor que 700 px e 54/64 px nas maiores. A pose, perspectiva e proporções são mantidas; escala e deslocamento de enquadramento são uniformes. No celular 844×390, a ampliação em relação à prévia anterior é de aproximadamente 44%; os recortes das casas continuam inteiros.
+
+**Para Claude:** combinar `environment="beach"` com `framing="immersive"` na integração visual e conferir os painéis reais nas reservas menores. A produção e o enquadramento padrão `standard` não foram alterados. Não confundir a prévia sem HUD com certificação de encaixe dos controles da partida. O host de produção continua responsável pelos controles/landscape. Testes de câmera e dados: 8 aprovados. Conferência visual/cliques no roteiro `scripts/assets/beach-environment-qa.mjs`, com capturas/relatório no mesmo diretório da entrega da praia. Sem nova geração de arte ou consumo de créditos; sem commit/merge.
+
+
+## Ambiente de praia tropical — arte e prévia (07/11/2026)
+
+**Pedido direto atendido na develop_arte_3d, sobre bd145e6.** Proposta aprovada em `assets/concepts/praia-tropical/`; arte limpa em `apps/web/src/board/board34/art/beach-environment-v1.webp` (1672×941, 439.518 bytes). Deque dourado, mar, areia, coqueiros, coco e toalha nas extremidades; nenhum tabuleiro, HUD, texto ou personagem gravado na imagem. Fonte, prompt integral, manifesto e guia em `assets/praia-tropical/`. Geração pelo image_gen integrado; zero créditos Meshy.
+
+**Para Claude:** `Board34Scene` aceita `environment="beach"` e mantém `wood` como padrão. O tema usa fundo proporcional com recorte central, reflexos e receptor transparente das sombras reais. Vaso/caneca/moedas antigos são omitidos nesse tema; sem objetos que interceptem a seleção. Câmera, geometria, IDs, peças, dados e valores preservados. Prévia em `/scripts/assets/board34-preview/?environment=beach`, com modelos e seleção reais, sem backend. A produção permanece no tema anterior até a engenharia ligar a opção no host.
+
+TypeScript e build aprovados. Capturas e relatório da conferência de composição/cliques em `assets/3d/reviews/praia-tropical/`; roteiro `scripts/assets/beach-environment-qa.mjs`. A prévia não certifica desempenho em celular físico nem uma partida conectada. Alterações locais, sem commit/merge nesta entrega.
+
+
+## Apagão — kit alinhado à regra integrada (07/11/2026)
+
+**Pedido atendido na develop_arte_3d, sobre bd145e6.** Em `apps/web/src/event-art/events.json`, o Apagão agora usa `targetKind: opponent-property`; descrição e carta pedem estado de um oponente. Texto curto vigente: “Roubaram os fios! Escolha um estado de um oponente. Sem aluguel até o dono parar nele 3 vezes.” Resumido para caber sem diminuir a letra. Arte, proporções, fluxo passivo, duração controlada pelo host e regras do servidor preservados.
+
+A integração das seis cartas já veio da develop em `ea61b7a`/`bd145e6`; os registros anteriores de integração pendente são históricos. Esta correção só alinha o kit visual. QA das seis cartas em quatro tamanhos: 24 combinações aprovadas, sem texto cortado, controles ou erros; capturas/relatório atualizados em `assets/3d/reviews/event-modals/`. Sem geração de imagem ou créditos Meshy. Alterações locais, sem novo commit/merge nesta correção.
+
+
 ## Jogar Agora/Jogar Online e cards do menu — arte (07/11/2026)
 
 **Estado: componentes e assets concluídos na develop_arte_3d, sobre c1e2c55; commit e integração na develop autorizados em 07/11/2026. Integração de produção com a engenharia.** O usuário pediu as duas telas e os cards de jogador/moedas/diamantes. Esclarecimento explícito: **Jogar Agora = mesma rede local, em aparelhos diferentes; Jogar Online = internet. Não é IA nem jogo no mesmo aparelho.**

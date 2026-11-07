@@ -5,6 +5,7 @@ import{CanvasTexture,Euler,Mesh,MirroredRepeatWrapping,PerspectiveCamera,Plane,P
 import{DecalGeometry}from'three/examples/jsm/geometries/DecalGeometry.js';
 import{RoomEnvironment}from'three/examples/jsm/environments/RoomEnvironment.js';
 import woodUrl from './art/table-wood-v1.png';
+import beachUrl from './art/beach-environment-v1.webp';
 import{applyTabletopCamera}from'../camera/tabletopViewport';
 
 function StudioReflections(){
@@ -26,7 +27,26 @@ function DecorModel({name,position,rotation=0}:{name:'plant'|'mug';position:[num
 function coinTexture(){
  const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d')!;const g=x.createRadialGradient(180,130,20,256,256,260);g.addColorStop(0,'#fff8b2');g.addColorStop(.5,'#f7c54d');g.addColorStop(1,'#aa681b');x.fillStyle=g;x.fillRect(0,0,512,512);x.strokeStyle='#ae731d';x.lineWidth=8;for(const r of[211,231]){x.beginPath();x.arc(256,256,r,0,Math.PI*2);x.stroke();}x.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?70:145,px=256+Math.cos(a)*r,py=256+Math.sin(a)*r;i?x.lineTo(px,py):x.moveTo(px,py);}x.closePath();x.shadowColor='#fff3af';x.shadowOffsetY=4;x.fillStyle='#e8b43f';x.fill();x.stroke();const t=new CanvasTexture(c);t.colorSpace=SRGBColorSpace;return t;
 }
-export function TabletopEnvironment(){
+/** Praia pronta para composição: fundo sem tabuleiro/UI e sombras das peças reais. */
+function BeachEnvironment(){
+ const source=useTexture(beachUrl),{scene,size}=useThree();
+ const texture=useMemo(()=>{const map=source.clone();map.colorSpace=SRGBColorSpace;return map;},[source]);
+ useLayoutEffect(()=>{
+  const image=source.image as HTMLImageElement,aspect=image.width/image.height,screen=size.width/size.height;
+  texture.repeat.set(screen<aspect?screen/aspect:1,screen>aspect?aspect/screen:1);
+  texture.offset.set((1-texture.repeat.x)/2,(1-texture.repeat.y)/2);
+  const previous=scene.background;scene.background=texture;
+  return()=>{scene.background=previous;};
+ },[scene,source,texture,size.width,size.height]);
+ useEffect(()=>()=>texture.dispose(),[texture]);
+ return <group name="TROPICAL_BEACH_ENVIRONMENT"><StudioReflections/>
+  <mesh name="BEACH_CONTACT_SHADOW" position={[0,-.504,0]} rotation={[-Math.PI/2,0,0]} receiveShadow raycast={()=>{}}><planeGeometry args={[120,120]}/><shadowMaterial transparent opacity={.24} depthWrite={false}/></mesh>
+ </group>;
+}
+export function TabletopEnvironment({theme='wood'}:{theme?:'wood'|'beach'}){
+ return theme==='beach'?<BeachEnvironment/>:<WoodTabletopEnvironment/>;
+}
+function WoodTabletopEnvironment(){
  const size=useThree(state=>state.size);
  const decor=useMemo(()=>{
   const camera=new PerspectiveCamera(),fit=applyTabletopCamera(camera,size.width,size.height),offset=Math.max(0,(size.width-1536*fit.scale)/2-36)*.75;

@@ -61,3 +61,11 @@ Com Vite na raiz:
 A prévia original `/scripts/assets/main-menu-preview/` agora navega para as duas telas; Menu retorna a ela. O subtítulo antigo de IA foi substituído por “Mesma rede local” nessa demonstração. A produção não foi renomeada por esse ajuste.
 
 `node scripts/assets/play-menu-qa.mjs` verifica as duas telas em 1536×1024, 1280×720, 1024×768, 844×390 e 667×375: dez combinações, imagens, encaixe, seleção de modo, código normalizado/obrigatório, callbacks locais, espera, erro, nome/saldo longos, dados opcionais ausentes e navegação da prévia do menu. As ações não criam uma partida, não enviam pagamentos e não alteram contas. Relatório e capturas em `assets/3d/reviews/play-menu/`. TypeScript e build conferidos separadamente. Sem nova partida conectada ou teste em aparelhos diferentes da mesma rede nesta entrega visual.
+
+## Salas públicas — 07/11/2026
+
+OnlinePlayScreen aceita onBrowseRooms para abrir PublicRoomsScreen (arquivo ao lado). A tela recebe rooms, onJoin(roomId), onRefresh, onBack, loading, joiningId e error; renderiza somente dados fornecidos pelo host. Prevê salas lotadas/indisponíveis, lista vazia, erro, espera e atualização. Entrada por código permanece disponível; LAN não ganha busca pública. Prévia via ?view=rooms, com exemplos locais. A API atual ainda precisa implementar visibilidade público/privado, descoberta pública e entrada autoritativa, conforme as orientações do Claude. Não publicar salas privadas existentes automaticamente. QA: scripts/assets/public-rooms-qa.mjs; capturas em assets/3d/reviews/public-rooms/.
+
+## Fluxo online vigente: três opções
+
+OnlinePlayScreen agora recebe onCreateRoom, onPublicRooms e onPrivateRooms e apresenta somente os três botões. CreateOnlineRoomScreen mostra apenas criação (Clássico/Rápido); PrivateRoomsScreen mostra apenas entrada por convite. A lista pública segue em PublicRoomsScreen. Rotas de prévia: ?view=online, ?view=create-online, ?view=private, ?view=rooms. Voltar em cada destino leva à escolha online. Esta estrutura substitui a composição online anterior com dois painéis lado a lado. Integração de produção e serviços de salas públicas continuam com a engenharia.
