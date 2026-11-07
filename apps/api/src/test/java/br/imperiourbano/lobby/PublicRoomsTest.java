@@ -71,6 +71,55 @@ class PublicRoomsTest {
     }
 
     @Test
+    void leavingFreesTheSeatListsTheRoomAgainAndDropsItFromMyGames() {
+        GuestPrincipal ana = guest("Ana");
+        LobbyView room = lobby.create(ana, GameMode.CLASSIC, 200, true);
+        GuestPrincipal bia = guest("Bia");
+        lobby.joinPublic(bia, room.gameId());
+
+        lobby.leave(bia, room.gameId());
+
+        assertThat(lobby.activeGames(bia)).extracting(LobbyView::gameId).doesNotContain(room.gameId());
+        assertThat(listedIds(bia)).contains(room.gameId());
+        assertThat(lobby.view(ana, room.gameId()).players()).extracting(LobbyView.Member::nickname).containsExactly("Ana");
+        assertThatThrownBy(() -> lobby.view(bia, room.gameId())).isInstanceOf(LobbyException.class);
+    }
+
+    @Test
+    void whenTheHostLeavesTheNextSeatHostsAndTheLastOneOutClosesTheRoom() {
+        GuestPrincipal ana = guest("Ana");
+        LobbyView room = lobby.create(ana, GameMode.CLASSIC, 200, true);
+        GuestPrincipal bia = guest("Bia");
+        lobby.joinPublic(bia, room.gameId());
+
+        lobby.leave(ana, room.gameId());
+        LobbyView after = lobby.view(bia, room.gameId());
+        assertThat(after.hostPlayerId()).isEqualTo(bia.playerId());
+        assertThat(lobby.publicRooms(guest("Caio")).stream().filter(r -> r.gameId().equals(room.gameId())))
+                .extracting(PublicRoomView::hostName).containsExactly("Bia");
+
+        lobby.leave(bia, room.gameId());
+        assertThat(listedIds(ana)).doesNotContain(room.gameId());
+        assertThatThrownBy(() -> lobby.join(ana, room.inviteCode())).isInstanceOf(LobbyException.class)
+                .hasMessage("Sala não encontrada.");
+    }
+
+    @Test
+    void nobodyLeavesAGameThatAlreadyStarted() {
+        GuestPrincipal ana = guest("Ana");
+        LobbyView room = lobby.create(ana, GameMode.CLASSIC, 200, true);
+        GuestPrincipal bia = guest("Bia");
+        lobby.joinPublic(bia, room.gameId());
+        lobby.setReady(ana, room.gameId(), true);
+        lobby.setReady(bia, room.gameId(), true);
+        lobby.start(ana, room.gameId());
+
+        assertThatThrownBy(() -> lobby.leave(bia, room.gameId())).isInstanceOf(LobbyException.class)
+                .hasMessage("A partida já começou.");
+        assertThat(lobby.activeGames(bia)).extracting(LobbyView::gameId).contains(room.gameId());
+    }
+
+    @Test
     void fullStartedOrUnaffordableRoomsAreNotListed() {
         GuestPrincipal ana = guest("Ana");
         LobbyView full = lobby.create(ana, GameMode.CLASSIC, 200, true);

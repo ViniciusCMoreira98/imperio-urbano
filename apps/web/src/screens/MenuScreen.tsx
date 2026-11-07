@@ -2,7 +2,7 @@
 // jogo já tem (decisão do usuário, 06/11/2026): apelido, Jogar Online (criar sala ou entrar com código,
 // tela do kit play-menu), voltar às suas partidas e Configurações. Nível, moedas e diamantes entram
 // quando existirem; Jogar Agora (mesma rede local) espera o servidor de rede local (decisão de 07/11/2026).
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import type { GameMode, LobbyView, PublicRoom } from '@imperio/shared-types';
 import { rules } from '@imperio/game-data';
 import './menuScreen.css';
@@ -22,19 +22,46 @@ import { useWallet } from '../net/useWallet';
 import { CurrencyMenuCard, PlayerMenuCard } from '../play-menu/MenuCards';
 import { loadLastSession } from '../net/session';
 import { useAppStore } from '../store/appStore';
+import { useCharacterStore, useMenuAvatar } from '../store/characterStore';
+import { CharacterPicker } from '../play-menu/CharacterPicker';
+import { AVATARS, PAWN_COLORS } from '../game/presentation';
 import { Button, ErrorText, Panel } from '../ui/ui';
+
+/** Abre a escolha do personagem com o som de confirmação. */
+const openCharacterPicker = () => {
+  playSound('confirmarAcao');
+  useCharacterStore.getState().openPicker();
+};
 
 export function MenuScreen() {
   const session = useAppStore((s) => s.session);
   const [online, setOnline] = useState(false);
   const wallet = useWallet(online ? undefined : session?.token);
-  if (session && online) return <OnlineEntry onBack={() => setOnline(false)} />;
+  const avatarId = useMenuAvatar();
+  const loadCharacter = useCharacterStore((s) => s.load);
+  // Personagem escolhido no menu (e na última sala): aparece no card e já vale para a próxima sala.
+  useEffect(() => {
+    if (session) void loadCharacter(session.token);
+  }, [session, loadCharacter]);
+  if (session && online)
+    return (
+      <>
+        <OnlineEntry onBack={() => setOnline(false)} />
+        <CharacterPicker />
+      </>
+    );
   return (
     <main className="menu-scene" style={{ backgroundImage: `url(${backgroundArt})` }}>
+      <CharacterPicker />
       <div className="menu-top">
         {session ? (
           <>
-            <PlayerMenuCard nickname={session.nickname} portrait={<AvatarPortrait avatarId="avatar-1" />} />
+            <PlayerMenuCard
+              nickname={session.nickname}
+              portrait={<AvatarPortrait avatarId={avatarId} />}
+              wins={wallet?.wins}
+              onEditCharacter={openCharacterPicker}
+            />
             {wallet && (
               <div className="pm-wallets menu-wallets">
                 <CurrencyMenuCard kind="coins" balance={wallet.coins} />
@@ -107,6 +134,30 @@ function NicknameForm() {
   );
 }
 
+/** Botão visível do menu: mostra o personagem atual e convida a trocar antes de jogar. */
+function CharacterButton() {
+  const character = useCharacterStore((s) => s.character);
+  const avatarId = character?.avatarId ?? 'avatar-1';
+  const color = character?.pawnColor ? PAWN_COLORS[character.pawnColor].hex : undefined;
+  return (
+    <button
+      type="button"
+      className="menu-character"
+      onClick={openCharacterPicker}
+      style={color ? ({ '--menu-character-color': color } as CSSProperties) : undefined}
+    >
+      <span className="menu-character-art">
+        <AvatarPortrait avatarId={avatarId} />
+      </span>
+      <span className="menu-character-text">
+        <small>Seu personagem</small>
+        <strong>{AVATARS[avatarId].name}</strong>
+      </span>
+      <span className="menu-character-go">✏️ Trocar</span>
+    </button>
+  );
+}
+
 function PlayMenu({ onPlayOnline }: { onPlayOnline: () => void }) {
   const session = useAppStore((s) => s.session)!;
   const setSession = useAppStore((s) => s.setSession);
@@ -138,6 +189,7 @@ function PlayMenu({ onPlayOnline }: { onPlayOnline: () => void }) {
           <small>Criar sala ou entrar com código</small>
         </button>
       </div>
+      <CharacterButton />
       {myGames.length > 0 && (
         <button
           type="button"
@@ -236,7 +288,13 @@ function OnlineEntry({ onBack }: { onBack: () => void }) {
     }
   }
 
-  const player = { nickname: session.nickname, portrait: <AvatarPortrait avatarId="avatar-1" /> };
+  const avatarId = useMenuAvatar();
+  const player = {
+    nickname: session.nickname,
+    portrait: <AvatarPortrait avatarId={avatarId} />,
+    wins: wallet?.wins,
+    onEditCharacter: openCharacterPicker,
+  };
   const back = () => go('menu');
   const form = {
     player,

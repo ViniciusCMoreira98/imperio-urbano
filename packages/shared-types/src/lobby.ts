@@ -24,6 +24,8 @@ export interface LobbyView {
   players: LobbyMember[];
   /** Todos prontos, 2–4 jogadores e sala ainda aberta. */
   canStart: boolean;
+  /** Milissegundos até o início automático (a partir de 2 jogadores); null sem contagem. */
+  startsInMs: number | null;
 }
 
 /** POST /api/sessions */

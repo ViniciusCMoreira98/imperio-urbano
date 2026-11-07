@@ -840,3 +840,58 @@ Outra saída é compactar os cartões. Os tamanhos de tela continuam sob respons
 **Conferido** em 1280×720, 844×390 e 667×375, este último com 4 jogadores e o botão dev, que é o pior caso.
 
 Se mudar a altura dos cards ou da barra, o tabuleiro se ajusta sozinho. Não volte a usar largura fixa nos cards.
+
+## Celular deitado: painéis nas laterais e tabuleiro maior (07/11/2026)
+
+**Estado: integrado na `claude/engenharia`, ainda sem commit.** O usuário achou o tabuleiro longe demais no celular e autorizou um layout próprio para ele.
+
+**Novo layout com altura até 500 px:**
+- os cards dos jogadores ficam em coluna à esquerda;
+- Menu, engrenagem e dev ficam em coluna à direita, com o Histórico abaixo;
+- o tabuleiro usa a altura toda entre o topo e a barra de ações.
+
+**Enquadramento:** `BoardInsets` ganhou `left` e `right`, ambos opcionais. Com eles, a caixa 18–1500 fica centralizada entre as reservas. Sem eles, o cálculo é idêntico ao anterior, e os testes `*.node.test.ts` passam iguais. O host mede as colunas e passa uma reserva igual dos dois lados.
+
+**Ganho medido no tabuleiro:**
+- cerca de 25% em 844×390;
+- cerca de 30% em 667×375, com 4 jogadores.
+
+O computador continua com a fileira de cards no topo.
+
+**Arte:** pode refazer os cards e botões dessa coluna. Mantenha `.hud-players` em `flex-direction: column` nessa faixa de altura, porque `useHudLayout` usa isso para saber que o layout é lateral.
+
+## Criar sala e Salas Privadas no celular deitado (07/11/2026)
+
+Em 800×360 o botão "Criar sala online" ficava fora da tela. No fim de `play-menu.css` há um bloco
+`@media(max-height:500px)` só para `.pm-single`: cartão do jogador e moedas menores, subtítulo do
+cabeçalho oculto e o título/descrição internos do painel de criar sala ocultos (repetiam o cabeçalho).
+O painel ganhou `overflow-y:auto` como garantia. Desktop e retrato não mudam. Se refizer a arte dessas
+telas, manter o botão principal visível em 800×360 e 667×375.
+
+## Vitórias no card do jogador (07/11/2026)
+
+`PlayerMenuCard` tem a prop opcional `wins` (vem do servidor em `GET /api/wallet`). À direita do apelido,
+na mesma linha, aparece a pílula "🏆 N" (`.pm-player-head` e `.pm-player-wins`, no fim de `play-menu.css`). Sem o dado, ela
+não aparece. Pode trocar o emoji por um ícone de troféu da arte e ajustar o estilo à vontade.
+
+## Sala de espera com início automático (07/11/2026)
+
+Com 2 ou mais jogadores, a partida começa sozinha 10 s depois; caindo para 1, a contagem para; saindo
+todos, a sala é cancelada. O servidor manda `startsInMs` no lobby. Na `LobbyScreen`, a dica do rodapé
+(`.lb-hint`) mostra "A partida começa em N s" com a classe extra `.lb-countdown` (estilo no fim de
+`lobby.css`). O botão do anfitrião virou "Iniciar agora" (começa antes, com todos prontos). Se refizer a
+arte da sala, pode dar destaque maior à contagem (ex.: um relógio grande no topo).
+
+## Escolha do personagem no menu (07/11/2026)
+
+O jogador escolhe avatar e cor do peão antes de entrar numa sala (o servidor guarda; a sala já começa
+com eles, e a troca feita na sala vira a nova preferência). Pontos de entrada, todos funcionais no estilo
+do kit atual, para a arte refinar:
+
+- Botão "Seu personagem · <nome> · ✏️ Trocar" abaixo de Jogar Online (`.menu-character`).
+- Retrato do card do jogador clicável com o selo "✏️ Trocar" (`PlayerMenuCard` com `onEditCharacter`;
+  `.pm-player-edit`, `.pm-player-edit-badge`), no menu e em todas as telas do Jogar Online.
+- Janela `CharacterPicker` (`play-menu/CharacterPicker.tsx`, `character-picker.css`): prévia 3D,
+  5 personagens com nome, 6 cores, "Cancelar" e "Jogar com <nome>". Cabe em 800×360.
+
+O card do jogador agora mostra o avatar escolhido (antes era sempre o avatar-1).

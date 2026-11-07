@@ -36,6 +36,10 @@ class GameRecord {
     @Column(name = "host_player_id")
     private String hostPlayerId;
 
+    /** Fim da contagem do início automático (só na sala; nulo com menos de 2 jogadores). */
+    @Column(name = "starts_at")
+    private Instant startsAt;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 

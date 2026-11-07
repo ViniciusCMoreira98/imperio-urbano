@@ -9,6 +9,7 @@ const MAX_PER_BATCH = 3;
 
 /** Casas em que parar já é um acontecimento com som próprio. */
 const olympicTiles = new Set(board.tiles.filter((t) => t.type === 'OLYMPICS').map((t) => t.index));
+const restTiles = new Set(board.tiles.filter((t) => t.type === 'REST').map((t) => t.index));
 
 export function eventSounds(events: readonly DomainEvent[], myId: string): SoundId[] {
   const found: SoundId[] = [];
@@ -45,6 +46,24 @@ export function eventSounds(events: readonly DomainEvent[], myId: string): Sound
         if (event.startBonus > 0) add('receberDinheiro');
         // Parou na casa das Olimpíadas (a escolha da sede vem depois, com o mesmo anúncio).
         if (olympicTiles.has(event.to)) add('olimpiadas');
+        // Chegou ao Descanso (andando ou mandado por carta).
+        if (event.sentToRest || restTiles.has(event.to)) add('descanso');
+        break;
+      case 'TRAVEL_CHOSEN':
+        add('viagem');
+        break;
+      case 'BLACKOUT_STARTED':
+        add('apagao');
+        break;
+      case 'PROPERTY_BURNED':
+        add('incendio');
+        break;
+      case 'PROPERTY_SOLD':
+      case 'BUILDING_SOLD':
+        add('vender');
+        break;
+      case 'TIME_LIMIT_REACHED':
+        add('fimDoTempo');
         break;
       case 'PLAYER_BANKRUPT':
         add('falencia');

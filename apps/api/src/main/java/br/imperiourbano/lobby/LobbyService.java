@@ -13,6 +13,8 @@ import br.imperiourbano.persistence.GameInfo;
 import br.imperiourbano.persistence.GameStore;
 import br.imperiourbano.wallet.WalletService;
 import java.security.SecureRandom;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
@@ -33,11 +35,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class LobbyService {
 
     public static final Set<String> AVATARS = Set.of("avatar-1", "avatar-2", "avatar-3", "avatar-4", "avatar-5");
-    private static final String DEFAULT_AVATAR = "avatar-1";
+    static final String DEFAULT_AVATAR = "avatar-1";
     /** Sem I, O, 0 e 1, para o código ser fácil de ditar. */
     private static final String CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private static final int CODE_LENGTH = 6;
     private static final int PUBLIC_LIST_LIMIT = 50;
+    /** Contagem do início automático, a partir de 2 jogadores na sala (pedido do usuário, 07/11/2026). */
+    public static final Duration AUTO_START = Duration.ofSeconds(10);
 
     private final GameStore store;
     private final LobbyMemberRepository members;
@@ -46,11 +50,13 @@ public class LobbyService {
     private final int maxPlayers;
     private final ApplicationEventPublisher publisher;
     private final WalletService wallet;
+    private final CharacterPreferences characters;
     private final SecureRandom random = new SecureRandom();
 
     LobbyService(GameStore store, LobbyMemberRepository members, GameEngine engine, Catalog catalog,
-            ApplicationEventPublisher publisher, WalletService wallet) {
+            ApplicationEventPublisher publisher, WalletService wallet, CharacterPreferences characters) {
         this.store = store;
+        this.characters = characters;
         this.wallet = wallet;
         this.members = members;
         this.engine = engine;
@@ -72,8 +78,9 @@ public class LobbyService {
         requireCoins(player, stake);
         String gameId = UUID.randomUUID().toString();
         store.createGame(gameId, newInviteCode(), mode, player.playerId(), stake, publicRoom);
+        CharacterPreferences.Character preferred = characters.of(player.playerId());
         members.save(new LobbyMemberRecord(gameId, player.playerId(), player.nickname(), 0,
-                DEFAULT_AVATAR, PawnColor.values()[0]));
+                preferred.avatarId(), seatColor(preferred, EnumSet.allOf(PawnColor.class))));
         return view(gameId);
     }
 
@@ -105,9 +112,18 @@ public class LobbyService {
         int seat = IntStream.range(0, maxPlayers).filter(s -> !seats.contains(s)).findFirst().orElseThrow();
         EnumSet<PawnColor> free = EnumSet.allOf(PawnColor.class);
         current.forEach(m -> free.remove(m.pawnColor()));
+        CharacterPreferences.Character preferred = characters.of(player.playerId());
         members.save(new LobbyMemberRecord(game.id(), player.playerId(), player.nickname(), seat,
-                DEFAULT_AVATAR, free.iterator().next()));
+                preferred.avatarId(), seatColor(preferred, free)));
+        members.flush();
+        refreshCountdown(game.id());
         return view(game.id());
+    }
+
+    /** A cor preferida do jogador, se ninguém da sala estiver com ela; senão, a primeira livre. */
+    private static PawnColor seatColor(CharacterPreferences.Character preferred, Set<PawnColor> free) {
+        return preferred.pawnColor() != null && free.contains(preferred.pawnColor())
+                ? preferred.pawnColor() : free.iterator().next();
     }
 
     @Transactional(readOnly = true)
@@ -135,6 +151,8 @@ public class LobbyService {
         }
         me.customize(avatarId, color);
         members.save(me);
+        // A troca na sala vira a preferência: a próxima sala já começa com ela.
+        characters.save(player.playerId(), avatarId, color);
         return view(gameId);
     }
 
@@ -146,6 +164,80 @@ public class LobbyService {
         me.setReady(ready);
         members.save(me);
         return view(gameId);
+    }
+
+    /**
+     * Sair da sala antes de começar: libera o assento (a sala volta à lista pública e some de "Suas partidas"
+     * de quem saiu). Saindo o anfitrião, o próximo assento assume; saindo o último, a sala é fechada.
+     * Depois do início não há saída: a partida segue e o jogador pode voltar a ela.
+     */
+    @Transactional
+    public void leave(GuestPrincipal player, String gameId) {
+        GameInfo game = lockGame(gameId);
+        LobbyMemberRecord me = requireMember(gameId, player);
+        requireLobby(game);
+        members.delete(me);
+        members.flush();
+        List<LobbyMemberRecord> rest = members.findByGameIdOrderBySeatAsc(gameId);
+        if (rest.isEmpty()) {
+            store.deleteLobby(gameId);
+            return;
+        }
+        if (player.playerId().equals(game.hostPlayerId())) {
+            store.changeHost(gameId, rest.getFirst().playerId());
+        }
+        refreshCountdown(gameId);
+    }
+
+    /**
+     * Início automático (pedido do usuário, 07/11/2026): com 2 ou mais jogadores a contagem de 10 s liga;
+     * caindo para 1, desliga. Quem entra durante a contagem não a reinicia.
+     */
+    private void refreshCountdown(String gameId) {
+        int seated = members.findByGameIdOrderBySeatAsc(gameId).size();
+        boolean running = store.startsAt(gameId).isPresent();
+        if (seated >= minPlayers && !running) {
+            store.setStartsAt(gameId, Instant.now().plus(AUTO_START));
+        } else if (seated < minPlayers && running) {
+            store.setStartsAt(gameId, null);
+        }
+    }
+
+    /** Salas com a contagem vencida (o relógio da sala chama {@link #autoStart} para cada uma). */
+    @Transactional(readOnly = true)
+    public List<String> dueLobbies() {
+        return store.dueLobbies(Instant.now());
+    }
+
+    /**
+     * Fim da contagem: começa sem exigir "pronto" nem o anfitrião. Quem não tem mais moedas para a aposta
+     * sai da sala; sobrando menos de 2, a contagem desliga e a sala segue esperando.
+     */
+    @Transactional
+    public void autoStart(String gameId) {
+        GameInfo game = store.lock(gameId).orElse(null);
+        if (game == null || game.status() != GameStatus.LOBBY) return;
+        Instant startsAt = store.startsAt(gameId).orElse(null);
+        if (startsAt == null || startsAt.isAfter(Instant.now())) return;
+        List<LobbyMemberRecord> seated = members.findByGameIdOrderBySeatAsc(gameId);
+        List<LobbyMemberRecord> broke = seated.stream().filter(m -> wallet.coins(m.playerId()) < game.stake()).toList();
+        if (!broke.isEmpty()) {
+            members.deleteAll(broke);
+            members.flush();
+            seated = members.findByGameIdOrderBySeatAsc(gameId);
+            if (seated.isEmpty()) {
+                store.deleteLobby(gameId);
+                return;
+            }
+            if (seated.stream().noneMatch(m -> m.playerId().equals(game.hostPlayerId()))) {
+                store.changeHost(gameId, seated.getFirst().playerId());
+            }
+        }
+        if (seated.size() < minPlayers) {
+            store.setStartsAt(gameId, null);
+            return;
+        }
+        begin(game, seated);
     }
 
     /** Só o anfitrião inicia, com 2–4 jogadores todos prontos. A ordem de jogo segue os assentos. */
@@ -164,6 +256,13 @@ public class LobbyService {
         if (!seated.stream().allMatch(LobbyMemberRecord::ready)) {
             throw LobbyException.conflict("Todos os jogadores precisam estar prontos.");
         }
+        begin(game, seated);
+        return view(gameId);
+    }
+
+    /** Cobra a aposta de todos e começa a partida na ordem dos assentos. */
+    private void begin(GameInfo game, List<LobbyMemberRecord> seated) {
+        String gameId = game.id();
         // A aposta é cobrada agora; faltando saldo a alguém, nada é cobrado (a transação desfaz tudo).
         for (LobbyMemberRecord m : seated) {
             if (!wallet.debit(m.playerId(), game.stake())) {
@@ -176,7 +275,6 @@ public class LobbyService {
         store.append(gameId, game.version(), List.of(started), state, null, null);
         // Inicia o relógio do primeiro turno.
         publisher.publishEvent(new GameUpdated(gameId, List.of(started), state));
-        return view(gameId);
     }
 
     /**
@@ -229,10 +327,13 @@ public class LobbyService {
         boolean canStart = game.status() == GameStatus.LOBBY
                 && seated.size() >= minPlayers
                 && seated.stream().allMatch(LobbyMemberRecord::ready);
+        // Tempo restante (e não o horário), para o relógio do aparelho não precisar bater com o do servidor.
+        Long startsInMs = game.status() != GameStatus.LOBBY ? null : store.startsAt(gameId)
+                .map(at -> Math.max(0, Duration.between(Instant.now(), at).toMillis())).orElse(null);
         return new LobbyView(game.id(), game.inviteCode(), game.mode(), game.stake(), game.publicRoom(), game.status(), game.hostPlayerId(),
                 seated.stream().map(m -> new LobbyView.Member(m.playerId(), m.nickname(), m.seat(),
                         m.avatarId(), m.pawnColor(), m.ready())).toList(),
-                canStart);
+                canStart, startsInMs);
     }
 
     private GameInfo lockGame(String gameId) {

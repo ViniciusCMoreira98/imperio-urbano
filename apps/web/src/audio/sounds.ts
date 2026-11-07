@@ -18,16 +18,25 @@ export type SoundId =
   | 'suaVez'
   | 'tempoAcabando'
   | 'falencia'
-  | 'vitoria';
+  | 'vitoria'
+  | 'viagem'
+  | 'apagao'
+  | 'incendio'
+  | 'fimDoTempo'
+  | 'vender'
+  | 'descanso';
 
 interface SoundDef {
   file: string | null;
   /** Mistura relativa depois da normalização (1 = nível comum dos efeitos). */
   mix: number;
+  /** Só este trecho da faixa (segundos), terminando com um fade curto. Sem ele, a faixa inteira. */
+  clip?: [number, number];
 }
 
 export const SOUNDS: Record<SoundId, SoundDef> = {
-  dado: { file: '/audio/dado.mp3', mix: 1 },
+  // A faixa chacoalha na mão (0–1 s) e só bate na mesa em 1,8 s: o jogo usa o impacto e os quiques.
+  dado: { file: '/audio/dado.mp3', mix: 1, clip: [1.76, 2.35] },
   saltoPeao: { file: '/audio/saltoPeao.mp3', mix: 0.6 },
   abrirJanela: { file: '/audio/abrirJanela.mp3', mix: 0.7 },
   confirmarAcao: { file: '/audio/confirmarAcao.mp3', mix: 0.8 },
@@ -40,9 +49,15 @@ export const SOUNDS: Record<SoundId, SoundDef> = {
   cartaEvento: { file: '/audio/cartaEvento.mp3', mix: 0.9 },
   olimpiadas: { file: '/audio/olimpiadas.mp3', mix: 1 },
   suaVez: { file: '/audio/suaVez.mp3', mix: 0.8 },
-  tempoAcabando: { file: null, mix: 0.6 },
-  falencia: { file: null, mix: 1 },
+  tempoAcabando: { file: '/audio/tempoAcabando.mp3', mix: 0.6 },
+  falencia: { file: '/audio/falencia.mp3', mix: 1 },
   vitoria: { file: '/audio/vitoria.mp3', mix: 1 },
+  viagem: { file: '/audio/viagem.mp3', mix: 0.9 },
+  apagao: { file: '/audio/apagao.mp3', mix: 0.9 },
+  incendio: { file: '/audio/incendio.mp3', mix: 0.9 },
+  fimDoTempo: { file: '/audio/fimDoTempo.mp3', mix: 1 },
+  vender: { file: '/audio/vender.mp3', mix: 0.85 },
+  descanso: { file: '/audio/descanso.mp3', mix: 0.85 },
 };
 
 /** Nível médio (RMS, dBFS) para o qual cada faixa é normalizada antes da mistura. */

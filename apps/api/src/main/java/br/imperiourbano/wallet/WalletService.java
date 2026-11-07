@@ -20,7 +20,8 @@ public class WalletService {
     /** O "dia" da recarga grátis segue o horário de Brasília. */
     static final ZoneId DAY_ZONE = ZoneId.of("America/Sao_Paulo");
 
-    public record Wallet(long coins, long diamonds) {
+    /** Saldo e vitórias do jogador (as vitórias aparecem no card do menu). */
+    public record Wallet(long coins, long diamonds, int wins) {
     }
 
     private final JdbcTemplate jdbc;
@@ -46,8 +47,8 @@ public class WalletService {
                 update guest_sessions set coins = ?, last_refill_on = ?
                 where player_id = ? and coins < ? and (last_refill_on is null or last_refill_on < ?)""",
                 economy.dailyRefill().amount(), today(), playerId, economy.dailyRefill().below(), today());
-        return jdbc.queryForObject("select coins, diamonds from guest_sessions where player_id = ?",
-                (rs, i) -> new Wallet(rs.getLong(1), rs.getLong(2)), playerId);
+        return jdbc.queryForObject("select coins, diamonds, wins from guest_sessions where player_id = ?",
+                (rs, i) -> new Wallet(rs.getLong(1), rs.getLong(2), rs.getInt(3)), playerId);
     }
 
     @Transactional(readOnly = true)
@@ -83,6 +84,16 @@ public class WalletService {
         long share = pot / winnerIds.size();
         for (int i = 0; i < winnerIds.size(); i++) {
             credit(winnerIds.get(i), share + (i == 0 ? pot % winnerIds.size() : 0));
+        }
+    }
+
+    /** Fim da partida: uma vitória para cada vencedor (empate conta para todos). Conta uma vez só. */
+    @Transactional
+    public void recordWins(String gameId, List<String> winnerIds) {
+        if (winnerIds.isEmpty()) return;
+        if (jdbc.update("update games set wins_counted = true where id = ? and wins_counted = false", gameId) != 1) return;
+        for (String winner : winnerIds) {
+            jdbc.update("update guest_sessions set wins = wins + 1 where player_id = ?", winner);
         }
     }
 

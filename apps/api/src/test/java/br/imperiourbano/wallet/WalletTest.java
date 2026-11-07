@@ -52,7 +52,20 @@ class WalletTest {
 
     @Test
     void newGuestStartsWithOneThousandCoinsAndNoDiamonds() {
-        assertThat(wallet.current(guest("Ana").playerId())).isEqualTo(new WalletService.Wallet(1000, 0));
+        assertThat(wallet.current(guest("Ana").playerId())).isEqualTo(new WalletService.Wallet(1000, 0, 0));
+    }
+
+    @Test
+    void winsAreCountedOncePerGameForEveryWinner() {
+        GuestPrincipal ana = guest("Ana");
+        GuestPrincipal bia = guest("Bia");
+        LobbyView room = readyRoom(ana, bia, 200);
+        lobby.start(ana, room.gameId());
+
+        wallet.recordWins(room.gameId(), List.of(ana.playerId(), bia.playerId()));
+        wallet.recordWins(room.gameId(), List.of(ana.playerId()));
+        assertThat(wallet.current(ana.playerId()).wins()).isEqualTo(1);
+        assertThat(wallet.current(bia.playerId()).wins()).isEqualTo(1);
     }
 
     @Test

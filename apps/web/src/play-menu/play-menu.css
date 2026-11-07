@@ -25,3 +25,10 @@
 .pm-visibility{display:flex;align-items:center;gap:8px;flex:none;margin:0;padding:0;border:0}.pm-visibility legend{float:left;margin-right:4px;padding:0;font-size:1.05cqw;font-weight:bold;color:#d8eaf2}.pm-visibility .pm-stake{flex:0 1 130px}.pm-visibility small{font-size:1cqw;color:#bfe5dc}
 @media(max-height:500px){.pm-visibility{gap:5px}.pm-visibility legend,.pm-visibility small{font-size:max(10px,.95cqw)}}
 @media(max-width:700px) and (min-height:501px){.pm-visibility{flex-wrap:wrap}.pm-visibility legend{width:100%;font-size:3cqw}.pm-visibility small{width:100%;font-size:2.8cqw}}
+
+/* Painel único (Criar sala / Salas Privadas) em celular deitado (engenharia, 07/11/2026): o título do
+   painel repete o cabeçalho e sai; topo e cabeçalho encolhem para o botão principal caber na tela. */
+@media(max-height:500px){.pm-single .pm-player-card{width:min(180px,24vw)}.pm-single .pm-currency-card{width:clamp(104px,15vw,140px)}.pm-single .pm-heading{min-height:0;padding-bottom:4px}.pm-single .pm-heading p{display:none}.pm-single .pm-brand{height:5cqw}.pm-single .pm-options{padding-top:4px}.pm-single .pm-create>h2,.pm-single .pm-create>.pm-description{display:none}.pm-single .pm-create{gap:6px;overflow-y:auto}}
+
+/* Vitórias no card do jogador (engenharia, 07/11/2026): troféu e número à direita do apelido, na mesma linha. */
+.pm-player-head{display:flex;align-items:center;gap:3cqw;min-width:0}.pm-player-head>strong{min-width:0;font-size:6.1cqw;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff8df;text-shadow:0 2px 1px #00172a}.pm-player-wins{display:flex;gap:1.2cqw;align-items:center;flex:none;margin-left:auto;padding:.8cqw 2.2cqw;border:1px solid #edd07799;border-radius:4cqw;background:#071326aa;color:#ffe678;font-size:5cqw;font-weight:bold;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums;text-shadow:0 1px 1px #00172a}.pm-player-wins>span{font-size:4.6cqw}

@@ -13,7 +13,33 @@ import '../play-menu/play-menu.css';
 import './lobby.css';
 
 /** A sala ainda não tem canal em tempo real: consulta o servidor periodicamente. */
-const POLL_MS = 1500;
+const POLL_MS = 1000;
+
+/** Texto da contagem do início automático. */
+export function countdownText(seconds: number | null): string {
+  if (seconds === null) return 'Com 2 jogadores, a partida começa sozinha em 10 s.';
+  return seconds > 0 ? `A partida começa em ${seconds} s` : 'Começando a partida…';
+}
+
+/**
+ * Segundos até o início automático. O servidor manda o tempo restante; o aparelho conta sozinho entre
+ * uma consulta e outra e só corrige o prazo quando ele muda mais de 1 s (sem o número pular).
+ */
+function useCountdown(startsInMs: number | null): number | null {
+  const [deadline, setDeadline] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (startsInMs === null) return setDeadline(null);
+    const next = Date.now() + startsInMs;
+    setDeadline((current) => (current !== null && Math.abs(current - next) < 1000 ? current : next));
+  }, [startsInMs]);
+  useEffect(() => {
+    if (deadline === null) return;
+    const timer = setInterval(() => setNow(Date.now()), 200);
+    return () => clearInterval(timer);
+  }, [deadline]);
+  return deadline === null ? null : Math.max(0, Math.ceil((deadline - now) / 1000));
+}
 const CAPACITY = 4;
 
 /** Sala de espera na arte tropical do menu (proposta do Codex, 07/11/2026). Tudo vem do lobby real. */
@@ -26,6 +52,7 @@ export function LobbyScreen() {
   const leave = useAppStore((s) => s.leave);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const seconds = useCountdown(lobby?.status === 'LOBBY' ? lobby.startsInMs ?? null : null);
 
   useEffect(() => {
     if (!session) {
@@ -74,14 +101,25 @@ export function LobbyScreen() {
     }
   }
 
+  // Sair libera o assento no servidor. Sala já fechada ou sem o jogador (404) também volta ao menu;
+  // partida que acabou de começar (409) abre o tabuleiro; sem conexão, fica na sala com o aviso.
+  async function leaveRoom() {
+    setError(null);
+    try {
+      await api.leaveLobby(session!.token, gameId);
+      leave();
+    } catch (e) {
+      if (e instanceof ApiError && (e.status === 404 || e.status === 401)) leave();
+      else if (e instanceof ApiError && e.status === 409) openGame();
+      else setError(e instanceof ApiError ? e.message : 'Algo deu errado.');
+    }
+  }
+
   const customize = (avatarId: AvatarId, pawnColor: PawnColor) =>
     act(() => api.customize(session.token, gameId, avatarId, pawnColor));
 
-  const hint = isHost
-    ? lobby.canStart
-      ? 'Todos prontos: pode iniciar a partida.'
-      : 'Precisa de 2 a 4 jogadores, todos prontos.'
-    : 'O anfitrião inicia quando todos estiverem prontos.';
+  // Início automático: a contagem (ou como ela começa) ocupa a dica do rodapé.
+  const hint = countdownText(seconds);
 
   return (
     <main className="pm-screen lb-screen">
@@ -104,7 +142,7 @@ export function LobbyScreen() {
               </span>
             )}
           </div>
-          <button className="pm-back lb-leave" type="button" onClick={leave}>
+          <button className="pm-back lb-leave" type="button" onClick={() => void leaveRoom()}>
             <img src={back} alt="" />
             Sair da sala
           </button>
@@ -206,8 +244,9 @@ export function LobbyScreen() {
         </div>
 
         <footer className="lb-footer">
-          <p className="lb-hint">
-            <span aria-hidden="true">ⓘ</span> {error ? <span className="lb-error" role="alert">{error}</span> : hint}
+          <p className={`lb-hint${seconds !== null && !error ? ' lb-countdown' : ''}`} aria-live="polite">
+            <span aria-hidden="true">{seconds !== null ? '⏱' : 'ⓘ'}</span>{' '}
+            {error ? <span className="lb-error" role="alert">{error}</span> : hint}
           </p>
           {me && (
             <button
@@ -225,8 +264,8 @@ export function LobbyScreen() {
               disabled={!lobby.canStart}
               onClick={() => void act(() => api.start(session.token, gameId))}
             >
-              <strong>{lobby.canStart ? 'Iniciar partida' : '🔒 Iniciar partida'}</strong>
-              {!lobby.canStart && <small>Aguardando todos ficarem prontos</small>}
+              <strong>{lobby.canStart ? 'Iniciar agora' : '🔒 Iniciar agora'}</strong>
+              {!lobby.canStart && <small>Com todos prontos, sem esperar</small>}
             </button>
           )}
         </footer>

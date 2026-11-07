@@ -4,12 +4,15 @@ import {applyFixedCamera,FIXED_CAMERA} from './fixedCamera';
 /** Amplia a janela sobre a mesa; pose, escala entre eixos e calibração do tabuleiro são preservadas. */
 export type BoardFraming='standard'|'immersive';
 /** Reservas medidas pelo host (px livres no topo e na base para o HUD). Sem elas, valem as do enquadramento. */
-export interface BoardInsets{top:number;bottom:number}
+export interface BoardInsets{top:number;bottom:number;left?:number;right?:number}
 export function tabletopViewport(width:number,height:number,framing:BoardFraming='standard',insets?:BoardInsets){
  const compact=height<700,immersive=framing==='immersive';
  const top=insets?.top??(immersive?(compact?32:54):(compact?48:76)),bottom=insets?.bottom??(immersive?(compact?40:64):(compact?58:90));
- const scale=Math.max(.001,Math.min(Math.max(1,width-24)/1482,Math.max(1,height-top-bottom)/906));
- const x=(width-FIXED_CAMERA.reference.width*scale)/2;
+ // Reservas laterais (celular com painéis nas laterais): o quadro 18–1500 centraliza no espaço entre elas.
+ const sides=insets?.left!==undefined||insets?.right!==undefined,left=insets?.left??12,right=insets?.right??12;
+ const availableWidth=Math.max(1,width-left-right);
+ const scale=Math.max(.001,Math.min(availableWidth/1482,Math.max(1,height-top-bottom)/906));
+ const x=sides?left+(availableWidth-1482*scale)/2-18*scale:(width-FIXED_CAMERA.reference.width*scale)/2;
  const y=top+(Math.max(1,height-top-bottom)-906*scale)/2-34*scale;
  return{width,height,scale,x,y,top,bottom};
 }

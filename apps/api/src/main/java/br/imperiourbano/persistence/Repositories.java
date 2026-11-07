@@ -27,6 +27,28 @@ interface GameRecordRepository extends JpaRepository<GameRecord, String> {
     @Query("select g from GameRecord g where g.id = :id")
     Optional<GameRecord> lockById(@Param("id") String id);
 
+    /** Novo anfitrião quando o atual sai da sala (só antes de começar). */
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("update GameRecord g set g.hostPlayerId = :host where g.id = :id and g.status = 'LOBBY'")
+    int changeHost(@Param("id") String id, @Param("host") String host);
+
+    /** Liga (horário) ou desliga (nulo) a contagem do início automático da sala. */
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("update GameRecord g set g.startsAt = :startsAt where g.id = :id and g.status = 'LOBBY'")
+    int setStartsAt(@Param("id") String id, @Param("startsAt") Instant startsAt);
+
+    @Query("select g.startsAt from GameRecord g where g.id = :id")
+    Optional<Instant> findStartsAt(@Param("id") String id);
+
+    /** Salas com a contagem vencida, prontas para começar sozinhas. */
+    @Query("select g.id from GameRecord g where g.status = 'LOBBY' and g.startsAt <= :now")
+    List<String> findDueLobbies(@Param("now") Instant now);
+
+    /** Sala que ficou vazia antes de começar; os assentos saem junto (ON DELETE CASCADE). */
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from GameRecord g where g.id = :id and g.status = 'LOBBY'")
+    int deleteLobby(@Param("id") String id);
+
     /** Concorrência otimista: só avança se a versão no banco ainda for a esperada. */
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("update GameRecord g set g.version = :newVersion, g.status = :status, g.updatedAt = :now"

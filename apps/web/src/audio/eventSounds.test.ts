@@ -34,6 +34,27 @@ describe('sons dos eventos da partida', () => {
     expect(eventSounds(events, 'caio')).toEqual(['receberDinheiro', 'pagarAluguel', 'construir']);
   });
 
+  it('viagem, apagão, incêndio, venda e falência têm som próprio', () => {
+    const one = (event: DomainEvent) => eventSounds([event], 'caio');
+    expect(one({ type: 'TRAVEL_CHOSEN', playerId: 'ana', tileIndex: 3, fee: 20 })).toEqual(['viagem']);
+    expect(one({ type: 'BLACKOUT_STARTED', playerId: 'ana', stateId: 'PA', visits: 2 } as DomainEvent)).toEqual(['apagao']);
+    expect(one({ type: 'PROPERTY_BURNED', playerId: 'ana', stateId: 'PA', ownerId: 'bia' } as DomainEvent)).toEqual(['incendio']);
+    expect(one({ type: 'BUILDING_SOLD', playerId: 'ana', stateId: 'PA', refund: 25 } as DomainEvent)).toEqual(['vender']);
+    expect(one({ type: 'PROPERTY_SOLD', playerId: 'ana', stateId: 'PA', refund: 85 } as DomainEvent)).toEqual(['vender']);
+    expect(one({ type: 'PLAYER_BANKRUPT', playerId: 'ana' } as DomainEvent)).toEqual(['falencia']);
+  });
+
+  it('chegar ao Descanso (andando ou mandado) toca o descanso', () => {
+    const rest = board.tiles.find((t) => t.type === 'REST')!.index;
+    expect(eventSounds([{ ...moved(), to: rest } as DomainEvent], 'ana')).toEqual(['descanso']);
+    expect(eventSounds([{ ...moved(), sentToRest: true } as DomainEvent], 'ana')).toEqual(['descanso']);
+  });
+
+  it('fim do relógio toca antes da vitória', () => {
+    const events: DomainEvent[] = [{ type: 'TIME_LIMIT_REACHED' }, { type: 'GAME_FINISHED', winnerIds: ['ana'] } as DomainEvent];
+    expect(eventSounds(events, 'bia')).toEqual(['fimDoTempo', 'vitoria']);
+  });
+
   it('a carta de evento toca o próprio som ao aparecer na tela, não no lote', () => {
     expect(eventSounds([{ type: 'EVENT_CARD_DRAWN', playerId: 'bia', cardId: 'assalto' }], 'ana')).toEqual([]);
   });

@@ -87,6 +87,13 @@ class LobbyController {
         return lobby.setReady(player, gameId, request.ready());
     }
 
+    /** Sai da sala antes do início (libera o assento). */
+    @PostMapping("/{gameId}/leave")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void leave(@AuthenticationPrincipal GuestPrincipal player, @PathVariable String gameId) {
+        lobby.leave(player, gameId);
+    }
+
     @PostMapping("/{gameId}/start")
     LobbyView start(@AuthenticationPrincipal GuestPrincipal player, @PathVariable String gameId) {
         return lobby.start(player, gameId);

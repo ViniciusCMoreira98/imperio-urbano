@@ -24,6 +24,6 @@ export function CameraRig({expanded=false,framing='standard',insets}:{expanded?:
       artTarget.__imperioArtScene=inspect;
       return()=>{if(target.__imperioStaticCamera===debug)delete target.__imperioStaticCamera;if(artTarget.__imperioArtScene===inspect)delete artTarget.__imperioArtScene;};
     }
-  },[camera,scene,raycaster,size.width,size.height,expanded,framing,insets?.top,insets?.bottom,setDpr,actualDpr]);
+  },[camera,scene,raycaster,size.width,size.height,expanded,framing,insets?.top,insets?.bottom,insets?.left,insets?.right,setDpr,actualDpr]);
   return null;
 }

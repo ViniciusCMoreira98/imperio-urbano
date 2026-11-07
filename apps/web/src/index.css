@@ -104,6 +104,10 @@ body {
 .hud-action-tray .hud-turn-badge p:last-child { font-size:19px;max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .hud-action-tray .hud-roll { min-height:44px;font-size:19px;padding:8px 22px;border-radius:16px; }
 .hud-player-rank { display:flex; }
+/* Aviso do Descanso na barra de ações (só para quem está descansando). */
+.hud-rest-chip { display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1.5px solid #c4b5fd;border-radius:999px;background:linear-gradient(#3b2a73,#221a4a);color:#ede9fe;font-size:14px;white-space:nowrap; }
+.hud-rest-chip strong { color:#fde68a; }
+.hud-rest-chip small { font-size:12px;color:#c4b5fd; }
 @media (max-height:699px), (max-width:900px) {
  .game-hud-players { top:3px;right:calc(var(--hud-header-w, 150px) + 6px); }
  .game-hud-players .hud-players { gap:5px;padding:2px;padding-left:var(--hud-players-pad, 2px); }
@@ -126,8 +130,19 @@ body {
  .hud-action-tray .hud-dice { gap:2px;padding:0; }
  .hud-action-tray .hud-dice svg { width:25px;height:30px; }
  .hud-round-seal { top:-15px;font-size:9px;padding:1px 10px; }
+ .hud-rest-chip { font-size:11px;padding:3px 8px;gap:3px; }
+ .hud-rest-chip small { display:none; }
  .game-hud-property { bottom:76px; }
  .game-hud-history { right:10px;bottom:23%; }
  .game-hud-header { padding:5px; }
  .game-hud-header button { min-height:32px;font-size:12px; }
+}
+
+/* Celular deitado: cards dos jogadores em coluna à esquerda e botões do canto em coluna à direita.
+   A altura toda fica para o tabuleiro (useHudLayout passa as reservas laterais ao enquadramento). */
+@media (max-height:500px) {
+ .game-hud-players { top:6px;left:6px;right:auto;width:auto; }
+ .game-hud-players .hud-players { flex-direction:column;width:auto;gap:5px;padding:2px; }
+ .game-hud-players .hud-player-row { flex:none;max-width:140px; }
+ .game-viewport .game-hud-header { flex-direction:column;align-items:flex-end;gap:5px; }
 }

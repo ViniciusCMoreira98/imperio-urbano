@@ -5,11 +5,13 @@ Faixas usadas pelo jogo em `apps/web/public/audio/`. Os originais ficam na máqu
 
 | Faixa | Uso no jogo | Origem (informada pelo usuário, 06/11/2026) |
 |---|---|---|
-| `dado`, `saltoPeao`, `abrirJanela`, `confirmarAcao`, `erroAcaoInvalida`, `passarBotao`, `comprar`, `construir`, `pagarAluguel`, `receberDinheiro`, `cartaEvento`, `olimpiadas`, `suaVez`, `vitoria` | Efeitos sonoros (`src/audio/sounds.ts`) | ElevenLabs (efeitos sonoros gerados) |
+| `dado`, `saltoPeao`, `abrirJanela`, `confirmarAcao`, `erroAcaoInvalida`, `passarBotao`, `comprar`, `construir`, `pagarAluguel`, `receberDinheiro`, `cartaEvento`, `olimpiadas`, `suaVez`, `vitoria` | Efeitos sonoros (`src/audio/sounds.ts`) | ElevenLabs (efeitos sonoros gerados); refeitos em 07/11/2026 |
+| `tempoAcabando`, `falencia`, `viagem`, `apagao`, `incendio`, `fimDoTempo`, `vender`, `descanso` | Efeitos sonoros novos (`src/audio/sounds.ts`), desde 07/11/2026 | ElevenLabs (efeitos sonoros gerados) |
 | `menuInicial` | Música em loop do menu, do Jogar Online e da sala de espera (`src/audio/music.ts`); nova versão em 07/11/2026 | Suno (música gerada) |
 | `musicaTabuleiro` | Música em loop durante a partida (`src/audio/music.ts`), desde 07/11/2026 | Suno (música gerada) |
 
-Ainda faltam os efeitos `tempoAcabando` e `falencia`, que ficam mudos até chegarem.
+Todos os efeitos do catálogo têm arquivo (07/11/2026). **Plano usado nos efeitos de 07/11/2026: a
+confirmar com o usuário** antes de marcar como regularizados.
 
 ## Pendências para uso comercial (navegador e Steam)
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { board, rules, states } from '@imperio/game-data';
 import type { Command } from '@imperio/shared-types';
 import { HOTEL_LEVEL, isMyTurn, saleRefunds } from '../game/rules';
+import { playSound } from '../audio/audio';
 import { formatCredits } from '../property-card/tileInfo';
 import { useCardBusy } from '../store/cardStore';
 import { useDiceStore } from '../store/diceStore';
@@ -37,6 +38,9 @@ export function ActionBar({ myId }: { myId: string }) {
   const mine = isMyTurn(snapshot, myId);
   const phase = snapshot.phase;
   const current = snapshot.players.find((p) => p.id === snapshot.currentPlayerId);
+  // Descanso de quem está jogando nesta tela: quantas jogadas ainda perde (a dupla libera antes).
+  const me = snapshot.players.find((p) => p.id === myId);
+  const restLeft = snapshot.status === 'IN_PROGRESS' && me && !me.bankrupt ? me.skipTurns : 0;
   const offline = connection !== 'open';
   const act = (command: Command) => send(command);
   const canRoll = mine && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
@@ -62,8 +66,9 @@ export function ActionBar({ myId }: { myId: string }) {
             </>
           )}
         </span>
+        {restLeft > 0 && <RestChip turns={restLeft} />}
         {/* Some enquanto a mesa mostra a jogada: o prazo do servidor só começa a correr quando ela termina. */}
-        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && <Countdown deadline={deadline} />}
+        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && <Countdown deadline={deadline} warn={mine} />}
 
         {canRoll && (
           <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline || tableBusy} title={tableBusy ? 'Aguarde a jogada anterior terminar na mesa' : undefined} onClick={() => act({ type: 'ROLL_DICE' })}>
@@ -157,13 +162,34 @@ function SellDrawer({ myId, onClose }: { myId: string; onClose: () => void }) {
 }
 
 /** Segundos até o servidor jogar pelo jogador da vez (rolar, recusar a compra...). */
-export function Countdown({ deadline }: { deadline: number }) {
+/** Aviso do Descanso para o próprio jogador: rodadas que ainda perde e como sair antes. */
+export function RestChip({ turns }: { turns: number }) {
+  const text = turns === 1 ? 'falta 1 rodada' : `faltam ${turns} rodadas`;
+  return (
+    <span
+      className="hud-rest-chip"
+      role="status"
+      title={`Você está no Descanso: ${text} para voltar a andar. Tirando dupla nos dados, sai na hora.`}
+    >
+      <span aria-hidden="true">😴</span> Descanso: <strong>{text}</strong>
+      <small> · dupla sai antes</small>
+    </span>
+  );
+}
+
+/** Faltando 3 s na própria vez, o alerta toca (a faixa dura quase 2 s, então uma vez basta). */
+const WARN_SECONDS = 3;
+
+export function Countdown({ deadline, warn = false }: { deadline: number; warn?: boolean }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 250);
     return () => clearInterval(timer);
   }, []);
   const seconds = Math.max(0, Math.ceil((deadline - now) / 1000));
+  useEffect(() => {
+    if (warn && seconds === WARN_SECONDS) playSound('tempoAcabando');
+  }, [warn, seconds]);
   return (
     <span
       className={`rounded-full px-2 py-0.5 font-mono text-sm font-bold tabular-nums ${seconds <= 5 ? 'bg-rose-600 text-white' : 'bg-white/15 text-white'}`}

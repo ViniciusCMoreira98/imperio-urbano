@@ -16,7 +16,9 @@ public record LobbyView(
         GameStatus status,
         String hostPlayerId,
         List<Member> players,
-        boolean canStart) {
+        boolean canStart,
+        /** Milissegundos até o início automático; nulo com menos de 2 jogadores (ou fora da sala). */
+        Long startsInMs) {
 
     public record Member(String playerId, String nickname, int seat, String avatarId, PawnColor pawnColor, boolean ready) {
     }

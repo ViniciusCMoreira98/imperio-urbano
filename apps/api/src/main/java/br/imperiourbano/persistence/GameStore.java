@@ -77,6 +77,33 @@ public class GameStore {
         return games.lockById(gameId).map(GameRecord::info);
     }
 
+    @Transactional
+    public void changeHost(String gameId, String hostPlayerId) {
+        games.changeHost(gameId, hostPlayerId);
+    }
+
+    /** Fim da contagem do início automático da sala; nulo desliga. */
+    @Transactional
+    public void setStartsAt(String gameId, java.time.Instant startsAt) {
+        games.setStartsAt(gameId, startsAt);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<java.time.Instant> startsAt(String gameId) {
+        return games.findStartsAt(gameId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> dueLobbies(java.time.Instant now) {
+        return games.findDueLobbies(now);
+    }
+
+    /** Apaga uma sala que ainda não começou (ficou vazia). */
+    @Transactional
+    public void deleteLobby(String gameId) {
+        games.deleteLobby(gameId);
+    }
+
     /**
      * Grava os eventos de um comando. {@code expectedVersion} é a versão anterior aos eventos;
      * {@code commandId} nulo para eventos sem comando de jogador (ex.: início da partida).

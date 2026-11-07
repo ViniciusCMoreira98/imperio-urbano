@@ -131,3 +131,6 @@
  .lb-footer{flex-wrap:wrap}
  .lb-hint{flex-basis:100%}
 }
+
+/* Contagem do início automático (engenharia, 07/11/2026): a dica do rodapé vira o relógio da sala. */
+.lb-screen .lb-hint.lb-countdown{color:#ffe678;font-weight:800;font-size:1.05em;font-variant-numeric:tabular-nums;text-shadow:0 1px 1px #00172a}

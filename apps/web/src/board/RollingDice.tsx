@@ -82,16 +82,18 @@ export function RollingDice() {
     // Troca para a face oficial já girando, para não revelar o resultado antes do lance.
     tl.call(() => setFaces(official), [], LIFT_SECONDS + SPIN_SECONDS * 0.2);
     timeline.current = tl;
-    // O impacto da faixa coincide com o pouso dos dados na mesa.
-    playSound('dado', { delay: LIFT_SECONDS + SPIN_SECONDS - 0.04 });
+    // O impacto da faixa (logo após a folga de 0,02 s do recorte) coincide com o toque na mesa, no fim do pouso.
+    playSound('dado', { delay: ROLL_SECONDS - 0.02 });
     // Sem quadros de animação (janela encoberta, painel oculto) o gsap não avança: o relógio garante
     // que os dados param no resultado e a barra volta a mostrá-lo.
     deadline.current = setTimeout(() => snap(official, rollId), ROLL_SECONDS * 1000 + 250);
   };
 
   // Snapshot novo sem lance ao vivo (entrada, reconexão): mostra o resultado oficial parado.
+  // Um lance ao vivo esperando a mesa parar (pending) já traz o mesmo valor no snapshot: as faces só
+  // mudam quando ele rolar, senão os dados trocariam de valor ainda na jogada anterior.
   useEffect(() => {
-    if (!timeline.current) setFaces(asFaces(lastDice));
+    if (!timeline.current && !pending.current) setFaces(asFaces(lastDice));
   }, [lastDice]);
 
   useLayoutEffect(

@@ -4,6 +4,14 @@ import type { AvatarId, GameMode, GuestSession, LobbyView, PawnColor, PublicRoom
 export interface Wallet {
   coins: number;
   diamonds: number;
+  /** Partidas vencidas (servidor antigo pode não mandar). */
+  wins?: number;
+}
+
+/** Personagem preferido, escolhido no menu; `pawnColor` nulo = sem preferência de cor. */
+export interface Character {
+  avatarId: AvatarId;
+  pawnColor: PawnColor | null;
 }
 
 export class ApiError extends Error {
@@ -57,4 +65,9 @@ export const api = {
   setReady: (token: string, gameId: string, ready: boolean) =>
     request<LobbyView>('PUT', `/games/${gameId}/me/ready`, token, { ready }),
   start: (token: string, gameId: string) => request<LobbyView>('POST', `/games/${gameId}/start`, token),
+  /** Sai da sala antes do início: libera o assento e tira a sala de "Suas partidas". */
+  leaveLobby: (token: string, gameId: string) => request<void>('POST', `/games/${gameId}/leave`, token),
+  character: (token: string) => request<Character>('GET', '/character', token),
+  saveCharacter: (token: string, avatarId: AvatarId, pawnColor: PawnColor) =>
+    request<Character>('PUT', '/character', token, { avatarId, pawnColor }),
 };

@@ -31,14 +31,29 @@ export function useHudLayout(
         const box = root.getBoundingClientRect();
         const headerBox = header.current?.getBoundingClientRect();
         if (headerBox) root.style.setProperty('--hud-header-w', `${Math.ceil(headerBox.width)}px`);
-        centerPlayers(root, box, headerBox, players.current);
+        const list = players.current?.querySelector<HTMLElement>('ol');
+        // Celular deitado: cards em coluna à esquerda e botões em coluna à direita (CSS).
+        const sideLayout = !!list && getComputedStyle(list).flexDirection === 'column';
+        if (sideLayout) root.style.setProperty('--hud-players-pad', '2px');
+        else centerPlayers(root, box, headerBox, players.current);
         const playersBox = players.current?.getBoundingClientRect();
         const tray = actions.current?.querySelector<HTMLElement>('.hud-action-tray') ?? actions.current;
         const actionsBox = tray?.getBoundingClientRect();
         if (!playersBox || !actionsBox || box.height === 0) return;
-        const top = Math.ceil(playersBox.bottom - box.top + GAP + box.height * PAWN_HEADROOM);
         const bottom = Math.ceil(box.bottom - actionsBox.top + SEAL_OVERHANG + GAP);
-        setInsets((prev) => (prev && prev.top === top && prev.bottom === bottom ? prev : { top, bottom }));
+        let next: BoardInsets;
+        if (sideLayout) {
+          // Reserva igual dos dois lados (tabuleiro centralizado): a maior coluna, incluindo o Histórico.
+          const history = root.querySelector<HTMLElement>('.game-hud-history')?.getBoundingClientRect();
+          const rightEdge = Math.min(headerBox?.left ?? box.right, history && history.width > 0 ? history.left : box.right);
+          const side = Math.ceil(Math.max(playersBox.right - box.left, box.right - rightEdge) + GAP);
+          next = { top: Math.ceil(GAP + box.height * PAWN_HEADROOM), bottom, left: side, right: side };
+        } else {
+          next = { top: Math.ceil(playersBox.bottom - box.top + GAP + box.height * PAWN_HEADROOM), bottom };
+        }
+        setInsets((prev) =>
+          prev && prev.top === next.top && prev.bottom === next.bottom && prev.left === next.left && prev.right === next.right ? prev : next,
+        );
       });
     };
     const observer = new ResizeObserver(measure);
