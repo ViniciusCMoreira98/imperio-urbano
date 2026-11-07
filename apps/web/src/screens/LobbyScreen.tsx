@@ -121,6 +121,12 @@ export function LobbyScreen() {
           <p className="mt-3 text-sm text-white/70">
             Modo: <strong>{lobby.mode === 'CLASSIC' ? 'Clássico (sem limite de rodadas)' : 'Rápido (15 rodadas)'}</strong>
           </p>
+          {lobby.stake > 0 && (
+            <p className="mt-1 text-sm text-white/70">
+              Aposta: <strong>{lobby.stake.toLocaleString('pt-BR')} moedas</strong> por jogador · prêmio de{' '}
+              <strong>{(lobby.stake * lobby.players.length).toLocaleString('pt-BR')}</strong> ao vencedor
+            </p>
+          )}
 
           <div className="mt-4 flex flex-wrap gap-2">
             <Button variant="secondary" onClick={leave}>

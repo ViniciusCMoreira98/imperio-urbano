@@ -1,5 +1,6 @@
 package br.imperiourbano.identity;
 
+import br.imperiourbano.catalog.Catalog;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,9 +28,11 @@ public class GuestSessionService {
 
     private final GuestSessionRepository sessions;
     private final SecureRandom random = new SecureRandom();
+    private final int startingCoins;
 
-    GuestSessionService(GuestSessionRepository sessions) {
+    GuestSessionService(GuestSessionRepository sessions, Catalog catalog) {
         this.sessions = sessions;
+        this.startingCoins = catalog.rules().economy().guestStartingCoins();
     }
 
     /** {@code token} só existe neste retorno; depois disso apenas o hash fica no banco. */
@@ -42,7 +45,7 @@ public class GuestSessionService {
         byte[] bytes = new byte[TOKEN_BYTES];
         random.nextBytes(bytes);
         String token = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
-        GuestSessionRecord record = new GuestSessionRecord(UUID.randomUUID().toString(), nickname, hash(token));
+        GuestSessionRecord record = new GuestSessionRecord(UUID.randomUUID().toString(), nickname, hash(token), startingCoins);
         sessions.save(record);
         return new NewSession(record.principal(), token);
     }

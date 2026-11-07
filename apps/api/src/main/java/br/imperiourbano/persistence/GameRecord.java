@@ -25,6 +25,10 @@ class GameRecord {
     @Column(nullable = false)
     private long version;
 
+    /** Aposta de cada jogador (0 = sem aposta, partidas antigas). */
+    @Column(nullable = false, updatable = false)
+    private int stake;
+
     @Column(name = "host_player_id")
     private String hostPlayerId;
 
@@ -37,8 +41,9 @@ class GameRecord {
     protected GameRecord() {
     }
 
-    GameRecord(String id, String inviteCode, String mode, String status, String hostPlayerId) {
+    GameRecord(String id, String inviteCode, String mode, String status, String hostPlayerId, int stake) {
         this.id = id;
+        this.stake = stake;
         this.inviteCode = inviteCode;
         this.mode = mode;
         this.status = status;
@@ -48,6 +53,6 @@ class GameRecord {
     }
 
     GameInfo info() {
-        return new GameInfo(id, inviteCode, mode, status, version, hostPlayerId);
+        return new GameInfo(id, inviteCode, mode, status, version, hostPlayerId, stake);
     }
 }

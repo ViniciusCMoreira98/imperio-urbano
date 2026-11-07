@@ -9,6 +9,8 @@ public record LobbyView(
         String gameId,
         String inviteCode,
         GameMode mode,
+        /** Aposta de cada jogador; o vencedor leva aposta × jogadores. */
+        int stake,
         GameStatus status,
         String hostPlayerId,
         List<Member> players,

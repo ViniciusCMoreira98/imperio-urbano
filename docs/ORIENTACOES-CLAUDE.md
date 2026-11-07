@@ -1,5 +1,10 @@
 # Orientações e pendências para o Claude Code
 
+## Integração com carteira/apostas da develop (07/11/2026)
+
+Recebida a atualização `fdeb0b2`. Preservados o serviço de carteira, saldos reais, catálogo de apostas, fichas/inputs e a prop opcional `stake`. O host de produção usa `OnlineRoomEntryScreen` (importado com o apelido anterior), mantendo a criação/convite/apostas já integrados. O novo `OnlinePlayScreen` continua sendo a escolha visual de três destinos para integração da engenharia; não chamar sua nova assinatura com as props do formulário antigo. A proposta da praia e a sala de espera continuam conforme os limites registrados. 150 testes e build aprovados após resolver o conflito. Publicação autorizada pelo usuário.
+
+
 ## Publicação das entregas visuais (07/11/2026)
 
 Commit e integração na develop solicitados pelo usuário: correção do Apagão, ambiente de praia e enquadramento ampliado, proposta da sala de espera e fluxo online em três opções com botões compactos/lista pública. Registros anteriores de “sem commit/merge” descrevem o estado antes desta solicitação. Preservar a integração de carteira/apostas recebida na develop; serviços de salas públicas e ativação dos novos temas/fluxos permanecem conforme os contratos de engenharia. Identificadores finais no histórico Git.

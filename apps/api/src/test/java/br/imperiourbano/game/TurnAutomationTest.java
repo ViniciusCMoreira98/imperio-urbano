@@ -85,7 +85,7 @@ class TurnAutomationTest {
     void startGame() {
         ana = sessions.create("Ana").player();
         bia = sessions.create("Bia").player();
-        LobbyView room = lobby.create(ana, GameMode.CLASSIC);
+        LobbyView room = lobby.create(ana, GameMode.CLASSIC, 200);
         gameId = room.gameId();
         lobby.join(bia, room.inviteCode());
         lobby.setReady(ana, gameId, true);

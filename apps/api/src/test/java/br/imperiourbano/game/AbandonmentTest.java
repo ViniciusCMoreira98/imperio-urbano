@@ -58,7 +58,7 @@ class AbandonmentTest {
     void startGame() {
         ana = sessions.create("Ana").player();
         GuestPrincipal bia = sessions.create("Bia").player();
-        LobbyView room = lobby.create(ana, GameMode.CLASSIC);
+        LobbyView room = lobby.create(ana, GameMode.CLASSIC, 200);
         gameId = room.gameId();
         lobby.join(bia, room.inviteCode());
         lobby.setReady(ana, gameId, true);
@@ -106,7 +106,7 @@ class AbandonmentTest {
     void gameNobodyEverConnectedToIsAlsoClosed() throws InterruptedException {
         GuestPrincipal caio = sessions.create("Caio").player();
         GuestPrincipal davi = sessions.create("Davi").player();
-        LobbyView room = lobby.create(caio, GameMode.QUICK);
+        LobbyView room = lobby.create(caio, GameMode.QUICK, 200);
         lobby.join(davi, room.inviteCode());
         lobby.setReady(caio, room.gameId(), true);
         lobby.setReady(davi, room.gameId(), true);

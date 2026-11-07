@@ -6,9 +6,9 @@
 .menu-scene :is(.menu-play,.menu-games,.menu-settings):not(:disabled):active{transform:translateY(2px)}
 
 .menu-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:2}
-.menu-profile{display:flex;flex-direction:column;min-width:0;max-width:60vw;padding:6px 16px;border:2px solid #ffe848;border-radius:14px;background:linear-gradient(115deg,#051c36,#001222);box-shadow:0 3px 3px #00182c,inset 0 0 0 2px #9c5b13;text-shadow:0 2px 2px #000}
-.menu-profile strong{font-size:clamp(15px,2.2vmin,22px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.menu-profile-label{font-size:11px;color:#ffe543;font-weight:bold;letter-spacing:.04em;text-transform:uppercase}
+.menu-top .pm-player-card{width:clamp(190px,28vw,340px)}
+.menu-wallets{margin-left:auto;margin-right:4px}
+@media (max-width:700px) and (orientation:portrait){.menu-top{flex-wrap:wrap}.menu-top .pm-player-card{width:62vw}.menu-wallets{order:3;width:100%;margin:0;justify-content:center}.menu-wallets .pm-currency-card{width:40vw}}
 .menu-settings{flex:none;width:clamp(40px,6.5vmin,60px);aspect-ratio:1;padding:6px;border:2px solid #ffe449;border-radius:12px;background:linear-gradient(#0a4d87,#041d33);box-shadow:0 3px 4px #00172d}
 .menu-settings img{width:100%;height:100%;object-fit:contain}
 
@@ -20,6 +20,7 @@
 .menu-play.menu-join{background-image:url('../main-menu/art/button-blue-v1.svg')}
 .menu-play>img{position:absolute;left:30%;top:2%;width:40%;height:50%;object-fit:contain}
 .menu-play.menu-join>img{left:36%;top:6%;width:28%;height:42%}
+.menu-play.menu-online>img{left:38%;top:7%;width:24%;height:40%;filter:drop-shadow(0 .3vmin .2vmin #0006)}
 .menu-play strong{position:absolute;left:0;right:0;top:51%;font-size:clamp(18px,4.2vmin,36px);line-height:1.1;letter-spacing:-.02em}
 .menu-play small{position:absolute;left:0;right:0;top:77%;font-size:clamp(11px,1.9vmin,17px);font-weight:bold;color:#fff895}
 .menu-play.menu-join small{color:#d8f3ff}

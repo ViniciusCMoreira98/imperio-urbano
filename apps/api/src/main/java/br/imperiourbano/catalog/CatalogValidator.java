@@ -126,6 +126,13 @@ public final class CatalogValidator {
         if (rules.construction().firstVisitMaxHouses() > rules.construction().maxHouses()) {
             errors.add("Casas da primeira visita excedem o máximo");
         }
+        var economy = rules.economy();
+        if (economy.stakes().isEmpty() || economy.stakes().stream().anyMatch(v -> v <= 0)) {
+            errors.add("Apostas devem ser positivas");
+        }
+        if (economy.guestStartingCoins() < 0 || economy.dailyRefill().amount() < economy.dailyRefill().below()) {
+            errors.add("Saldo inicial e recarga diária inválidos");
+        }
         if (!rules.modes().keySet().containsAll(Arrays.asList(GameMode.values()))) {
             errors.add("Configuração ausente para algum modo de jogo");
         }

@@ -15,6 +15,8 @@ export interface LobbyView {
   gameId: string;
   inviteCode: string;
   mode: GameMode;
+  /** Aposta de cada jogador, cobrada ao iniciar; o vencedor leva aposta × jogadores. */
+  stake: number;
   status: GameStatus;
   hostPlayerId: string;
   players: LobbyMember[];

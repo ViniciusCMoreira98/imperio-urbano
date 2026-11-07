@@ -11,6 +11,7 @@ import br.imperiourbano.game.GameUpdated;
 import br.imperiourbano.identity.GuestPrincipal;
 import br.imperiourbano.persistence.GameInfo;
 import br.imperiourbano.persistence.GameStore;
+import br.imperiourbano.wallet.WalletService;
 import java.security.SecureRandom;
 import java.util.EnumSet;
 import java.util.List;
@@ -43,11 +44,13 @@ public class LobbyService {
     private final int minPlayers;
     private final int maxPlayers;
     private final ApplicationEventPublisher publisher;
+    private final WalletService wallet;
     private final SecureRandom random = new SecureRandom();
 
     LobbyService(GameStore store, LobbyMemberRepository members, GameEngine engine, Catalog catalog,
-            ApplicationEventPublisher publisher) {
+            ApplicationEventPublisher publisher, WalletService wallet) {
         this.store = store;
+        this.wallet = wallet;
         this.members = members;
         this.engine = engine;
         this.publisher = publisher;
@@ -55,10 +58,19 @@ public class LobbyService {
         this.maxPlayers = catalog.rules().players().max();
     }
 
+    public int lowestStake() {
+        return wallet.stakes().getFirst();
+    }
+
+    /** A aposta precisa ser uma das permitidas e caber no saldo de quem cria. */
     @Transactional
-    public LobbyView create(GuestPrincipal player, GameMode mode) {
+    public LobbyView create(GuestPrincipal player, GameMode mode, int stake) {
+        if (!wallet.validStake(stake)) {
+            throw new LobbyException(HttpStatus.BAD_REQUEST, "Aposta inválida.");
+        }
+        requireCoins(player, stake);
         String gameId = UUID.randomUUID().toString();
-        store.createGame(gameId, newInviteCode(), mode, player.playerId());
+        store.createGame(gameId, newInviteCode(), mode, player.playerId(), stake);
         members.save(new LobbyMemberRecord(gameId, player.playerId(), player.nickname(), 0,
                 DEFAULT_AVATAR, PawnColor.values()[0]));
         return view(gameId);
@@ -77,6 +89,7 @@ public class LobbyService {
         if (current.size() >= maxPlayers) {
             throw LobbyException.conflict("A sala está cheia.");
         }
+        requireCoins(player, game.stake());
         Set<Integer> seats = current.stream().map(LobbyMemberRecord::seat).collect(Collectors.toSet());
         int seat = IntStream.range(0, maxPlayers).filter(s -> !seats.contains(s)).findFirst().orElseThrow();
         EnumSet<PawnColor> free = EnumSet.allOf(PawnColor.class);
@@ -140,6 +153,12 @@ public class LobbyService {
         if (!seated.stream().allMatch(LobbyMemberRecord::ready)) {
             throw LobbyException.conflict("Todos os jogadores precisam estar prontos.");
         }
+        // A aposta é cobrada agora; faltando saldo a alguém, nada é cobrado (a transação desfaz tudo).
+        for (LobbyMemberRecord m : seated) {
+            if (!wallet.debit(m.playerId(), game.stake())) {
+                throw LobbyException.conflict("%s não tem moedas para a aposta.".formatted(m.nickname()));
+            }
+        }
         GameStarted started = engine.start(gameId, game.mode(),
                 seated.stream().map(m -> new StartingPlayer(m.playerId(), m.nickname())).toList());
         GameState state = engine.apply(null, started);
@@ -175,7 +194,7 @@ public class LobbyService {
         boolean canStart = game.status() == GameStatus.LOBBY
                 && seated.size() >= minPlayers
                 && seated.stream().allMatch(LobbyMemberRecord::ready);
-        return new LobbyView(game.id(), game.inviteCode(), game.mode(), game.status(), game.hostPlayerId(),
+        return new LobbyView(game.id(), game.inviteCode(), game.mode(), game.stake(), game.status(), game.hostPlayerId(),
                 seated.stream().map(m -> new LobbyView.Member(m.playerId(), m.nickname(), m.seat(),
                         m.avatarId(), m.pawnColor(), m.ready())).toList(),
                 canStart);
@@ -189,6 +208,12 @@ public class LobbyService {
     private LobbyMemberRecord requireMember(String gameId, GuestPrincipal player) {
         return members.findById(new LobbyMemberRecord.Key(gameId, player.playerId()))
                 .orElseThrow(LobbyException::notFound);
+    }
+
+    private void requireCoins(GuestPrincipal player, int stake) {
+        if (wallet.coins(player.playerId()) < stake) {
+            throw LobbyException.conflict("Moedas insuficientes para essa aposta.");
+        }
     }
 
     private static void requireLobby(GameInfo game) {
