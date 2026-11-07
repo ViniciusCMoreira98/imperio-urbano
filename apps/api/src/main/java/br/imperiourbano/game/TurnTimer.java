@@ -42,6 +42,8 @@ public class TurnTimer {
         return thread;
     });
     private final Map<String, Scheduled> timers = new ConcurrentHashMap<>();
+    /** Até quando a mesa dos jogadores ainda mostra jogadas já enviadas, por partida. */
+    private final Map<String, Instant> tableBusyUntil = new ConcurrentHashMap<>();
 
     TurnTimer(GameService games, TurnTimeouts timeouts, Presence presence) {
         this.games = games;
@@ -65,12 +67,34 @@ public class TurnTimer {
         }
         if (existing != null) existing.future().cancel(false);
 
+        Instant now = Instant.now();
+        Instant tableFree = tableFreeAt(gameId, update, now);
         timeouts.forState(update.state(), automatic).ifPresentOrElse(timeout -> {
-            Duration duration = timeout.duration();
+            // Quem está jogando só começa a perder tempo depois que a mesa mostra as jogadas ainda na
+            // fila (dados e personagens andando, inclusive as do adversário em lotes anteriores). O modo
+            // automático segue rápido: a mesa de quem assiste já enfileira as jogadas.
+            Instant start = automatic ? now : tableFree;
+            Instant deadline = start.plus(timeout.duration());
             ScheduledFuture<?> future = scheduler.schedule(() -> fire(gameId, version, automatic),
-                    duration.toMillis(), TimeUnit.MILLISECONDS);
-            timers.put(gameId, new Scheduled(version, automatic, Instant.now().plus(duration), future));
+                    Duration.between(now, deadline).toMillis(), TimeUnit.MILLISECONDS);
+            timers.put(gameId, new Scheduled(version, automatic, deadline, future));
         }, () -> timers.remove(gameId));
+    }
+
+    /**
+     * Quando a mesa termina de mostrar tudo o que já foi enviado: cada lote com dados ou personagens
+     * andando entra na fila depois do anterior (é assim que o cliente apresenta).
+     */
+    private Instant tableFreeAt(String gameId, GameUpdated update, Instant now) {
+        if (update.state().status() != GameStatus.IN_PROGRESS) {
+            tableBusyUntil.remove(gameId);
+            return now;
+        }
+        Duration show = timeouts.presentation(update.events());
+        return tableBusyUntil.compute(gameId, (id, busy) -> {
+            Instant from = busy == null || busy.isBefore(now) ? now : busy;
+            return from.plus(show);
+        });
     }
 
     /** Jogador da vez sem conexão aberta: o servidor joga por ele. */

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { board, rules, states } from '@imperio/game-data';
-import type { Command, TurnPhase } from '@imperio/shared-types';
+import type { Command } from '@imperio/shared-types';
 import { HOTEL_LEVEL, isMyTurn, saleRefunds } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { useDiceStore } from '../store/diceStore';
@@ -10,12 +10,6 @@ import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 import { DiceFaces } from './DiceFaces';
 import { TurnBadge } from './TurnBadge';
-
-/** Só quando a escolha é feita tocando no tabuleiro; nas demais, a carta do estado já se explica. */
-const BOARD_HINTS: Partial<Record<TurnPhase, string>> = {
-  AWAITING_OLYMPICS_HOST: `Toque num estado seu para sediar as Olimpíadas (${formatCredits(rules.olympics.hostFee)})`,
-  AWAITING_TRAVEL_DESTINATION: `Toque numa casa para viajar (${formatCredits(rules.nationalTravel.fee)}) ou role os dados`,
-};
 
 const statesById = new Map(states.map((s) => [s.id, s]));
 
@@ -64,7 +58,8 @@ export function ActionBar({ myId }: { myId: string }) {
             </>
           )}
         </span>
-        {snapshot.status === 'IN_PROGRESS' && deadline !== null && <Countdown deadline={deadline} />}
+        {/* Some enquanto a mesa mostra a jogada: o prazo do servidor só começa a correr quando ela termina. */}
+        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && <Countdown deadline={deadline} />}
 
         {canRoll && (
           <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline || tableBusy} title={tableBusy ? 'Aguarde a jogada anterior terminar na mesa' : undefined} onClick={() => act({ type: 'ROLL_DICE' })}>
@@ -72,9 +67,6 @@ export function ActionBar({ myId }: { myId: string }) {
           </Button>
         )}
         {/* Comprar/construir e recusar ("×") ficam no modal de evolução da propriedade. */}
-        {mine && phase === 'AWAITING_OLYMPICS_HOST' && (
-          <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_OLYMPICS' })}>Não sediar</Button>
-        )}
         {inDebt && (
           <>
             {snapshot.properties.some((p) => p.ownerId === myId) && (
@@ -94,9 +86,6 @@ export function ActionBar({ myId }: { myId: string }) {
         )}
       </div>
 
-      {mine && phase && BOARD_HINTS[phase] && (
-        <p className="hud-panel rounded-lg px-3 py-1 text-xs text-white/90">{BOARD_HINTS[phase]}</p>
-      )}
       {rejection && (
         <p role="alert" className="rounded-lg bg-rose-900/85 px-3 py-1 text-sm text-rose-100">
           {rejection}

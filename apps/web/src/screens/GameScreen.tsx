@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { GameSounds } from '../audio/GameSounds';
 import { GameBoard } from '../board/GameBoard';
 import { ActionBar } from '../hud/ActionBar';
+import { BoardChoicePrompt } from '../hud/BoardChoicePrompt';
 import { CardReveal } from '../hud/CardReveal';
 import { DevDicePanel } from '../hud/DevDicePanel';
 import { EventLog } from '../hud/EventLog';
@@ -88,6 +89,8 @@ export function GameScreen() {
             <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center">
               <CardReveal />
             </div>
+            {/* Sediar ou viajar: aviso no meio da tela e casas destacadas no tabuleiro. */}
+            <BoardChoicePrompt myId={session.playerId} />
             {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
             <PropertyDecisionDialog myId={session.playerId} />
             {snapshot.status === 'FINISHED' && <FinishedOverlay onLeave={leave} />}

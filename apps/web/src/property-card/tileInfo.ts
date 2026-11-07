@@ -40,7 +40,7 @@ const SPECIAL_DESCRIPTIONS: Record<Exclude<TileType, 'PROPERTY'>, string> = {
   TAX: `Pague ${rules.tax.amount} créditos. O valor vai para o fundo do Saque; sem saldo, a Taxa vira dívida.`,
   SAQUE: 'Leve tudo o que foi pago na Taxa até agora. O fundo volta a zero.',
   OLYMPICS: `Pague ${olympics.hostFee} créditos para sediar as Olimpíadas em um estado seu. O aluguel da sede é multiplicado (×${olympics.multipliers[0]} até ×${olympics.multipliers[olympics.multipliers.length - 1]}).`,
-  NATIONAL_TRAVEL: `No Aeroporto, na próxima jogada, pague ${rules.nationalTravel.fee} créditos e viaje até qualquer casa do tabuleiro, ou role os dados normalmente.`,
+  NATIONAL_TRAVEL: `No Aeroporto, na próxima jogada, pague ${rules.nationalTravel.fee} créditos e viaje até qualquer estado do tabuleiro, ou role os dados normalmente.`,
   EVENT: 'Compre uma carta de eventos e siga as instruções.',
 };
 

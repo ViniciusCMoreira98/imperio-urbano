@@ -3,11 +3,13 @@ package br.imperiourbano.game;
 import br.imperiourbano.catalog.Catalog;
 import br.imperiourbano.catalog.StateDefinition;
 import br.imperiourbano.engine.GameCommand;
+import br.imperiourbano.engine.GameEvent;
 import br.imperiourbano.engine.GameState;
 import br.imperiourbano.engine.GameStatus;
 import br.imperiourbano.engine.PropertyState;
 import java.time.Duration;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,11 +32,20 @@ public record TurnTimeouts(Duration roll, Duration decision, Duration debt, Dura
         if (command == null) return Optional.empty();
         if (automaticMode) return Optional.of(new Timeout(automatic, command));
         Duration duration = switch (state.phase()) {
-            case AWAITING_ROLL, AWAITING_TRAVEL_DESTINATION -> roll;
+            // Escolher o destino da viagem é a ação da casa Aeroporto: mesmo prazo das outras decisões.
+            case AWAITING_ROLL -> roll;
             case AWAITING_DEBT_RESOLUTION -> debt;
             default -> decision;
         };
         return Optional.of(new Timeout(duration, command));
+    }
+
+    /**
+     * Tempo que a mesa leva para mostrar estes eventos (dados e personagens). Soma-se ao prazo, que assim
+     * só corre quando a jogada termina na tela (pedido do usuário, 06/11/2026).
+     */
+    public Duration presentation(List<GameEvent> events) {
+        return TablePresentation.of(events, catalog.board().tileCount());
     }
 
     private GameCommand defaultCommand(GameState state) {
