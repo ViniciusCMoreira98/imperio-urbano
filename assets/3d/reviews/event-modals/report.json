@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "events": 6,
+  "events": 9,
   "screens": [
     {
       "id": "assalto",
@@ -33,6 +33,21 @@
       "height": 1024
     },
     {
+      "id": "descanso-merecido",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "passe-livre",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "aluguel-zero",
+      "width": 1536,
+      "height": 1024
+    },
+    {
       "id": "assalto",
       "width": 1280,
       "height": 720
@@ -63,6 +78,21 @@
       "height": 720
     },
     {
+      "id": "descanso-merecido",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "passe-livre",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "id": "aluguel-zero",
+      "width": 1280,
+      "height": 720
+    },
+    {
       "id": "assalto",
       "width": 844,
       "height": 390
@@ -93,6 +123,21 @@
       "height": 390
     },
     {
+      "id": "descanso-merecido",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "passe-livre",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "id": "aluguel-zero",
+      "width": 844,
+      "height": 390
+    },
+    {
       "id": "assalto",
       "width": 667,
       "height": 375
@@ -119,6 +164,21 @@
     },
     {
       "id": "apagao",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "descanso-merecido",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "passe-livre",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "id": "aluguel-zero",
       "width": 667,
       "height": 375
     }
@@ -131,6 +191,14 @@
   "noTimerInCard": true,
   "boardVisibleAfterCard": true,
   "illustrationsPreserved": true,
+  "restItemCallback": true,
+  "restItemDisabledOutsideEligibility": true,
+  "restItemHiddenWhenEmpty": true,
+  "restItemPending": true,
+  "rentItemAutomatic": true,
+  "rentItemHasNoUseButton": true,
+  "rentItemClickDoesNothing": true,
+  "rentItemHiddenWhenEmpty": true,
   "allTextFits": true,
   "sourceAssetHashesChecked": true,
   "backendRulesNotImplemented": true,

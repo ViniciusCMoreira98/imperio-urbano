@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "prompt": "assets/eventos/passe-livre-prompt.json",
+  "source": "assets/eventos/source/passe-livre-v1.png",
+  "file": "apps/web/src/event-art/art/passe-livre-v1.webp",
+  "width": 1280,
+  "height": 853,
+  "sourceBytes": 2621526,
+  "bytes": 311828,
+  "sha256": "35202ef0b3fcb8a234f6f5a339241343b422dba0b0e91f0f00e68accfb8dca29",
+  "sourceSha256": "d5c0b4b2fe7580811fe3ca18b339f5316ed68686fa422a034497ea8a26f30d48",
+  "encoder": "Chromium 141.0.7390.37 WebP quality 92",
+  "meshyCredits": 0
+}

@@ -700,6 +700,15 @@
       "bytes": 1270004
     },
     {
+      "file": "apps/web/src/event-art/art/aluguel-zero-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/aluguel-zero-manifest.json",
+      "commercialUse": true,
+      "sha256": "4a48e02cc3a447c8add0b2c57ff99414e0a2ca5df92ad5b65f6ef0856f3297cf",
+      "bytes": 292842
+    },
+    {
       "file": "apps/web/src/event-art/art/apagao-v1.webp",
       "provider": "OpenAI image_gen built-in",
       "license": "OpenAI generated output, project ownership under service terms",
@@ -720,7 +729,7 @@
     {
       "file": "apps/web/src/event-art/art/caramelo-viral-v1.webp",
       "provider": "OpenAI image_gen built-in",
-      "license": "Generated stylization of user-supplied photograph; input rights review not recorded",
+      "license": "Generated stylization inspired by user-supplied photograph; input rights review not recorded",
       "evidence": "assets/eventos/manifest.json",
       "commercialUse": null,
       "sha256": "114af308bfd1267cfeff69695a2c6fd7242743d52b58cb5de2063f81333b8af7",
@@ -754,6 +763,24 @@
       "bytes": 981
     },
     {
+      "file": "apps/web/src/event-art/art/descanso-merecido-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "Generated stylization inspired by user-supplied photograph; input rights review not recorded",
+      "evidence": "assets/eventos/descanso-merecido-v1-manifest.json",
+      "commercialUse": null,
+      "sha256": "a0ee91c982ca4bc6848c78b5dba2eb44e1f1ab022b83f2a940f10b7ff0f8dd2e",
+      "bytes": 309064
+    },
+    {
+      "file": "apps/web/src/event-art/art/descanso-merecido-v2.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "Generated stylization inspired by user-supplied photograph; input rights review not recorded",
+      "evidence": "assets/eventos/descanso-merecido-manifest.json",
+      "commercialUse": null,
+      "sha256": "ac1f3b093df121bebd5175c4ad079bbcefc0cc997d27ef22e88a31638dc7f105",
+      "bytes": 285136
+    },
+    {
       "file": "apps/web/src/event-art/art/escolha-sede-v1.webp",
       "provider": "OpenAI image_gen built-in",
       "license": "OpenAI generated output, project ownership under service terms",
@@ -779,6 +806,15 @@
       "commercialUse": true,
       "sha256": "e58a53d17eb2aa106202959ff56066f028ae9c6d35eea77ad9ea32af72aba692",
       "bytes": 374130
+    },
+    {
+      "file": "apps/web/src/event-art/art/passe-livre-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/eventos/passe-livre-manifest.json",
+      "commercialUse": true,
+      "sha256": "35202ef0b3fcb8a234f6f5a339241343b422dba0b0e91f0f00e68accfb8dca29",
+      "bytes": 311828
     },
     {
       "file": "apps/web/src/event-art/art/ribbon-simple-v3.svg",
