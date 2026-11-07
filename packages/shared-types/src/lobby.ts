@@ -33,6 +33,9 @@ export interface GuestSession {
   playerId: string;
   nickname: string;
   token: string;
+  /** Conta Google ligada (07/11/2026); ausente nas sessões antigas = convidado. */
+  google?: boolean;
+  email?: string | null;
 }
 
 /** Sala na lista pública (GET /api/games/public): sem código de convite. */

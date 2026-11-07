@@ -21,6 +21,7 @@ import { api, ApiError } from '../net/api';
 import { useWallet } from '../net/useWallet';
 import { CurrencyMenuCard, PlayerMenuCard } from '../play-menu/MenuCards';
 import { loadLastSession } from '../net/session';
+import { GoogleButton, googleClientId } from '../auth/GoogleButton';
 import { useAppStore } from '../store/appStore';
 import { useCharacterStore, useMenuAvatar } from '../store/characterStore';
 import { CharacterPicker } from '../play-menu/CharacterPicker';
@@ -130,7 +131,36 @@ function NicknameForm() {
           Continuar como {last.nickname}
         </Button>
       )}
+      <GoogleSignInBlock onError={setError} />
     </Panel>
+  );
+}
+
+/** Entrar com Google sem apelido: recupera a conta ligada ou cria um jogador com o primeiro nome do Google. */
+function GoogleSignInBlock({ onError }: { onError: (message: string | null) => void }) {
+  const setSession = useAppStore((s) => s.setSession);
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    void googleClientId().then((id) => setEnabled(!!id));
+  }, []);
+  if (!enabled) return null;
+  return (
+    <div className="menu-google">
+      <span className="menu-google-or">ou</span>
+      <GoogleButton
+        text="continue_with"
+        onCredential={async (credential) => {
+          onError(null);
+          try {
+            const result = await api.googleSignIn(credential, null);
+            setSession({ playerId: result.playerId, nickname: result.nickname, token: result.token, google: true, email: result.email });
+          } catch (e) {
+            onError(e instanceof ApiError ? e.message : 'Não foi possível entrar com Google.');
+          }
+        }}
+      />
+      <small>Com o Google, seu progresso fica salvo e volta em qualquer aparelho.</small>
+    </div>
   );
 }
 

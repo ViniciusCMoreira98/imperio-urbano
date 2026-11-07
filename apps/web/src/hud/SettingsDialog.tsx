@@ -16,6 +16,8 @@ import logoutIcon from '../settings-art/art/logout-v1.svg';
 import { playSound } from '../audio/audio';
 import { useAudioStore } from '../audio/audioStore';
 import { useAppStore } from '../store/appStore';
+import { GoogleButton } from '../auth/GoogleButton';
+import { api, ApiError, type GoogleSignIn } from '../net/api';
 
 type Tab = 'sound' | 'account';
 const TABS: { id: Tab; label: string; icon: string }[] = [
@@ -182,9 +184,42 @@ function VolumeRow({ label, value, muted, onChange, onRelease }: { label: string
   );
 }
 
+const GOOGLE_OUTCOME: Record<GoogleSignIn['outcome'], string> = {
+  LINKED: 'Conta Google ligada: seu progresso está salvo.',
+  SIGNED_IN: 'Você entrou no jogador que já usava esta conta Google.',
+  CREATED: 'Novo jogador criado com esta conta Google.',
+};
+
 function AccountTab({ onClose }: { onClose: () => void }) {
   const session = useAppStore((s) => s.session);
   const setSession = useAppStore((s) => s.setSession);
+  const [notice, setNotice] = useState<string | null>(null);
+  // Sessões salvas antes do login com Google não sabem se têm conta ligada: o servidor confirma.
+  useEffect(() => {
+    if (!session) return;
+    let alive = true;
+    api.me(session.token).then((me) => {
+      if (alive && (me.google !== !!session.google || me.email !== (session.email ?? null))) {
+        setSession({ ...session, google: me.google, email: me.email });
+      }
+    }, () => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [session, setSession]);
+
+  async function linkGoogle(credential: string) {
+    if (!session) return;
+    setNotice(null);
+    try {
+      const result = await api.googleSignIn(credential, session.token);
+      setSession({ playerId: result.playerId, nickname: result.nickname, token: result.token, google: true, email: result.email });
+      setNotice(GOOGLE_OUTCOME[result.outcome]);
+    } catch (e) {
+      setNotice(e instanceof ApiError ? e.message : 'Não foi possível entrar com Google.');
+    }
+  }
+
   return (
     <section className="st-card st-account-card">
       <h2>
@@ -198,20 +233,32 @@ function AccountTab({ onClose }: { onClose: () => void }) {
         </div>
         <div className="st-row">
           <span>Tipo de conta</span>
-          <span>Convidado neste navegador</span>
+          <span>{session?.google ? `Google${session.email ? ` · ${session.email}` : ''}` : 'Convidado neste navegador'}</span>
         </div>
+        {!session?.google && (
+          <div className="st-row st-google-row">
+            <span>Salvar progresso</span>
+            <GoogleButton text="signin_with" width={240} onCredential={(credential) => void linkGoogle(credential)} />
+          </div>
+        )}
+        {notice && (
+          <p className="st-google-notice" role="status">
+            {notice}
+          </p>
+        )}
         <div className="st-row">
-          {/* Volta à tela do apelido; as partidas em andamento continuam com o convidado anterior. */}
+          {/* Volta à tela do apelido; as partidas em andamento continuam com o jogador anterior. */}
           <button
             type="button"
             className="st-button st-account-action"
             onClick={() => {
               onClose();
+              if (session?.google) void api.logout(session.token).catch(() => undefined);
               setSession(null);
             }}
           >
             <img src={logoutIcon} alt="" />
-            Trocar apelido
+            {session?.google ? 'Sair da conta' : 'Trocar apelido'}
           </button>
         </div>
       </div>

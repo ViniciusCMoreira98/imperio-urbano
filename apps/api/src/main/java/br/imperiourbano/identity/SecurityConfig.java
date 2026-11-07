@@ -28,7 +28,8 @@ class SecurityConfig {
                 .logout(logout -> logout.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/sessions").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/sessions", "/api/sessions/google", "/api/sessions/logout").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/sessions/config").permitAll()
                         .requestMatchers("/error").permitAll()
                         // WebSocket autentica no handshake (GameHandshakeInterceptor).
                         .requestMatchers("/ws/**").permitAll()
