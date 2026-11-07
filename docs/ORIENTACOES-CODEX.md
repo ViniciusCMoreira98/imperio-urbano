@@ -1,5 +1,36 @@
 # Orientações e pendências para o Codex
 
+## PEDIDO DO USUÁRIO — arte do modal de fim de partida (07/11/2026)
+
+**Pedido direto do usuário:** fazer uma arte para o modal de fim de partida, que hoje é só funcional, no
+estilo do HUD. O componente é `apps/web/src/hud/GameOverScreen.tsx` e o estilo `apps/web/src/hud/gameOver.css`
+(classes `go-*`). Os detalhes funcionais estão em "Tela de fim de partida" no fim deste arquivo.
+
+**O que o modal precisa mostrar (dados prontos, vindos do servidor):**
+- Três situações, cada uma com título e ícone próprios:
+  - "Acabou o tempo!": modos de 25 min e 1 h, vence o maior patrimônio.
+  - "Fim de jogo!": os outros faliram.
+  - "Partida encerrada": abandono, sem vencedor.
+- Frase para quem está vendo: venceu, empatou ou em que posição ficou. Quando a pessoa vence, a tela
+  merece um destaque maior (troféu, brilho, confete).
+- Prêmio em moedas ("Você leva 🪙 600"), quando houve aposta.
+- Ranking de 2 a 6 jogadores: posição, retrato (`AvatarPortrait`) com a cor do peão, coroa no vencedor,
+  nome, "(você)", estados, saldo e patrimônio. Falidos por último, apagados. Empates dividem a posição.
+- Modo e número de rodadas no rodapé, e o botão "Voltar ao menu".
+
+**Restrições:**
+- Precisa caber em 800×360 e em 667×375 (celular deitado) com 3 jogadores, e rolar com 6.
+  O botão "Voltar ao menu" fica sempre visível.
+- Arte original do projeto, sem referência de terceiros. Pode usar image_gen integrado; sem créditos Meshy
+  e sem chamadas pagas.
+- Mudar só a apresentação (JSX/CSS/assets). Manter as props e o cálculo (`finalRanking`, `endedByClock`,
+  `prizeShare` em `game/finalRanking.ts`), que são da engenharia e têm testes.
+- O som de vitória já toca (`vitoria`). Se quiser outro som, peça aqui.
+
+**Para testar:** a engenharia monta uma partida encerrada no ambiente local (como na conferência de
+07/11). Se precisar de uma prévia isolada, peça em ORIENTACOES-CLAUDE.md.
+
+
 ## Publicação das três novas cartas (07/11/2026)
 
 Commit e merge/publicação na develop solicitados pelo usuário: Descanso merecido com texto revisado e piso v2; Passe Livre guardável para sair do Descanso; Aluguel Zero de ativação automática na primeira propriedade adversária. Inclui assets/fontes/prompts/manifestos, apresentação dos itens, prévias/QA e contratos para a engenharia. Registros anteriores de “sem commit/merge” são históricos. Regras, inventário e consumo no servidor permanecem pendentes de integração, conforme as orientações vigentes de cada carta. Identificadores finais no histórico Git.
@@ -993,3 +1024,18 @@ Pedido do usuário. Em `hud/PlayersPanel.tsx`, o fundo de cada card (`.hud-playe
 cor do peão escurecida (`playerCardBackground`), no lugar do roxo de `.hud-panel`. É escuro o bastante para
 o nome branco e o saldo amarelo continuarem legíveis, por isso o amarelo fica com tom de oliva. A borda e o
 brilho na cor do peão continuam iguais. Pode ajustar o degradê à vontade.
+
+## Tela de fim de partida (07/11/2026)
+
+O aviso simples "Fulano venceu" virou `hud/GameOverScreen.tsx`, com estilo em `hud/gameOver.css`
+(classes `go-*`). Vale para todos os modos:
+
+- Modos por tempo, quando o relógio acaba: título "Acabou o tempo!" e a regra (vence o maior patrimônio).
+- Fim por falência: "Fim de jogo!". Abandono: "Partida encerrada".
+- Mostra o resultado para quem está vendo (venceu, empatou ou em que posição ficou) e o prêmio em moedas
+  (aposta × jogadores, dividido no empate).
+- Ranking final com posição, retrato, coroa no vencedor, estados, saldo e patrimônio. Falidos aparecem por
+  último, em cinza.
+
+Funciona em 800×360 e rola quando há muitos jogadores. É uma versão funcional no estilo do HUD: pode
+redesenhar à vontade (troféu ilustrado, confete etc.), mantendo os dados.
