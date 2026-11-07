@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-06",
+  "provider": "OpenAI image_gen built-in",
+  "prompts": "assets/eventos/prompts.json",
+  "encoder": "Chromium 141.0.7390.37 Canvas WebP quality 92",
+  "sourceBytes": 17488203,
+  "bytes": 2148714,
+  "meshyCredits": 0,
+  "records": [
+    {
+      "id": "assalto",
+      "file": "apps/web/src/event-art/art/assalto-v1.webp",
+      "source": "assets/eventos/source/assalto-v1.png",
+      "width": 1280,
+      "height": 853,
+      "bytes": 344488,
+      "sourceBytes": 2773708,
+      "sha256": "43dfdb7d18f489c510064ac191e9f29d6a9e71e570037ff68d4c606117bfbfec",
+      "sourceSha256": "ff081d48a58bb7116bdd2b09aee9cbb3ab89e4340f3c08d799af98ed3db4e013",
+      "reference": "Original project art used for style only"
+    },
+    {
+      "id": "caramelo-viral",
+      "file": "apps/web/src/event-art/art/caramelo-viral-v1.webp",
+      "source": "assets/eventos/source/caramelo-viral-v1.png",
+      "width": 1280,
+      "height": 853,
+      "bytes": 343298,
+      "sourceBytes": 3065943,
+      "sha256": "114af308bfd1267cfeff69695a2c6fd7242743d52b58cb5de2063f81333b8af7",
+      "sourceSha256": "542828d429994342d26f802b813728b448f00336c806503bbe11147674f3e35d",
+      "reference": "User-supplied photo stylized at explicit request; input rights not independently verified"
+    },
+    {
+      "id": "incendio",
+      "file": "apps/web/src/event-art/art/incendio-v1.webp",
+      "source": "assets/eventos/source/incendio-v1.png",
+      "width": 1280,
+      "height": 853,
+      "bytes": 374130,
+      "sourceBytes": 2966769,
+      "sha256": "e58a53d17eb2aa106202959ff56066f028ae9c6d35eea77ad9ea32af72aba692",
+      "sourceSha256": "7a963fd60f1fb32d726586ca3cfa769b8750a65d14dbd6c17df187b96c8676a5",
+      "reference": "Original project art used for style only"
+    },
+    {
+      "id": "visita-olimpica",
+      "file": "apps/web/src/event-art/art/visita-olimpica-v1.webp",
+      "source": "assets/eventos/source/visita-olimpica-v1.png",
+      "width": 1280,
+      "height": 853,
+      "bytes": 381428,
+      "sourceBytes": 2873758,
+      "sha256": "1d19370b06935c11b4875c1324bb35c453c7f51ebbde4598911e09248a5e15f2",
+      "sourceSha256": "a6504df92538da37ed9b7a4e701c0f9e29c65223e1bed78d2eedd2fc9b26a77c",
+      "reference": "Original project art used for style only"
+    },
+    {
+      "id": "escolha-sede",
+      "file": "apps/web/src/event-art/art/escolha-sede-v1.webp",
+      "source": "assets/eventos/source/escolha-sede-v1.png",
+      "width": 1280,
+      "height": 853,
+      "bytes": 331738,
+      "sourceBytes": 2730324,
+      "sha256": "23d7703ca8a6e41cace8552b4d2ffbfef76531f4b9c92593025142b99490b4d2",
+      "sourceSha256": "bb24fe8885607b48bb8742805d9fce6356ca5ff631e43f9cdefcf96925352392",
+      "reference": "Original project art used for style only"
+    },
+    {
+      "id": "apagao",
+      "file": "apps/web/src/event-art/art/apagao-v1.webp",
+      "source": "assets/eventos/source/apagao-v1.png",
+      "width": 1280,
+      "height": 853,
+      "bytes": 373632,
+      "sourceBytes": 3077701,
+      "sha256": "4133b1f8642cf3e3d7ca60cfdd170006e84d303a22bd286dbf5ffc9e5aeac007",
+      "sourceSha256": "b5c62cb04b885e72e118897e2f43eed0ef6ef14ce9e3d03cd4251b70fd8acb76",
+      "reference": "Original project art used for style only"
+    }
+  ]
+}

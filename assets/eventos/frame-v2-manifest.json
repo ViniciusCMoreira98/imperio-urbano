@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-06",
+  "version": 2,
+  "provider": "OpenAI image_gen built-in",
+  "prompt": "assets/eventos/frame-v2-prompt.json",
+  "file": "apps/web/src/event-art/art/event-frame-v2.webp",
+  "source": "assets/eventos/source/event-frame-v2.png",
+  "bytes": 219504,
+  "sha256": "f97ef2a9757189525d5da1d2283139470361289be28357295f26f59e71757ea8",
+  "sourceSha256": "ee8bfed93a8310637a5a162ce06db0b18771828258534eb745e723af74bf340a",
+  "width": 1600,
+  "height": 900,
+  "clearPixels": 23668,
+  "encoder": "Chromium 141.0.7390.37 WebP quality 94",
+  "meshyCredits": 0
+}
