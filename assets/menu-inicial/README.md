@@ -1,5 +1,9 @@
 # Menu inicial — pacote de arte v1
 
+## Atualização visual de 07/11/2026
+
+O usuário definiu Jogar Agora como partida em aparelhos na mesma rede local. O rótulo de IA da referência foi substituído na prévia. Telas de rede local/internet e cards independentes de jogador/moedas/diamantes estão em `apps/web/src/play-menu/`; guia em `assets/play-menu/README.md`. O menu de produção já recebeu integração própria da engenharia; os registros abaixo descrevem o pacote original, não autorizam ativar economia ou funções ausentes.
+
 Pedido: criar os assets da referência de menu tropical fornecida pelo usuário. Entrega de arte e composição isolada; a tela inicial atual do jogo não foi substituída.
 
 ## Arquivos para uso no jogo

@@ -1,5 +1,17 @@
 # Orientações e pendências para o Claude Code
 
+## Jogar Agora/Jogar Online e cards do menu — arte (07/11/2026)
+
+**Estado: componentes e assets concluídos na develop_arte_3d, sobre c1e2c55; commit e integração na develop autorizados em 07/11/2026. Integração de produção com a engenharia.** O usuário pediu as duas telas e os cards de jogador/moedas/diamantes. Esclarecimento explícito: **Jogar Agora = mesma rede local, em aparelhos diferentes; Jogar Online = internet. Não é IA nem jogo no mesmo aparelho.**
+
+Entrega em `apps/web/src/play-menu/`: `LocalPlayScreen` e `OnlinePlayScreen` (criar/entrar por código, Clássico/Rápido, capacidade do catálogo), `PlayerMenuCard` e `CurrencyMenuCard` (moedas/diamantes). Oito SVG originais independentes para molduras, Wi-Fi, globo, cronômetro e retorno. Textos e valores são HTML; cenário, logotipo e retratos próprios reutilizados. Prévia em `scripts/assets/play-menu-preview/`, com rotas `?view=lan`, `?view=online` e `?view=cards`. A demonstração anterior do menu agora abre essas telas e usa “Mesma rede local” no lugar de IA. `MenuScreen.tsx` de produção não foi alterado.
+
+**Para Claude:** guia e manifesto em `assets/play-menu/`. Telas controladas por props/callbacks; sem chamadas de API ou store. O host precisa ligar criação/entrada ao canal correto. Não há descoberta automática de rede, matchmaking ou transporte LAN implementado no kit. Em LAN, os aparelhos precisam alcançar a mesma instância local; não usar localhost do próprio aparelho como endereço do anfitrião. Preservar o comportamento real atual até conectar esses serviços.
+
+Player card aceita apelido/retrato e nível/experiência opcionais; carteira opcional, com saldos fornecidos pelo host. O botão + só existe se houver callback. **Não fabricar níveis, XP, moedas ou diamantes em produção.** Valores das capturas são amostras visuais, não dados de conta nem créditos da partida. Os callbacks da prévia apenas registram ações locais; nenhum jogo ou pagamento foi enviado.
+
+**Validação:** roteiro `scripts/assets/play-menu-qa.mjs`: duas telas × cinco tamanhos (1536×1024, 1280×720, 1024×768, 844×390, 667×375), campos e botões dentro da tela, modo, código obrigatório/normalizado, espera/erro, nome/saldo longos, dados ausentes e navegação das prévias. Capturas/relatório em `assets/3d/reviews/play-menu/`. TypeScript e build conferidos. Sem teste de rede real entre aparelhos, geração raster ou uso de Meshy/créditos Meshy nesta etapa de arte. Publicação autorizada pelo usuário; identificadores no histórico Git.
+
 ## Publicação da C10 (06/11/2026)
 
 Commit e merge/publicação na develop solicitados pelo usuário. Inclui o relevo da sede, o selo e comparação de aluguéis no modal, integração visual, prévias, testes e documentação. Os identificadores ficam no histórico Git. As alterações da engenharia posteriores à base 3b21774 são preservadas na integração.
