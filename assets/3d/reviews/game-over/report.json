@@ -1,0 +1,218 @@
+{
+  "screens": [
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "victory",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "classic",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "tie",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "placed",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "abandoned",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "nostake",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "six",
+      "rows": 6,
+      "scrolling": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "kind": "victory",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "kind": "classic",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "kind": "tie",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "kind": "placed",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "kind": "abandoned",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "kind": "nostake",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "kind": "six",
+      "rows": 6,
+      "scrolling": true
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "kind": "victory",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "kind": "classic",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "kind": "tie",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "kind": "placed",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "kind": "abandoned",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "kind": "nostake",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "kind": "six",
+      "rows": 6,
+      "scrolling": true
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "kind": "victory",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "kind": "classic",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "kind": "tie",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "kind": "placed",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "kind": "abandoned",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "kind": "nostake",
+      "rows": 3,
+      "scrolling": false
+    },
+    {
+      "width": 667,
+      "height": 375,
+      "kind": "six",
+      "rows": 6,
+      "scrolling": true
+    }
+  ],
+  "countsChecked": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "rankingAndPrizeFromOriginalHelpers": true,
+  "leaveAlwaysVisible": true,
+  "threePlayersFit": true,
+  "sixPlayersScrollOnPhone": true,
+  "leaveCallback": true,
+  "reducedMotion": true,
+  "assetHashes": true,
+  "transparentTrophy": true,
+  "noApiRequests": true,
+  "errors": [],
+  "failed": []
+}
