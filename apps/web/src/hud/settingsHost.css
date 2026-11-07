@@ -1,0 +1,8 @@
+/* Ajustes do host sobre o kit de configurações (settings-art), sem alterar o kit. */
+.st-account-card{grid-column:1/-1}
+.st-account-name{font-size:2.4cqw;color:#ffe543;text-shadow:0 .15cqw .07cqw #000}
+.st-account-action{width:100%;height:4.6cqw;font-size:2.1cqw!important}
+.st-volume output{white-space:nowrap}
+.st-footer .st-button:only-child{flex:none;width:34%;margin-left:auto}
+/* O reset do Tailwind zera a margem do <dialog>: volta a centralizar na tela. */
+.st-dialog{margin:auto}

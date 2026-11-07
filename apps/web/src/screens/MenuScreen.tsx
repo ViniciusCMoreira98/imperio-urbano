@@ -1,25 +1,49 @@
-import { useEffect, useState } from 'react';
-import type { GameMode } from '@imperio/shared-types';
-import type { LobbyView } from '@imperio/shared-types';
+// Menu principal com a arte do kit do Codex (main-menu): praia, logotipo e mascote. Só aparece o que o
+// jogo já tem (decisão do usuário, 06/11/2026): apelido, criar sala, entrar com código, voltar às suas
+// partidas e Configurações. Nível, moedas, diamantes e partida com IA entram quando existirem.
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import type { GameMode, LobbyView } from '@imperio/shared-types';
+import './menuScreen.css';
+import backgroundArt from '../main-menu/art/background-v1.webp';
+import logoArt from '../main-menu/art/logo-v1.webp';
+import mascotArt from '../main-menu/art/mascot-v1.webp';
+import diceArt from '../main-menu/art/dice-v1.webp';
+import playersIcon from '../main-menu/art/players-v1.svg';
+import laurelLeft from '../main-menu/art/laurel-left-v1.svg';
+import laurelRight from '../main-menu/art/laurel-right-v1.svg';
+import { playSound } from '../audio/audio';
+import { SettingsButton } from '../hud/SettingsButton';
 import { api, ApiError } from '../net/api';
 import { loadLastSession } from '../net/session';
 import { useAppStore } from '../store/appStore';
-import { Button, ErrorText, Logo, MenuBackground, Panel } from '../ui/ui';
+import { Button, ErrorText, Panel } from '../ui/ui';
 
 const MODES: { id: GameMode; title: string; text: string }[] = [
   { id: 'CLASSIC', title: 'Clássico', text: 'Vence o último jogador que não falir.' },
   { id: 'QUICK', title: 'Rápido', text: 'Após 15 rodadas, vence o maior patrimônio.' },
 ];
 
+type Sheet = 'create' | 'join' | 'games' | null;
+
 export function MenuScreen() {
   const session = useAppStore((s) => s.session);
   return (
-    <MenuBackground>
-      <div className="w-full max-w-md">
-        <Logo />
-        {session ? <PlayMenu /> : <NicknameForm />}
+    <main className="menu-scene" style={{ backgroundImage: `url(${backgroundArt})` }}>
+      <div className="menu-top">
+        {session ? (
+          <div className="menu-profile">
+            <span className="menu-profile-label">Jogando como</span>
+            <strong>{session.nickname}</strong>
+          </div>
+        ) : (
+          <span />
+        )}
+        <SettingsButton inGame={false} className="menu-settings" />
       </div>
-    </MenuBackground>
+      <img className="menu-logo" src={logoArt} alt="Império Urbano — Edição Brasil" />
+      <img className="menu-mascot" src={mascotArt} alt="" aria-hidden="true" />
+      {session ? <PlayMenu /> : <NicknameForm />}
+    </main>
   );
 }
 
@@ -43,7 +67,7 @@ function NicknameForm() {
   }
 
   return (
-    <Panel title="Como quer ser chamado?">
+    <Panel title="Como quer ser chamado?" className="menu-card">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -80,10 +104,7 @@ function PlayMenu() {
   const session = useAppStore((s) => s.session)!;
   const setSession = useAppStore((s) => s.setSession);
   const openLobby = useAppStore((s) => s.openLobby);
-  const [mode, setMode] = useState<GameMode>('CLASSIC');
-  const [code, setCode] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [sheet, setSheet] = useState<Sheet>(null);
   const [myGames, setMyGames] = useState<LobbyView[]>([]);
 
   // Token que não vale mais volta a pedir o apelido; com token válido, lista as partidas em aberto.
@@ -93,30 +114,45 @@ function PlayMenu() {
     });
   }, [session.token, setSession]);
 
-  async function run(action: () => Promise<Parameters<typeof openLobby>[0]>) {
-    setBusy(true);
-    setError(null);
-    try {
-      openLobby(await action());
-    } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Algo deu errado.');
-    } finally {
-      setBusy(false);
-    }
-  }
+  const open = (next: Sheet) => {
+    playSound('confirmarAcao');
+    setSheet(next);
+  };
 
   return (
-    <Panel>
-      <p className="mb-4 text-center text-white/90">
-        Olá, <strong className="text-amber-300">{session.nickname}</strong>!{' '}
-        <button type="button" className="text-sm text-sky-300 underline" onClick={() => setSession(null)}>
-          trocar apelido
+    <>
+      <div className="menu-actions">
+        <button type="button" className="menu-play" onClick={() => open('create')}>
+          <img src={diceArt} alt="" />
+          <strong>Criar Sala</strong>
+          <small>Clássico ou Rápido</small>
         </button>
-      </p>
-
+        <button type="button" className="menu-play menu-join" onClick={() => open('join')}>
+          <img src={playersIcon} alt="" />
+          <strong>Entrar na Sala</strong>
+          <small>Com o código do convite</small>
+        </button>
+      </div>
       {myGames.length > 0 && (
-        <div className="mb-5">
-          <h2 className="mb-2 font-bold text-white">Suas partidas</h2>
+        <button type="button" className="menu-games" onClick={() => open('games')}>
+          <img className="menu-laurel" src={laurelLeft} alt="" />
+          <strong>Suas Partidas ({myGames.length})</strong>
+          <img className="menu-laurel" src={laurelRight} alt="" />
+        </button>
+      )}
+
+      {sheet === 'create' && (
+        <MenuSheet title="Criar sala privada" onClose={() => setSheet(null)}>
+          <CreateGame onCreated={openLobby} />
+        </MenuSheet>
+      )}
+      {sheet === 'join' && (
+        <MenuSheet title="Entrar com código" onClose={() => setSheet(null)}>
+          <JoinGame onJoined={openLobby} />
+        </MenuSheet>
+      )}
+      {sheet === 'games' && (
+        <MenuSheet title="Suas partidas" onClose={() => setSheet(null)}>
           <ul className="space-y-2">
             {myGames.map((game) => (
               <li key={game.gameId} className="flex items-center gap-2 rounded-lg bg-slate-800 px-3 py-2 text-sm">
@@ -130,10 +166,36 @@ function PlayMenu() {
               </li>
             ))}
           </ul>
-        </div>
+        </MenuSheet>
       )}
+    </>
+  );
+}
 
-      <h2 className="mb-2 font-bold text-white">Criar sala privada</h2>
+/** Chama a API e abre a sala; mostra o erro do servidor quando não dá. */
+function useLobbyAction(onDone: (lobby: LobbyView) => void) {
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  async function run(action: () => Promise<LobbyView>) {
+    setBusy(true);
+    setError(null);
+    try {
+      onDone(await action());
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'Algo deu errado.');
+    } finally {
+      setBusy(false);
+    }
+  }
+  return { error, busy, run };
+}
+
+function CreateGame({ onCreated }: { onCreated: (lobby: LobbyView) => void }) {
+  const session = useAppStore((s) => s.session)!;
+  const [mode, setMode] = useState<GameMode>('CLASSIC');
+  const { error, busy, run } = useLobbyAction(onCreated);
+  return (
+    <>
       <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Modo de jogo">
         {MODES.map((m) => (
           <button
@@ -151,25 +213,29 @@ function PlayMenu() {
           </button>
         ))}
       </div>
-      <Button
-        variant="primary"
-        className="mt-3 w-full text-lg"
-        disabled={busy}
-        onClick={() => void run(() => api.createGame(session.token, mode))}
-      >
+      <Button variant="primary" className="mt-3 w-full text-lg" disabled={busy} onClick={() => void run(() => api.createGame(session.token, mode))}>
         CRIAR SALA
       </Button>
+      <ErrorText message={error} />
+    </>
+  );
+}
 
-      <h2 className="mb-2 mt-6 font-bold text-white">Entrar com código</h2>
-      <form
-        className="flex gap-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          void run(() => api.joinGame(session.token, code));
-        }}
-      >
+function JoinGame({ onJoined }: { onJoined: (lobby: LobbyView) => void }) {
+  const session = useAppStore((s) => s.session)!;
+  const [code, setCode] = useState('');
+  const { error, busy, run } = useLobbyAction(onJoined);
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void run(() => api.joinGame(session.token, code));
+      }}
+    >
+      <div className="flex gap-2">
         <input
           aria-label="Código da sala"
+          autoFocus
           value={code}
           maxLength={6}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
@@ -179,8 +245,35 @@ function PlayMenu() {
         <Button type="submit" variant="secondary" disabled={busy || code.length < 6}>
           ENTRAR
         </Button>
-      </form>
+      </div>
       <ErrorText message={error} />
-    </Panel>
+    </form>
+  );
+}
+
+/** Folha sobre o menu (criar, entrar, suas partidas): fecha no ✕, no Esc ou tocando fora. */
+function MenuSheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    dialog.current?.showModal();
+  }, []);
+  return (
+    <dialog
+      ref={dialog}
+      className="menu-sheet"
+      aria-label={title}
+      onCancel={(e) => {
+        e.preventDefault();
+        onClose();
+      }}
+      onClick={(e) => e.target === dialog.current && onClose()}
+    >
+      <Panel title={title} className="relative">
+        <button type="button" className="absolute right-3 top-3 text-xl text-white/70 hover:text-white" aria-label="Fechar" onClick={onClose}>
+          ✕
+        </button>
+        {children}
+      </Panel>
+    </dialog>
   );
 }
