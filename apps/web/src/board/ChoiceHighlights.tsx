@@ -8,6 +8,7 @@ import { useEffect, useMemo } from 'react';
 import { DoubleSide, MeshBasicMaterial, Shape, ShapeGeometry, Vector2 } from 'three';
 import { boardChoice } from '../game/boardChoice';
 import { useAppStore } from '../store/appStore';
+import { useTableBusy } from '../store/tableBusy';
 import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { board } from '@imperio/game-data';
@@ -24,6 +25,8 @@ export function ChoiceHighlights() {
   const myId = useAppStore((s) => s.session?.playerId);
   const snapshot = useGameStore((s) => s.snapshot);
   const selected = useViewStore((s) => s.selectedTile);
+  // Só depois que o peão chega na casa (Olimpíadas ou Aeroporto), junto com o aviso do meio da tela.
+  const tableBusy = useTableBusy();
   const choice = snapshot && myId ? boardChoice(snapshot, myId) : null;
   const tiles = choice?.tiles;
   const key = tiles?.join(',') ?? '';
@@ -67,7 +70,7 @@ export function ChoiceHighlights() {
     fill.opacity = 0.22 + 0.25 * (0.5 + 0.5 * Math.sin(clock.elapsedTime * 4));
   });
 
-  if (!choice) return null;
+  if (!choice || tableBusy) return null;
   return (
     <group>
       {shapes.map(({ index, candidate, geometry, outline, y, lift }) => {

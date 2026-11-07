@@ -3,9 +3,8 @@
 // destacadas no tabuleiro (ChoiceHighlights). O cartão não tapa os toques fora dele.
 import { useEffect } from 'react';
 import { boardChoice, choiceAction, tileName } from '../game/boardChoice';
-import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
-import { usePawnStore } from '../store/pawnStore';
+import { useTableBusy } from '../store/tableBusy';
 import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 import { Countdown } from './ActionBar';
@@ -18,9 +17,7 @@ export function BoardChoicePrompt({ myId }: { myId: string }) {
   const selected = useViewStore((s) => s.selectedTile);
   const clearSelection = useViewStore((s) => s.clearSelection);
   // Aparece quando a mesa para: primeiro o jogador vê o peão chegar.
-  const diceRolling = useDiceStore((s) => s.rolling);
-  const pawnsMoving = usePawnStore((s) => Object.keys(s.moving).length > 0);
-  const tableBusy = diceRolling || pawnsMoving;
+  const tableBusy = useTableBusy();
   const choice = snapshot ? boardChoice(snapshot, myId) : null;
   const kind = choice?.kind ?? null;
 
