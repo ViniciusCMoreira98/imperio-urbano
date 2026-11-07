@@ -92,7 +92,7 @@ export interface RulesConfig {
   olympics: { hostFee: number; multipliers: number[] };
   /** Descanso (D2): jogadas perdidas; uma dupla libera antes. */
   rest: { turnsLost: number };
-  /** Viagem Nacional (D3): taxa para viajar a qualquer casa na jogada seguinte. */
+  /** Viagem Nacional (D3): taxa para viajar a qualquer estado na jogada seguinte. */
   nationalTravel: { fee: number };
   /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida. */
   tax: { amount: number };

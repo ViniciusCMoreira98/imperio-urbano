@@ -1,5 +1,5 @@
 // Escolha feita tocando no tabuleiro: sede das Olimpíadas (um estado do jogador) ou destino da viagem
-// pelo Aeroporto (qualquer casa menos a atual). Diz quais casas valem e o comando de cada uma; o
+// pelo Aeroporto (qualquer estado). Diz quais casas valem e o comando de cada uma; o
 // servidor confere tudo de novo.
 import { board, rules } from '@imperio/game-data';
 import type { Command, GameSnapshot } from '@imperio/shared-types';
@@ -41,9 +41,10 @@ export function boardChoice(snapshot: GameSnapshot, myId: string): BoardChoice |
     const fee = rules.nationalTravel.fee;
     return {
       kind: 'travel',
-      tiles: board.tiles.filter((t) => t.index !== me.position).map((t) => t.index),
+      // Só estados são destino (o Aeroporto não é estado, então a casa atual já fica de fora).
+      tiles: board.tiles.filter((t) => t.type === 'PROPERTY').map((t) => t.index),
       title: '✈️ Viagem pelo Aeroporto',
-      instruction: `Toque na casa para onde quer viajar (${formatCredits(fee)}) ou role os dados para seguir normalmente.`,
+      instruction: `Toque no estado para onde quer viajar (${formatCredits(fee)}) ou role os dados para seguir normalmente.`,
       fee,
     };
   }

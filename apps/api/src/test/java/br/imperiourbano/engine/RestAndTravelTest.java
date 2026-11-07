@@ -164,12 +164,13 @@ class RestAndTravelTest {
     }
 
     @Test
-    void travelDestinationMustBeAnotherTile() {
+    void travelDestinationMustBeAState() {
         anaChoosingTravel();
 
-        for (int invalid : new int[] {TRAVEL_TILE, -1, 34}) {
+        // O próprio Aeroporto, fora do tabuleiro, e casas especiais (Início, Olimpíadas, Descanso, Taxa).
+        for (int invalid : new int[] {TRAVEL_TILE, -1, 34, 0, 8, 17, 21}) {
             assertThatThrownBy(() -> run("ana", new ChooseTravel(invalid)))
-                    .hasMessage("Escolha outra casa do tabuleiro como destino.");
+                    .hasMessage("Escolha um estado como destino da viagem.");
         }
     }
 

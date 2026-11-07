@@ -58,7 +58,8 @@ export function ActionBar({ myId }: { myId: string }) {
             </>
           )}
         </span>
-        {snapshot.status === 'IN_PROGRESS' && deadline !== null && <Countdown deadline={deadline} />}
+        {/* Some enquanto a mesa mostra a jogada: o prazo do servidor só começa a correr quando ela termina. */}
+        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && <Countdown deadline={deadline} />}
 
         {canRoll && (
           <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline || tableBusy} title={tableBusy ? 'Aguarde a jogada anterior terminar na mesa' : undefined} onClick={() => act({ type: 'ROLL_DICE' })}>

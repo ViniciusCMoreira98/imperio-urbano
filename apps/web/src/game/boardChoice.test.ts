@@ -29,11 +29,11 @@ describe('escolha no tabuleiro', () => {
     expect(choiceAction(choice, null)).toBeNull();
   });
 
-  it('a viagem destaca todas as casas menos a atual', () => {
+  it('a viagem destaca só os estados', () => {
     const choice = boardChoice(game({ phase: 'AWAITING_TRAVEL_DESTINATION', players: [player('ana', 26), player('bia', 0)] }), 'ana')!;
     expect(choice.kind).toBe('travel');
-    expect(choice.tiles).toHaveLength(board.tiles.length - 1);
-    expect(choice.tiles).not.toContain(26);
+    expect(choice.tiles).toHaveLength(board.tiles.filter((t) => t.type === 'PROPERTY').length);
+    for (const special of [0, 8, 17, 21, 26]) expect(choice.tiles).not.toContain(special);
     expect(choiceAction(choice, tileOf('SP'))?.command).toEqual({ type: 'CHOOSE_TRAVEL', tileIndex: tileOf('SP') });
     expect(choiceAction(choice, 26)).toBeNull();
   });

@@ -354,8 +354,9 @@ public final class GameEngine {
     private void chooseTravel(Decision d, int tileIndex) {
         requirePhase(d.state, TurnPhase.AWAITING_TRAVEL_DESTINATION, "Não há viagem disponível agora.");
         PlayerState player = d.state.currentPlayer();
-        if (tileIndex < 0 || tileIndex >= tileCount || tileIndex == player.position()) {
-            throw new RuleViolationException("Escolha outra casa do tabuleiro como destino.");
+        // Só estados são destino da viagem (pedido do usuário, 06/11/2026); a casa atual é o Aeroporto.
+        if (tileIndex < 0 || tileIndex >= tileCount || catalog.tile(tileIndex).type() != TileType.PROPERTY) {
+            throw new RuleViolationException("Escolha um estado como destino da viagem.");
         }
         int fee = rules.nationalTravel().fee();
         requireCredits(player, fee);

@@ -1,5 +1,5 @@
 // Destaque das casas que o jogador da vez pode escolher tocando no tabuleiro (sede das Olimpíadas ou
-// destino da viagem): brilho dourado pulsando no contorno real de cada casa, as demais escurecidas e a
+// estado de destino da viagem): brilho dourado pulsando no contorno real de cada casa, as demais escurecidas e a
 // escolhida clara.
 // Só mostra; quem decide quais casas valem é boardChoice, e o servidor confere o comando.
 import { Line } from '@react-three/drei';

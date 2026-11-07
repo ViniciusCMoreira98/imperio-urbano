@@ -52,12 +52,12 @@ export function BoardChoicePrompt({ myId }: { myId: string }) {
         <p className="text-sm text-white/90">{choice.instruction}</p>
         {invalid && (
           <p className="mt-2 text-sm text-rose-200">
-            {choice.kind === 'olympics' ? `${tileName(selected)} não é seu. Escolha um estado destacado.` : 'Escolha outra casa destacada.'}
+            {choice.kind === 'olympics' ? `${tileName(selected)} não é seu. Escolha um estado destacado.` : 'Só dá para viajar para um estado. Escolha um destacado.'}
           </p>
         )}
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <Button variant="primary" disabled={offline || !action} onClick={() => action && act(action.command)}>
-            {action ? action.label : choice.kind === 'olympics' ? 'Toque num estado destacado' : 'Toque numa casa destacada'}
+            {action ? action.label : 'Toque num estado destacado'}
           </Button>
           {choice.kind === 'olympics' && (
             <Button variant="neon" disabled={offline} onClick={() => act({ type: 'SKIP_OLYMPICS' })}>
