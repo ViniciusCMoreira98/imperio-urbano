@@ -80,12 +80,18 @@ body {
 .game-viewport { background:#59341f; }
 .game-hud-board { inset:0; }
 .game-hud-header { z-index:15; }
-.game-hud-players { top:6px;left:50%;right:auto;width:min(1000px,calc(100% - 190px));transform:translateX(-50%);z-index:12;display:block; }
-.game-hud-players .hud-players { flex-direction:row;width:100%;gap:12px;padding:4px; }
-.game-hud-players .hud-player-row { flex:1 1 0;min-height:60px;gap:9px;padding:4px 10px;border-radius:16px;background:linear-gradient(145deg,#452377,#161630 82%);box-shadow:0 5px 0 #8c5019,0 7px 0 #e6b760,0 9px 13px #160c0990; }
+/* Cards do tamanho do conteúdo, nunca sob os botões do canto (--hud-header-w). --hud-players-pad centraliza a fileira
+   na tela quando ela cabe; senão ela usa todo o espaço à esquerda dos botões. Ambos medidos na partida. */
+.game-hud-players { top:6px;left:8px;right:calc(var(--hud-header-w, 190px) + 8px);width:auto;transform:none;z-index:12;display:block; }
+.game-hud-players .hud-players { flex-direction:row;width:100%;gap:12px;padding:4px;padding-left:var(--hud-players-pad, 4px);justify-content:flex-start; }
+.game-hud-players .hud-player-row { flex:0 1 auto;min-width:0;max-width:220px;min-height:60px;gap:9px;padding:4px 10px;border-radius:16px;background:linear-gradient(145deg,#452377,#161630 82%);box-shadow:0 5px 0 #8c5019,0 7px 0 #e6b760,0 9px 13px #160c0990; }
 .game-hud-players .hud-player-row .hud-avatar-frame { width:48px;height:48px; }
 .game-hud-players .hud-player-name { font-size:15px; }
 .game-hud-players .hud-player-balance { font-size:21px;white-space:nowrap; }
+/* O saldo nunca é cortado: o card só encolhe até ele; o nome encurta (com …) antes. */
+.game-hud-players .hud-player-row { min-width:auto; }
+.game-hud-players .hud-player-row > div { min-width:auto; }
+.game-hud-players .hud-player-name { width:0;min-width:100%; }
 .game-hud-property { inset:auto 16px 108px auto;width:min(320px,calc(100% - 32px));max-height:65%;z-index:18; }
 .game-hud-history { position:absolute;right:20px;bottom:26%;display:flex;justify-content:flex-end;max-width:calc(100% - 24px);z-index:17; }
 .game-hud-history > button,.game-hud-header button { border-color:#f3ca70;border-radius:16px;background:linear-gradient(155deg,#573380,#17152d);box-shadow:0 3px 0 #a96928,0 5px 8px #150b0a70; }
@@ -99,11 +105,12 @@ body {
 .hud-action-tray .hud-roll { min-height:44px;font-size:19px;padding:8px 22px;border-radius:16px; }
 .hud-player-rank { display:flex; }
 @media (max-height:699px), (max-width:900px) {
- .game-hud-players { top:3px;width:calc(100% - 190px); }
- .game-hud-players .hud-players { gap:5px;padding:2px; }
- .game-hud-players .hud-player-row { min-height:39px;padding:3px 5px;gap:5px;flex-direction:row;text-align:left;border-radius:11px; }
+ .game-hud-players { top:3px;right:calc(var(--hud-header-w, 150px) + 6px); }
+ .game-hud-players .hud-players { gap:5px;padding:2px;padding-left:var(--hud-players-pad, 2px); }
+ .game-hud-players .hud-player-row { max-width:150px;min-height:39px;padding:3px 7px 3px 4px;gap:4px;flex-direction:row;text-align:left;border-radius:11px; }
  .game-hud-players .hud-player-row > div { width:auto; }
- .game-hud-players .hud-player-row .hud-avatar-frame { width:28px;height:28px; }
+ .game-hud-players .hud-player-row .hud-avatar-frame { width:27px;height:27px; }
+ .game-hud-players .hud-player-status { font-size:11px; }
  .game-hud-players .hud-player-name { font-size:10px; }
  .game-hud-players .hud-player-name > span { display:none; }
  .game-hud-players .hud-player-balance { font-size:14px; }

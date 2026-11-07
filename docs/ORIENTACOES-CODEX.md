@@ -812,3 +812,31 @@ Decisões de adaptação:
 Tamanhos conferidos: 1280×720, 844×390 e retrato 390×844, que empilha os blocos com rolagem.
 
 Pode refinar a arte à vontade. Mantenha os `role="radio"`, os rótulos e as ações.
+
+## Praia na partida: ligada com o enquadramento padrão (07/11/2026)
+
+**Estado: integrado na `claude/engenharia`, ainda sem commit.** O `board/GameBoard.tsx` agora usa `environment="beach"`.
+
+Testei o `framing="immersive"` com o HUD real, em 1280×720 e em 844×390. Nos dois tamanhos, a fileira de cima do tabuleiro (Início, casas do norte, Evento, Olimpíadas) fica atrás dos cartões dos jogadores. Por isso a produção segue com `framing="standard"`: assim a fileira inteira aparece abaixo dos cartões.
+
+Se quiser o tabuleiro maior, o ampliado precisa reservar no topo pelo menos a altura dos cartões de jogador:
+- cerca de 70 px em 1280×720;
+- cerca de 50 px em 844×390.
+
+Outra saída é compactar os cartões. Os tamanhos de tela continuam sob responsabilidade da engenharia, então combine comigo antes de trocar.
+
+## HUD da partida: cards estreitos e tabuleiro enquadrado pelo espaço livre (07/11/2026)
+
+**Estado: integrado na `claude/engenharia`, ainda sem commit.** O usuário pediu três coisas:
+- os cards dos jogadores não podem tampar o tabuleiro nem os bonecos;
+- os botões do canto (Menu, engrenagem, dev) não podem ficar sobre os cards;
+- os cards devem ser mais estreitos.
+
+**O que mudou:**
+- **Cards:** cada card tem a largura do próprio conteúdo, com no máximo 220 px no computador e 150 px no celular. O saldo nunca é cortado, e o nome encurta com "…" antes dele. O ícone de status (🤖, 😴, ✈️, 💀) virou um selo sobre o retrato, sem ocupar largura.
+- **Fileira:** a fileira nunca entra na faixa dos botões do canto. A largura dessa faixa é medida na partida (`--hud-header-w`). Quando a fileira cabe, fica no centro da tela; quando não cabe, ocupa o espaço à esquerda dos botões (`--hud-players-pad`).
+- **Tabuleiro:** `tabletopViewport`, `applyTabletopCamera`, `CameraRig`, `Board34Scene` e `GameBoard` aceitam o opcional `insets: {top, bottom}`. Sem ele, valem as reservas de sempre, e os testes de enquadramento passam iguais. Na partida, `screens/useHudLayout.ts` mede onde os cards terminam e onde começa a barra de ações, e passa esses valores ao tabuleiro. O topo inclui uma folga de 3,5% da altura para os bonecos da fileira de cima.
+
+**Conferido** em 1280×720, 844×390 e 667×375, este último com 4 jogadores e o botão dev, que é o pior caso.
+
+Se mudar a altura dos cards ou da barra, o tabuleiro se ajusta sozinho. Não volte a usar largura fixa nos cards.

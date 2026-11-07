@@ -2,7 +2,7 @@ import{Suspense,useDeferredValue,useEffect,useLayoutEffect,useMemo,useRef,type R
 import{Canvas,useThree,type ThreeEvent}from'@react-three/fiber';
 import{useGLTF,useTexture}from'@react-three/drei';
 import{BufferAttribute,CanvasTexture,DoubleSide,LinearFilter,Matrix4,Mesh,PerspectiveCamera,ShaderMaterial,SRGBColorSpace,Vector3,Vector4,type Object3D,type Texture}from'three';
-import{CameraRig}from'../CameraRig';import{FixedBoardViewport}from'../camera/FixedBoardViewport';import{applyFixedCamera,FIXED_CAMERA}from'../camera/fixedCamera';
+import{CameraRig}from'../CameraRig';import type{BoardInsets}from'../camera/tabletopViewport';import{FixedBoardViewport}from'../camera/FixedBoardViewport';import{applyFixedCamera,FIXED_CAMERA}from'../camera/fixedCamera';
 import{DiceVisual}from'../../dice/DiceVisual';import type{DiceFace}from'../../dice/diceOrientation';
 import{TabletopEnvironment}from'./TabletopEnvironment';import layout from'./layout.json';
 import{paintPanel}from'./panelProjection';
@@ -11,7 +11,7 @@ import{tabletopViewport}from'../camera/tabletopViewport';
 
 export{layout as board34Layout};
 export interface BoardRentLabel{stateId:string;rentLabel:string}
-export interface Board34SceneProps{framing?:'standard'|'immersive';environment?:'wood'|'beach';selectedId?:string|null;onSelect?:(id:string)=>void;rentLabels?:BoardRentLabel[];taxPoolLabel?:string|null;diceValues?:[DiceFace,DiceFace]|null;children?:ReactNode}
+export interface Board34SceneProps{framing?:'standard'|'immersive';insets?:BoardInsets;environment?:'wood'|'beach';selectedId?:string|null;onSelect?:(id:string)=>void;rentLabels?:BoardRentLabel[];taxPoolLabel?:string|null;diceValues?:[DiceFace,DiceFace]|null;children?:ReactNode}
 export function board34TileAnchor(id:string){const tile=layout.tiles.find(t=>t.id===id);if(!tile)throw Error(`Casa desconhecida na cena de 34 casas: ${id}`);return tile.anchor;}
 const nodes=new Set(layout.tiles.map(t=>t.modelNode));
 function tileOf(object:Object3D,root:Object3D){for(let node:Object3D|null=object;node&&node!==root;node=node.parent)if(nodes.has(node.name))return node.name.slice(5);return null;}
@@ -65,7 +65,7 @@ function CenterShadows(){
  </mesh>;
 }
 /** Cena real de 34 casas. Estado, regras, comandos e peças vêm do host. */
-export function Board34Scene({children,diceValues=null,environment='wood',framing='standard',...props}:Board34SceneProps){return <FixedBoardViewport expanded><Canvas shadows dpr={[1,2]} camera={{position:FIXED_CAMERA.position as[number,number,number],fov:FIXED_CAMERA.fov,far:FIXED_CAMERA.far}}>
+export function Board34Scene({children,diceValues=null,environment='wood',framing='standard',insets,...props}:Board34SceneProps){return <FixedBoardViewport expanded><Canvas shadows dpr={[1,2]} camera={{position:FIXED_CAMERA.position as[number,number,number],fov:FIXED_CAMERA.fov,far:FIXED_CAMERA.far}}>
  <color attach="background" args={['#5e321e']}/><ambientLight intensity={.75}/><directionalLight position={[-8,18,8]} intensity={1.8} color="#fff0dc" castShadow shadow-mapSize={[2048,2048]} shadow-camera-left={-12} shadow-camera-right={12} shadow-camera-top={12} shadow-camera-bottom={-12} shadow-camera-far={60} shadow-normalBias={.03} shadow-bias={-.0001}/>
- <Suspense fallback={null}><TabletopEnvironment theme={environment}/><BoardModel {...props}/><CenterShadows/>{diceValues&&layout.dice.map((die,i)=><group name={`BOARD_STATIC_DIE_${i}`} key={i} position={die.position as[number,number,number]} rotation={[0,die.yaw,0]}><DiceVisual face={diceValues[i]} size={die.size}/></group>)}{children}</Suspense><CameraRig expanded framing={framing}/>
+ <Suspense fallback={null}><TabletopEnvironment theme={environment}/><BoardModel {...props}/><CenterShadows/>{diceValues&&layout.dice.map((die,i)=><group name={`BOARD_STATIC_DIE_${i}`} key={i} position={die.position as[number,number,number]} rotation={[0,die.yaw,0]}><DiceVisual face={diceValues[i]} size={die.size}/></group>)}{children}</Suspense><CameraRig expanded framing={framing} insets={insets}/>
  </Canvas><section aria-label="Valores do tabuleiro" style={{position:'absolute',width:1,height:1,overflow:'hidden',clipPath:'inset(50%)',whiteSpace:'nowrap'}}>{props.rentLabels?.map(label=><p key={label.stateId} data-board34-rent={label.stateId}>{label.stateId}: {label.rentLabel}</p>)}<p data-board34-tax>Fundo da Taxa: {props.taxPoolLabel??'saldo indisponível'}</p></section></FixedBoardViewport>;}

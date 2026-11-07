@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { GameSounds } from '../audio/GameSounds';
 import { GameBoard } from '../board/GameBoard';
 import { ActionBar } from '../hud/ActionBar';
@@ -16,6 +16,7 @@ import { formatCredits } from '../property-card/tileInfo';
 import { useAppStore } from '../store/appStore';
 import { useGameStore } from '../store/gameStore';
 import { Button } from '../ui/ui';
+import { useHudLayout } from './useHudLayout';
 
 /** Partida conectada ao servidor: o tabuleiro e os painéis só refletem o snapshot recebido. */
 export function GameScreen() {
@@ -27,6 +28,11 @@ export function GameScreen() {
   const unavailable = useGameStore((s) => s.unavailable);
   // Celular em pé: a partida fica coberta e inerte (sem toque nem foco), mas segue conectada.
   const askToRotate = useAskToRotate();
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const playersRef = useRef<HTMLElement>(null);
+  const actionsRef = useRef<HTMLElement>(null);
+  const insets = useHudLayout(viewportRef, headerRef, playersRef, actionsRef, !!snapshot && !askToRotate);
 
   useEffect(() => {
     const store = useGameStore.getState();
@@ -48,13 +54,13 @@ export function GameScreen() {
   return (
     <>
       <GameSounds myId={session.playerId} />
-      <div className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
+      <div ref={viewportRef} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
         {/* Canvas de mesa em toda a janela; HUD flutua sobre o cenário. */}
         <div className="game-hud-board absolute inset-0">
-          <GameBoard taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
+          <GameBoard insets={insets} taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
         </div>
 
-        <header className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
+        <header ref={headerRef} className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
           <Button variant="neon" className="rounded-full px-3 py-1 text-sm" onClick={leave} aria-label="Voltar ao menu">
             ←<span className="hidden sm:inline"> Menu</span>
           </Button>
@@ -73,7 +79,7 @@ export function GameScreen() {
         ) : (
           <>
             {/* Jogadores centralizados; histórico independente sobre a mesa. */}
-            <aside className="game-hud-players absolute inset-x-2 top-12 flex flex-col gap-2">
+            <aside ref={playersRef} className="game-hud-players absolute inset-x-2 top-12 flex flex-col gap-2">
               <PlayersPanel myId={session.playerId} />
             </aside>
             {/* Carta do estado: folha acima da barra no celular; coluna à direita na tela larga. */}
@@ -81,7 +87,7 @@ export function GameScreen() {
               <PropertyPanel myId={session.playerId} />
             </aside>
             <aside className="game-hud-history"><EventLog /></aside>
-            <footer className="game-hud-actions pointer-events-none absolute inset-x-2 bottom-2 flex justify-center sm:bottom-3">
+            <footer ref={actionsRef} className="game-hud-actions pointer-events-none absolute inset-x-2 bottom-2 flex justify-center sm:bottom-3">
               <div className="pointer-events-auto w-full sm:w-auto">
                 <ActionBar myId={session.playerId} />
               </div>

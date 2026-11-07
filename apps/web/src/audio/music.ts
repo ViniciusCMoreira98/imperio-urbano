@@ -1,91 +1,122 @@
-// Música do menu inicial (faixa do Suno; origem e licença em assets/audio/LICENCAS.md): uma faixa em loop, com volume próprio (musicVolume) e o mesmo mudo dos efeitos.
-// Toca pelo mesmo AudioContext dos efeitos, então só começa depois do primeiro gesto do jogador
-// (regra dos navegadores). Some com um fade ao sair do menu e pausa com a aba escondida; ao voltar ao
-// menu, continua de onde parou.
+// Músicas em loop (faixas do Suno; origem e licença em assets/audio/LICENCAS.md): uma para o menu
+// (menu inicial, Jogar Online e sala de espera) e outra para o tabuleiro. Volume próprio (musicVolume)
+// e o mesmo mudo dos efeitos.
+// Tocam pelo mesmo AudioContext dos efeitos, então só começam depois do primeiro gesto do jogador
+// (regra dos navegadores). Trocar de faixa faz um cruzamento suave; a faixa que sai pausa e, ao voltar,
+// continua de onde parou. Com a aba escondida, tudo pausa.
 import { onAudioUnlocked } from './audio';
 import { useAudioStore } from './audioStore';
 
-const MENU_TRACK = '/audio/menuInicial.mp3';
-/** Mistura da música sob os efeitos (1 = volume da faixa). */
-const MUSIC_MIX = 0.6;
-const FADE_SECONDS = 0.6;
+export type MusicTrack = 'menu' | 'board';
 
-let element: HTMLAudioElement | null = null;
-let gain: GainNode | null = null;
+const FILES: Record<MusicTrack, string> = {
+  menu: '/audio/menuInicial.mp3',
+  board: '/audio/musicaTabuleiro.mp3',
+};
+/** Mistura da música sob os efeitos (1 = volume da faixa). O tabuleiro fica mais baixo, por baixo das jogadas. */
+const MIX: Record<MusicTrack, number> = { menu: 0.6, board: 0.45 };
+const FADE_SECONDS = 0.8;
+
+interface Channel {
+  element: HTMLAudioElement;
+  gain: GainNode;
+  pauseTimer: ReturnType<typeof setTimeout> | null;
+}
+
 let ctx: AudioContext | null = null;
-let wanted = false;
-let pauseTimer: ReturnType<typeof setTimeout> | null = null;
+const channels: Partial<Record<MusicTrack, Channel>> = {};
+let wanted: MusicTrack | null = null;
 
-function level(): number {
+function level(track: MusicTrack): number {
   const { musicVolume, muted } = useAudioStore.getState();
-  return muted ? 0 : musicVolume * MUSIC_MIX;
+  return muted ? 0 : musicVolume * MIX[track];
 }
 
-function fadeTo(value: number, seconds: number) {
-  if (!gain || !ctx) return;
-  gain.gain.cancelScheduledValues(ctx.currentTime);
-  gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
-  gain.gain.linearRampToValueAtTime(value, ctx.currentTime + seconds);
+function fadeTo(channel: Channel, value: number, seconds: number) {
+  if (!ctx) return;
+  const g = channel.gain.gain;
+  g.cancelScheduledValues(ctx.currentTime);
+  g.setValueAtTime(g.value, ctx.currentTime);
+  g.linearRampToValueAtTime(value, ctx.currentTime + seconds);
 }
 
-/** Liga a faixa ao contexto de áudio (uma vez) e segue o volume das Configurações. */
-function connect(audioContext: AudioContext) {
-  if (element) return;
-  ctx = audioContext;
-  element = new Audio(MENU_TRACK);
+/** Cria a faixa no contexto de áudio na primeira vez que ela é pedida. */
+function channel(track: MusicTrack): Channel | null {
+  if (!ctx) return null;
+  const existing = channels[track];
+  if (existing) return existing;
+  const element = new Audio(FILES[track]);
   element.loop = true;
   element.preload = 'auto';
-  gain = ctx.createGain();
+  const gain = ctx.createGain();
   gain.gain.value = 0;
   ctx.createMediaElementSource(element).connect(gain).connect(ctx.destination);
-  useAudioStore.subscribe(() => {
-    if (wanted && !document.hidden) fadeTo(level(), 0.05);
-  });
+  const created: Channel = { element, gain, pauseTimer: null };
+  channels[track] = created;
+  return created;
 }
 
-function start() {
-  if (!element || !wanted || document.hidden) return;
-  if (pauseTimer !== null) {
-    clearTimeout(pauseTimer);
-    pauseTimer = null;
+function start(track: MusicTrack) {
+  if (document.hidden) return;
+  const ch = channel(track);
+  if (!ch) return;
+  if (ch.pauseTimer !== null) {
+    clearTimeout(ch.pauseTimer);
+    ch.pauseTimer = null;
   }
-  void element.play().then(
-    () => fadeTo(level(), FADE_SECONDS),
+  void ch.element.play().then(
+    () => {
+      if (wanted === track) fadeTo(ch, level(track), FADE_SECONDS);
+    },
     () => {
       // Navegador ainda bloqueando: tenta de novo no próximo gesto.
     },
   );
 }
 
-function stop(seconds: number) {
-  if (!element) return;
-  fadeTo(0, seconds);
-  if (pauseTimer !== null) clearTimeout(pauseTimer);
-  pauseTimer = setTimeout(() => {
-    pauseTimer = null;
-    if (!wanted || document.hidden) element?.pause();
+function stop(track: MusicTrack, seconds: number) {
+  const ch = channels[track];
+  if (!ch) return;
+  fadeTo(ch, 0, seconds);
+  if (ch.pauseTimer !== null) clearTimeout(ch.pauseTimer);
+  ch.pauseTimer = setTimeout(() => {
+    ch.pauseTimer = null;
+    if (wanted !== track || document.hidden) ch.element.pause();
   }, seconds * 1000);
 }
 
 if (typeof window !== 'undefined') {
   onAudioUnlocked((audioContext) => {
-    connect(audioContext);
-    if (wanted && element?.paused) start();
+    if (ctx) return;
+    ctx = audioContext;
+    useAudioStore.subscribe(() => {
+      const ch = wanted && channels[wanted];
+      if (wanted && ch && !document.hidden) fadeTo(ch, level(wanted), 0.05);
+    });
+    if (wanted) start(wanted);
   });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stop(0);
-    else start();
+    if (document.hidden) (Object.keys(channels) as MusicTrack[]).forEach((t) => stop(t, 0));
+    else if (wanted) start(wanted);
   });
 }
 
-/** O menu inicial liga ao aparecer e desliga ao sair. */
-export function setMenuMusic(on: boolean) {
-  wanted = on;
-  if (on) start();
-  else stop(FADE_SECONDS);
+/** Escolhe a música da tela atual (null = silêncio). Pedir a mesma faixa de novo não reinicia nada. */
+export function setMusic(track: MusicTrack | null) {
+  if (track === wanted) return;
+  const previous = wanted;
+  wanted = track;
+  if (previous) stop(previous, FADE_SECONDS);
+  if (track) start(track);
 }
 
 /** Estado atual da música (verificação e depuração). */
-export function menuMusicState() {
-  return { wanted, playing: !!element && !element.paused, time: element?.currentTime ?? 0, gain: gain?.gain.value ?? 0 };
+export function musicState() {
+  const tracks = Object.fromEntries(
+    (Object.keys(channels) as MusicTrack[]).map((t) => {
+      const ch = channels[t]!;
+      return [t, { playing: !ch.element.paused, time: ch.element.currentTime, gain: ch.gain.gain.value }];
+    }),
+  );
+  return { wanted, tracks };
 }

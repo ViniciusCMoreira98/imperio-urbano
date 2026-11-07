@@ -8,6 +8,7 @@ import {formatCredits} from '../property-card/tileInfo';
 import {tileIndexOf} from './layout';
 import {Buildings,Pawns} from './Pieces';
 import {Board34Scene,type BoardRentLabel} from './board34/Board34Scene';
+import type {BoardInsets} from './camera/tabletopViewport';
 import {RentTags} from './RentTags';
 import {isBoard34} from './boardVisualManifest';
 import {RollingDice} from './RollingDice';
@@ -15,7 +16,7 @@ import {ChoiceHighlights} from './ChoiceHighlights';
 
 const active34=isBoard34(board.tiles);
 /** O host da engenharia fornece o saldo oficial formatado da Taxa quando integrar seu schema. */
-export function GameBoard({taxPoolLabel=null}:{taxPoolLabel?:string|null}){
+export function GameBoard({taxPoolLabel=null,insets}:{taxPoolLabel?:string|null;insets?:BoardInsets}){
  const selectedTile=useViewStore(s=>s.selectedTile),selectTile=useViewStore(s=>s.selectTile),snapshot=useGameStore(s=>s.snapshot);
  const selectedId=selectedTile===null?null:board.tiles[selectedTile]?.id??null;
  const rents=useMemo<BoardRentLabel[]>(()=>{
@@ -25,5 +26,5 @@ export function GameBoard({taxPoolLabel=null}:{taxPoolLabel?:string|null}){
  const onSelect=(id:string)=>{const index=tileIndexOf(id);if(index!==null)selectTile(index);};
  const pieces=<><Buildings/><RentTags labels={rents}/><ChoiceHighlights/><Pawns/><RollingDice/></>;
  if(!active34)throw Error('A partida atual exige o catálogo de 34 casas.');
- return <Board34Scene selectedId={selectedId} onSelect={onSelect} rentLabels={rents} taxPoolLabel={taxPoolLabel} diceValues={null}>{pieces}</Board34Scene>;
+ return <Board34Scene environment="beach" insets={insets} selectedId={selectedId} onSelect={onSelect} rentLabels={rents} taxPoolLabel={taxPoolLabel} diceValues={null}>{pieces}</Board34Scene>;
 }

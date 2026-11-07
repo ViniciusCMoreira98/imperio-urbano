@@ -69,6 +69,12 @@ export function PlayersPanel({ myId }: { myId: string }) {
               <span className="hud-player-rank absolute -bottom-1 -left-1 hidden h-5 w-5 items-center justify-center rounded-full border border-amber-200 bg-indigo-900 text-[10px] font-black text-amber-200 sm:flex">
                 {index + 1}º
               </span>
+              {/* Status como selo sobre o retrato: não ocupa largura no card. */}
+              {status && (
+                <span className="hud-player-status absolute -right-1.5 -top-1.5 text-sm leading-none" aria-label={details}>
+                  {status}
+                </span>
+              )}
               {crowned && (
                 <span className="absolute -top-2.5 -left-1 text-base sm:text-lg">
                   <LeaderCrown/>
@@ -82,11 +88,6 @@ export function PlayersPanel({ myId }: { myId: string }) {
               </p>
               <p className="hud-player-balance text-sm font-black text-amber-300 drop-shadow sm:text-lg">{formatCredits(p.credits - (held[p.id] ?? 0))}</p>
             </div>
-            {status && (
-              <span className="text-base" aria-label={details}>
-                {status}
-              </span>
-            )}
           </li>
         );
       })}

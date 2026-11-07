@@ -13,7 +13,6 @@ import globeIcon from '../play-menu/art/globe-v1.svg';
 import laurelLeft from '../main-menu/art/laurel-left-v1.svg';
 import laurelRight from '../main-menu/art/laurel-right-v1.svg';
 import { playSound } from '../audio/audio';
-import { setMenuMusic } from '../audio/music';
 import { AvatarPortrait } from '../hud/AvatarPortrait';
 import { SettingsButton } from '../hud/SettingsButton';
 import { CreateOnlineRoomScreen, OnlinePlayScreen, PrivateRoomsScreen } from '../play-menu/PlayEntryScreens';
@@ -29,11 +28,6 @@ export function MenuScreen() {
   const session = useAppStore((s) => s.session);
   const [online, setOnline] = useState(false);
   const wallet = useWallet(online ? undefined : session?.token);
-  // Música do menu inicial enquanto esta tela (ou a de Jogar Online) está aberta.
-  useEffect(() => {
-    setMenuMusic(true);
-    return () => setMenuMusic(false);
-  }, []);
   if (session && online) return <OnlineEntry onBack={() => setOnline(false)} />;
   return (
     <main className="menu-scene" style={{ backgroundImage: `url(${backgroundArt})` }}>
