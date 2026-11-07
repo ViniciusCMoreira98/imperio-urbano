@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-07",
+  "provider": "Imperio Urbano original SVG pipeline",
+  "source": "scripts/assets/play-menu-vectors.mjs",
+  "screens": [
+    "Jogar Agora: mesma rede local",
+    "Jogar Online: internet"
+  ],
+  "cards": [
+    "jogador",
+    "moedas",
+    "diamantes"
+  ],
+  "sharedArt": "Existing original main-menu and C8 portrait assets, not duplicated",
+  "meshyCredits": 0,
+  "records": [
+    {
+      "file": "apps/web/src/play-menu/art/player-card-v1.svg",
+      "bytes": 951,
+      "sha256": "754bcf10daff3f34215df6089867d82e4bda3278226adbcb28822be79fce5561"
+    },
+    {
+      "file": "apps/web/src/play-menu/art/coin-card-v1.svg",
+      "bytes": 1037,
+      "sha256": "86bd4c246c22d4910e7c742a2bd4d2dc7b7072bc64ea94605d0b9c0c5598da02"
+    },
+    {
+      "file": "apps/web/src/play-menu/art/diamond-card-v1.svg",
+      "bytes": 1036,
+      "sha256": "cd7d47549fa877e2be84546270e9393694d7da047707f36714f667fc44999ff9"
+    },
+    {
+      "file": "apps/web/src/play-menu/art/play-panel-v1.svg",
+      "bytes": 1192,
+      "sha256": "da95e0ffdba019265a204ec84fa5e08400f70143dd08d9641ede79d38302496c"
+    },
+    {
+      "file": "apps/web/src/play-menu/art/wifi-v1.svg",
+      "bytes": 774,
+      "sha256": "3023361266314b899d4fd4f4e52d44c6c6898663a42269516d098c4ddcd18953"
+    },
+    {
+      "file": "apps/web/src/play-menu/art/globe-v1.svg",
+      "bytes": 750,
+      "sha256": "36cdfe4918893b758b16f76a71af954ae08ec80ca82bf126934a8c6f82ab54a6"
+    },
+    {
+      "file": "apps/web/src/play-menu/art/stopwatch-v1.svg",
+      "bytes": 858,
+      "sha256": "209d9245189050aa57e7f29493c2957d47b020c9c29e02af8fe03f88b40853a0"
+    },
+    {
+      "file": "apps/web/src/play-menu/art/back-v1.svg",
+      "bytes": 716,
+      "sha256": "bbab7e34a10720d3dd0c93781b125aa6566826c57298dac2ff41d0d91f525fa6"
+    }
+  ]
+}
