@@ -43,7 +43,7 @@ class WalletTest {
     }
 
     private LobbyView readyRoom(GuestPrincipal host, GuestPrincipal guest, int stake) {
-        LobbyView room = lobby.create(host, GameMode.CLASSIC, stake);
+        LobbyView room = lobby.create(host, GameMode.CLASSIC, stake, false);
         lobby.join(guest, room.inviteCode());
         lobby.setReady(host, room.gameId(), true);
         lobby.setReady(guest, room.gameId(), true);
@@ -58,18 +58,18 @@ class WalletTest {
     @Test
     void roomStakeMustBeAllowedAndAffordable() {
         GuestPrincipal ana = guest("Ana");
-        assertThatThrownBy(() -> lobby.create(ana, GameMode.CLASSIC, 300)).isInstanceOf(LobbyException.class)
+        assertThatThrownBy(() -> lobby.create(ana, GameMode.CLASSIC, 300, false)).isInstanceOf(LobbyException.class)
                 .hasMessage("Aposta inválida.");
-        assertThatThrownBy(() -> lobby.create(ana, GameMode.CLASSIC, 5000)).isInstanceOf(LobbyException.class)
+        assertThatThrownBy(() -> lobby.create(ana, GameMode.CLASSIC, 5000, false)).isInstanceOf(LobbyException.class)
                 .hasMessage("Moedas insuficientes para essa aposta.");
-        assertThat(lobby.create(ana, GameMode.QUICK, 1000).stake()).isEqualTo(1000);
+        assertThat(lobby.create(ana, GameMode.QUICK, 1000, false).stake()).isEqualTo(1000);
     }
 
     @Test
     void joiningNeedsCoinsForTheStake() {
         GuestPrincipal ana = guest("Ana");
         GuestPrincipal bia = guest("Bia");
-        LobbyView room = lobby.create(ana, GameMode.CLASSIC, 1000);
+        LobbyView room = lobby.create(ana, GameMode.CLASSIC, 1000, false);
         setCoins(bia, 999);
         assertThatThrownBy(() -> lobby.join(bia, room.inviteCode())).isInstanceOf(LobbyException.class)
                 .hasMessage("Moedas insuficientes para essa aposta.");
@@ -118,7 +118,7 @@ class WalletTest {
         GuestPrincipal ana = guest("Ana");
         GuestPrincipal bia = guest("Bia");
         GuestPrincipal caio = guest("Caio");
-        LobbyView room = lobby.create(ana, GameMode.QUICK, 200);
+        LobbyView room = lobby.create(ana, GameMode.QUICK, 200, false);
         lobby.join(bia, room.inviteCode());
         lobby.join(caio, room.inviteCode());
         List.of(ana, bia, caio).forEach(p -> lobby.setReady(p, room.gameId(), true));

@@ -4,11 +4,14 @@ import {PlayerMenuCard,type PlayerMenuCardProps} from './MenuCards';
 import globe from './art/globe-v1.svg';
 import back from './art/back-v1.svg';
 import './public-rooms.css';
+import {modeName} from '../game/modes';
 
 /** Lista pública fornecida pelo servidor; não incluir códigos privados neste contrato. */
 export interface PublicRoomCard {
  id:string;name:string;hostName:string;mode:GameMode;
  players:number;capacity:number;joinable:boolean;
+ /** Aposta de cada jogador (engenharia, 07/11/2026). */
+ stake?:number;
 }
 export interface PublicRoomsProps {
  player:PlayerMenuCardProps;rooms:PublicRoomCard[];
@@ -27,8 +30,8 @@ export function PublicRoomsScreen({player,rooms,onBack,onRefresh,onJoin,loading=
      const full=room.players>=room.capacity,available=room.joinable&&!full;
      return <article className="pr-room" key={room.id} aria-label={room.name}>
       <div className="pr-room-icon" aria-hidden="true"><img src={playersIcon} alt=""/></div>
-      <div className="pr-room-name"><h2 title={room.name}>{room.name}</h2><p title={room.hostName}>Anfitrião: {room.hostName}</p></div>
-      <span className="pr-mode">{room.mode==='CLASSIC'?'Clássico':'Rápido'}</span>
+      <div className="pr-room-name"><h2 title={room.name}>{room.name}</h2><p title={room.hostName}>Anfitrião: {room.hostName}{room.stake!==undefined&&` · Aposta: ${room.stake.toLocaleString('pt-BR')}`}</p></div>
+      <span className="pr-mode">{modeName(room.mode)}</span>
       <div className="pr-capacity"><strong>{room.players}/{room.capacity}</strong><span>{full?'Lotada':available?'Com vagas':'Indisponível'}</span></div>
       <button className="pr-enter" type="button" disabled={loading||!!joiningId||!available} onClick={()=>onJoin(room.id)} aria-label={`Entrar na sala ${room.name}`}>{joiningId===room.id?'Entrando…':full?'Lotada':available?'Entrar':'Indisponível'}</button>
      </article>;

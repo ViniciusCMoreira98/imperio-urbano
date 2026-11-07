@@ -29,6 +29,10 @@ class GameRecord {
     @Column(nullable = false, updatable = false)
     private int stake;
 
+    /** Aparece na lista de salas públicas (entrada sem código). */
+    @Column(name = "public_room", nullable = false, updatable = false)
+    private boolean publicRoom;
+
     @Column(name = "host_player_id")
     private String hostPlayerId;
 
@@ -41,8 +45,9 @@ class GameRecord {
     protected GameRecord() {
     }
 
-    GameRecord(String id, String inviteCode, String mode, String status, String hostPlayerId, int stake) {
+    GameRecord(String id, String inviteCode, String mode, String status, String hostPlayerId, int stake, boolean publicRoom) {
         this.id = id;
+        this.publicRoom = publicRoom;
         this.stake = stake;
         this.inviteCode = inviteCode;
         this.mode = mode;
@@ -53,6 +58,6 @@ class GameRecord {
     }
 
     GameInfo info() {
-        return new GameInfo(id, inviteCode, mode, status, version, hostPlayerId, stake);
+        return new GameInfo(id, inviteCode, mode, status, version, hostPlayerId, stake, publicRoom, createdAt);
     }
 }

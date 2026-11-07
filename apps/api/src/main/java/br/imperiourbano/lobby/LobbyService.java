@@ -37,6 +37,7 @@ public class LobbyService {
     /** Sem I, O, 0 e 1, para o código ser fácil de ditar. */
     private static final String CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private static final int CODE_LENGTH = 6;
+    private static final int PUBLIC_LIST_LIMIT = 50;
 
     private final GameStore store;
     private final LobbyMemberRepository members;
@@ -64,13 +65,13 @@ public class LobbyService {
 
     /** A aposta precisa ser uma das permitidas e caber no saldo de quem cria. */
     @Transactional
-    public LobbyView create(GuestPrincipal player, GameMode mode, int stake) {
+    public LobbyView create(GuestPrincipal player, GameMode mode, int stake, boolean publicRoom) {
         if (!wallet.validStake(stake)) {
             throw new LobbyException(HttpStatus.BAD_REQUEST, "Aposta inválida.");
         }
         requireCoins(player, stake);
         String gameId = UUID.randomUUID().toString();
-        store.createGame(gameId, newInviteCode(), mode, player.playerId(), stake);
+        store.createGame(gameId, newInviteCode(), mode, player.playerId(), stake, publicRoom);
         members.save(new LobbyMemberRecord(gameId, player.playerId(), player.nickname(), 0,
                 DEFAULT_AVATAR, PawnColor.values()[0]));
         return view(gameId);
@@ -79,8 +80,18 @@ public class LobbyService {
     @Transactional
     public LobbyView join(GuestPrincipal player, String inviteCode) {
         String code = inviteCode == null ? "" : inviteCode.strip().toUpperCase(Locale.ROOT);
-        GameInfo game = store.findByInviteCode(code).orElseThrow(LobbyException::notFound);
-        store.lock(game.id());
+        return join(player, store.findByInviteCode(code).orElseThrow(LobbyException::notFound));
+    }
+
+    /** Entrada pela lista de salas públicas: só vale para sala pública (privada responde "não encontrada"). */
+    @Transactional
+    public LobbyView joinPublic(GuestPrincipal player, String gameId) {
+        GameInfo game = store.find(gameId).filter(GameInfo::publicRoom).orElseThrow(LobbyException::notFound);
+        return join(player, game);
+    }
+
+    private LobbyView join(GuestPrincipal player, GameInfo found) {
+        GameInfo game = lockGame(found.id());
         List<LobbyMemberRecord> current = members.findByGameIdOrderBySeatAsc(game.id());
         if (current.stream().anyMatch(m -> m.playerId().equals(player.playerId()))) {
             return view(game.id());
@@ -168,6 +179,30 @@ public class LobbyService {
         return view(gameId);
     }
 
+    /**
+     * Salas públicas em que o jogador pode entrar agora: esperando jogadores, com vaga, aposta que cabe no
+     * saldo e sem ele já sentado. Não inclui o código de convite.
+     */
+    @Transactional(readOnly = true)
+    public List<PublicRoomView> publicRooms(GuestPrincipal player) {
+        record Room(GameInfo game, List<LobbyMemberRecord> seated) {
+        }
+        long coins = wallet.coins(player.playerId());
+        return store.publicLobbies(PUBLIC_LIST_LIMIT).stream()
+                .filter(game -> game.stake() <= coins)
+                .map(game -> new Room(game, members.findByGameIdOrderBySeatAsc(game.id())))
+                .filter(room -> room.seated().size() < maxPlayers
+                        && room.seated().stream().noneMatch(m -> m.playerId().equals(player.playerId())))
+                .map(room -> new PublicRoomView(room.game().id(), hostName(room.game(), room.seated()),
+                        room.game().mode(), room.game().stake(), room.seated().size(), maxPlayers))
+                .toList();
+    }
+
+    private static String hostName(GameInfo game, List<LobbyMemberRecord> seated) {
+        return seated.stream().filter(m -> m.playerId().equals(game.hostPlayerId())).findFirst()
+                .or(() -> seated.stream().findFirst()).map(LobbyMemberRecord::nickname).orElse("—");
+    }
+
     /** Salas e partidas ainda não encerradas do jogador, da mais recente para a mais antiga. */
     @Transactional(readOnly = true)
     public List<LobbyView> activeGames(GuestPrincipal player) {
@@ -194,7 +229,7 @@ public class LobbyService {
         boolean canStart = game.status() == GameStatus.LOBBY
                 && seated.size() >= minPlayers
                 && seated.stream().allMatch(LobbyMemberRecord::ready);
-        return new LobbyView(game.id(), game.inviteCode(), game.mode(), game.stake(), game.status(), game.hostPlayerId(),
+        return new LobbyView(game.id(), game.inviteCode(), game.mode(), game.stake(), game.publicRoom(), game.status(), game.hostPlayerId(),
                 seated.stream().map(m -> new LobbyView.Member(m.playerId(), m.nickname(), m.seat(),
                         m.avatarId(), m.pawnColor(), m.ready())).toList(),
                 canStart);

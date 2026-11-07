@@ -38,8 +38,10 @@ public class GameStore {
     }
 
     @Transactional
-    public void createGame(String gameId, String inviteCode, GameMode mode, String hostPlayerId, int stake) {
-        games.save(new GameRecord(gameId, inviteCode, mode.name(), GameStatus.LOBBY.name(), hostPlayerId, stake));
+    public void createGame(String gameId, String inviteCode, GameMode mode, String hostPlayerId, int stake,
+            boolean publicRoom) {
+        games.save(new GameRecord(gameId, inviteCode, mode.name(), GameStatus.LOBBY.name(), hostPlayerId, stake,
+                publicRoom));
     }
 
     @Transactional(readOnly = true)
@@ -50,6 +52,13 @@ public class GameStore {
     @Transactional(readOnly = true)
     public Optional<GameInfo> findByInviteCode(String inviteCode) {
         return games.findByInviteCode(inviteCode).map(GameRecord::info);
+    }
+
+    /** Salas públicas ainda esperando jogadores, das mais novas para as mais antigas. */
+    @Transactional(readOnly = true)
+    public List<GameInfo> publicLobbies(int limit) {
+        return games.findPublicLobbies(org.springframework.data.domain.PageRequest.of(0, limit)).stream()
+                .map(GameRecord::info).toList();
     }
 
     @Transactional(readOnly = true)

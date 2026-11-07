@@ -1,5 +1,5 @@
 // Cliente REST do servidor (/api, repassado pelo Vite em desenvolvimento).
-import type { AvatarId, GameMode, GuestSession, LobbyView, PawnColor } from '@imperio/shared-types';
+import type { AvatarId, GameMode, GuestSession, LobbyView, PawnColor, PublicRoom } from '@imperio/shared-types';
 
 export interface Wallet {
   coins: number;
@@ -41,7 +41,11 @@ export async function request<T>(method: string, path: string, token: string | n
 export const api = {
   createSession: (nickname: string) => request<GuestSession>('POST', '/sessions', null, { nickname }),
   me: (token: string) => request<{ playerId: string; nickname: string }>('GET', '/sessions/me', token),
-  createGame: (token: string, mode: GameMode, stake: number) => request<LobbyView>('POST', '/games', token, { mode, stake }),
+  createGame: (token: string, mode: GameMode, stake: number, publicRoom: boolean) =>
+    request<LobbyView>('POST', '/games', token, { mode, stake, publicRoom }),
+  /** Salas públicas em que o jogador pode entrar agora. */
+  publicRooms: (token: string) => request<PublicRoom[]>('GET', '/games/public', token),
+  joinPublic: (token: string, gameId: string) => request<LobbyView>('POST', `/games/${gameId}/join`, token),
   /** Moedas e diamantes; o servidor aplica a recarga grátis do dia se o saldo estiver baixo. */
   wallet: (token: string) => request<Wallet>('GET', '/wallet', token),
   joinGame: (token: string, inviteCode: string) => request<LobbyView>('POST', '/games/join', token, { inviteCode }),

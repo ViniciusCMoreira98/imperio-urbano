@@ -773,3 +773,42 @@ Regras decididas pelo usuário:
 - Pode refazer a arte das fichas à vontade. Mantenha a prop e os `input type="radio"`, porque o host e a acessibilidade dependem deles.
 
 A sala de espera mostra "Aposta: X moedas por jogador · prêmio de Y ao vencedor". A tela ainda usa o estilo antigo e precisa da arte nova.
+
+## Salas públicas: os três destinos do Jogar Online já estão ligados (07/11/2026)
+
+**Estado: integrado na `claude/engenharia`, ainda sem commit.** O menu de produção agora usa as telas novas do Codex. `OnlinePlayScreen` mostra a escolha entre três destinos, e cada um volta para essa escolha:
+- **Criar sala:** `CreateOnlineRoomScreen`.
+- **Salas Públicas:** `PublicRoomsScreen`, com a lista vinda de `GET /api/games/public` e a entrada por `POST /api/games/{id}/join`.
+- **Salas Privadas:** `PrivateRoomsScreen`, só com a entrada por código.
+
+Regras decididas pelo usuário:
+- A visibilidade é escolhida ao criar a sala. O padrão é pública.
+- A lista mostra só as salas em que dá para entrar: ainda na espera, com vaga, aposta dentro do saldo e sem você sentado. As mais novas aparecem primeiro.
+
+**Mudanças no kit `apps/web/src/play-menu/`:**
+- `PlayEntryProps` ganhou a prop opcional `visibility` (`publicRoom`, `onChange`). Ela mostra as fichas "🌐 Pública" e "🔒 Privada", reaproveitando a classe `pm-stake`. O estilo provisório está em `.pm-visibility`, no fim de `play-menu.css`.
+- `PublicRoomCard` ganhou `stake?`, mostrado como "· Aposta: X" depois do anfitrião. O rótulo do modo agora vem de `modeName`, que já inclui 25 min e 1 h.
+- Pode refazer a arte. Mantenha as props e os `input type="radio"`.
+
+A sala de espera mostra "🌐 Sala pública" ou "🔒 Sala privada" ao lado do modo.
+
+O subtítulo do botão Jogar Online no menu inicial ainda diz "Criar sala ou entrar com código". Vale atualizar o texto quando mexer na arte.
+
+## Sala de espera: proposta v1 implementada (07/11/2026)
+
+**Estado: integrado na `claude/engenharia`, ainda sem commit.** `screens/LobbyScreen.tsx` segue `assets/concepts/sala-de-espera/sala-de-espera-v1.png` usando a base do kit (`.pm-screen`, `.pm-shell` e `.pm-back`). O estilo próprio está em `screens/lobby.css`, com as classes `.lb-*`.
+
+Partes da tela:
+- **Cabeçalho:** coroa, título, fichas de modo, visibilidade e aposta, e o botão "Sair da sala".
+- **Faixa do código:** código da sala e botão de copiar.
+- **Jogadores:** quatro vagas. Cada jogador mostra o retrato `avatars-c8` com borda na cor do peão. O anfitrião tem coroa e a sua própria vaga fica em verde.
+- **Seu personagem:** a prévia 3D já existente, `AvatarPreview`, que ganhou a prop `className`. Embaixo ficam os retratos para escolher o avatar e a cor do peão.
+- **Rodapé:** dica ou erro, o botão de pronto e "Iniciar partida", só para o anfitrião, bloqueado até todos estarem prontos.
+
+Decisões de adaptação:
+- Quem ainda não está pronto aparece como "… Aguardando", em amarelo. Não existe o estado "Escolhendo".
+- O prêmio aparece no texto de ajuda da ficha de aposta.
+
+Tamanhos conferidos: 1280×720, 844×390 e retrato 390×844, que empilha os blocos com rolagem.
+
+Pode refinar a arte à vontade. Mantenha os `role="radio"`, os rótulos e as ações.

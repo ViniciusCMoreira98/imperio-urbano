@@ -20,3 +20,8 @@
 /* Quatro modos (Clássico, Rápido, 25 min, 1 hora; engenharia, 07/11/2026): uma linha; 2×2 no retrato. */
 .pm-modes{grid-template-columns:repeat(4,1fr);gap:9px}.pm-mode strong{white-space:nowrap}
 @media(max-width:700px) and (min-height:501px){.pm-modes{grid-template-columns:1fr 1fr;min-height:230px}}
+
+/* Sala pública ou privada (engenharia, 07/11/2026): mesmas fichas da aposta. */
+.pm-visibility{display:flex;align-items:center;gap:8px;flex:none;margin:0;padding:0;border:0}.pm-visibility legend{float:left;margin-right:4px;padding:0;font-size:1.05cqw;font-weight:bold;color:#d8eaf2}.pm-visibility .pm-stake{flex:0 1 130px}.pm-visibility small{font-size:1cqw;color:#bfe5dc}
+@media(max-height:500px){.pm-visibility{gap:5px}.pm-visibility legend,.pm-visibility small{font-size:max(10px,.95cqw)}}
+@media(max-width:700px) and (min-height:501px){.pm-visibility{flex-wrap:wrap}.pm-visibility legend{width:100%;font-size:3cqw}.pm-visibility small{width:100%;font-size:2.8cqw}}

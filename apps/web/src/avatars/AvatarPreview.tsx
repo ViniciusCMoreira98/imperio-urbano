@@ -21,9 +21,10 @@ function Turntable({ avatarId, color }: { avatarId: AvatarId; color: string }) {
   );
 }
 
-export function AvatarPreview({ avatarId, color, label }: { avatarId: AvatarId; color: string; label: string }) {
+/** `className` troca o tamanho e o fundo padrão (a sala de espera usa o próprio painel). */
+export function AvatarPreview({ avatarId, color, label, className }: { avatarId: AvatarId; color: string; label: string; className?: string }) {
   return (
-    <div className="h-40 w-full overflow-hidden rounded-xl bg-gradient-to-b from-sky-900/60 to-slate-800/80 sm:h-48" role="img" aria-label={`Prévia do avatar ${label}`}>
+    <div className={className ?? 'h-40 w-full overflow-hidden rounded-xl bg-gradient-to-b from-sky-900/60 to-slate-800/80 sm:h-48'} role="img" aria-label={`Prévia do avatar ${label}`}>
       <Canvas camera={{ position: [0, 0.45, 2.4], fov: 26 }} dpr={[1, 2]} shadows>
         <ambientLight intensity={1.1} />
         <directionalLight position={[2, 3, 2]} intensity={1.6} castShadow />

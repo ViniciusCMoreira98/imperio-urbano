@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 class LobbyController {
 
     /** {@code stake} ausente = a menor aposta. */
-    record CreateGameRequest(GameMode mode, Integer stake) {
+    record CreateGameRequest(GameMode mode, Integer stake, Boolean publicRoom) {
     }
 
     record JoinRequest(String inviteCode) {
@@ -44,12 +44,24 @@ class LobbyController {
     LobbyView create(@AuthenticationPrincipal GuestPrincipal player, @RequestBody(required = false) CreateGameRequest request) {
         GameMode mode = request == null || request.mode() == null ? GameMode.CLASSIC : request.mode();
         Integer stake = request == null ? null : request.stake();
-        return lobby.create(player, mode, stake == null ? lobby.lowestStake() : stake);
+        boolean publicRoom = request == null || request.publicRoom() == null || request.publicRoom();
+        return lobby.create(player, mode, stake == null ? lobby.lowestStake() : stake, publicRoom);
     }
 
     @PostMapping("/join")
     LobbyView join(@AuthenticationPrincipal GuestPrincipal player, @RequestBody JoinRequest request) {
         return lobby.join(player, request.inviteCode());
+    }
+
+    /** Salas públicas em que o jogador pode entrar agora. */
+    @GetMapping("/public")
+    List<PublicRoomView> publicRooms(@AuthenticationPrincipal GuestPrincipal player) {
+        return lobby.publicRooms(player);
+    }
+
+    @PostMapping("/{gameId}/join")
+    LobbyView joinPublic(@AuthenticationPrincipal GuestPrincipal player, @PathVariable String gameId) {
+        return lobby.joinPublic(player, gameId);
     }
 
     /** Para voltar a uma partida depois de fechar a aba ou trocar de dispositivo. */

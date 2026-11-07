@@ -1,0 +1,133 @@
+/* Sala de espera — proposta do Codex (assets/concepts/sala-de-espera/sala-de-espera-v1.png).
+   Montada sobre a base do kit play-menu (.pm-screen, .pm-shell, .pm-back). */
+.lb-screen{justify-content:center}
+.lb-loading{color:#fff4d4;font-size:18px}
+.pm-shell.lb-shell{flex:0 1 760px;max-height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:14px;padding:26px 32px 26px}
+
+.lb-header{display:flex;align-items:center;gap:16px;min-width:0}
+.lb-crown{width:58px;height:58px;padding-right:16px;border-right:2px solid #e9c96266;flex:none}
+.lb-title{min-width:0}
+.lb-title h1{margin:0;font-size:clamp(24px,3.2cqw,40px);line-height:1.05;color:#fff4d4;text-shadow:0 3px 2px #00112e}
+.lb-title p{margin:4px 0 0;font-size:clamp(12px,1.25cqw,16px);color:#c0dbea}
+.lb-chips{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.lb-chip{display:flex;align-items:center;gap:7px;padding:8px 14px;border:2px solid #edd077;border-radius:999px;background:linear-gradient(#0f6b4e,#06402c);color:#fff4d3;font-weight:800;font-size:14px;white-space:nowrap}
+.lb-chip img{width:20px;height:20px}
+.lb-chip-soft{background:linear-gradient(#174774,#071f42);font-weight:700}
+.lb-leave{white-space:nowrap}
+
+.lb-code{justify-self:center;display:flex;align-items:center;gap:18px;padding:8px 10px 8px 24px;border:2px solid #edd077;border-radius:18px;background:linear-gradient(#0b2f5a,#061a38);box-shadow:0 0 18px #ffd86a33,inset 0 1px #fff5a640}
+.lb-code-label{color:#f4cf62;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding-right:18px;border-right:2px solid #e9c96255}
+.lb-code-value{font-size:clamp(24px,3cqw,38px);letter-spacing:.12em;color:#fff4d4;font-family:'Arial Black',Arial,sans-serif}
+.lb-screen .lb-copy{padding:8px 14px;border:2px solid #edd077;border-radius:11px;background:linear-gradient(#174774,#071f42);color:#fff4d3;font-weight:700;font-size:14px}
+
+.lb-body{min-height:0;display:grid;grid-template-columns:minmax(0,2.15fr) minmax(0,1fr);gap:16px}
+.lb-panel{min-height:0;display:flex;flex-direction:column;padding:14px 16px;border:1.5px solid #4f8fc866;border-radius:18px;background:linear-gradient(#0d3666cc,#08244acc)}
+.lb-panel h2{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:clamp(16px,2cqw,26px);color:#fff4d4}
+.lb-panel h2 img{width:30px;height:30px}
+
+.lb-players ul{flex:1;min-height:0;margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.lb-seat{position:relative;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 8px;border:1.5px solid #4f8fc888;border-radius:16px;background:linear-gradient(#174f88,#0b2e5a);text-align:center}
+.lb-mine{border:2px solid #edd077;background:linear-gradient(#17705e,#09443a);box-shadow:0 0 14px #ffd86a44}
+.lb-host{position:absolute;top:6px;right:8px;width:30px;height:30px;transform:rotate(14deg);filter:drop-shadow(0 2px 1px #00172c88)}
+.lb-portrait{width:min(100%,108px);aspect-ratio:1;border-radius:50%;overflow:hidden;border:4px solid;background:#123d6b;flex:none}
+.lb-portrait img,.lb-avatars img{width:100%;height:100%;object-fit:cover;display:block}
+.lb-name{max-width:100%;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(14px,1.7cqw,22px);color:#fff4d4}
+.lb-you{font-size:13px;color:#f4cf62;line-height:1}
+.lb-status{margin-top:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;white-space:nowrap}
+.lb-ready{background:linear-gradient(#2fae4f,#16772f);color:#fff;border:1.5px solid #9df0a8}
+.lb-waiting{background:linear-gradient(#ffd54d,#e6a91a);color:#3a2600;border:1.5px solid #fff1a5}
+.lb-free{border:2px dashed #c8dcf080;background:transparent;color:#c8dcf0}
+.lb-free svg{width:56px;height:56px}
+.lb-free .lb-name{font-size:clamp(14px,1.5cqw,19px)}
+.lb-free-text{font-size:12px;color:#c0dbea}
+
+.lb-character{align-items:center}
+.lb-character h2{align-self:flex-start}
+.lb-preview{width:100%;flex:1 1 140px;min-height:70px;max-height:230px}
+.lb-avatars{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.lb-avatars button{width:46px;height:46px;padding:0;border-radius:50%;overflow:hidden;border:2px solid #4f8fc8;background:#123d6b}
+.lb-avatars button[aria-checked='true']{border:3px solid #ffd86a;box-shadow:0 0 10px #ffd86a99}
+.lb-divider{width:100%;display:flex;align-items:center;gap:10px;margin:10px 0 8px;font-size:14px;color:#fff4d4;font-weight:700}
+.lb-divider::before,.lb-divider::after{content:'';flex:1;height:1px;background:#e9c96266}
+.lb-colors{display:flex;gap:10px;justify-content:center}
+.lb-colors button{width:36px;height:36px;border-radius:50%;border:2px solid #ffffff55;padding:0}
+.lb-colors button[aria-checked='true']{border:3px solid #fff;box-shadow:0 0 0 3px #ffd86a}
+.lb-colors button:disabled{opacity:.22}
+
+.lb-footer{display:flex;align-items:center;gap:16px}
+.lb-hint{flex:1;min-width:0;margin:0;color:#d7e8ed;font-size:14px}
+.lb-error{color:#ffb4a8;font-weight:700}
+.lb-screen .lb-ready-btn{min-width:200px;padding:12px 22px;border:2px solid #edd077;border-radius:14px;background:linear-gradient(#174774,#071f42);color:#fff4d3;font-weight:800;font-size:17px;box-shadow:0 4px 0 #05213c}
+.lb-screen .lb-ready-btn.lb-go{background:linear-gradient(#2fae4f,#16772f);border-color:#b8f5b0;box-shadow:0 4px 0 #0b4d1d}
+.lb-screen .lb-start{min-width:260px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 24px;border:2px solid #ffe48c;border-radius:14px;background:linear-gradient(#ffd54d,#e39a12);color:#3a2100;box-shadow:0 4px 0 #8a5600}
+.lb-start strong{font-size:19px}
+.lb-start small{font-size:12px;font-weight:600}
+.pm-screen .lb-start:disabled{opacity:1;filter:none;background:linear-gradient(#5c7a9c,#3d5a7c);border-color:#a9c0d8;color:#e3ecf5;box-shadow:0 4px 0 #24384f}
+
+/* Notebook/tablet baixo */
+@media(max-height:700px){
+ .pm-shell.lb-shell{gap:10px;padding:20px 26px}
+ .lb-crown{width:46px;height:46px;padding-right:12px}
+ .lb-portrait{width:min(100%,84px)}
+ .lb-preview{max-height:140px}
+}
+/* Celular em paisagem (ex.: 844×390, 667×375) */
+@media(max-height:500px){
+ .pm-shell.lb-shell{gap:6px;padding:11px 16px 12px}
+ .lb-header{gap:10px}
+ .lb-crown{width:30px;height:30px;padding-right:8px}
+ .lb-title h1{font-size:20px}
+ .lb-title p{display:none}
+ .lb-chips{gap:5px}
+ .lb-chip{padding:4px 9px;font-size:11px;gap:4px}
+ .lb-chip img{width:14px;height:14px}
+ .lb-code{gap:10px;padding:3px 5px 3px 12px;border-radius:12px}
+ .lb-code-label{font-size:10px;padding-right:10px}
+ .lb-code-value{font-size:19px}
+ .lb-screen .lb-copy{padding:4px 9px;font-size:11px;border-radius:8px}
+ .lb-body{gap:8px}
+ .lb-panel{padding:7px 9px;border-radius:12px}
+ .lb-panel h2{font-size:14px;margin-bottom:5px;gap:6px}
+ .lb-panel h2 img{width:18px;height:18px}
+ .lb-players ul{gap:6px}
+ .lb-seat{padding:5px 4px;gap:1px;border-radius:11px}
+ .lb-host{width:18px;height:18px;top:3px;right:4px}
+ .lb-portrait{width:min(100%,64px);border-width:3px}
+ .lb-name{font-size:13px;margin-top:2px}
+ .lb-you{font-size:10px}
+ .lb-status{margin-top:3px;padding:2px 8px;font-size:10px}
+ .lb-free svg{width:30px;height:30px}
+ .lb-free .lb-name{font-size:12px}
+ .lb-free-text{font-size:9px}
+ .lb-preview{min-height:40px;max-height:120px}
+ .lb-avatars{gap:4px;margin-top:4px}
+ .lb-avatars button{width:26px;height:26px}
+ .lb-divider{margin:4px 0;font-size:10px}
+ .lb-colors{gap:6px}
+ .lb-colors button{width:20px;height:20px}
+ .lb-footer{gap:8px}
+ .lb-hint{font-size:11px}
+ .lb-screen .lb-ready-btn{min-width:0;padding:6px 12px;font-size:13px;border-radius:10px}
+ .lb-screen .lb-start{min-width:0;padding:4px 14px;border-radius:10px}
+ .lb-start strong{font-size:14px}
+ .lb-start small{font-size:9px}
+}
+/* Estreito (retrato/janela pequena): empilha os painéis. */
+@media(max-width:720px){
+ .pm-shell.lb-shell{display:flex;flex-direction:column;flex:1 1 auto;overflow-y:auto;gap:10px;padding:16px 14px}
+ .lb-shell>*{flex:none}
+ .lb-code{gap:10px;padding:6px 8px 6px 12px}
+ .lb-code-label{font-size:10px;padding-right:10px}
+ .lb-code-value{font-size:22px}
+ .lb-players ul{gap:8px}
+ .lb-portrait{width:min(100%,72px)}
+ .lb-preview{flex:none;height:150px}
+ .lb-screen .lb-ready-btn,.lb-screen .lb-start{flex:1;min-width:0}
+ .lb-header{flex-wrap:wrap}
+ .lb-chips{margin-left:0;justify-content:flex-start;flex-basis:100%;order:3}
+ .lb-leave{margin-left:auto}
+ .lb-body{grid-template-columns:1fr}
+ .lb-players ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .lb-footer{flex-wrap:wrap}
+ .lb-hint{flex-basis:100%}
+}

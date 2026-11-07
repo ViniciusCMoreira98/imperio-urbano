@@ -3,7 +3,7 @@
 // tela do kit play-menu), voltar às suas partidas e Configurações. Nível, moedas e diamantes entram
 // quando existirem; Jogar Agora (mesma rede local) espera o servidor de rede local (decisão de 07/11/2026).
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import type { GameMode, LobbyView } from '@imperio/shared-types';
+import type { GameMode, LobbyView, PublicRoom } from '@imperio/shared-types';
 import { rules } from '@imperio/game-data';
 import './menuScreen.css';
 import backgroundArt from '../main-menu/art/background-v1.webp';
@@ -16,7 +16,8 @@ import { playSound } from '../audio/audio';
 import { setMenuMusic } from '../audio/music';
 import { AvatarPortrait } from '../hud/AvatarPortrait';
 import { SettingsButton } from '../hud/SettingsButton';
-import { OnlineRoomEntryScreen as OnlinePlayScreen } from '../play-menu/PlayEntryScreens';
+import { CreateOnlineRoomScreen, OnlinePlayScreen, PrivateRoomsScreen } from '../play-menu/PlayEntryScreens';
+import { PublicRoomsScreen } from '../play-menu/PublicRoomsScreen';
 import { api, ApiError } from '../net/api';
 import { useWallet } from '../net/useWallet';
 import { CurrencyMenuCard, PlayerMenuCard } from '../play-menu/MenuCards';
@@ -183,10 +184,13 @@ function PlayMenu({ onPlayOnline }: { onPlayOnline: () => void }) {
  * Jogar Online com a tela do kit play-menu: criar sala (Clássico ou Rápido) ou entrar com o código.
  * Liga as ações ao servidor atual; sem nível, moedas nem diamantes, que ainda não existem.
  */
+/** Jogar Online: três destinos (Criar sala, Salas Públicas, Salas Privadas), cada um volta para a escolha. */
 function OnlineEntry({ onBack }: { onBack: () => void }) {
   const session = useAppStore((s) => s.session)!;
   const openLobby = useAppStore((s) => s.openLobby);
+  const [view, setView] = useState<'menu' | 'create' | 'public' | 'private'>('menu');
   const [mode, setMode] = useState<GameMode>('CLASSIC');
+  const [publicRoom, setPublicRoom] = useState(true);
   const [code, setCode] = useState('');
   const [pending, setPending] = useState<'create' | 'join' | null>(null);
   const [error, setError] = useState<string | undefined>();
@@ -199,9 +203,33 @@ function OnlineEntry({ onBack }: { onBack: () => void }) {
     if (wallet && stake > wallet.coins) setStake(stakes.filter((v) => v <= wallet.coins).at(-1) ?? stakes[0]);
   }, [wallet, stake, stakes]);
 
-  async function run(kind: 'create' | 'join', action: () => Promise<LobbyView>) {
+  // Salas públicas: carregadas ao abrir a lista e no botão Atualizar.
+  const [rooms, setRooms] = useState<PublicRoom[]>([]);
+  const [loadingRooms, setLoadingRooms] = useState(false);
+  const [joiningId, setJoiningId] = useState<string | null>(null);
+  async function loadRooms() {
+    setLoadingRooms(true);
+    setError(undefined);
+    try {
+      setRooms(await api.publicRooms(session.token));
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'Não foi possível carregar as salas.');
+    } finally {
+      setLoadingRooms(false);
+    }
+  }
+
+  function go(next: typeof view) {
+    playSound('confirmarAcao');
+    setError(undefined);
+    setView(next);
+    if (next === 'public') void loadRooms();
+  }
+
+  async function run(kind: 'create' | 'join', action: () => Promise<LobbyView>, roomId?: string) {
     playSound('confirmarAcao');
     setPending(kind);
+    setJoiningId(roomId ?? null);
     setError(undefined);
     try {
       openLobby(await action());
@@ -209,23 +237,68 @@ function OnlineEntry({ onBack }: { onBack: () => void }) {
       setError(e instanceof ApiError ? e.message : 'Algo deu errado.');
       playSound('erroAcaoInvalida');
       setPending(null);
+      setJoiningId(null);
+      if (roomId) void loadRooms(); // a sala pode ter lotado ou começado
     }
   }
 
+  const player = { nickname: session.nickname, portrait: <AvatarPortrait avatarId="avatar-1" /> };
+  const back = () => go('menu');
+  const form = {
+    player,
+    wallet: wallet ?? undefined,
+    mode,
+    onModeChange: setMode,
+    inviteCode: code,
+    onInviteCodeChange: setCode,
+    onCreate: () => void run('create', () => api.createGame(session.token, mode, stake, publicRoom)),
+    onJoin: () => void run('join', () => api.joinGame(session.token, code)),
+    onBack: back,
+    pending,
+    error,
+  };
+
+  if (view === 'create') {
+    return (
+      <CreateOnlineRoomScreen
+        {...form}
+        stake={{ options: stakes, value: stake, onChange: setStake, max: wallet?.coins }}
+        visibility={{ publicRoom, onChange: setPublicRoom }}
+      />
+    );
+  }
+  if (view === 'private') return <PrivateRoomsScreen {...form} />;
+  if (view === 'public') {
+    return (
+      <PublicRoomsScreen
+        player={player}
+        rooms={rooms.map((r) => ({
+          id: r.gameId,
+          name: `Sala de ${r.hostName}`,
+          hostName: r.hostName,
+          mode: r.mode,
+          players: r.players,
+          capacity: r.capacity,
+          joinable: true,
+          stake: r.stake,
+        }))}
+        onBack={back}
+        onRefresh={() => void loadRooms()}
+        onJoin={(id) => void run('join', () => api.joinPublic(session.token, id), id)}
+        loading={loadingRooms}
+        joiningId={joiningId}
+        error={error}
+      />
+    );
+  }
   return (
     <OnlinePlayScreen
-      player={{ nickname: session.nickname, portrait: <AvatarPortrait avatarId="avatar-1" /> }}
+      player={player}
       wallet={wallet ?? undefined}
-      stake={{ options: stakes, value: stake, onChange: setStake, max: wallet?.coins }}
-      mode={mode}
-      onModeChange={setMode}
-      inviteCode={code}
-      onInviteCodeChange={setCode}
-      onCreate={() => void run('create', () => api.createGame(session.token, mode, stake))}
-      onJoin={() => void run('join', () => api.joinGame(session.token, code))}
       onBack={onBack}
-      pending={pending}
-      error={error}
+      onCreateRoom={() => go('create')}
+      onPublicRooms={() => go('public')}
+      onPrivateRooms={() => go('private')}
     />
   );
 }

@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
 import type { AvatarId, LobbyView, PawnColor } from '@imperio/shared-types';
 import { AvatarPreview } from '../avatars/AvatarPreview';
-import { modeDescription } from '../game/modes';
+import { modeName } from '../game/modes';
 import { AVATARS, PAWN_COLORS } from '../game/presentation';
+import { AvatarPortrait } from '../hud/AvatarPortrait';
+import crown from '../main-menu/art/crown-v1.svg';
+import playersIcon from '../main-menu/art/players-v1.svg';
 import { api, ApiError } from '../net/api';
+import back from '../play-menu/art/back-v1.svg';
 import { useAppStore } from '../store/appStore';
-import { Button, ErrorText, MenuBackground, Panel } from '../ui/ui';
+import '../play-menu/play-menu.css';
+import './lobby.css';
 
 /** A sala ainda não tem canal em tempo real: consulta o servidor periodicamente. */
 const POLL_MS = 1500;
+const CAPACITY = 4;
 
+/** Sala de espera na arte tropical do menu (proposta do Codex, 07/11/2026). Tudo vem do lobby real. */
 export function LobbyScreen() {
   const session = useAppStore((s) => s.session);
   const gameId = useAppStore((s) => s.gameId)!;
@@ -46,9 +53,9 @@ export function LobbyScreen() {
 
   if (!session || !lobby) {
     return (
-      <MenuBackground>
-        <p className="text-white/80">Carregando sala…</p>
-      </MenuBackground>
+      <main className="pm-screen lb-screen">
+        <p className="lb-loading">Carregando sala…</p>
+      </main>
     );
   }
 
@@ -70,135 +77,160 @@ export function LobbyScreen() {
   const customize = (avatarId: AvatarId, pawnColor: PawnColor) =>
     act(() => api.customize(session.token, gameId, avatarId, pawnColor));
 
+  const hint = isHost
+    ? lobby.canStart
+      ? 'Todos prontos: pode iniciar a partida.'
+      : 'Precisa de 2 a 4 jogadores, todos prontos.'
+    : 'O anfitrião inicia quando todos estiverem prontos.';
+
   return (
-    <MenuBackground>
-      <div className="grid w-full max-w-4xl gap-4 md:grid-cols-[1.2fr_1fr]">
-        <Panel title="Sala de espera">
-          <div className="mb-4 flex items-center justify-center gap-2">
-            <span className="text-white/70">Código:</span>
-            <span className="rounded-lg bg-slate-800 px-3 py-1 font-mono text-2xl font-bold tracking-[0.3em] text-white">
-              {lobby.inviteCode}
+    <main className="pm-screen lb-screen">
+      <section className="pm-shell lb-shell" aria-labelledby="lb-title">
+        <header className="lb-header">
+          <img className="lb-crown" src={crown} alt="" />
+          <div className="lb-title">
+            <h1 id="lb-title">Sala de espera</h1>
+            <p>Reúna a turma. A partida já vai começar!</p>
+          </div>
+          <div className="lb-chips">
+            <span className="lb-chip">
+              <img src={crown} alt="" />
+              {modeName(lobby.mode)}
             </span>
-            <Button
-              className="px-3 py-1 text-sm"
-              onClick={() => {
-                void navigator.clipboard?.writeText(lobby.inviteCode).then(() => setCopied(true));
-              }}
-            >
-              {copied ? 'Copiado!' : 'Copiar'}
-            </Button>
+            <span className="lb-chip lb-chip-soft">{lobby.publicRoom ? '🌐 Pública' : '🔒 Privada'}</span>
+            {lobby.stake > 0 && (
+              <span className="lb-chip lb-chip-soft" title={`Prêmio de ${(lobby.stake * lobby.players.length).toLocaleString('pt-BR')} moedas ao vencedor`}>
+                🪙 Aposta {lobby.stake.toLocaleString('pt-BR')}
+              </span>
+            )}
           </div>
+          <button className="pm-back lb-leave" type="button" onClick={leave}>
+            <img src={back} alt="" />
+            Sair da sala
+          </button>
+        </header>
 
-          <h3 className="mb-2 font-bold text-white">Jogadores ({lobby.players.length}/4)</h3>
-          <ul className="space-y-2">
-            {lobby.players.map((p) => (
-              <li key={p.playerId} className="flex items-center gap-3 rounded-lg bg-slate-800/80 px-3 py-2">
-                <span
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-2xl ring-2"
-                  style={{ background: `${PAWN_COLORS[p.pawnColor].hex}33`, ['--tw-ring-color' as string]: PAWN_COLORS[p.pawnColor].hex }}
-                  aria-hidden
-                >
-                  {AVATARS[p.avatarId].emoji}
-                </span>
-                <span className="flex-1 text-white">
-                  {p.nickname}
-                  {p.playerId === session.playerId && <span className="text-white/60"> (você)</span>}
-                  {p.playerId === lobby.hostPlayerId && <span title="Anfitrião"> 👑</span>}
-                </span>
-                <span
-                  className={`rounded-md px-2 py-0.5 text-sm font-bold ${p.ready ? 'bg-emerald-600 text-white' : 'text-white/60'}`}
-                >
-                  {p.ready ? 'Pronto' : 'Aguardando…'}
-                </span>
-              </li>
-            ))}
-            {Array.from({ length: 4 - lobby.players.length }, (_, i) => (
-              <li key={`vazio-${i}`} className="rounded-lg border border-dashed border-white/15 px-3 py-3 text-white/40">
-                Aguardando jogador…
-              </li>
-            ))}
-          </ul>
+        <div className="lb-code">
+          <span className="lb-code-label">Código da sala</span>
+          <strong className="lb-code-value">{lobby.inviteCode}</strong>
+          <button
+            type="button"
+            className="lb-copy"
+            onClick={() => {
+              void navigator.clipboard?.writeText(lobby.inviteCode).then(() => setCopied(true));
+            }}
+          >
+            {copied ? 'Copiado!' : 'Copiar código'}
+          </button>
+        </div>
 
-          <p className="mt-3 text-sm text-white/70">
-            Modo: <strong>{modeDescription(lobby.mode)}</strong>
-          </p>
-          {lobby.stake > 0 && (
-            <p className="mt-1 text-sm text-white/70">
-              Aposta: <strong>{lobby.stake.toLocaleString('pt-BR')} moedas</strong> por jogador · prêmio de{' '}
-              <strong>{(lobby.stake * lobby.players.length).toLocaleString('pt-BR')}</strong> ao vencedor
-            </p>
+        <div className="lb-body">
+          <section className="lb-panel lb-players" aria-labelledby="lb-players-title">
+            <h2 id="lb-players-title">
+              <img src={playersIcon} alt="" />
+              Jogadores · {lobby.players.length}/{CAPACITY}
+            </h2>
+            <ul>
+              {lobby.players.map((p) => {
+                const mine = p.playerId === session.playerId;
+                const host = p.playerId === lobby.hostPlayerId;
+                return (
+                  <li key={p.playerId} className={`lb-seat${mine ? ' lb-mine' : ''}`}>
+                    {host && <img className="lb-host" src={crown} alt="Anfitrião" title="Anfitrião" />}
+                    <span className="lb-portrait" style={{ borderColor: PAWN_COLORS[p.pawnColor].hex }}>
+                      <AvatarPortrait avatarId={p.avatarId} />
+                    </span>
+                    <strong className="lb-name">{p.nickname}</strong>
+                    <span className="lb-you">{mine ? '(você)' : ' '}</span>
+                    <span className={`lb-status ${p.ready ? 'lb-ready' : 'lb-waiting'}`}>
+                      {p.ready ? '✔ Pronto' : '… Aguardando'}
+                    </span>
+                  </li>
+                );
+              })}
+              {Array.from({ length: CAPACITY - lobby.players.length }, (_, i) => (
+                <li key={`vaga-${i}`} className="lb-seat lb-free">
+                  <svg viewBox="0 0 48 48" aria-hidden="true">
+                    <circle cx="20" cy="16" r="8" fill="none" stroke="currentColor" strokeWidth="3" />
+                    <path d="M6 40c1-9 7-14 14-14s13 5 14 14M38 22v12M32 28h12" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                  </svg>
+                  <strong className="lb-name">Vaga livre</strong>
+                  <span className="lb-free-text">Aguardando jogador</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {me && (
+            <section className="lb-panel lb-character" aria-labelledby="lb-character-title">
+              <h2 id="lb-character-title">Seu personagem</h2>
+              <AvatarPreview
+                className="lb-preview"
+                avatarId={me.avatarId}
+                color={PAWN_COLORS[me.pawnColor].hex}
+                label={AVATARS[me.avatarId].name}
+              />
+              <div className="lb-avatars" role="radiogroup" aria-label="Avatar">
+                {(Object.keys(AVATARS) as AvatarId[]).map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    role="radio"
+                    aria-checked={me.avatarId === id}
+                    aria-label={AVATARS[id].name}
+                    title={AVATARS[id].name}
+                    onClick={() => void customize(id, me.pawnColor)}
+                  >
+                    <AvatarPortrait avatarId={id} />
+                  </button>
+                ))}
+              </div>
+              <h3 className="lb-divider">Cor do peão</h3>
+              <div className="lb-colors" role="radiogroup" aria-label="Cor do peão">
+                {(Object.keys(PAWN_COLORS) as PawnColor[]).map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    role="radio"
+                    aria-checked={me.pawnColor === color}
+                    aria-label={PAWN_COLORS[color].name}
+                    title={takenColors.has(color) ? 'Em uso por outro jogador' : PAWN_COLORS[color].name}
+                    disabled={takenColors.has(color)}
+                    onClick={() => void customize(me.avatarId, color)}
+                    style={{ background: PAWN_COLORS[color].hex }}
+                  />
+                ))}
+              </div>
+            </section>
           )}
+        </div>
 
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Button variant="secondary" onClick={leave}>
-              ← Menu
-            </Button>
-            {me && (
-              <Button variant={me.ready ? 'secondary' : 'confirm'} onClick={() => void act(() => api.setReady(session.token, gameId, !me.ready))}>
-                {me.ready ? 'Não estou pronto' : 'Estou pronto'}
-              </Button>
-            )}
-            {isHost && (
-              <Button
-                variant="primary"
-                className="flex-1"
-                disabled={!lobby.canStart}
-                title={lobby.canStart ? undefined : 'Precisa de 2 a 4 jogadores, todos prontos.'}
-                onClick={() => void act(() => api.start(session.token, gameId))}
-              >
-                INICIAR PARTIDA
-              </Button>
-            )}
-          </div>
-          {!isHost && <p className="mt-2 text-sm text-white/60">O anfitrião inicia quando todos estiverem prontos.</p>}
-          <ErrorText message={error} />
-        </Panel>
-
-        {me && (
-          <Panel title="Seu avatar">
-            <AvatarPreview avatarId={me.avatarId} color={PAWN_COLORS[me.pawnColor].hex} label={AVATARS[me.avatarId].name} />
-            <p className="mb-3 mt-1 text-center font-bold text-white">{AVATARS[me.avatarId].name}</p>
-            <div className="grid grid-cols-5 gap-2" role="radiogroup" aria-label="Avatar">
-              {(Object.keys(AVATARS) as AvatarId[]).map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  role="radio"
-                  aria-checked={me.avatarId === id}
-                  aria-label={AVATARS[id].name}
-                  onClick={() => void customize(id, me.pawnColor)}
-                  className={`flex aspect-square items-center justify-center rounded-xl text-3xl transition ${
-                    me.avatarId === id ? 'bg-amber-300/25 ring-2 ring-amber-300' : 'bg-slate-800 hover:bg-slate-700'
-                  }`}
-                >
-                  {AVATARS[id].emoji}
-                </button>
-              ))}
-            </div>
-
-            <h3 className="mb-2 mt-4 font-bold text-white">Cor do peão</h3>
-            <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Cor do peão">
-              {(Object.keys(PAWN_COLORS) as PawnColor[]).map((color) => (
-                <button
-                  key={color}
-                  type="button"
-                  role="radio"
-                  aria-checked={me.pawnColor === color}
-                  aria-label={PAWN_COLORS[color].name}
-                  title={takenColors.has(color) ? 'Em uso por outro jogador' : PAWN_COLORS[color].name}
-                  disabled={takenColors.has(color)}
-                  onClick={() => void customize(me.avatarId, color)}
-                  className={`h-10 w-10 rounded-full transition disabled:opacity-25 ${
-                    me.pawnColor === color ? 'ring-4 ring-white' : 'ring-1 ring-white/30'
-                  }`}
-                  style={{ background: PAWN_COLORS[color].hex }}
-                />
-              ))}
-            </div>
-            <p className="mt-3 text-xs text-white/50">Avatares podem se repetir; a cor identifica seu peão.</p>
-          </Panel>
-        )}
-      </div>
-    </MenuBackground>
+        <footer className="lb-footer">
+          <p className="lb-hint">
+            <span aria-hidden="true">ⓘ</span> {error ? <span className="lb-error" role="alert">{error}</span> : hint}
+          </p>
+          {me && (
+            <button
+              type="button"
+              className={`lb-ready-btn${me.ready ? '' : ' lb-go'}`}
+              onClick={() => void act(() => api.setReady(session.token, gameId, !me.ready))}
+            >
+              {me.ready ? 'Não estou pronto' : 'Estou pronto'}
+            </button>
+          )}
+          {isHost && (
+            <button
+              type="button"
+              className="lb-start"
+              disabled={!lobby.canStart}
+              onClick={() => void act(() => api.start(session.token, gameId))}
+            >
+              <strong>{lobby.canStart ? 'Iniciar partida' : '🔒 Iniciar partida'}</strong>
+              {!lobby.canStart && <small>Aguardando todos ficarem prontos</small>}
+            </button>
+          )}
+        </footer>
+      </section>
+    </main>
   );
 }

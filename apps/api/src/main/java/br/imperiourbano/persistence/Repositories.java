@@ -14,6 +14,9 @@ interface GameRecordRepository extends JpaRepository<GameRecord, String> {
 
     Optional<GameRecord> findByInviteCode(String inviteCode);
 
+    @Query("select g from GameRecord g where g.publicRoom = true and g.status = 'LOBBY' order by g.createdAt desc")
+    List<GameRecord> findPublicLobbies(org.springframework.data.domain.Pageable page);
+
     /** Só as do tabuleiro atual: as de um tabuleiro antigo não continuam. */
     @Query("select g.id from GameRecord g where g.status = 'IN_PROGRESS' and g.id in "
             + "(select s.gameId from GameSnapshotRecord s where s.boardVersion = :boardVersion)")

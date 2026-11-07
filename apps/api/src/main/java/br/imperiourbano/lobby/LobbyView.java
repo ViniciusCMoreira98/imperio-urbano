@@ -11,6 +11,8 @@ public record LobbyView(
         GameMode mode,
         /** Aposta de cada jogador; o vencedor leva aposta × jogadores. */
         int stake,
+        /** Aparece na lista de salas públicas; privada só entra com o código. */
+        boolean publicRoom,
         GameStatus status,
         String hostPlayerId,
         List<Member> players,
