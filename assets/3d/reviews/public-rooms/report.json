@@ -1,0 +1,38 @@
+{
+  "screens": [
+    {
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "width": 844,
+      "height": 390
+    },
+    {
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "threeOnlineChoices": true,
+  "separateCreateAndPrivateScreens": true,
+  "createCallback": true,
+  "privateCodeNormalization": true,
+  "privateJoinCallback": true,
+  "buttonOpensList": true,
+  "joinCallback": true,
+  "fullRoomDisabled": true,
+  "refresh": true,
+  "empty": true,
+  "loading": true,
+  "error": true,
+  "pending": true,
+  "back": true,
+  "sampleRoomsOnly": true,
+  "noApiOrRealJoin": true,
+  "errors": [],
+  "failed": []
+}

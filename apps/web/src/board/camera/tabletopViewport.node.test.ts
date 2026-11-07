@@ -4,6 +4,18 @@ import{applyFixedCamera,FIXED_CAMERA}from'./fixedCamera';
 import{applyTabletopCamera,tabletopDpr,tabletopViewport}from'./tabletopViewport';
 
 describe('mesa contínua em toda a janela',()=>{
+ it('amplia a apresentação da praia sem cortar o quadro nem mudar a pose',()=>{
+  const original=new PerspectiveCamera();applyFixedCamera(original);
+  for(const[w,h]of[[1280,720],[1920,1080],[844,390],[667,375]]){
+   const camera=new PerspectiveCamera(),fit=applyTabletopCamera(camera,w,h,'immersive');
+   expect(camera.matrixWorld.toArray()).toEqual(original.matrixWorld.toArray());
+   expect(fit.scale).toBeGreaterThan(tabletopViewport(w,h-64).scale);
+   expect(fit.x+18*fit.scale).toBeGreaterThanOrEqual(0);
+   expect(fit.x+1500*fit.scale).toBeLessThanOrEqual(w);
+   expect(fit.y+34*fit.scale).toBeGreaterThanOrEqual(fit.top-1e-6);
+   expect(fit.y+940*fit.scale).toBeLessThanOrEqual(h-fit.bottom+1e-6);
+  }
+ });
  it('preserva a pose e projeta a calibração por escala uniforme em todas as proporções',()=>{
   const original=new PerspectiveCamera();applyFixedCamera(original);
   for(const[w,h]of[[1280,720],[1536,1024],[1280,800],[2560,1080],[3840,2160],[2000,740],[844,390]]){

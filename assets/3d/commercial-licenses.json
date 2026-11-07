@@ -322,6 +322,15 @@
       "bytes": 1899533
     },
     {
+      "file": "apps/web/src/board/board34/art/beach-environment-v1.webp",
+      "provider": "OpenAI image_gen built-in",
+      "license": "OpenAI generated output, project ownership under service terms",
+      "evidence": "assets/praia-tropical/manifest.json",
+      "commercialUse": true,
+      "sha256": "e1a0a16c7b12315f6300c8fb1dfa93b112264a9f9e42b9fb708a82469120bf69",
+      "bytes": 439518
+    },
+    {
       "file": "apps/web/src/board/board34/art/center-brasil-v1.png",
       "provider": "OpenAI image_gen built-in",
       "license": "OpenAI generated output, project ownership under service terms",

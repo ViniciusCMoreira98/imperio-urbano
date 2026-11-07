@@ -31,7 +31,7 @@ O pedido atual substitui a antiga instrução de manter um modal aberto até a e
 | `incendio` | Escolher estado de oponente; fica desocupado e disponível para nova compra |
 | `visita-olimpica` | Ir até o estado-sede atual das Olimpíadas |
 | `escolha-sede` | Escolher um estado para sediar as Olimpíadas |
-| `apagao` | Escolher estado afetado; ninguém paga aluguel até o dono parar nele três vezes |
+| `apagao` | Escolher estado de um oponente; ninguém paga aluguel até o dono parar nele três vezes |
 
 Continuam sem definição adicional neste pedido: destino do pagamento/fonte do prêmio; construções após incêndio; comportamento sem alvo/sede; efeitos de passar pelo início na viagem; reaplicação de apagão e troca de dono. Não inventar essas regras no componente de arte. O contador do apagão deve vir do servidor e pode ser mostrado na apresentação da propriedade ou do tabuleiro, não há controle interativo dele na carta.
 

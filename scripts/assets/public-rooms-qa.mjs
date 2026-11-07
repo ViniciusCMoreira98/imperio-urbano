@@ -1,0 +1,44 @@
+import {createServer} from 'vite';
+import {chromium} from '@playwright/test';
+import {fileURLToPath} from 'node:url';
+import {mkdir,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const root=new URL('../../',import.meta.url),out=new URL('assets/3d/reviews/public-rooms/',root);await mkdir(out,{recursive:true});
+const server=await createServer({root:fileURLToPath(root),configFile:false,esbuild:{jsx:'automatic'},server:{host:'127.0.0.1',port:4192,strictPort:true,watch:{ignored:['**/assets/3d/reviews/**','**/dist/**']}},optimizeDeps:{include:['react','react-dom/client','@imperio/game-data']}});await server.listen();let browser;
+try{browser=await chromium.launch({headless:true});const page=await browser.newPage(),errors=[],failed=[],screens=[];page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
+for(const[width,height]of[[1280,720],[1024,768],[844,390],[667,375]]){
+ await page.setViewportSize({width,height});await page.goto('http://127.0.0.1:4192/scripts/assets/play-menu-preview/?view=online',{waitUntil:'networkidle'});
+ await page.addStyleTag({content:'.preview-feedback{display:none!important}'});
+ await page.locator('img').evaluateAll(images=>Promise.all(images.map(i=>i.decode())));
+ assert.equal(await page.locator('.om-options button').count(),3);assert.equal(await page.locator('.pm-modes,.pm-code').count(),0);
+ await page.screenshot({path:fileURLToPath(new URL(`online-${width}x${height}.png`,out))});
+ await page.getByRole('button',{name:'Criar sala Prepare uma nova partida',exact:false}).click();
+ await page.getByRole('heading',{name:'Criar sala online',exact:true}).first().waitFor();
+ assert.equal(await page.locator('.pm-create').count(),1);assert.equal(await page.locator('.pm-join,.pr-list').count(),0);
+ await page.getByRole('radio',{name:'Rápido',exact:true}).check();assert.equal(await page.evaluate(()=>window.playMenuQA.getMode()),'QUICK');
+ await page.getByRole('button',{name:'Criar sala online',exact:true}).click();assert.equal((await page.evaluate(()=>window.playMenuQA.getActions())).at(-1).mode,'QUICK');
+ assert.ok(await page.locator('.pm-create').evaluate(el=>el.scrollHeight<=el.clientHeight+1),'Create overflow '+width);
+ await page.screenshot({path:fileURLToPath(new URL(`create-${width}x${height}.png`,out))});
+ await page.getByRole('button',{name:'Voltar',exact:true}).click();
+ await page.getByRole('button',{name:'Salas Privadas',exact:false}).click();await page.getByRole('heading',{name:'Salas Privadas',exact:true}).waitFor();
+ assert.equal(await page.locator('.pm-create,.pr-list').count(),0);assert.ok(await page.getByRole('button',{name:'Entrar com código',exact:true}).isDisabled());
+ await page.getByLabel('Código do convite',{exact:true}).fill('br7k2p');assert.equal(await page.getByLabel('Código do convite',{exact:true}).inputValue(),'BR7K2P');
+ await page.getByRole('button',{name:'Entrar com código',exact:true}).click();assert.equal((await page.evaluate(()=>window.playMenuQA.getActions())).at(-1).code,'BR7K2P');
+ assert.ok(await page.locator('.pm-join').evaluate(el=>el.scrollHeight<=el.clientHeight+1),'Private overflow '+width);
+ await page.screenshot({path:fileURLToPath(new URL(`private-${width}x${height}.png`,out))});
+ await page.getByRole('button',{name:'Voltar',exact:true}).click();
+ await page.getByRole('button',{name:'Salas Públicas',exact:false}).click();await page.getByRole('heading',{name:'Salas públicas',exact:true}).waitFor();
+ assert.equal(await page.locator('.pr-room').count(),3);assert.ok(await page.getByRole('button',{name:'Entrar na sala Galera do Brasil',exact:true}).isDisabled());
+ const shell=await page.locator('.pr-shell').boundingBox();assert.ok(shell.y+shell.height<=height+1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.screenshot({path:fileURLToPath(new URL(`rooms-${width}x${height}.png`,out))});screens.push({width,height});
+ await page.getByRole('button',{name:'Entrar na sala Turma da Praia',exact:true}).click();assert.equal((await page.evaluate(()=>window.playMenuQA.getActions())).at(-1).code,'sala-1');
+ await page.getByRole('button',{name:'Voltar',exact:true}).click();assert.equal(await page.locator('h1').innerText(),'Jogar Online');
+}
+await page.getByRole('button',{name:'Salas Públicas',exact:false}).click();
+await page.evaluate(()=>window.playMenuQA.setRoomsState('empty'));await page.getByRole('heading',{name:'Nenhuma sala pública agora'}).waitFor();
+await page.getByRole('button',{name:'Atualizar salas',exact:true}).click();await page.locator('.pr-room').first().waitFor();
+await page.evaluate(()=>window.playMenuQA.setRoomsState('loading'));await page.getByText('Buscando salas públicas…',{exact:true}).waitFor();assert.ok(await page.getByRole('button',{name:'Atualizando…',exact:true}).isDisabled());
+await page.evaluate(()=>window.playMenuQA.setRoomsState('error'));await page.getByRole('alert').waitFor();
+await page.evaluate(()=>{window.playMenuQA.setRoomsState('list');window.playMenuQA.setJoiningRoom('sala-1');});await page.getByRole('button',{name:'Entrar na sala Turma da Praia',exact:true}).filter({hasText:'Entrando…'}).waitFor();for(const button of await page.locator('.pr-enter').all())assert.ok(await button.isDisabled());
+assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);await writeFile(new URL('report.json',out),JSON.stringify({screens,threeOnlineChoices:true,separateCreateAndPrivateScreens:true,createCallback:true,privateCodeNormalization:true,privateJoinCallback:true,buttonOpensList:true,joinCallback:true,fullRoomDisabled:true,refresh:true,empty:true,loading:true,error:true,pending:true,back:true,sampleRoomsOnly:true,noApiOrRealJoin:true,errors,failed},null,2)+'\n');console.log(JSON.stringify({screens:screens.length*4,states:5,errors:0}));
+}finally{await browser?.close();await server.close();}

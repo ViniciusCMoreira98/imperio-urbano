@@ -6,17 +6,7 @@
       "height": 1024
     },
     {
-      "view": "online",
-      "width": 1536,
-      "height": 1024
-    },
-    {
       "view": "lan",
-      "width": 1280,
-      "height": 720
-    },
-    {
-      "view": "online",
       "width": 1280,
       "height": 720
     },
@@ -26,27 +16,12 @@
       "height": 768
     },
     {
-      "view": "online",
-      "width": 1024,
-      "height": 768
-    },
-    {
       "view": "lan",
       "width": 844,
       "height": 390
     },
     {
-      "view": "online",
-      "width": 844,
-      "height": 390
-    },
-    {
       "view": "lan",
-      "width": 667,
-      "height": 375
-    },
-    {
-      "view": "online",
       "width": 667,
       "height": 375
     }
