@@ -65,7 +65,7 @@ class OlympicsTest {
 
         assertThat(result.events()).containsExactly(new OlympicsHostSelected("ana", "AC", 1, 2, FEE));
         assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AC", "ana", 2));
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - FEE);
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - FEE);
         assertThat(engine.rentFor(state, "AC")).isEqualTo(2 * AC.rent().base());
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
@@ -100,7 +100,7 @@ class OlympicsTest {
 
         run("ana", new RollDice(), 4, 5);
 
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - 3 * AC.rent().house3());
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - 3 * AC.rent().house3());
     }
 
     @Test
@@ -139,7 +139,7 @@ class OlympicsTest {
         run("ana", new SkipOlympics());
 
         assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AC", "ana", 2));
-        assertThat(state.player("ana").credits()).isEqualTo(1500);
+        assertThat(state.player("ana").credits()).isEqualTo(2500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 

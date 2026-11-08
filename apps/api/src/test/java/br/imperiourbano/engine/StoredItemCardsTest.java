@@ -78,7 +78,7 @@ class StoredItemCardsTest {
         assertThat(result.events()).contains(new PlayerMoved("ana", 4, REST_TILE, 0, true));
         assertThat(ana().position()).isEqualTo(REST_TILE);
         assertThat(ana().skipTurns()).isEqualTo(1);
-        assertThat(ana().credits()).isEqualTo(1500);
+        assertThat(ana().credits()).isEqualTo(2500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
@@ -182,8 +182,8 @@ class StoredItemCardsTest {
         assertThat(result.events()).contains(new RentWaived("ana", "bia", "AP", rent));
         assertThat(result.events()).noneMatch(e -> e instanceof RentPaid || e instanceof DebtIncurred);
         assertThat(ana().rentWaivers()).isZero();
-        assertThat(ana().credits()).isEqualTo(1500);
-        assertThat(state.player("bia").credits()).isEqualTo(1500);
+        assertThat(ana().credits()).isEqualTo(2500);
+        assertThat(state.player("bia").credits()).isEqualTo(2500);
     }
 
     @Test

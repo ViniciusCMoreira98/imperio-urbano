@@ -49,12 +49,9 @@ export function investedIn(definition: StateDefinition, property: PropertyState)
 }
 
 /** Quanto o banco paga (50%, D10): uma construção (casa ou hotel) e o estado com tudo o que tem. */
-export function saleRefunds(definition: StateDefinition, property: PropertyState): { building: number | null; state: number } {
-  const buildingCost = property.buildingLevel === HOTEL_LEVEL ? definition.hotelCost : definition.houseCost;
-  return {
-    building: property.buildingLevel > 0 ? Math.floor(buildingCost / 2) : null,
-    state: Math.floor((definition.price + investedIn(definition, property)) / 2),
-  };
+/** Quanto o banco paga pelo estado inteiro (terreno + construções) para pagar uma dívida: mesmo cálculo do servidor. */
+export function stateSaleValue(definition: StateDefinition, property: PropertyState): number {
+  return Math.floor(((definition.price + investedIn(definition, property)) * rules.debtSale.refundPercent) / 100);
 }
 
 /** Patrimônio (fim do Rápido e dos modos por tempo): saldo + preço + construções + aluguel atual de cada estado. */

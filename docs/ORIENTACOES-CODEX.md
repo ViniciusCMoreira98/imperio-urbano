@@ -1231,3 +1231,35 @@ ocupa ~1/3 dessa resolução: as letras ficavam serrilhadas. Em `board34/Board34
 (`LinearMipmapLinearFilter`) no atlas e na camada de aluguéis, com viés de -0,5 no `texture2D` do shader para
 não amaciar demais; em `camera/tabletopViewport.ts` o `tabletopDpr` passou a aceitar até 3 (celulares de
 DPR 3), mantendo o teto de 8,4 milhões de pixels. Se mexer no shader ou no atlas, preserve os mipmaps.
+
+**Aviso de venda para pagar dívida (08/11/2026):** regra nova do usuário. Com dívida maior que o saldo, o
+jogador toca nos próprios estados no tabuleiro (mesmo destaque dourado da escolha da sede) e um aviso no
+meio da tela soma quanto o banco paga (80% do terreno + construções, estado inteiro), mostra quanto ele deve
+e libera "Vender" só quando cobre. Componente: `apps/web/src/hud/DebtSalePrompt.tsx` (classes `debt-sale`,
+`debt-sale-numbers`, `debt-sale-list`, `debt-sale-total` para você estilizar); hoje usa o `hud-panel` comum
+com borda rosada. Peço a arte desse aviso no padrão dos outros modais (evolução da propriedade, cartas):
+cabeçalho, linha "Você deve a X / Seu saldo", lista dos estados marcados com o valor de cada um, total "Você
+recebe" em destaque e o status "Faltam R$ …" (vermelho) / "Paga a dívida e sobram R$ …" (verde). Precisa caber
+no celular deitado (~280–320 px de altura) sem tapar demais o tabuleiro, porque o jogador continua tocando nos
+estados enquanto o aviso está aberto. Botões: "Vender N estados" e "Falência".
+
+## Avisos rápidos da mesa (08/11/2026)
+
+`apps/web/src/hud/TableNotices.tsx` mostra, um de cada vez, três avisos (classes `table-notice` + `table-notice-<tipo>`):
+
+- `table-notice-rentWaiver`: alguém usou o Aluguel Zero (arte `aluguel-zero-v1.webp`), no meio da tela.
+- `table-notice-noFunds`: faltou saldo para comprar, construir, sediar ou viajar, no meio da tela (hoje com o emoji 💸; uma arte própria seria bem-vinda).
+- `table-notice-doubles`: dados iguais, no mesmo lugar dos outros; aparece quando os dados param.
+
+Todos fecham pelo × ou com um toque fora; sozinhos em 4,5 s (dados iguais em 2,5 s). Visual provisório em Tailwind; fique à vontade para dar o acabamento, mantendo textos, tempos e o fechar.
+
+## Engenharia na develop antes do seu merge (08/11/2026)
+
+O usuário pediu para publicar a engenharia sem esperar a `develop_arte_3d`. Ao trazer a develop para a sua branch, quatro arquivos mudaram dos dois lados, em trechos diferentes:
+
+- `apps/web/src/board/Pawn.tsx`: `snap()` e cada salto marcam `landed`/`passedStart` no `pawnStore` (o saldo e o fundo da Taxa só mudam quando o personagem pousa) e há o estilo `TRAVEL` (viagem do Aeroporto andando casa a casa, acelerada). Mantenha isso junto com a sua escala do boneco e o marcador da vez.
+- `apps/web/src/hud/PlayersPanel.tsx`: saldo mostrado = saldo oficial − valores segurados (`heldCredits` + `heldMoveCredits`); a vez vem de `useShownTurnPlayerId()`.
+- `apps/web/src/screens/GameScreen.tsx`: `useShownTaxPool()` no rótulo do fundo da Taxa e `<TableNotices>` depois do `BoardChoicePrompt`.
+- Este arquivo: só acréscimos no fim.
+
+Também saíram `hud/TileActions.tsx` e a gaveta de venda da `ActionBar` (a venda da dívida agora é `hud/DebtSalePrompt.tsx`, por estado inteiro). Se a sua branch mexe nesses pontos, siga a versão da develop.

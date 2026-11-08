@@ -14,6 +14,7 @@ public record RulesConfig(
         RestRules rest,
         NationalTravelRules nationalTravel,
         TaxRules tax,
+        DebtSaleRules debtSale,
         TurnTimers turnTimers,
         AbandonmentRules abandonment,
         EconomyRules economy,
@@ -59,6 +60,14 @@ public record RulesConfig(
 
     /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida com o banco. */
     public record TaxRules(int amount) {
+    }
+
+    /** Dívida sem saldo: vende estados inteiros (terreno + construções) ao banco por {@code refundPercent}%. */
+    public record DebtSaleRules(int refundPercent) {
+
+        public int refund(int value) {
+            return value * refundPercent / 100;
+        }
     }
 
     /**

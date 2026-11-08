@@ -179,15 +179,15 @@ class TurnAutomationTest {
     }
 
     @Test
-    void connectedPlayerInDebtSellsEverythingNeededWhenTimeRunsOut() throws InterruptedException {
-        // Ana tem SP com 2 casas e deve ao banco o saldo mais uma casa e pouco: precisa de duas vendas.
+    void connectedPlayerInDebtSellsWholeStatesWhenTimeRunsOut() throws InterruptedException {
+        // Ana tem SP com 2 casas e deve ao banco um pouco mais que o saldo: o estado inteiro sai a 80%.
         GameState before = state();
-        int houseRefund = catalog.state("SP").houseCost() / 2;
+        int stateRefund = (catalog.state("SP").price() + 2 * catalog.state("SP").houseCost()) * catalog.rules().debtSale().refundPercent() / 100;
         List<GameEvent> holdings = List.of(new GameEvent.PropertyPurchased(ana.playerId(), "SP", 0),
                 new GameEvent.HouseBuilt(ana.playerId(), "SP", 2, 0));
         GameState owning = applyAll(before, holdings);
         List<GameEvent> events = new ArrayList<>(holdings);
-        events.add(new GameEvent.DebtIncurred(ana.playerId(), null, owning.player(ana.playerId()).credits() + houseRefund + 1));
+        events.add(new GameEvent.DebtIncurred(ana.playerId(), null, owning.player(ana.playerId()).credits() + 1));
         store.append(gameId, before.version(), events, applyAll(before, events), null, null);
         long start = System.nanoTime();
         games.announce(gameId);
@@ -198,13 +198,13 @@ class TurnAutomationTest {
             Thread.sleep(50);
         }
 
-        // As duas vendas saem no mesmo prazo, sem esperar outro prazo a cada venda.
+        // A venda sai no prazo, sem esperar outro prazo.
         assertThat(Duration.ofNanos(System.nanoTime() - start)).isLessThan(Duration.ofMillis(2_500));
         List<GameEvent> log = store.loadEvents(gameId);
-        assertThat(log.stream().filter(e -> e.equals(new GameEvent.BuildingSold(ana.playerId(), "SP", houseRefund)))).hasSize(2);
+        assertThat(log).contains(new GameEvent.PropertySold(ana.playerId(), "SP", stateRefund));
         assertThat(log).anyMatch(e -> e instanceof GameEvent.DebtSettled settled && settled.debtorId().equals(ana.playerId()));
         assertThat(state().player(ana.playerId()).bankrupt()).isFalse();
-        assertThat(state().property("SP")).hasValueSatisfying(p -> assertThat(p.buildingLevel()).isZero());
+        assertThat(state().property("SP")).isEmpty();
     }
 
     private GameState applyAll(GameState state, List<GameEvent> events) {

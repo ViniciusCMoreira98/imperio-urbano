@@ -69,18 +69,28 @@ public final class CatalogValidator {
                 .forEach(id -> errors.add("Estado desconhecido: " + id));
 
         Set<String> groupIds = catalog.board().colorGroups().stream().map(ColorGroup::id).collect(Collectors.toSet());
-        Set<Integer> prices = new HashSet<>();
         for (StateDefinition s : catalog.states()) {
             if (!s.id().equals(s.abbreviation())) errors.add(s.id() + ": sigla diferente do id");
             if (!groupIds.contains(s.colorGroup())) errors.add(s.id() + ": grupo de cor inexistente " + s.colorGroup());
-            if (s.price() < 100 || s.price() > 500) errors.add(s.id() + ": preço fora de 100–500");
+            if (s.price() < 50 || s.price() > 500) errors.add(s.id() + ": preço fora de 50–500");
             if (!isStrictlyIncreasingPositive(s.rent().ladder())) {
                 errors.add(s.id() + ": aluguéis devem ser positivos e crescentes");
             }
             if (s.houseCost() <= 0 || s.hotelCost() <= 0) errors.add(s.id() + ": custos de construção inválidos");
-            prices.add(s.price());
         }
-        if (prices.size() != catalog.states().size()) errors.add("Preços de compra repetidos");
+        // Os preços nunca diminuem ao longo do percurso (vizinhos podem repetir): casa 1 a mais barata.
+        Map<String, Integer> priceOf = catalog.states().stream()
+                .collect(Collectors.toMap(StateDefinition::id, StateDefinition::price, (a, b) -> a));
+        int previous = 0;
+        for (TileDefinition tile : catalog.board().tiles()) {
+            if (tile.type() != TileType.PROPERTY) continue;
+            int price = priceOf.getOrDefault(String.valueOf(tile.stateId()), 0);
+            if (price < previous) {
+                errors.add("Preços não podem diminuir ao longo do tabuleiro");
+                break;
+            }
+            previous = price;
+        }
     }
 
     private static void validateBoard(BoardDefinition board, List<String> errors) {

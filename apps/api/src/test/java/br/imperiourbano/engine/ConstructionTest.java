@@ -61,7 +61,7 @@ class ConstructionTest {
                 new PropertyPurchased("ana", "AC", AC.price()),
                 new HouseBuilt("ana", "AC", 3, 3 * AC.houseCost()));
         assertThat(acre().buildingLevel()).isEqualTo(3);
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - AC.price() - 3 * AC.houseCost());
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - AC.price() - 3 * AC.houseCost());
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
@@ -129,7 +129,7 @@ class ConstructionTest {
 
         assertThat(result.events()).containsExactly(new HotelBuilt("ana", "AC", AC.hotelCost()));
         assertThat(acre().buildingLevel()).isEqualTo(PropertyState.HOTEL_LEVEL);
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - AC.hotelCost());
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - AC.hotelCost());
         assertThat(engine.rentFor(state, "AC")).isEqualTo(AC.rent().hotel());
     }
 

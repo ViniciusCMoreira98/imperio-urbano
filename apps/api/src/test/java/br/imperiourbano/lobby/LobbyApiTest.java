@@ -185,7 +185,7 @@ class LobbyApiTest {
 
         GameState state = store.loadSnapshot(room.id()).orElseThrow();
         assertThat(state.players()).extracting(p -> p.nickname()).containsExactly("Ana", "Bia");
-        assertThat(state.players()).allSatisfy(p -> assertThat(p.credits()).isEqualTo(1500));
+        assertThat(state.players()).allSatisfy(p -> assertThat(p.credits()).isEqualTo(2500));
         assertThat(state.version()).isEqualTo(1);
         assertThat(join(login("Atrasado"), room.code())).hasStatus(HttpStatus.CONFLICT);
     }

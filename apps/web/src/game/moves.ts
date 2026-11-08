@@ -12,8 +12,8 @@ export interface PawnMove {
   playerId: string;
   from: number;
   to: number;
-  /** walk: um salto por casa; jump: salto único (Descanso, viagem, recuo, avanço longo). */
-  kind: 'walk' | 'jump';
+  /** walk: um salto por casa; travel: viagem do Aeroporto, casa a casa e acelerada; jump: salto único (Descanso, recuo, avanço longo). */
+  kind: 'walk' | 'travel' | 'jump';
   /** Versão do lance (DICE_ROLLED) que gerou o movimento; o peão espera esses dados pararem. Null: sem lance. */
   rollId: number | null;
   /** Versão da carta de evento (EVENT_CARD_DRAWN) que gerou o movimento; o peão espera a carta sumir. Null: sem carta. */
@@ -37,11 +37,13 @@ export function movesFromEvents(events: DomainEvent[], firstVersion: number, til
     const steps = (event.to - event.from + tileCount) % tileCount;
     const flew = traveling.delete(event.playerId);
     const walk = !event.sentToRest && !flew && steps > 0 && steps <= MAX_WALK_STEPS;
+    // Viagem do Aeroporto: anda casa a casa (passa pelo Início e recebe o bônus), só que mais rápido.
+    const travel = flew && !event.sentToRest && steps > 0;
     const rollId = rolled.get(event.playerId) ?? null;
     rolled.delete(event.playerId);
     const cardId = carded.get(event.playerId) ?? null;
     carded.delete(event.playerId);
-    moves.push({ id: firstVersion + i, playerId: event.playerId, from: event.from, to: event.to, kind: walk ? 'walk' : 'jump', rollId, cardId });
+    moves.push({ id: firstVersion + i, playerId: event.playerId, from: event.from, to: event.to, kind: travel ? 'travel' : walk ? 'walk' : 'jump', rollId, cardId });
   });
   return moves;
 }

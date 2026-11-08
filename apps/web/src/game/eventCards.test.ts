@@ -20,16 +20,17 @@ const choosing = (cardId: string): GameSnapshot =>
   }) as GameSnapshot;
 
 describe('cartas de evento no cliente', () => {
-  it('guarda o dinheiro que vem depois da carta até ela sumir', () => {
+  it('guarda o dinheiro da carta até ela sumir; o do movimento espera o pouso (heldMoney)', () => {
     const events: DomainEvent[] = [
       { type: 'PLAYER_MOVED', playerId: 'ana', from: 0, to: 4, startBonus: 0, sentToRest: false },
       { type: 'EVENT_CARD_DRAWN', playerId: 'ana', cardId: 'visita-olimpica' },
+      { type: 'CREDITS_FROM_BANK', playerId: 'ana', amount: 50 },
       { type: 'PLAYER_MOVED', playerId: 'ana', from: 4, to: 2, startBonus: 200, sentToRest: false },
       { type: 'RENT_PAID', fromId: 'ana', toId: 'bia', stateId: 'AM', amount: 120 },
     ];
     const cards = cardsFromEvents(events, 10);
-    expect(cards).toEqual([{ id: 11, playerId: 'ana', cardId: 'visita-olimpica', withoutEffect: false, credits: { ana: 80, bia: 120 } }]);
-    expect(heldCredits(cards, 10)).toEqual({ ana: 80, bia: 120 });
+    expect(cards).toEqual([{ id: 11, playerId: 'ana', cardId: 'visita-olimpica', withoutEffect: false, credits: { ana: 50 } }]);
+    expect(heldCredits(cards, 10)).toEqual({ ana: 50 });
     expect(heldCredits(cards, 11)).toEqual({});
   });
 

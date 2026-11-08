@@ -8,6 +8,7 @@ import { useTableBusy } from '../store/tableBusy';
 import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 import { Countdown } from './ActionBar';
+import { DebtSalePrompt } from './DebtSalePrompt';
 
 export function BoardChoicePrompt({ myId }: { myId: string }) {
   const snapshot = useGameStore((s) => s.snapshot);
@@ -28,6 +29,7 @@ export function BoardChoicePrompt({ myId }: { myId: string }) {
   }, [kind, clearSelection]);
 
   if (!choice || tableBusy) return null;
+  if (choice.kind === 'sale') return <DebtSalePrompt myId={myId} />;
   const action = choiceAction(choice, selected);
   const invalid = selected !== null && !action;
   const act = (command: Parameters<typeof send>[0]) => {

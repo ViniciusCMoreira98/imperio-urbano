@@ -65,7 +65,7 @@ class PurchaseAndRentTest {
         GameEngine.Result result = run("ana", new BuyProperty(0));
 
         assertThat(result.events()).containsExactly(new PropertyPurchased("ana", "AC", AC.price()));
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - AC.price());
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - AC.price());
         assertThat(state.property("AC")).hasValueSatisfying(p -> {
             assertThat(p.ownerId()).isEqualTo("ana");
             assertThat(p.buildingLevel()).isZero();
@@ -80,7 +80,7 @@ class PurchaseAndRentTest {
         run("ana", new DeclinePurchase());
 
         assertThat(state.property("AC")).isEmpty();
-        assertThat(state.player("ana").credits()).isEqualTo(1500);
+        assertThat(state.player("ana").credits()).isEqualTo(2500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
@@ -111,8 +111,8 @@ class PurchaseAndRentTest {
 
         int rent = AC.rent().base();
         assertThat(result.events()).last().isEqualTo(new RentPaid("bia", "ana", "AC", rent));
-        assertThat(state.player("bia").credits()).isEqualTo(1500 - rent);
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - AC.price() + rent);
+        assertThat(state.player("bia").credits()).isEqualTo(2500 - rent);
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - AC.price() + rent);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
@@ -122,7 +122,7 @@ class PurchaseAndRentTest {
 
         run("ana", new RollDice(), 4, 5);
 
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - AC.rent().house3());
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - AC.rent().house3());
     }
 
     @Test
@@ -132,7 +132,7 @@ class PurchaseAndRentTest {
         GameEngine.Result result = run("ana", new RollDice(), 4, 5);
 
         assertThat(result.events()).noneMatch(e -> e instanceof RentPaid);
-        assertThat(state.player("ana").credits()).isEqualTo(1500);
+        assertThat(state.player("ana").credits()).isEqualTo(2500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_BUILD);
     }
 
@@ -156,13 +156,13 @@ class PurchaseAndRentTest {
         RulesConfig doubled = new RulesConfig(rules.version(), rules.players(), rules.startingCredits(),
                 rules.passStartBonus(), rules.dice(),
                 new RulesConfig.ConstructionRules(4, 3, false, 2),
-                rules.olympics(), rules.rest(), rules.nationalTravel(), rules.tax(), rules.turnTimers(), rules.abandonment(), rules.economy(), rules.modes());
+                rules.olympics(), rules.rest(), rules.nationalTravel(), rules.tax(), rules.debtSale(), rules.turnTimers(), rules.abandonment(), rules.economy(), rules.modes());
         engine = new GameEngine(new Catalog(CATALOG.states(), CATALOG.board(), doubled, CATALOG.eventCards()));
         giveTo("bia", "AC", "RR", "AP");
 
         run("ana", new RollDice(), 4, 5);
 
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - 2 * AC.rent().base());
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - 2 * AC.rent().base());
     }
 
     @Test

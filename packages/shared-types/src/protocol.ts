@@ -16,8 +16,8 @@ export type Command =
   | { type: 'CHOOSE_TRAVEL'; tileIndex: number }
   /** Carta de evento que pede um estado (Incêndio, Apagão, Escolha da sede). */
   | { type: 'CHOOSE_EVENT_TARGET'; stateId: StateId }
-  | { type: 'SELL_BUILDING'; stateId: StateId }
-  | { type: 'SELL_PROPERTY'; stateId: StateId }
+  /** Dívida sem saldo: vende estados inteiros (terreno + construções) de uma vez; só se cobrir a dívida. */
+  | { type: 'SELL_STATES'; stateIds: StateId[] }
   | { type: 'DECLARE_BANKRUPTCY' }
   /** Passe Livre: no próprio turno, no Descanso e antes de rolar. */
   | { type: 'USE_REST_PASS' }
