@@ -17,7 +17,7 @@ import {
 } from '../game/propertyDecision';
 import { playerOf } from '../game/rules';
 import { PAWN_COLORS } from '../game/presentation';
-import { AvatarPortrait } from './AvatarPortrait';
+import { PlayerPortrait } from './AvatarPortrait';
 import { formatCredits } from '../property-card/tileInfo';
 import { PropertyEvolutionPanel } from '../property-evolution/PropertyEvolutionPanel';
 import { useGameStore } from '../store/gameStore';
@@ -126,7 +126,7 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
             stateCode={definition.abbreviation}
             stateName={definition.name}
             mode={decision.mode}
-            owner={owner ? {name: `${owner.nickname}${owner.id === myId ? ' (você)' : ''}`,color: PAWN_COLORS[owner.pawnColor].hex,portrait: <AvatarPortrait avatarId={owner.avatarId}/>} : null}
+            owner={owner ? {name: `${owner.nickname}${owner.id === myId ? ' (você)' : ''}`,color: PAWN_COLORS[owner.pawnColor].hex,portrait: <PlayerPortrait avatarId={owner.avatarId} photoUrl={owner.photoUrl}/>} : null}
             stages={decision.stages}
             olympics={olympics ? {multiplier: olympics.multiplier, edition: olympics.edition, label: `Sede das Olimpíadas ×${olympics.multiplier}`} : undefined}
             selectedLevel={selected}

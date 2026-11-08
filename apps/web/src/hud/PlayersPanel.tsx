@@ -1,5 +1,5 @@
 import { PAWN_COLORS } from '../game/presentation';
-import { AvatarPortrait, LeaderCrown } from './AvatarPortrait';
+import { LeaderCrown, PlayerPortrait } from './AvatarPortrait';
 import { HOTEL_LEVEL, leaders, netWorth } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { heldCredits } from '../game/eventCards';
@@ -77,7 +77,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
                 style={{ background: `${color}55`, ['--tw-ring-color' as string]: color }}
                 aria-hidden
               >
-                <AvatarPortrait avatarId={p.avatarId}/>
+                <PlayerPortrait avatarId={p.avatarId} photoUrl={p.photoUrl}/>
               </span>
               <span className="hud-player-rank absolute -bottom-1 -left-1 hidden h-5 w-5 items-center justify-center rounded-full border border-amber-200 bg-indigo-900 text-[10px] font-black text-amber-200 sm:flex">
                 {index + 1}º

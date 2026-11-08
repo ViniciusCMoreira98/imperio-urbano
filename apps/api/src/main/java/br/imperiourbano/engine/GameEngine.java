@@ -37,6 +37,7 @@ import br.imperiourbano.engine.GameEvent.DiceRolled;
 import br.imperiourbano.engine.GameEvent.GameAbandoned;
 import br.imperiourbano.engine.GameEvent.TimeLimitReached;
 import br.imperiourbano.engine.GameEvent.EventCardDrawn;
+import br.imperiourbano.engine.GameEvent.EventCardSkipped;
 import br.imperiourbano.engine.GameEvent.EventCardWithoutEffect;
 import br.imperiourbano.engine.GameEvent.EventTargetRequested;
 import br.imperiourbano.engine.GameEvent.EventTargetSkipped;
@@ -142,7 +143,9 @@ public final class GameEngine {
         if (new HashSet<>(turnOrder.stream().map(StartingPlayer::id).toList()).size() != count) {
             throw new RuleViolationException("Jogadores repetidos na partida.");
         }
-        List<String> deck = new ArrayList<>(catalog.eventCards().stream().map(EventCard::id).toList());
+        // Cada carta entra no baralho tantas vezes quanto suas cópias (as mais raras têm menos).
+        List<String> deck = new ArrayList<>(catalog.eventCards().stream()
+                .flatMap(c -> java.util.Collections.nCopies(c.copies(), c.id()).stream()).toList());
         Collections.shuffle(deck, shuffler);
         Integer minutes = rules.modes().get(mode).timeLimitMinutes();
         Long endsAt = minutes == null ? null : now.plus(java.time.Duration.ofMinutes(minutes)).toEpochMilli();
@@ -250,6 +253,7 @@ public final class GameEngine {
                     .withPendingDebt(new Debt(e.debtorId(), e.creditorId(), e.amount(), e.toTaxPool()))
                     .withPhase(TurnPhase.AWAITING_DEBT_RESOLUTION);
             case EventCardDrawn e -> state.withEventDeck(state.eventDeck().advanced());
+            case EventCardSkipped e -> state.withEventDeck(state.eventDeck().advanced());
             case EventTargetRequested e -> state
                     .withEventDeck(state.eventDeck().withPending(e.cardId()))
                     .withPhase(TurnPhase.AWAITING_EVENT_TARGET);
@@ -493,6 +497,12 @@ public final class GameEngine {
     private void drawEventCard(Decision d, int depth) {
         PlayerState player = d.state.currentPlayer();
         EventCard card = topCard(d.state.eventDeck());
+        // Passe Livre e Aluguel Zero não acumulam: quem já tem um guardado só volta a tirar depois de usar.
+        // A carta é pulada e vale a próxima (o laço para no tamanho do baralho, se só houvesse itens).
+        for (int skipped = 0; alreadyHolds(player, card) && skipped < d.state.eventDeck().order().size(); skipped++) {
+            d.emit(new EventCardSkipped(player.id(), card.id()));
+            card = topCard(d.state.eventDeck());
+        }
         d.emit(new EventCardDrawn(player.id(), card.id()));
         CardEffect effect = card.effect();
         switch (effect.type()) {
@@ -519,6 +529,14 @@ public final class GameEngine {
             case GRANT_REST_PASS -> d.emit(new RestPassGranted(player.id()));
             case GRANT_RENT_WAIVER -> d.emit(new RentWaiverGranted(player.id()));
         }
+    }
+
+    private static boolean alreadyHolds(PlayerState player, EventCard card) {
+        return switch (card.effect().type()) {
+            case GRANT_REST_PASS -> player.restPasses() > 0;
+            case GRANT_RENT_WAIVER -> player.rentWaivers() > 0;
+            default -> false;
+        };
     }
 
     /**

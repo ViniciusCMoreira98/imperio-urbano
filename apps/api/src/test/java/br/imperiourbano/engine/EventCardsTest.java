@@ -82,12 +82,25 @@ class EventCardsTest {
     }
 
     @Test
-    void startShufflesTheWholeDeckOnce() {
+    void startShufflesEveryCopyOfEveryCardOnce() {
         GameStarted started = (GameStarted) log.getFirst();
 
-        assertThat(started.eventDeck())
-                .containsExactlyInAnyOrderElementsOf(CATALOG.eventCards().stream().map(EventCard::id).toList());
+        assertThat(started.eventDeck()).containsExactlyInAnyOrderElementsOf(CATALOG.eventCards().stream()
+                .flatMap(c -> java.util.Collections.nCopies(c.copies(), c.id()).stream()).toList());
         assertThat(state.eventDeck().next()).isZero();
+    }
+
+    @Test
+    void rentWaiverIsSomewhatRarerThanTheOtherCards() {
+        List<String> deck = ((GameStarted) log.getFirst()).eventDeck();
+        long rentWaivers = deck.stream().filter("aluguel-zero"::equals).count();
+
+        assertThat(rentWaivers).isEqualTo(2);
+        for (EventCard card : CATALOG.eventCards()) {
+            if (!card.id().equals("aluguel-zero")) {
+                assertThat(deck.stream().filter(card.id()::equals).count()).as(card.id()).isEqualTo(3);
+            }
+        }
     }
 
     @Test

@@ -1,5 +1,11 @@
 # Orientações e pendências para o Claude Code
 
+## Publicação dos controles e da moldura olímpica (08/11/2026)
+
+Commit de arte `9ea5f1e`: painéis de entrada/conta, controles compactos de configurações e ações secundárias, exceções aprovadas do menu preservadas, moldura olímpica v2 e respectivos assets/prévias. Integrada a develop até `ca9c0da` antes da publicação. Conflito em `SettingsDialog.tsx` resolvido preservando `useAccountSync` e `photoUrl` da engenharia, junto com os novos estilos e ocultação do bloco Google sem Client ID. Prévia controlada atualizada com campo `photoUrl` nulo para corresponder ao contrato da API.
+
+Validação após integração: 174 testes e build aprovados. As mudanças de produção, cartas guardadas, foto Google e prazo de sete segundos vindas da develop foram preservadas. Os pedidos novos de arte da gaveta permanecem nas orientações abaixo, para a próxima tarefa; esta publicação não os implementa.
+
 ## Moldura olímpica v2 integrada — 07/11/2026
 
 Após aprovação do usuário, `board/OlympicHost.tsx` passou a renderizar a moldura com os cinco anéis no tabuleiro de 34 casas. `olympicFrame.ts` projeta a arte no painel real, com divisão das barras para preservar anéis/cantos nos estados horizontais. Um mesh estático por sede, textura compartilhada de 41 KB, centro transparente, sem interceptar cliques; conserva o relevo anterior como fallback do tabuleiro de 33 casas. `Pieces.tsx` e `snapshot.olympics.hostStateId` continuam controlando a sede, sem mudanças de regras, aluguel, câmera, modelos ou áreas dos personagens.

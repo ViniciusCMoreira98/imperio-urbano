@@ -16,6 +16,7 @@ export interface GoogleSignIn {
   token: string;
   outcome: 'LINKED' | 'SIGNED_IN' | 'CREATED';
   email: string | null;
+  photoUrl: string | null;
 }
 
 export interface Character {
@@ -57,7 +58,7 @@ export async function request<T>(method: string, path: string, token: string | n
 
 export const api = {
   createSession: (nickname: string) => request<GuestSession>('POST', '/sessions', null, { nickname }),
-  me: (token: string) => request<{ playerId: string; nickname: string; google: boolean; email: string | null }>('GET', '/sessions/me', token),
+  me: (token: string) => request<{ playerId: string; nickname: string; google: boolean; email: string | null; photoUrl: string | null }>('GET', '/sessions/me', token),
   authConfig: () => request<{ googleClientId: string | null }>('GET', '/sessions/config', null),
   /** Com o token do convidado, a conta Google nova fica ligada a ele; sem token, cria ou recupera a conta. */
   googleSignIn: (credential: string, token: string | null) =>

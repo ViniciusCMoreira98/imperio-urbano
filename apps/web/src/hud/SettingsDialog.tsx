@@ -18,6 +18,7 @@ import { playSound } from '../audio/audio';
 import { useAudioStore } from '../audio/audioStore';
 import { useAppStore } from '../store/appStore';
 import { GoogleButton, googleClientId } from '../auth/GoogleButton';
+import { useAccountSync } from '../auth/useAccountSync';
 import { api, ApiError, type GoogleSignIn } from '../net/api';
 
 type Tab = 'sound' | 'account';
@@ -202,26 +203,14 @@ function AccountTab({ onClose }: { onClose: () => void }) {
     void googleClientId().then(id => { if (alive) setGoogleEnabled(!!id); });
     return () => { alive = false; };
   }, [session?.google]);
-  // Sessões salvas antes do login com Google não sabem se têm conta ligada: o servidor confirma.
-  useEffect(() => {
-    if (!session) return;
-    let alive = true;
-    api.me(session.token).then((me) => {
-      if (alive && (me.google !== !!session.google || me.email !== (session.email ?? null))) {
-        setSession({ ...session, google: me.google, email: me.email });
-      }
-    }, () => undefined);
-    return () => {
-      alive = false;
-    };
-  }, [session, setSession]);
+  useAccountSync();
 
   async function linkGoogle(credential: string) {
     if (!session) return;
     setNotice(null);
     try {
       const result = await api.googleSignIn(credential, session.token);
-      setSession({ playerId: result.playerId, nickname: result.nickname, token: result.token, google: true, email: result.email });
+      setSession({ playerId: result.playerId, nickname: result.nickname, token: result.token, google: true, email: result.email, photoUrl: result.photoUrl });
       setNotice(GOOGLE_OUTCOME[result.outcome]);
     } catch (e) {
       setNotice(e instanceof ApiError ? e.message : 'Não foi possível entrar com Google.');

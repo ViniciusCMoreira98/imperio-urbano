@@ -83,3 +83,5 @@ Dois navegadores criam a sala, entram pelo código, iniciam a partida e jogam um
 11. [Contratos entre engenharia e arte 3D](docs/11-contratos-claude-codex.md)
 12. [Primeiro personagem Meshy no manifesto](docs/12-integracao-meshy-manifesto.md)
 13. [Luana: pose de repouso com braços baixos](docs/13-luana-pose-repouso.md)
+14. [Login com Google](docs/14-login-google.md)
+15. [Publicação no navegador (pacote de produção e hospedagem)](docs/15-publicacao-navegador.md)

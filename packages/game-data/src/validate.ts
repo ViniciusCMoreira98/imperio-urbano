@@ -91,6 +91,9 @@ export function validateEventCards(cards: EventCard[], board: BoardDefinition): 
     if (ids.has(card.id)) errors.push(`Carta duplicada: ${card.id}`);
     ids.add(card.id);
     if (!card.title || !card.text) errors.push(`${card.id}: título e texto são obrigatórios`);
+    if (card.copies !== undefined && !(Number.isInteger(card.copies) && card.copies > 0)) {
+      errors.push(`${card.id}: cópias devem ser um inteiro positivo`);
+    }
     const e = card.effect;
     switch (e.type) {
       case 'GAIN':

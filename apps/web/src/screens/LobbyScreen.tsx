@@ -3,7 +3,7 @@ import type { AvatarId, LobbyView, PawnColor } from '@imperio/shared-types';
 import { AvatarPreview } from '../avatars/AvatarPreview';
 import { modeName } from '../game/modes';
 import { AVATARS, PAWN_COLORS } from '../game/presentation';
-import { AvatarPortrait } from '../hud/AvatarPortrait';
+import { AvatarPortrait, PlayerPortrait } from '../hud/AvatarPortrait';
 import crown from '../main-menu/art/crown-v1.svg';
 import playersIcon from '../main-menu/art/players-v1.svg';
 import { api, ApiError } from '../net/api';
@@ -176,7 +176,7 @@ export function LobbyScreen() {
                   <li key={p.playerId} className={`lb-seat${mine ? ' lb-mine' : ''}`}>
                     {host && <img className="lb-host" src={crown} alt="Anfitrião" title="Anfitrião" />}
                     <span className="lb-portrait" style={{ borderColor: PAWN_COLORS[p.pawnColor].hex }}>
-                      <AvatarPortrait avatarId={p.avatarId} />
+                      <PlayerPortrait avatarId={p.avatarId} photoUrl={p.photoUrl} />
                     </span>
                     <strong className="lb-name">{p.nickname}</strong>
                     <span className="lb-you">{mine ? '(você)' : ' '}</span>

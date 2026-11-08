@@ -14,7 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * API sem estado: cada requisição traz o token do convidado. Sem cookies de sessão, então o CSRF não se aplica.
- * Abertos: criar sessão e a página de erro; todo o resto exige jogador autenticado.
+ * Abertos: criar sessão, configuração do login, saúde, página de erro e o site estático; o resto de
+ * {@code /api} exige jogador autenticado.
  */
 @Configuration
 class SecurityConfig {
@@ -31,9 +32,12 @@ class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/sessions", "/api/sessions/google", "/api/sessions/logout").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/sessions/config").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/actuator/health", "/actuator/health/**").permitAll()
                         // WebSocket autentica no handshake (GameHandshakeInterceptor).
                         .requestMatchers("/ws/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/**", "/actuator/**").authenticated()
+                        // O resto é o site publicado junto (index.html e arquivos estáticos), aberto.
+                        .anyRequest().permitAll())
                 .exceptionHandling(errors -> errors.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .addFilterBefore(new GuestTokenFilter(sessions), UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -1,5 +1,5 @@
 import { PAWN_COLORS } from '../game/presentation';
-import { AvatarPortrait } from './AvatarPortrait';
+import { PlayerPortrait } from './AvatarPortrait';
 import { useGameStore } from '../store/gameStore';
 
 /** Retrato e vez integrados à barra de ação; o rótulo acessível preserva o contrato da engenharia. */
@@ -16,7 +16,7 @@ export function TurnBadge({ myId }: { myId: string }) {
         style={{ background: `${color}55`, ['--tw-ring-color' as string]: color }}
         aria-hidden
       >
-        <AvatarPortrait avatarId={current.avatarId}/>
+        <PlayerPortrait avatarId={current.avatarId} photoUrl={current.photoUrl}/>
       </span>
       <div className="leading-tight">
         <p className="text-xs text-white/80">{current.id===myId?'Jogando agora':'Vez de'}</p>

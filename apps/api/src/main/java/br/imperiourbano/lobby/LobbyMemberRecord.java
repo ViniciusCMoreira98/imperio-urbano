@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import org.hibernate.annotations.Formula;
 import java.time.Instant;
 
 @Entity
@@ -44,6 +45,10 @@ class LobbyMemberRecord {
 
     @Column(name = "joined_at", nullable = false)
     private Instant joinedAt;
+
+    /** Foto do Google do jogador (só leitura; nula para convidado). */
+    @Formula("(select g.photo_url from guest_sessions g where g.player_id = player_id)")
+    private String photoUrl;
 
     protected LobbyMemberRecord() {
     }
@@ -93,5 +98,9 @@ class LobbyMemberRecord {
 
     boolean ready() {
         return ready;
+    }
+
+    String photoUrl() {
+        return photoUrl;
     }
 }

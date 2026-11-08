@@ -11,6 +11,8 @@ import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.RollDice;
 import br.imperiourbano.engine.GameCommand.UseRestPass;
 import br.imperiourbano.engine.GameEvent.DebtIncurred;
+import br.imperiourbano.engine.GameEvent.EventCardDrawn;
+import br.imperiourbano.engine.GameEvent.EventCardSkipped;
 import br.imperiourbano.engine.GameEvent.GameStarted;
 import br.imperiourbano.engine.GameEvent.PlayerMoved;
 import br.imperiourbano.engine.GameEvent.RentPaid;
@@ -230,6 +232,81 @@ class StoredItemCardsTest {
         GameEngine.Result second = run("ana", new RollDice(), 1, 2);
 
         assertThat(second.events()).anyMatch(e -> e instanceof RentPaid);
+    }
+
+    // Não acumulam (07/11/2026): quem já tem o item só volta a tirar a carta depois de usar.
+
+    @Test
+    void holderOfARestPassSkipsTheCardAndDrawsTheNextOne() {
+        state = state.updatePlayer("ana", p -> p.withRestPasses(1));
+        state = state.withEventDeck(new EventDeck(List.of("passe-livre", "aluguel-zero"), 0));
+
+        GameEngine.Result result = run("ana", new RollDice(), 1, 3);
+
+        assertThat(result.events()).contains(new EventCardSkipped("ana", "passe-livre"), new EventCardDrawn("ana", "aluguel-zero"));
+        assertThat(result.events()).doesNotContain(new EventCardDrawn("ana", "passe-livre"));
+        assertThat(ana().restPasses()).isEqualTo(1);
+        assertThat(ana().rentWaivers()).isEqualTo(1);
+    }
+
+    @Test
+    void holderOfARentWaiverSkipsTheCard() {
+        state = state.updatePlayer("ana", p -> p.withRentWaivers(1));
+        state = state.withEventDeck(new EventDeck(List.of("aluguel-zero", "passe-livre"), 0));
+
+        run("ana", new RollDice(), 1, 3);
+
+        assertThat(ana().rentWaivers()).isEqualTo(1);
+        assertThat(ana().restPasses()).isEqualTo(1);
+    }
+
+    @Test
+    void holderOfBothItemsSkipsBothAndGetsTheNextCard() {
+        state = state.updatePlayer("ana", p -> p.withRestPasses(1).withRentWaivers(1));
+        state = state.withEventDeck(new EventDeck(List.of("passe-livre", "aluguel-zero", "descanso-merecido"), 0));
+
+        GameEngine.Result result = run("ana", new RollDice(), 1, 3);
+
+        assertThat(result.events()).contains(new EventCardDrawn("ana", "descanso-merecido"));
+        assertThat(ana().position()).isEqualTo(REST_TILE);
+        assertThat(ana().restPasses()).isEqualTo(1);
+        assertThat(ana().rentWaivers()).isEqualTo(1);
+    }
+
+    @Test
+    void anotherPlayerStillGetsTheCard() {
+        state = state.updatePlayer("bia", p -> p.withRestPasses(1));
+
+        anaDraws("passe-livre");
+
+        assertThat(ana().restPasses()).isEqualTo(1);
+    }
+
+    @Test
+    void afterUsingThePassTheCardCanBeDrawnAgain() {
+        anaAtRest(1);
+        run("ana", new UseRestPass());
+        state = state.updatePlayer("ana", p -> p.withPosition(0));
+
+        anaDraws("passe-livre");
+
+        assertThat(ana().restPasses()).isEqualTo(1);
+    }
+
+    @Test
+    void replayReproducesSkippedCards() {
+        state = state.updatePlayer("ana", p -> p.withRentWaivers(1));
+        state = state.withEventDeck(new EventDeck(List.of("aluguel-zero", "passe-livre"), 0));
+        GameState before = state;
+        GameEngine.Result result = run("ana", new RollDice(), 1, 3);
+
+        // O baralho anda duas posições (pulada + revelada), também ao reaplicar os eventos.
+        GameState replayed = before;
+        for (GameEvent event : result.events()) replayed = engine.apply(replayed, event);
+        assertThat(state.eventDeck().next()).isEqualTo(0);
+        assertThat(replayed.eventDeck().next()).isEqualTo(state.eventDeck().next());
+        assertThat(replayed.player("ana").restPasses()).isEqualTo(1);
+        assertThat(replayed.player("ana").rentWaivers()).isEqualTo(1);
     }
 
     @Test

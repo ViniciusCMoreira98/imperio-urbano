@@ -6,6 +6,7 @@ import { BoardChoicePrompt } from '../hud/BoardChoicePrompt';
 import { CardReveal } from '../hud/CardReveal';
 import { DevDicePanel } from '../hud/DevDicePanel';
 import { EventLog } from '../hud/EventLog';
+import { ItemDrawer } from '../hud/ItemTray';
 import { GameOverScreen } from '../hud/GameOverScreen';
 import { PlayersPanel } from '../hud/PlayersPanel';
 import { PropertyDecisionDialog } from '../hud/PropertyDecisionDialog';
@@ -87,7 +88,10 @@ export function GameScreen() {
             <aside className="game-hud-property absolute inset-x-2 bottom-20 max-h-[45%] overflow-y-auto">
               <PropertyPanel myId={session.playerId} />
             </aside>
-            <aside className="game-hud-history"><EventLog /></aside>
+            <aside className="game-hud-history">
+              <ItemDrawer myId={session.playerId} />
+              <EventLog />
+            </aside>
             <footer ref={actionsRef} className="game-hud-actions pointer-events-none absolute inset-x-2 bottom-2 flex justify-center sm:bottom-3">
               <div className="pointer-events-auto w-full sm:w-auto">
                 <ActionBar myId={session.playerId} />

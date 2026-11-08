@@ -61,6 +61,8 @@ export type DomainEvent =
   | { type: 'OLYMPICS_HOST_SELECTED'; playerId: string; stateId: StateId; edition: number; multiplier: number; fee: number }
   | { type: 'OLYMPICS_SKIPPED'; playerId: string }
   | { type: 'EVENT_CARD_DRAWN'; playerId: string; cardId: string }
+  /** Item que o jogador já tem guardado (não acumula): pulado sem revelar; vale a próxima carta. */
+  | { type: 'EVENT_CARD_SKIPPED'; playerId: string; cardId: string }
   /** A carta pede um estado: o jogador escolhe no tabuleiro. */
   | { type: 'EVENT_TARGET_REQUESTED'; playerId: string; cardId: string }
   /** Sem alvo agora (ninguém para atingir, sem sede): a carta fica sem efeito. */

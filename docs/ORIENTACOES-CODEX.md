@@ -1,5 +1,11 @@
 # Orientações e pendências para o Codex
 
+## Publicação dos controles e da moldura olímpica (08/11/2026)
+
+Commit de arte `9ea5f1e`: painéis de entrada/conta, controles compactos de configurações e ações secundárias, exceções aprovadas do menu preservadas, moldura olímpica v2 e respectivos assets/prévias. Integrada a develop até `ca9c0da` antes da publicação. Conflito em `SettingsDialog.tsx` resolvido preservando `useAccountSync` e `photoUrl` da engenharia, junto com os novos estilos e ocultação do bloco Google sem Client ID. Prévia controlada atualizada com campo `photoUrl` nulo para corresponder ao contrato da API.
+
+Validação após integração: 174 testes e build aprovados. As mudanças de produção, cartas guardadas, foto Google e prazo de sete segundos vindas da develop foram preservadas. Os pedidos novos de arte da gaveta permanecem nas orientações abaixo, para a próxima tarefa; esta publicação não os implementa.
+
 ## Moldura olímpica v2 integrada — 07/11/2026
 
 Após aprovação do usuário, `board/OlympicHost.tsx` passou a renderizar a moldura com os cinco anéis no tabuleiro de 34 casas. `olympicFrame.ts` projeta a arte no painel real, com divisão das barras para preservar anéis/cantos nos estados horizontais. Um mesh estático por sede, textura compartilhada de 41 KB, centro transparente, sem interceptar cliques; conserva o relevo anterior como fallback do tabuleiro de 33 casas. `Pieces.tsx` e `snapshot.olympics.hostStateId` continuam controlando a sede, sem mudanças de regras, aluguel, câmera, modelos ou áreas dos personagens.
@@ -1124,3 +1130,32 @@ Detalhes em `docs/14-login-google.md`. Elementos novos de tela, funcionais, para
 O botão do Google é desenhado pelo próprio Google (`renderButton`), dentro de um iframe. As regras de marca
 dele não permitem redesenhar o botão; dá para mudar só o que está em volta (tema, posição e largura,
 em `auth/GoogleButton.tsx`).
+
+## PEDIDO DO USUÁRIO — ícone e gaveta de cartas guardadas (07/11/2026)
+
+O usuário pediu que as cartas guardadas (Passe Livre e Aluguel Zero) saíssem de cima da barra de ações
+e ficassem atrás de um **ícone de cartas** que abre uma **bandeja lateral**, sem ocupar o tabuleiro.
+A parte funcional está pronta (`hud/ItemTray.tsx`, componente `ItemDrawer`; estilo `.hud-cards-*` em `index.css`):
+
+- Botão "Cartas" com contador vermelho, na coluna da direita, acima do Histórico. Só aparece quando o
+  jogador tem alguma carta guardada e brilha (`.hud-cards-ready`) quando o Passe Livre pode ser usado.
+- Gaveta (`.hud-cards-drawer`) presa ao canto superior direito, com altura do conteúdo (não desce até a
+  barra de ações). Larguras conferidas para não cobrir o tabuleiro: 194 px em telas baixas (celular
+  deitado, 844×390 e 667×375) e `clamp(200px, 20vw, 280px)` nas demais. Fecha com ×, Esc ou no botão.
+- Dentro dela ficam os seus componentes `RestExitItemButton` e `RentWaiverItemIndicator`, sem alteração.
+  No celular deitado viram faixas de uma linha (só pelo CSS do host).
+
+**Pedido de arte:** o ícone atual é um SVG provisório desenhado no código (`CardsIcon` em `ItemTray.tsx`,
+duas cartas com estrela). Trocar por um ícone original no estilo do HUD, e refinar o visual do botão e da
+gaveta, se quiser. Contrato a manter: `aria-expanded`, `aria-controls`, `role="dialog"`, contador
+visível, o brilho quando o Passe Livre está disponível e as larguras acima (a gaveta não pode cobrir o
+tabuleiro nem a barra de ações).
+
+## Passe Livre e Aluguel Zero não acumulam (07/11/2026)
+
+Regra nova pedida pelo usuário (D27 em `docs/01-requisitos-e-decisoes.md`): cada jogador guarda no máximo
+um de cada item. Quem já tem o item e cai na carta dele não a recebe; a carta é pulada sem aparecer
+(evento `EVENT_CARD_SKIPPED`, sem texto no histórico) e vale a próxima. Na prática, a quantidade
+(`quantity`) dos seus componentes `RestExitItemButton` e `RentWaiverItemIndicator` passa a ser 0 ou 1;
+o contador "×1" pode ser simplificado ou removido na arte, se preferir. Partidas antigas com mais de um
+item guardado continuam mostrando a quantidade real.

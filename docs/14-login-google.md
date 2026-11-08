@@ -24,6 +24,11 @@ para salvar o progresso (moedas, diamantes, vitórias, personagem) e recuperá-l
 
 O e-mail só é guardado quando o Google o marca como verificado, e serve apenas para exibir na aba Conta.
 
+**Foto de perfil:** a cada login com Google, a foto da conta (`picture` do token) é guardada e substitui o
+personagem no retrato do jogador: card do painel, selo da vez, sala de espera, dono no card da propriedade
+e ranking final. Só valem endereços `https://*.googleusercontent.com`. O convidado, ou uma foto que não
+carregue, mostra o personagem. O seletor de personagem continua com os personagens.
+
 ### Onde fica no jogo
 
 - Tela do apelido: "ou" + botão "Continuar com o Google".

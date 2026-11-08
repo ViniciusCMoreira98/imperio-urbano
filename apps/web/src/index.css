@@ -36,6 +36,7 @@ body {
 }
 .hud-avatar-frame { overflow: hidden; box-shadow: inset 0 0 10px #d9bdff55; }
 .hud-avatar-art { display: block; width: 100%; height: 100%; border-radius: inherit; }
+.hud-avatar-photo { object-fit: cover; }
 .hud-leader-crown { width: 32px; height: 26px; filter: drop-shadow(0 2px 2px #6b3a00); transform: rotate(-12deg); }
 .hud-player-row { border-width: 2px; border-radius: 15px; }
 .hud-player-name { text-shadow: 0 2px 2px #0c0920; }
@@ -108,10 +109,42 @@ body {
 .hud-rest-chip { display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1.5px solid #c4b5fd;border-radius:999px;background:linear-gradient(#3b2a73,#221a4a);color:#ede9fe;font-size:14px;white-space:nowrap; }
 .hud-rest-chip strong { color:#fde68a; }
 .hud-rest-chip small { font-size:12px;color:#c4b5fd; }
-/* Itens guardados das cartas (Passe Livre, Aluguel Zero): acima da barra, compactos em telas baixas. */
-.hud-item-tray { display:flex;flex-wrap:wrap;justify-content:center;gap:8px;pointer-events:auto; }
-.hud-item-tray .rest-pass-item { width:min(260px,44vw);min-height:0; }
-@media (max-height:500px) { .hud-item-tray { zoom:.72; } }
+/* Cartas guardadas (Passe Livre, Aluguel Zero): botão na coluna da direita e gaveta na borda direita,
+   fora do tabuleiro (pedido do usuário, 07/11/2026). */
+.game-hud-history { flex-direction:column;align-items:flex-end;gap:8px; }
+.hud-cards-button { position:relative;display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 7px;border:2px solid #f3ca70;border-radius:16px;background:linear-gradient(155deg,#573380,#17152d);box-shadow:0 3px 0 #a96928,0 5px 8px #150b0a70;color:#fff;font-size:12px;font-weight:800; }
+.hud-cards-button:hover { filter:brightness(1.2); }
+.hud-cards-button:focus-visible { outline:3px solid #fff6b4;outline-offset:3px; }
+.hud-cards-icon { width:26px;height:26px;flex-shrink:0; }
+.hud-cards-count { position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;display:grid;place-items:center;border:2px solid #fff3b5;border-radius:999px;background:#e11d48;font-size:11px;line-height:1; }
+.hud-cards-ready { animation:hud-cards-glow 1.4s ease-in-out infinite; }
+@keyframes hud-cards-glow { 50% { box-shadow:0 3px 0 #a96928,0 0 18px #fde68a,0 0 0 3px #fde68a; } }
+.hud-cards-drawer { position:fixed;top:0;right:0;z-index:40;width:clamp(200px,20vw,280px);max-height:calc(100% - 110px);display:flex;flex-direction:column;border:2px solid #edc86d;border-width:0 0 2px 2px;border-bottom-left-radius:18px;background:linear-gradient(170deg,#3b1f6b,#141228 70%);box-shadow:-8px 0 24px #0a061899;color:#fff;animation:hud-cards-in .22s ease-out; }
+@keyframes hud-cards-in { from { transform:translateX(100%); } }
+.hud-cards-drawer > header { display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 12px 10px 16px;border-bottom:1px solid #ffffff22; }
+.hud-cards-drawer h2 { font-size:16px;font-weight:900;color:#fde68a; }
+.hud-cards-drawer header button { width:32px;height:32px;border-radius:999px;font-size:22px;line-height:1;color:#ffffffcc; }
+.hud-cards-drawer header button:hover { background:#ffffff1a;color:#fff; }
+.hud-cards-list { display:flex;flex-direction:column;gap:10px;padding:14px 12px;overflow-y:auto;overflow-x:hidden; }
+.hud-cards-list .rest-pass-item { width:100%;min-height:0; }
+.hud-cards-list .rest-pass-action { white-space:normal;line-height:1.2; }
+@media (prefers-reduced-motion:reduce) { .hud-cards-ready,.hud-cards-drawer { animation:none; } }
+/* Celular deitado: gaveta estreita (cabe ao lado do tabuleiro) e cartas em faixa de uma linha. */
+@media (max-height:500px) {
+  .hud-cards-button { padding:3px 9px 3px 5px;font-size:11px; }
+  .hud-cards-icon { width:22px;height:22px; }
+  .hud-cards-drawer { width:194px;max-height:calc(100% - 70px); }
+  .hud-cards-drawer > header { padding:6px 6px 6px 12px; }
+  .hud-cards-drawer h2 { font-size:13px; }
+  .hud-cards-list { gap:6px;padding:8px 6px; }
+  .hud-cards-list .rest-pass-item { padding:3px 6px 3px 3px;grid-template-columns:28px minmax(0,1fr) auto auto;gap:4px;border-radius:11px; }
+  .hud-cards-list .rest-pass-item > img { grid-row:auto;width:28px;height:22px;border-radius:6px; }
+  .hud-cards-list .rest-pass-copy > span { display:none; }
+  .hud-cards-list .rest-pass-copy strong { font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .hud-cards-list .rest-pass-count { font-size:12px; }
+  .hud-cards-list .rest-pass-action { grid-column:auto;padding:3px 7px;font-size:12px; }
+  .hud-cards-list .rent-waiver-item .rest-pass-action { display:none; }
+}
 @media (max-height:699px), (max-width:900px) {
  .game-hud-players { top:3px;right:calc(var(--hud-header-w, 150px) + 6px); }
  .game-hud-players .hud-players { gap:5px;padding:2px;padding-left:var(--hud-players-pad, 2px); }
