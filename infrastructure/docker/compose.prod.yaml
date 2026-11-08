@@ -32,8 +32,8 @@ services:
       DB_PASSWORD: ensaio-local
       # Em produção: o endereço público do site (https://...). Separe vários com vírgula.
       ALLOWED_ORIGINS: http://localhost:8090
-      # Opcional: o mesmo Client ID do Google, com http://localhost:8090 nas origens autorizadas.
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      # Client ID do Google (público). Exige http://localhost:8090 nas origens autorizadas do Google Cloud.
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-31503414946-alvdie9k0psslo4n4s7468a8go0d6vtn.apps.googleusercontent.com}
     ports:
       - "8090:8080"
 
