@@ -1,0 +1,137 @@
+{
+  "kind": "real-OlympicHost-controlled-board",
+  "screens": [
+    {
+      "id": "RN",
+      "width": 1280,
+      "height": 720,
+      "tileIndex": 1,
+      "horizontal": false,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    },
+    {
+      "id": "AC",
+      "width": 1280,
+      "height": 720,
+      "tileIndex": 9,
+      "horizontal": true,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    },
+    {
+      "id": "RJ",
+      "width": 1280,
+      "height": 720,
+      "tileIndex": 18,
+      "horizontal": false,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    },
+    {
+      "id": "MA",
+      "width": 1280,
+      "height": 720,
+      "tileIndex": 33,
+      "horizontal": true,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    },
+    {
+      "id": "RN",
+      "width": 800,
+      "height": 360,
+      "tileIndex": 1,
+      "horizontal": false,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    },
+    {
+      "id": "AC",
+      "width": 800,
+      "height": 360,
+      "tileIndex": 9,
+      "horizontal": true,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    },
+    {
+      "id": "RJ",
+      "width": 800,
+      "height": 360,
+      "tileIndex": 18,
+      "horizontal": false,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    },
+    {
+      "id": "MA",
+      "width": 800,
+      "height": 360,
+      "tileIndex": 33,
+      "horizontal": true,
+      "meshes": 1,
+      "vertices": 24,
+      "transparent": true,
+      "depthWrite": false,
+      "textureSize": [
+        512,
+        683
+      ],
+      "legacyRelief": false
+    }
+  ],
+  "switchAndRemove": true,
+  "house2Visible": true,
+  "errors": [],
+  "failed": []
+}

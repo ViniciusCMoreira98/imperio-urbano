@@ -1,11 +1,26 @@
-// A laurel rim in low relief: no tall torch, numbers or opaque panel over the state.
+// Olympic host frame; server state still controls which property receives the marker.
 import {useFrame,useThree} from '@react-three/fiber';
-import {Line} from '@react-three/drei';
+import {Line,useTexture} from '@react-three/drei';
 import {useEffect,useMemo,useState} from 'react';
 import {ExtrudeGeometry,MeshStandardMaterial,Path,Shape,ShapeGeometry,Vector2,type BufferGeometry} from 'three';
 import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type {TilePlacement} from './layout';
 import {insetOlympicContour,olympicLeaves,OLYMPIC_RELIEF,type OlympicPoint} from './olympicPresentation';
+import {olympicFrameGrid} from './olympicFrame';
+import frameArtwork from './board34/art/olympic-frame-v2.webp';
+
+type OlympicHostProps={placement:TilePlacement;contour?:readonly OlympicPoint[]};
+export function OlympicHost(props:OlympicHostProps){
+ const grid=useMemo(()=>olympicFrameGrid(props.placement.index),[props.placement.index]);
+ return grid?<OlympicFrame grid={grid} index={props.placement.index}/>:<OlympicLaurelRelief {...props}/>;
+}
+function OlympicFrame({grid,index}:{grid:NonNullable<ReturnType<typeof olympicFrameGrid>>;index:number}){
+ const texture=useTexture(frameArtwork);
+ return <group name="OLYMPIC_PROPERTY_FRAME" userData={{tileIndex:index,horizontal:grid.horizontal}}><mesh key={index} name="OLYMPIC_FRAME_ART" renderOrder={5} raycast={()=>undefined}>
+  <bufferGeometry><bufferAttribute attach="attributes-position" args={[grid.positions,3]}/><bufferAttribute attach="attributes-uv" args={[grid.uvs,2]}/><bufferAttribute attach="index" args={[grid.indices,1]}/></bufferGeometry>
+  <meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false} side={2}/>
+ </mesh></group>;
+}
 
 function ring(points:readonly OlympicPoint[],outer:number,inner:number){
  const outline=insetOlympicContour(points,outer),hole=insetOlympicContour(points,inner),shape=new Shape(outline.map(([x,z])=>new Vector2(x,-z)));
@@ -13,7 +28,7 @@ function ring(points:readonly OlympicPoint[],outer:number,inner:number){
 }
 function relief(shape:Shape){const g=new ExtrudeGeometry(shape,{depth:.009,bevelEnabled:true,bevelThickness:.003,bevelSize:.002,bevelSegments:1,steps:1,curveSegments:5});g.rotateX(-Math.PI/2);g.translate(0,.016,0);return g;}
 
-export function OlympicHost({placement,contour}:{placement:TilePlacement;contour?:readonly OlympicPoint[]}){
+function OlympicLaurelRelief({placement,contour}:OlympicHostProps){
  const viewportHeight=useThree(state=>state.size.height);
  const [reduced,setReduced]=useState(()=>typeof window==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches);
  useEffect(()=>{const media=window.matchMedia('(prefers-reduced-motion: reduce)'),update=()=>setReduced(media.matches);update();media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);

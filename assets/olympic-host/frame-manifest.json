@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/olympic-host/source/olympic-frame-v1.png",
+  "sourceSha256": "193ee000a48fb257e7ac079df5b9b1c466c1bf99608619d6a7ddd53bb953b00d",
+  "file": "apps/web/src/board/board34/art/olympic-frame-v1.webp",
+  "sha256": "86affe0ea13361782bc752b0121f8f5c67af0a5e9849e55a3f5db0bf91a4fae2",
+  "bytes": 40650,
+  "width": 512,
+  "height": 683,
+  "transparentPixels": 288804,
+  "solidPixels": 39962,
+  "prompt": "assets/olympic-host/frame-prompt.json",
+  "encoder": "Chromium 141.0.7390.37 WebP quality 92",
+  "meshyCredits": 0,
+  "integrated": false
+}
