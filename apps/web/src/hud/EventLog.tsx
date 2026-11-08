@@ -3,6 +3,8 @@ import { eventCards } from '@imperio/game-data';
 import { describeEvent } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
 
+import historyIcon from '../settings-art/art/document-v1.svg';
+
 type Tab = 'history' | 'cards';
 
 const cardsById = new Map(eventCards.map((c) => [c.id, c]));
@@ -33,10 +35,10 @@ export function EventLog() {
     return (
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        aria-label="Histórico" onClick={() => setOpen(true)}
         className="self-start hud-panel rounded-xl px-3 py-1.5 text-xs font-bold text-white/90 hover:brightness-125"
       >
-        📜 Histórico
+        <img className="hud-history-mobile-icon" src={historyIcon} alt=""/><span>📜 Histórico</span>
       </button>
     );
   }

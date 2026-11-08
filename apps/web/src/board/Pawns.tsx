@@ -6,7 +6,7 @@ import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
 import { tileAnchor } from './layout';
 import { Pawn } from './Pawn';
-import { type PawnSpot, pawnCenter, pawnSpots } from './pawnLayout';
+import { type PawnSpot, pawnCenter, pawnSpots, pawnFigureScale } from './pawnLayout';
 
 export function Pawns() {
   const players = useGameStore((s) => s.snapshot?.players);
@@ -16,6 +16,7 @@ export function Pawns() {
   const selectedTile = useViewStore((s) => s.selectedTile);
   const standing = useMemo(() => players?.filter((p) => !p.bankrupt) ?? [], [players]);
   const spots = useMemo(() => pawnSpots(standing), [standing]);
+  const occupants=useMemo(()=>{const count=new Map<number,number>();for(const p of standing)count.set(p.position,(count.get(p.position)??0)+1);return count;},[standing]);
   // Último lugar de cada um: quem acabou de falir sai dali, sem pular para outro ponto.
   const lastSpots = useRef(new Map<string, PawnSpot>());
 
@@ -34,6 +35,7 @@ export function Pawns() {
             spot={spot}
             avatarId={p.avatarId}
             color={PAWN_COLORS[p.pawnColor].hex}
+            figureScale={pawnFigureScale(occupants.get(p.position)??1)}
             active={p.id === currentPlayerId}
             leaving={p.bankrupt}
             celebrating={status === 'FINISHED' && (winnerIds ?? []).includes(p.id)}

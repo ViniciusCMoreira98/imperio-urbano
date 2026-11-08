@@ -19,6 +19,9 @@ import { useAppStore } from '../store/appStore';
 import { useGameStore } from '../store/gameStore';
 import { Button } from '../ui/ui';
 import { useHudLayout } from './useHudLayout';
+import './mobileBoard.css';
+import {mobileCleanStudy} from '../board/mobileStudy';
+import './mobileCleanStudy.css';
 
 /** Partida conectada ao servidor: o tabuleiro e os painéis só refletem o snapshot recebido. */
 export function GameScreen() {
@@ -56,10 +59,10 @@ export function GameScreen() {
   return (
     <>
       <GameSounds myId={session.playerId} />
-      <div ref={viewportRef} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
+      <div ref={viewportRef} data-mobile-study={mobileCleanStudy||undefined} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
         {/* Canvas de mesa em toda a janela; HUD flutua sobre o cenário. */}
         <div className="game-hud-board absolute inset-0">
-          <GameBoard framing={insets?.left!==undefined&&insets?.right!==undefined?'mobile-landscape':'standard'} insets={insets} taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
+          <GameBoard framing={insets?.occlusions?'mobile-diamond':insets?.left!==undefined&&insets?.right!==undefined?'mobile-landscape':'standard'} insets={insets} taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
         </div>
 
         <header ref={headerRef} className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">

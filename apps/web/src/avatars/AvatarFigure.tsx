@@ -80,7 +80,7 @@ class MaskBoundary extends Component<{ mask: string; children: ReactNode }, { fa
 }
 
 /** Modelo normalizado; animação só se o clip existir no arquivo. */
-function CharacterModel({ asset, motion, color, onMotion }: { asset: CharacterAsset; motion: AvatarMotion; color: string; onMotion?: MotionReport }) {
+function CharacterModel({ asset, motion, color, onMotion, renderOrder }: { asset: CharacterAsset; motion: AvatarMotion; color: string; onMotion?: MotionReport; renderOrder?:number }) {
   const { scene, animations } = useGLTF(asset.file);
   // Cada peão precisa da própria cópia; com esqueleto, a cópia precisa religar os ossos.
   const model = useMemo(() => {
@@ -90,6 +90,12 @@ function CharacterModel({ asset, motion, color, onMotion }: { asset: CharacterAs
     });
     return copy;
   }, [scene]);
+  useLayoutEffect(()=>{
+    if(renderOrder===undefined)return;
+    const original=new Map<Mesh,number>();
+    model.traverse(object=>{const mesh=object as Mesh;if(mesh.isMesh){original.set(mesh,mesh.renderOrder);mesh.renderOrder=renderOrder;}});
+    return()=>{original.forEach((order,mesh)=>{mesh.renderOrder=order;});};
+  },[model,renderOrder]);
   const placement = useMemo(() => {
     const box = new Box3().setFromObject(scene);
     return normalizePlacement({ min: box.min.toArray(), max: box.max.toArray() }, asset.height, asset.offset);
@@ -145,11 +151,13 @@ export function AvatarFigure({
   color,
   motion = 'idle',
   onMotion,
+  renderOrder,
 }: {
   avatarId: AvatarId;
   color: string;
   motion?: AvatarMotion;
   onMotion?: MotionReport;
+  renderOrder?:number;
 }) {
   const asset = characterFor(avatarId);
   const reserve = fallbackCharacter();
@@ -161,14 +169,14 @@ export function AvatarFigure({
         asset.id === reserve.id ? null : (
           <ModelFallback asset={reserve} fallback={null}>
             <Suspense fallback={null}>
-              <CharacterModel asset={reserve} motion={motion} color={color} onMotion={onMotion} />
+              <CharacterModel asset={reserve} motion={motion} color={color} onMotion={onMotion} renderOrder={renderOrder} />
             </Suspense>
           </ModelFallback>
         )
       }
     >
       <Suspense fallback={null}>
-        <CharacterModel asset={asset} motion={motion} color={color} onMotion={onMotion} />
+        <CharacterModel asset={asset} motion={motion} color={color} onMotion={onMotion} renderOrder={renderOrder} />
       </Suspense>
     </ModelFallback>
   );

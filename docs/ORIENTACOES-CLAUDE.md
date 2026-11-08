@@ -1,5 +1,110 @@
 # Orientações e pendências para o Claude Code
 
+## Checkpoint autorizado na develop_arte_3d — 08/11/2026
+
+O usuário autorizou commitar o trabalho pendente nesta branch e depois atualizá-la com a develop. Este checkpoint inclui correções de personagens/aluguel, ícone do app, gaveta de cartas, estudos e direção de arte aprovada. Os protótipos rejeitados ficam registrados como histórico de revisão; não representam a implementação aprovada. Preservar os modelos atuais de terreno/casas/hotel. A nova arte ainda precisa ser implementada. Não fazer merge destas alterações na develop nesta solicitação.
+
+
+## Preservar as casas atuais — determinação do usuário, 08/11/2026
+
+O usuário reforçou após aprovar o conceito: “lembrando de permanecer as mesmas casas que tem hoje”. Preservar a família de modelos atual: terreno, casas dos níveis 1 a 4 e hotel, já criada e integrada. Não substituir essas construções pelas casas ilustrativas do conceito nem gerar outra família. Preservar também as 34 casas do percurso, estados, especiais, IDs e sequência oficial. A direção aprovada orienta acabamento e apresentação; não autoriza trocar os modelos ou o catálogo atuais.
+
+
+## Direção de arte APROVADA pelo usuário — 08/11/2026
+
+O usuário aprovou explicitamente o conceito assets/board-mobile/art-direction-v2/concept.png: “Ficou perfeito, se ficar assim ta ótimo”. Esta é a referência visual vigente para a implementação. A aprovação é do acabamento, riqueza das ilustrações, integração dos aluguéis e proporções do HUD. Os estudos anteriores clean/spacious/rectangular continuam rejeitados e não podem ser promovidos como se fossem a versão aprovada.
+
+Preservar na adaptação: ilustrações brasileiras ricas e reconhecíveis, molduras finas champagne/douradas, fundos marfim, azul/esmeralda, cenário de praia com madeira, logo/centro ilustrado, aluguéis legíveis e integrados às casas, HUD compacto nos quatro cantos e construções na área interna sem esconder preços. Não trocar por grandes faixas vazias, placas pretas flutuantes ou texturas deformadas. A fidelidade deve ser avaliada por comparação visual com o conceito, além dos testes funcionais.
+
+Correções obrigatórias ao converter conceito em jogo: mapa oficial de 34 casas/26 estados, IDs e sequência do catálogo, apenas um PR, quatro cantos corretos, valores oficiais e saldo acumulado da Taxa/Saque. O conceito gerado contém diferenças de quantidade/posição e preços ilustrativos; não usá-lo como textura única do tabuleiro nem como fonte de regras. Separar recursos da apresentação, textos/dados dinâmicos e regiões de interação. Reutilizar as fontes originais aprovadas onde alcançarem o acabamento; gerar assets específicos quando necessário, mantendo a composição aprovada.
+
+A aprovação foi registrada, junto com o roteiro de adaptação em assets/board-mobile/art-direction-v2/IMPLEMENTACAO.md. O jogo padrão ainda não foi convertido para essa direção visual. Não apresentar o conceito como captura da implementação. Sem commit, merge ou créditos Meshy nesta atualização. Qualquer geração Meshy adicional exige informar o custo antes, conforme preferência anterior do usuário.
+
+
+## Nova revisão de direção de arte — 08/11/2026
+
+O usuário também rejeitou o estudo rectangular por perda de qualidade. NÃO promover qualquer uma das três reconstruções móveis como visual aprovado. O usuário quer preservar o acabamento ilustrado original e a riqueza das artes, com leitura/enquadramento de Business Tour.
+
+Criado conceito de direção visual com image_gen integrado, referenciando o atlas original e a segunda captura Business Tour do usuário. Arquivo assets/board-mobile/art-direction-v2/concept.png; prompt em prompt.txt. É imagem conceitual, NÃO captura de implementação. Há diferenças de sequência/quantidade (incluindo repetição de PR) e valores ilustrativos; não usar essa imagem inteira como atlas nem como definição do catálogo. Avaliar acabamento, riqueza das ilustrações, proporção do HUD e integração dos aluguéis. Para produção, manter rigorosamente 34 casas, IDs oficiais e valores calculados.
+
+Nenhuma nova alteração do renderizador nesta etapa. As propostas anteriores continuam isoladas. Sem Meshy, commit ou merge. Próxima etapa depende da revisão visual da proposta, antes de outra implementação.
+
+
+## Reconstrução retangular após rejeição do esticamento — 08/11/2026
+
+O usuário rejeitou a prévia spacious como esticada e sem acabamento. NÃO promover aquela versão nem considerar testes de área como aprovação estética. Sua deformação por trapézios e a projeção dependente da câmera antiga foram descartadas na nova direção.
+
+Novo estudo separado ?mobileStyle=rectangular: rectangularLayout.ts monta as 34 casas em retângulos nativos; as 26 propriedades têm exatamente 1×3 unidades, cantos 3×3, lados com distribuição coerente da sequência oficial. RectangularBoardStudy.tsx cria geometria e texturas próprias por casa; não deforma o GLB nem usa sourceQ/atlas projetado. As artes originais v3, especiais e center-brasil-v2 são encaixadas com escala uniforme (contain), sem corte e sem ajuste independente de largura/altura. Texto cabe por redução da fonte, sem esticar glifos. Cada tela de propriedade reserva área interna para construção, imagem, sigla e faixa externa para aluguel. Valores continuam calculados pelo host e também constam do conteúdo acessível.
+
+Os 34 assets efetivamente renderizados estão exportados em assets/3d/reviews/mobile-rectangular-study/tiles/. São exemplos do snapshot de conferência, inclusive preços dinâmicos; não usar seus valores fixos em produção. Norte/leste têm a arte/texto rotacionados em 180° para leitura na câmera do tabuleiro. texture-proportions.json registra arquivo-fonte, resolução e escala física de cada superfície: diferença máxima de densidade entre eixos menor que 0,04% (arredondamento de pixels). Proporção do arquivo preservada dentro da área da imagem.
+
+Câmera nativa usa near=5, adequado à distância 100, para evitar z-fighting entre face e suporte separados por 0,001. Suportes usam caixas com dimensões exatas. Imagens-fonte carregadas por ImageLoader, sem enviá-las desnecessariamente como texturas à GPU; só os canvases das faces são texturas. Famílias Meshy existentes e modelos de personagens preservados; zero novos créditos.
+
+Verificações: teste novo garante ângulos retos, medidas iguais das 26 propriedades e ausência de colisão entre casas/centro; script mobile-rectangular-study-qa.mjs espera as 34 faces carregarem antes das capturas, verifica escala de textura, seleção de RN por toque, gaveta e ROLL_DICE. Prévia em 800×360 e 667×280, DPR 2, snapshot com proprietários/níveis variados. Build e 178 testes aprovados. Somente estudo de desenvolvimento, sem substituir a versão padrão, commit ou merge. Revisões estéticas continuam necessárias; passagem de testes não implica aprovação visual do usuário.
+
+
+## Propriedades ampliadas com artes originais — prévia de 08/11/2026
+
+Preferência atual do usuário: manter as artes do tabuleiro; o estudo sem ilustrações não é a direção desejada. Nova prévia isolada ?mobileStyle=spacious restaura as mesmas ilustrações v3 dos 26 estados, artes especiais, centro-brasil-v2, moldura dourada e ambiente de praia. Não recriar ou substituir essas artes por casas lisas.
+
+Centro reduzido para 76% em cada eixo (42,24% menos área). Todas as propriedades ganham área: norte +23,66%, leste +32,18%, sul +40,80%, oeste +31,08%; números medidos na geometria, com o contorno externo preservado. Bordas internas ajustadas em trapézios, cantos recompostos e centro reduzido em conjunto, sem sobrepor casas. Novo atlas separado models/board/board34-mobile-spacious-v1.webp, fonte compartilhada mobile-clean-atlas.ts; não sobrescreve o atlas original. Layout de estudo calculado por spaciousLayout.ts e selecionado por visualLayout.ts. IDs, sequência oficial, dados/regras e modelo GLB fonte não mudaram.
+
+A malha clonada é deformada antes da projeção de UV, junto com os painéis, preços, âncoras, áreas de personagens/construções, contornos de propriedade e moldura olímpica. Para este estudo o host usa áreas conservadoras próprias, porque o antigo buildingZone pressupõe retângulos e fazia a escala das casas encolher em trapézios. As construções originais continuam presentes. Faixa de aluguel reduzida a 24% da profundidade para reservar mais espaço às ilustrações; preço continua no piso externo. Botão central até 320 px de altura reduzido a 112×28 para não cobrir as propriedades expandidas.
+
+Verificação: novo teste de ganho de área, centro/contorno, ordem oficial e ausência de sobreposição entre todas as 34 casas e o centro. 177 testes aprovados com dois workers e build aprovado. Uma execução simultânea ao navegador teve timeout no teste existente de dados; passou ao repetir a suíte sem essa carga. Prévia real GameScreen com conexão simulada em 800×360 e 667×280, seleção de RN por toque, gaveta e comando ROLL_DICE conferidos; sem erros do navegador. Capturas/relatório em assets/3d/reviews/mobile-spacious-study/; script mobile-spacious-study-qa.mjs. Ainda é prévia separada; não houve commit, merge, serviço externo ou créditos Meshy.
+
+
+## Direção visual móvel revisada com segunda referência — estudo de 08/11/2026
+
+O usuário REJEITOU a versão com etiquetas grandes e pediu organização semelhante ao Business Tour; enviou uma segunda referência com aluguel em faixa externa. Não considerar mobile-clarity aprovado. Novo estudo isolado, disponível em desenvolvimento com ?mobileStyle=clean. Ainda não substitui o visual padrão da partida.
+
+Criados assets próprios: models/board/board34-mobile-clean-v1.webp (6144×4096, cerca de 537 KB), mobile-clean-environment-v1.webp (fundo em gradiente, cerca de 8,5 KB), fonte scripts/assets/mobile-clean-atlas.ts e PNG de revisão. Casas claras, faixa de preço na borda externa, nome/sigla no meio e construção na área interna; centro livre com padrão discreto, ícones especiais vetoriais próprios. Molduras passam a cinza claro, sem dourado. HUD do estudo com quatro jogadores nos cantos, botão central azul e controles circulares à direita. Mantidos os modelos de construções e personagens existentes.
+
+mobileCleanLayout identifica o sentido externo de cada painel pela geometria, sem pressupor que norte/sul/leste/oeste compartilhem orientação. RentTags no estudo pinta valores no piso da faixa externa, sem placa flutuante e sem R$ repetido em cada casa; legenda Aluguéis em R$ no HUD. Dados, regras e valores continuam oficiais; preços completos no conteúdo acessível e consulta de propriedade. Modo padrão e computador preservados. Para integrar futuramente, considerar fallback de textura para dispositivos limitados; o estudo é 6K.
+
+Prévia real em 800×360 e 667×280 com WebSocket simulado, arquivos em assets/3d/reviews/mobile-clean-study/. Fonte/geração/captura: scripts/assets/mobile-clean-study-qa.mjs. Build e 176 testes aprovados. Sem serviços externos, Meshy, commit ou merge. Próximo passo: revisar esta composição com o usuário antes de promover o estudo a visual padrão.
+
+
+## Nitidez e aluguéis no celular — revisão de 08/11/2026
+
+Correção solicitada pelo usuário após a prévia em losango: o critério de atlas ainda usava o enquadramento padrão e escolhia 3K no celular. Agora mobile-diamond usa o atlas 6144×4096 existente quando maxTextureSize permite; fallback 3K em hardware incompatível. Anisotropia no máximo disponível, mipmaps/bias -0,5 e DPR até 3 preservados. Arte original, modelos, geometria e distância/enquadramento não mudaram nesta revisão.
+
+MobileRentTag mantém cada preço ancorado no centro da placa original e renderiza texto com 10,5 px CSS, fundo azul-escuro, números claros e filete dourado. A placa acompanha a direção de profundidade da propriedade, com rotação voltada para a câmera para não achatar a altura das letras. RN/MA têm separação de 6 px junto ao Início. Textura própria a densidade 4; sem interceptar toques. Ordem opaca 20, alphaTest 0,05, depthTest/depthWrite falsos; personagens continuam em 30. Não recolocar etiquetas por cima dos personagens. O texto duplicado na textura plana é omitido somente no modo móvel; computador conserva as placas originais. Valores e Apagão continuam derivados do host, sem alterar cálculo de aluguel.
+
+Build e 176 testes aprovados. Script mobile-clarity-qa.mjs confere atlas 6K, 26 etiquetas, tamanho de fonte, ordem de desenho, seleção de RN, gaveta e comando ROLL_DICE; capturas em 667×280, 800×360, 932×430 e 1280×720. Conferência final verifica ausência de sobreposição entre as etiquetas na distribuição registrada. Prévia em navegador a DPR 2, sem teste em aparelho físico. Arquivos em assets/3d/reviews/mobile-clarity/. Sem geração de arte externa, Meshy, commit ou merge nesta etapa.
+
+
+## Celular: enquadramento inspirado no Business Tour — 08/11/2026
+
+Atendido o pedido explícito para celular deitado. Novo modo mobile-diamond: câmera em losango a -45°, perspectiva de distância longa e elevação adaptada à proporção. O host mede cada card nos dois cantos inferiores, controles à direita e gaveta; não reserva mais duas colunas inteiras. O encaixe usa o contorno real do tabuleiro e separação de polígonos; a barra central fica no espaço interno, fora das propriedades. Ao abrir cartas, barra e câmera se deslocam para a área livre. Computador mantém a calibração original.
+
+CSS específico em screens/mobileBoard.css: jogadores divididos entre os cantos, controles compactos, ação central; até 320 px de altura mostra somente a ação e o selo para preservar área útil. Status continua disponível nos jogadores/na interface acessível. Siglas dos estados maiores no modo móvel; fotos, cores dos donos e consulta por toque preservadas. Mipmaps, bias -0,5 e DPR até 3 vindos da develop preservados. Não houve uso de Meshy, alteração de regras, commit ou merge.
+
+Validação: build; 175 testes existentes e teste novo de câmera com três proporções, colisão de controles/propriedades e restauração desktop. Prévia real GameScreen com servidor de jogo simulado em 800×360, 667×280, 932×430 (seis jogadores) e 1280×720. Em celulares o quadro ocupa aproximadamente 72% da largura e 91–94% da altura. Seleção de RN por toque, comando oficial ROLL_DICE e abrir/fechar cartas conferidos. Script scripts/assets/mobile-diamond-qa.mjs e capturas/relatório em assets/3d/reviews/mobile-diamond/. Navegador com DPR 2; desempenho em aparelho físico ainda não medido.
+
+Esta decisão substitui o enquadramento móvel alinhado anterior. Os relatórios mobile-framing e item-drawer anteriores registram o layout antigo; suas expectativas de colunas/rodapé não representam esta versão. Para Claude: manter HUD medido pelo host, siglas móveis, restauração desktop e prioridades de aluguel/personagens. Não recolocar reservas simétricas de colunas quando o HUD estiver em grid nos cantos.
+
+
+## Ícone do app e gaveta de cartas — concluídos (08/11/2026)
+
+Criado ícone próprio com coroa, monograma IU e escudo verde sobre azul, em vetor editável `assets/app-icon/source/app-icon-v1.svg`. Substituídos os quatro PNG públicos nos mesmos nomes/tamanhos (192, 512, maskable 512 e Apple 180). `scripts/assets/pwa-icons.mjs` agora gera a arte nova, sem depender do logotipo completo. Emblema dentro da zona segura de 80%: raio 176,2 px, limite 204,8 px. Manifesto, HTML, botão e lógica de instalação preservados. Fontes, manifesto de hashes e prévia em `assets/app-icon/`; conferência `app-icon-qa.mjs`.
+
+Criado `hud/art/cards/cards-v1.svg` original, reutilizado no botão e no cabeçalho da gaveta. Acabamento azul/dourado em `hud/itemDrawer.css`, cabeçalho Suas cartas, fechar compacto e destaque verde quando Passe Livre disponível. Contador, quantidades legadas, aria-expanded/controls, role dialog, Escape, toggle/× e ações preservados. Componentes RestExitItemButton/RentWaiverItemIndicator e regras não mudaram.
+
+`useHudLayout` agora observa a gaveta, reserva sua largura para não cobrir o tabuleiro e limita sua altura acima da barra de ação/selo; desfaz a reserva ao fechar. Mantidos 194 px no celular e clamp(200 px,20vw,280 px) no computador. Até 340 px de altura, ajustada somente a altura de linha dos nomes/saldos para separar os jogadores dos botões inferiores. Para Claude: preservar a medição de largura independente da translação da animação e a limpeza dos observadores; não transformar a reserva direita do computador em modo de câmera móvel (não há reserva esquerda nesse caso).
+
+Conferência da gaveta no GameScreen real com WebSocket simulado: 800×330, 667×280, 932×430 e 1280×720; quatro usos de Passe Livre via comando oficial, contadores, contagem antiga de cinco itens, fechar/reabrir e enquadramento restaurado. Movimento reduzido conferido. Scripts `item-drawer-qa.mjs`; capturas/relatório e guia em `assets/3d/reviews/item-drawer/`. 175 testes e build aprovados durante a revisão. Arte vetorial original, sem serviços externos ou créditos Meshy. Ajustes anteriores de personagens e aluguel preservados. Sem commit/merge nesta etapa.
+
+## Personagens maiores e aluguel sem sobrepor a cabeça — concluído (08/11/2026)
+
+Atendida a orientação de leitura dos personagens. `Pawns.tsx` deriva a ocupação das casas dos jogadores não falidos e passa `figureScale` a Pawn: 1,70 sozinho, 1,35 em dupla e 1,00 com três ou mais. Só a figura cresce; `PAWN_SCALE` permanece 0,75, `pawnSpots`/âncoras não mudaram e o raio de apoio continua 0,1875. Bases recebem fundo escuro, faixa colorida espessa e filete claro, dentro do mesmo raio. `PlayerBase.emphasized` é opcional e preserva as outras telas. Durante os saltos, o corpo usa o tamanho original; a escala volta suavemente ao pousar. A seta acompanha a altura, mantendo o próprio tamanho.
+
+`useHudLayout` mantém 3,5% de folga superior no computador e usa 7% no celular deitado, para acomodar cabeça e seta em 280 px de altura. As reservas continuam medidas pelo host, sem oscilação por ocupação. A câmera não foi alterada nesta etapa.
+
+Correção apontada pelo usuário: a etiqueta de aluguel estava acima da cabeça. `board/renderOrder.ts` define aluguel em ordem 20 e personagens em 30. `RentTags` agora é opaco com alphaTest 0,05, depthTest/depthWrite falsos; continua acima das construções, mas os modelos e a seta ficam à frente da etiqueta. `AvatarFigure.renderOrder` é opcional, aplica-se às malhas clonadas e ao fallback. Não modificar os materiais originais compartilhados nem voltar a pôr RentTags na fila transparente, pois isso recria a sobreposição. Preços, posições das placas e regras permanecem oficiais e inalterados.
+
+Validação: 175 testes e build; 64 cenários com RN/AC/RJ/MA, um a quatro personagens, cinco modelos, 800×330, 667×300, 800×280 e 1280×720. Conferidos vértices das bases dentro das casas, cabeça/seta no navegador, caminhada, restauração da escala e saída por falência (etapa isolada em prévia nova). Dez combinações adicionais conferem a prioridade de aluguel/personagens e o antes/depois da sobreposição real. Scripts `pawn-readability-qa.mjs` e `rent-head-occlusion-qa.mjs`; capturas e relatórios em `assets/3d/reviews/pawn-readability/`. Sem geração de arte ou créditos Meshy e sem commit/merge nesta entrega. Próxima pendência separada: ícone e acabamento da gaveta de cartas guardadas.
+
 ## Publicação dos ajustes do celular (08/11/2026)
 
 Commit e merge para develop autorizados pelo usuário: inclui câmera móvel adaptativa, entrada compacta com Google, teste de restauração da câmera, estudo comparativo, capturas e relatório. Conferidos 175 testes, build e prévia com cinco telas de partida e quatro de entrada. Os registros anteriores de sem commit/merge descrevem o estado anterior a esta solicitação. Identificadores finais no histórico Git. Próxima pendência: arte do ícone e gaveta de cartas guardadas.

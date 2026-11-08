@@ -1,6 +1,6 @@
 import {board} from '@imperio/game-data';
 import {isBoard34} from './boardVisualManifest';
-import layout from './board34/layout.json';
+import layout from './board34/visualLayout';
 import {pixelToWorld} from './board34/buildingZone';
 import {panelPoint} from './board34/panelProjection';
 import {tileAnchor} from './layout';

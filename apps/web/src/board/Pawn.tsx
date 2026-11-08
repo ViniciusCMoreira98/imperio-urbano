@@ -20,6 +20,7 @@ import { usePawnStore } from '../store/pawnStore';
 import { useGameStore } from '../store/gameStore';
 import { forgetPawn, reportPawn } from './pawnDebug';
 import { PAWN_SCALE, type PawnSpot, pawnCenter } from './pawnLayout';
+import {PAWN_RENDER_ORDER} from './renderOrder';
 
 const TILE_COUNT = board.tiles.length;
 
@@ -41,6 +42,8 @@ interface PawnProps {
   spot: PawnSpot;
   avatarId: AvatarId;
   color: string;
+  /** Visual scale of the body only; the base and all official positions remain unchanged. */
+  figureScale?:number;
   /** É a vez deste jogador: base pulsando e seta sobre a cabeça. */
   active: boolean;
   /** Faliu: toca a saída (clip defeat, se houver) e some do tabuleiro. */
@@ -59,10 +62,15 @@ function nearest(current: number, target: number): number {
   return current + Math.atan2(Math.sin(target - current), Math.cos(target - current));
 }
 
-export function Pawn({ playerId, position, spot, avatarId, color, active, leaving, celebrating }: PawnProps) {
+export function Pawn({ playerId, position, spot, avatarId, color, active, leaving, celebrating, figureScale=1 }: PawnProps) {
   const rootRef = useRef<Group>(null);
   const bodyRef = useRef<Group>(null);
   const faceRef = useRef<Group>(null);
+  const figureRef = useRef<Group>(null);
+  const initialFigureScale = useRef(figureScale);
+  const markerAnchorRef = useRef<Group>(null);
+  const desiredFigureScale = useRef(figureScale);
+  if (!leaving) desiredFigureScale.current = figureScale;
   const ringRef = useRef<Mesh>(null);
   const ringMaterial = useMemo(
     () => new MeshBasicMaterial({ color: new Color(color).multiplyScalar(1.5), transparent: true, opacity: 0, toneMapped: false }),
@@ -301,6 +309,14 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
 
   // Parado, vira devagar para a câmera (só no eixo vertical). Durante os saltos, o giro é do timeline.
   useFrame(({ camera }, delta) => {
+    if (figureRef.current && !leaving) {
+      const target = timeline.current || queue.current.length ? 1 : desiredFigureScale.current;
+      const next = figureRef.current.scale.x + (target - figureRef.current.scale.x) * Math.min(1, delta * 12);
+      figureRef.current.scale.setScalar(next);
+    }
+    if (markerAnchorRef.current && figureRef.current) {
+      markerAnchorRef.current.position.y = characterFor(avatarId).height * (figureRef.current.scale.x - 1);
+    }
     const root = rootRef.current;
     const face = faceRef.current;
     if (!root || !face || timeline.current || cheer.current) return;
@@ -309,18 +325,22 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
   });
 
   return (
-    <group ref={rootRef} scale={PAWN_SCALE}>
-      <PlayerBase color={color} active={active} />
+    <group name={`PAWN_${playerId}`} ref={rootRef} scale={PAWN_SCALE}>
+      <PlayerBase color={color} active={active} emphasized />
       <mesh ref={ringRef} position={[0, 0.012, 0]} rotation={[-Math.PI / 2, 0, 0]} material={ringMaterial}>
         <ringGeometry args={[0.22, 0.27, 32]} />
       </mesh>
       <group ref={bodyRef} position={[0, BASE_HEIGHT, 0]}>
         <group ref={faceRef}>
-          <Suspense fallback={null}>
-            <AvatarFigure avatarId={avatarId} color={color} motion={motion} onMotion={onMotion} />
-          </Suspense>
+          <group name="PAWN_FIGURE_SCALE" ref={figureRef} scale={initialFigureScale.current}>
+            <Suspense fallback={null}>
+              <AvatarFigure avatarId={avatarId} color={color} motion={motion} onMotion={onMotion} renderOrder={PAWN_RENDER_ORDER} />
+            </Suspense>
+          </group>
+          {active && <group name="PAWN_ACTIVE_ANCHOR" ref={markerAnchorRef}>
+            <ActiveMarker color={color} height={characterFor(avatarId).height + .11} amplitude={.02} renderOrder={PAWN_RENDER_ORDER} />
+          </group>}
         </group>
-        {active && <ActiveMarker color={color} height={characterFor(avatarId).height + 0.25} />}
       </group>
     </group>
   );

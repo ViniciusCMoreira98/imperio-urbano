@@ -1,11 +1,13 @@
 import {PerspectiveCamera} from 'three';
 import {applyFixedCamera,FIXED_CAMERA} from './fixedCamera';
 import {applyMobileLandscapeCamera} from './mobileLandscapeCamera';
+import {applyMobileDiamondCamera} from './mobileDiamondCamera';
 
 /** Desktop keeps the calibrated pose; the landscape host can select its fitted mobile camera. */
-export type BoardFraming='standard'|'immersive'|'mobile-landscape';
+export type BoardFraming='standard'|'immersive'|'mobile-landscape'|'mobile-diamond';
 /** Reservas medidas pelo host (px livres no topo e na base para o HUD). Sem elas, valem as do enquadramento. */
-export interface BoardInsets{top:number;bottom:number;left?:number;right?:number}
+export interface BoardOcclusion{left:number;top:number;right:number;bottom:number}
+export interface BoardInsets{top:number;bottom:number;left?:number;right?:number;occlusions?:readonly BoardOcclusion[];interior?:BoardOcclusion}
 export function tabletopViewport(width:number,height:number,framing:BoardFraming='standard',insets?:BoardInsets){
  const compact=height<700,immersive=framing==='immersive';
  const top=insets?.top??(immersive?(compact?32:54):(compact?48:76)),bottom=insets?.bottom??(immersive?(compact?40:64):(compact?58:90));
@@ -19,6 +21,7 @@ export function tabletopViewport(width:number,height:number,framing:BoardFraming
 }
 export function applyTabletopCamera(camera:PerspectiveCamera,width:number,height:number,framing:BoardFraming='standard',insets?:BoardInsets){
  camera.zoom=1;
+ if(framing==='mobile-diamond'){applyMobileDiamondCamera(camera,width,height,insets);return tabletopViewport(width,height,framing,insets);}
  if(framing==='mobile-landscape'){
   applyMobileLandscapeCamera(camera,width,height,insets);return tabletopViewport(width,height,framing,insets);
  }

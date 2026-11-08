@@ -1,0 +1,135 @@
+{
+  "checks": [
+    {
+      "width": 800,
+      "height": 330,
+      "avatar": 1,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 800,
+      "height": 330,
+      "avatar": 2,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 800,
+      "height": 330,
+      "avatar": 3,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 800,
+      "height": 330,
+      "avatar": 4,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 800,
+      "height": 330,
+      "avatar": 5,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "avatar": 1,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "avatar": 2,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "avatar": 3,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "avatar": 4,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "avatar": 5,
+      "minPawnOrder": 30,
+      "maxBuildingOrder": 0,
+      "tagOrder": 20,
+      "transparent": false,
+      "alphaTest": 0.05,
+      "depthTest": false,
+      "depthWrite": false
+    }
+  ],
+  "overlap": {
+    "index": 26,
+    "count": 1,
+    "seat": 0,
+    "state": "AIRPORT",
+    "label": "RENT_TAG_BA",
+    "headPixels": 16
+  },
+  "renderOrder": "buildings < rent labels < character models",
+  "before": "controlled reconstruction with old transparent labels and character meshes at order 0",
+  "errors": []
+}

@@ -7,6 +7,8 @@ import { useCardBusy } from '../store/cardStore';
 import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
 import { usePawnStore } from '../store/pawnStore';
+import cardsIcon from './art/cards/cards-v1.svg';
+import './itemDrawer.css';
 
 /** Pode usar o Passe Livre agora: própria vez, antes de rolar e ainda no Descanso. */
 export function canUseRestPass(snapshot: GameSnapshot, myId: string): boolean {
@@ -68,17 +70,18 @@ export function ItemDrawer({ myId }: { myId: string }) {
         className={`hud-cards-button${usable ? ' hud-cards-ready' : ''}`}
         aria-expanded={open}
         aria-controls="hud-cards-drawer"
+        aria-haspopup="dialog"
         aria-label={`Cartas guardadas: ${count}${usable ? '. Passe Livre disponível agora' : ''}`}
         onClick={() => setOpen((v) => !v)}
       >
-        <CardsIcon />
+        <img className="hud-cards-icon" src={cardsIcon} alt="" draggable={false}/>
         <span className="hud-cards-label">Cartas</span>
         <span className="hud-cards-count">{count}</span>
       </button>
       {open && (
         <aside id="hud-cards-drawer" className="hud-cards-drawer" role="dialog" aria-label="Cartas guardadas">
           <header>
-            <h2>Cartas guardadas</h2>
+            <div className="hud-cards-heading"><img src={cardsIcon} alt=""/><div><h2>Suas cartas</h2><p>{count} {count===1?'carta guardada':'cartas guardadas'}</p></div></div>
             <button type="button" aria-label="Fechar cartas" onClick={() => setOpen(false)}>
               ×
             </button>
@@ -98,16 +101,5 @@ export function ItemDrawer({ myId }: { myId: string }) {
         </aside>
       )}
     </>
-  );
-}
-
-/** Ícone provisório (duas cartas); a arte final fica com o Codex. */
-function CardsIcon() {
-  return (
-    <svg className="hud-cards-icon" viewBox="0 0 32 32" aria-hidden="true">
-      <rect x="5" y="7" width="15" height="21" rx="2.5" transform="rotate(-14 12 17)" fill="#2a6fb0" stroke="#fde68a" strokeWidth="1.6" />
-      <rect x="12" y="4" width="15" height="21" rx="2.5" transform="rotate(10 19 14)" fill="#0f7a5f" stroke="#fde68a" strokeWidth="1.6" />
-      <path d="m19.6 10.5 1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.4-2.5 1.4.6-2.8-2.1-1.9 2.8-.3Z" fill="#ffd84b" transform="rotate(10 19 14)" />
-    </svg>
   );
 }
