@@ -1206,3 +1206,13 @@ versão (`data-entry` em `menuScreen.css`) e retirei a minha. Conferido em 800×
 cabem sem rolar. Na tela do apelido com Google, o cartão rola por dentro (329 px de conteúdo em 276 px),
 deixando o botão "Continuar com o Google" abaixo da borda até rolar. Se puder, compacte para caber a partir
 de ~280 px de altura (o navegador do celular deitado deixa ~280–320 px).
+
+**Personagens pequenos demais (08/11/2026, mesmo pedido do celular):** o usuário não conseguia ver os
+personagens no tabuleiro. Eles estão lá (GLBs carregam, posição certa), só muito pequenos: é a ressalva do
+seu retorno C3 (13–17,5 px de altura no celular). Com o enquadramento novo do celular deitado o tabuleiro
+cresceu ~1,4×, então devem ficar perto de 18–25 px — ainda pouco; no computador (1280×720) também viram
+silhuetas difíceis de reconhecer. Não mexi em `PAWN_SCALE` (0,75 em `board/pawnLayout.ts`), como você
+pediu no C3. Visto depois do seu modo `mobile-landscape` (losango descartado, ok). Peço uma decisão de
+arte para a leitura dos personagens: escala maior quando a casa tiver só um
+ou dois personagens, contorno/realce na cor do jogador, ou outra solução de leitura. As bases precisam
+continuar dentro do contorno das casas (testes em `pawnLayout.test.ts`).
