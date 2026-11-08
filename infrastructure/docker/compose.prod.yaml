@@ -1,0 +1,41 @@
+# Ensaio local da produção: a imagem do Dockerfile (site + API + WebSocket) com um PostgreSQL próprio.
+# Uso (na raiz do repositório):
+#   docker compose -f infrastructure/docker/compose.prod.yaml up --build
+# Abre em http://localhost:8090. Banco e porta separados do ambiente de desenvolvimento.
+name: imperio-urbano-prod
+
+services:
+  db:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: imperio
+      POSTGRES_USER: imperio
+      POSTGRES_PASSWORD: ensaio-local
+    volumes:
+      - prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U imperio -d imperio"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: ../..
+    image: imperio-urbano:local
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/imperio
+      DB_USER: imperio
+      DB_PASSWORD: ensaio-local
+      # Em produção: o endereço público do site (https://...). Separe vários com vírgula.
+      ALLOWED_ORIGINS: http://localhost:8090
+      # Opcional: o mesmo Client ID do Google, com http://localhost:8090 nas origens autorizadas.
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+    ports:
+      - "8090:8080"
+
+volumes:
+  prod-data:

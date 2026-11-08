@@ -21,3 +21,6 @@ assets/3d/staging/*
 !assets/3d/staging/.gitkeep
 assets/3d/reports/*
 !assets/3d/reports/.gitkeep
+
+# Site copiado para a API só dentro do Docker
+apps/api/src/main/resources/static/

@@ -1,0 +1,25 @@
+# Só o necessário para o Dockerfile: nada de dependências locais, builds, credenciais ou assets-fonte.
+**/node_modules
+**/dist
+**/target
+.git
+.worktrees
+.codex
+.run
+.idea
+.claude
+# O site importa arquivos de assets/board e uma imagem de docs/referencias; o resto fica de fora.
+assets/*
+!assets/board
+docs/*
+!docs/referencias
+e2e
+scripts
+playwright-report
+test-results
+**/*.log
+**/.env
+**/.env.*
+variable.env
+apps/web/tsconfig.tsbuildinfo
+apps/api/src/main/resources/static
