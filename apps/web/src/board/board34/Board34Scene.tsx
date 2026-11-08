@@ -1,7 +1,7 @@
 import{Suspense,useDeferredValue,useEffect,useLayoutEffect,useMemo,useRef,type ReactNode}from'react';
 import{Canvas,useThree,type ThreeEvent}from'@react-three/fiber';
 import{useGLTF,useTexture}from'@react-three/drei';
-import{BufferAttribute,CanvasTexture,DoubleSide,LinearFilter,Matrix4,Mesh,PerspectiveCamera,ShaderMaterial,SRGBColorSpace,Vector3,Vector4,type Object3D,type Texture}from'three';
+import{BufferAttribute,CanvasTexture,DoubleSide,LinearFilter,LinearMipmapLinearFilter,Matrix4,Mesh,PerspectiveCamera,ShaderMaterial,SRGBColorSpace,Vector3,Vector4,type Object3D,type Texture}from'three';
 import{CameraRig}from'../CameraRig';import type{BoardInsets,BoardFraming}from'../camera/tabletopViewport';import{FixedBoardViewport}from'../camera/FixedBoardViewport';import{applyFixedCamera,FIXED_CAMERA}from'../camera/fixedCamera';
 import{DiceVisual}from'../../dice/DiceVisual';import type{DiceFace}from'../../dice/diceOrientation';
 import{TabletopEnvironment}from'./TabletopEnvironment';import layout from'./layout.json';
@@ -23,9 +23,9 @@ function labelTexture(labels:BoardRentLabel[],taxPoolLabel:string|null){
  for(const tile of layout.tiles){const owner=labels.find(l=>l.stateId===tile.id)?.ownerColor;if(!owner)continue;const rect=ownerHeaderRect(tile.panel,tile.id);paintPanel(x,tile.panel,ctx=>paintOwnerHeader(ctx,rect,tile.id,tile.label??tile.id,owner),rect);}
  for(const tile of layout.tiles){const rect=tile.panel.rent,label=values.get(tile.id);if(!rect||label===undefined)continue;paintPanel(x,tile.panel,ctx=>{paintRentalPlaque(ctx,rect);let font=rect.height*.66;ctx.font=`900 ${font}px Arial,sans-serif`;while(ctx.measureText(label).width>rect.width*.83&&font>7){font-=.25;ctx.font=`900 ${font}px Arial,sans-serif`;}ctx.fillStyle='#fff5d3';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,rect.x+rect.width/2,rect.y+rect.height/2+.3);},rect);}
  const tax=layout.tiles.find(t=>t.id==='TAX')!;paintPanel(x,tax.panel,ctx=>{const rect=tax.panel.pool!;let size=14;const amount=taxPoolLabel??'—';ctx.font=`900 ${size}px Arial,sans-serif`;while(ctx.measureText(amount).width>rect.width*.88&&size>8){size-=.5;ctx.font=`900 ${size}px Arial,sans-serif`;}ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#ffe47b';ctx.fillText(amount,rect.x+rect.width/2,rect.y+rect.height*.70);},tax.panel.pool!);
- const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;texture.magFilter=texture.minFilter=LinearFilter;texture.generateMipmaps=false;return texture;
+ const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;texture.magFilter=LinearFilter;texture.minFilter=LinearMipmapLinearFilter;texture.generateMipmaps=true;return texture;
 }
-function material(atlas:Texture,overlay:Texture){return new ShaderMaterial({side:DoubleSide,toneMapped:false,uniforms:{atlas:{value:atlas},overlay:{value:overlay},highlight:{value:0}},vertexShader:'attribute vec3 sourceQ;varying vec3 q;void main(){q=sourceQ;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'uniform sampler2D atlas;uniform sampler2D overlay;uniform float highlight;varying vec3 q;void main(){vec2 uv=q.xy/q.z;vec4 a=texture2D(atlas,uv);vec4 b=texture2D(overlay,uv);gl_FragColor=vec4(mix(a.rgb,b.rgb,b.a)*(1.0+highlight),1.0);\n#include <colorspace_fragment>\n}'});}
+function material(atlas:Texture,overlay:Texture){return new ShaderMaterial({side:DoubleSide,toneMapped:false,uniforms:{atlas:{value:atlas},overlay:{value:overlay},highlight:{value:0}},vertexShader:'attribute vec3 sourceQ;varying vec3 q;void main(){q=sourceQ;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'uniform sampler2D atlas;uniform sampler2D overlay;uniform float highlight;varying vec3 q;void main(){vec2 uv=q.xy/q.z;vec4 a=texture2D(atlas,uv,-.5);vec4 b=texture2D(overlay,uv,-.5);gl_FragColor=vec4(mix(a.rgb,b.rgb,b.a)*(1.0+highlight),1.0);\n#include <colorspace_fragment>\n}'});}
 function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null}:Board34SceneProps){
  const {gl,size}=useThree();
  const large=tabletopViewport(size.width,size.height).scale*1536*gl.getPixelRatio()>3072&&gl.capabilities.maxTextureSize>=6144;
@@ -35,7 +35,7 @@ function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null}:Board3
  const overlay=useMemo(()=>labelTexture(rentLabels,taxPoolLabel),[labelsKey]);
  useEffect(()=>()=>overlay.dispose(),[overlay]);
  const prepared=useMemo(()=>{
-  atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=Math.min(8,gl.capabilities.getMaxAnisotropy());atlas.generateMipmaps=false;atlas.minFilter=atlas.magFilter=LinearFilter;atlas.needsUpdate=true;
+  atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=Math.min(8,gl.capabilities.getMaxAnisotropy());atlas.generateMipmaps=true;atlas.minFilter=LinearMipmapLinearFilter;atlas.magFilter=LinearFilter;atlas.needsUpdate=true;
   const model=scene.clone(true);model.updateMatrixWorld(true);
   const camera=new PerspectiveCamera();applyFixedCamera(camera);const projector=new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);
   const materials:ShaderMaterial[]=[],geometries:Mesh['geometry'][]=[];

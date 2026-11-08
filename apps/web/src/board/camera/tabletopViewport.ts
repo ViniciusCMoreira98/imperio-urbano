@@ -26,5 +26,5 @@ export function applyTabletopCamera(camera:PerspectiveCamera,width:number,height
  camera.setViewOffset(reference.width,reference.height,viewOffset[0]-fit.x/fit.scale,viewOffset[1]-fit.y/fit.scale,width/fit.scale,height/fit.scale);
  camera.updateProjectionMatrix();camera.updateMatrixWorld(true);return fit;
 }
-/** Até 8,4 milhões de pixels: 4K a DPR 1; telas menores podem usar DPR 2. */
-export function tabletopDpr(width:number,height:number,deviceDpr:number){return Math.min(deviceDpr,2,Math.sqrt(8_388_608/Math.max(1,width*height)));}
+/** Até 8,4 milhões de pixels: 4K a DPR 1; telas menores usam a densidade do aparelho até 3 (celulares). */
+export function tabletopDpr(width:number,height:number,deviceDpr:number){return Math.min(deviceDpr,3,Math.sqrt(8_388_608/Math.max(1,width*height)));}

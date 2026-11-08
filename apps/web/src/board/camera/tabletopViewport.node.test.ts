@@ -39,7 +39,7 @@ describe('mesa contínua em toda a janela',()=>{
   }
  });
  it('limita o custo de desenho em 4K mantendo supersampling nas telas menores',()=>{
-  expect(tabletopDpr(3840,2160,2)).toBeCloseTo(1.00566,4);expect(tabletopDpr(1280,720,2)).toBe(2);
+  expect(tabletopDpr(3840,2160,2)).toBeCloseTo(1.00566,4);expect(tabletopDpr(1280,720,2)).toBe(2);expect(tabletopDpr(800,360,3)).toBe(3);
   for(const[w,h]of[[1280,800],[2560,1440],[3840,2160]])expect(w*h*tabletopDpr(w,h,2)**2).toBeLessThanOrEqual(8_388_609);
  });
 });

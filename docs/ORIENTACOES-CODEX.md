@@ -1224,3 +1224,10 @@ o logo `logo-v1.webp` sobre um fundo azul em degradê, gerado por `scripts/asset
 inteiro fica pequeno numa tela inicial; talvez só a coroa ou "IU"), basta substituir os quatro PNG em
 `apps/web/public/` com os mesmos nomes e tamanhos; no "maskable" o desenho precisa caber no círculo central
 de 80%.
+
+**Nitidez do tabuleiro no celular (08/11/2026):** o usuário pediu a nitidez do Business Tour. Causa: o atlas
+(3072×2048) e a camada de aluguéis eram amostrados sem mipmap (`LinearFilter`), e no celular o tabuleiro
+ocupa ~1/3 dessa resolução: as letras ficavam serrilhadas. Em `board34/Board34Scene.tsx` ativei mipmaps
+(`LinearMipmapLinearFilter`) no atlas e na camada de aluguéis, com viés de -0,5 no `texture2D` do shader para
+não amaciar demais; em `camera/tabletopViewport.ts` o `tabletopDpr` passou a aceitar até 3 (celulares de
+DPR 3), mantendo o teto de 8,4 milhões de pixels. Se mexer no shader ou no atlas, preserve os mipmaps.
