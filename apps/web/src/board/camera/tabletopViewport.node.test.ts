@@ -2,8 +2,17 @@ import{describe,it,expect}from'vitest';
 import{PerspectiveCamera,Vector3}from'three';
 import{applyFixedCamera,FIXED_CAMERA}from'./fixedCamera';
 import{applyTabletopCamera,tabletopDpr,tabletopViewport}from'./tabletopViewport';
+import layout from '../board34/layout.json';
 
 describe('mesa contínua em toda a janela',()=>{
+ it('encaixa a câmera móvel entre as reservas do HUD e restaura a calibração ao voltar ao computador',()=>{
+  const reference=new PerspectiveCamera();applyFixedCamera(reference);
+  for(const[w,h]of[[667,300],[800,280],[800,330],[915,412]]){
+   const camera=new PerspectiveCamera(),insets={left:125,right:125,top:20,bottom:6};applyTabletopCamera(camera,w,h,'mobile-landscape',insets);
+   for(const p of layout.layers.frame.polygon){const v=new Vector3(...p as[number,number,number]).project(camera),x=(v.x+1)*w/2,y=(1-v.y)*h/2;expect(x).toBeGreaterThanOrEqual(insets.left);expect(x).toBeLessThanOrEqual(w-insets.right);expect(y).toBeGreaterThanOrEqual(insets.top);expect(y).toBeLessThanOrEqual(h-insets.bottom);}
+   applyTabletopCamera(camera,1280,720,'standard');expect(camera.zoom).toBe(1);expect(camera.matrixWorld.toArray()).toEqual(reference.matrixWorld.toArray());
+  }
+ });
  it('amplia a apresentação da praia sem cortar o quadro nem mudar a pose',()=>{
   const original=new PerspectiveCamera();applyFixedCamera(original);
   for(const[w,h]of[[1280,720],[1920,1080],[844,390],[667,375]]){

@@ -2,7 +2,7 @@ import{Suspense,useDeferredValue,useEffect,useLayoutEffect,useMemo,useRef,type R
 import{Canvas,useThree,type ThreeEvent}from'@react-three/fiber';
 import{useGLTF,useTexture}from'@react-three/drei';
 import{BufferAttribute,CanvasTexture,DoubleSide,LinearFilter,Matrix4,Mesh,PerspectiveCamera,ShaderMaterial,SRGBColorSpace,Vector3,Vector4,type Object3D,type Texture}from'three';
-import{CameraRig}from'../CameraRig';import type{BoardInsets}from'../camera/tabletopViewport';import{FixedBoardViewport}from'../camera/FixedBoardViewport';import{applyFixedCamera,FIXED_CAMERA}from'../camera/fixedCamera';
+import{CameraRig}from'../CameraRig';import type{BoardInsets,BoardFraming}from'../camera/tabletopViewport';import{FixedBoardViewport}from'../camera/FixedBoardViewport';import{applyFixedCamera,FIXED_CAMERA}from'../camera/fixedCamera';
 import{DiceVisual}from'../../dice/DiceVisual';import type{DiceFace}from'../../dice/diceOrientation';
 import{TabletopEnvironment}from'./TabletopEnvironment';import layout from'./layout.json';
 import{paintPanel}from'./panelProjection';
@@ -13,7 +13,7 @@ import{tabletopViewport}from'../camera/tabletopViewport';
 export{layout as board34Layout};
 /** ownerColor: cor do dono; repinta a faixa do nome (engenharia, 07/11/2026). */
 export interface BoardRentLabel{stateId:string;rentLabel:string;ownerColor?:string}
-export interface Board34SceneProps{framing?:'standard'|'immersive';insets?:BoardInsets;environment?:'wood'|'beach';selectedId?:string|null;onSelect?:(id:string)=>void;rentLabels?:BoardRentLabel[];taxPoolLabel?:string|null;diceValues?:[DiceFace,DiceFace]|null;children?:ReactNode}
+export interface Board34SceneProps{framing?:BoardFraming;insets?:BoardInsets;environment?:'wood'|'beach';selectedId?:string|null;onSelect?:(id:string)=>void;rentLabels?:BoardRentLabel[];taxPoolLabel?:string|null;diceValues?:[DiceFace,DiceFace]|null;children?:ReactNode}
 export function board34TileAnchor(id:string){const tile=layout.tiles.find(t=>t.id===id);if(!tile)throw Error(`Casa desconhecida na cena de 34 casas: ${id}`);return tile.anchor;}
 const nodes=new Set(layout.tiles.map(t=>t.modelNode));
 function tileOf(object:Object3D,root:Object3D){for(let node:Object3D|null=object;node&&node!==root;node=node.parent)if(nodes.has(node.name))return node.name.slice(5);return null;}

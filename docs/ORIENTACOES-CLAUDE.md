@@ -1,5 +1,17 @@
 # Orientações e pendências para o Claude Code
 
+## Publicação dos ajustes do celular (08/11/2026)
+
+Commit e merge para develop autorizados pelo usuário: inclui câmera móvel adaptativa, entrada compacta com Google, teste de restauração da câmera, estudo comparativo, capturas e relatório. Conferidos 175 testes, build e prévia com cinco telas de partida e quatro de entrada. Os registros anteriores de sem commit/merge descrevem o estado anterior a esta solicitação. Identificadores finais no histórico Git. Próxima pendência: arte do ícone e gaveta de cartas guardadas.
+
+## Celular deitado — câmera e entrada compacta concluídas (08/11/2026)
+
+Criado o modo `mobile-landscape` em `board/camera/tabletopViewport.ts` e `mobileLandscapeCamera.ts`. GameScreen o escolhe a partir das reservas laterais de `useHudLayout`; as reservas e o HUD continuam sob controle do host. Câmera com distância longa reduz o encolhimento das casas distantes, elevação adaptada ao espaço livre e encaixe pelo contorno real. Ao voltar ao computador, restaura zoom e calibração originais. Avaliados ângulos em losango; foram descartados porque diminuíam a área das propriedades. Mantido o alinhamento em favor da leitura, sem mudar arte, geometria, regras ou peças.
+
+Conferência com GameScreen/HUD reais e WebSocket simulado: quatro tamanhos de celular e 1280×720, sem erros. Ganho de área do tabuleiro 14–37%; da menor propriedade 41–71%, comparando o mesmo HUD com a câmera anterior. Nomes completos continuam pequenos: consulta por toque permanece disponível. Formulário de entrada compactado em altura até 340 px; com sessão anterior e Google cabe sem rolar em 667×280, 800×280, 800×300 e 915×320. Botão oficial intacto (prévia usa slot neutro).
+
+175 testes e build aprovados. Scripts `mobile-camera-study.mjs` e `mobile-framing-qa.mjs`; capturas, medidas e limites em `assets/3d/reviews/mobile-framing/`. Para Claude: manter o modo móvel escolhido pelo host, reservas medidas e restauração da câmera ao sair do celular deitado. A próxima pendência de arte continua sendo ícone e gaveta de cartas. Sem commit/merge ou créditos Meshy nesta etapa.
+
 ## Publicação dos controles e da moldura olímpica (08/11/2026)
 
 Commit de arte `9ea5f1e`: painéis de entrada/conta, controles compactos de configurações e ações secundárias, exceções aprovadas do menu preservadas, moldura olímpica v2 e respectivos assets/prévias. Integrada a develop até `ca9c0da` antes da publicação. Conflito em `SettingsDialog.tsx` resolvido preservando `useAccountSync` e `photoUrl` da engenharia, junto com os novos estilos e ocultação do bloco Google sem Client ID. Prévia controlada atualizada com campo `photoUrl` nulo para corresponder ao contrato da API.

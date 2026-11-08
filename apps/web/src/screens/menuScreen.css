@@ -62,3 +62,15 @@
 /* Menu no celular deitado: ações compactas ao lado do logotipo, sem esconder Suas partidas. */
 @media(max-height:500px){.menu-scene[data-entry=menu]{display:grid;grid-template-columns:minmax(145px,.65fr) minmax(300px,1.35fr);grid-template-rows:auto minmax(0,1fr) auto auto;gap:8px 16px;align-items:center;align-content:center;height:100dvh;min-height:100dvh;padding:9px 14px 11px;box-sizing:border-box}.menu-scene[data-entry=menu] .menu-top{grid-column:1/-1;grid-row:1}.menu-scene[data-entry=menu] .menu-logo{grid-column:1;grid-row:2/5;width:100%;height:auto;max-height:185px;align-self:center}.menu-scene[data-entry=menu] .menu-actions{grid-column:2;grid-row:2;width:100%;max-width:360px;justify-self:center;align-self:end}.menu-scene[data-entry=menu] .menu-character{grid-column:2;grid-row:3;justify-self:center}.menu-scene[data-entry=menu] .menu-games{grid-column:2;grid-row:4;justify-self:center}}
 @media(min-height:501px){.menu-scene[data-entry=menu]{gap:clamp(8px,1.6vmin,18px)}}
+/* Altura útil de navegadores móveis: entradas e Google permanecem visíveis sem reduzir o botão oficial. */
+@media(orientation:landscape) and (max-height:340px){
+ .menu-scene[data-entry=nickname]{padding:6px 14px;gap:5px 14px}
+ .menu-scene[data-entry=nickname] .menu-login-card{padding:6px 12px;max-height:calc(100dvh - 12px);border-radius:14px}
+ .menu-login-card>h2{font-size:17px;margin-bottom:6px}
+ .menu-nickname-form{gap:3px}.menu-nickname-form input{height:31px;font-size:14px}
+ .menu-scene .menu-login-card .menu-login-submit,.menu-scene .menu-login-card .menu-last-session{min-height:30px;padding:4px 10px;font-size:12px}
+ .menu-scene .menu-login-card .menu-login-submit{margin-top:3px}.menu-scene .menu-login-card .menu-last-session{margin-top:4px}
+ .menu-google{margin-top:5px;gap:4px}.menu-google-heading{gap:5px}.menu-google-heading>img{width:22px;height:22px;padding:3px}
+ .menu-google-heading strong{font-size:11px}.menu-google-heading p{margin:1px 0 0;font-size:9px}
+ .menu-google small{font-size:9px;line-height:1.2}.menu-google-or{font-size:8px}
+}
