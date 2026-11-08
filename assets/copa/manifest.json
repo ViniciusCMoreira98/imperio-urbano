@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/copa/source/copa-host-v1.png",
+  "sourceSha256": "6bcfa67bc1c72c2c2385b7c5d23f51368767a73aa3b2d507a78331139985f18a",
+  "file": "apps/web/src/board/board34/art/copa-host-v1.webp",
+  "sha256": "6b95cb064225fa7d985bcb3dbafc4fbcb483d436def91ca8f389ead16c8b8a81",
+  "bytes": 75006,
+  "width": 512,
+  "height": 512,
+  "transparentPixels": 115081,
+  "solidPixels": 137837,
+  "prompt": "assets/copa/prompt.json",
+  "encoder": "Chromium 141.0.7390.37 WebP quality 92",
+  "meshyCredits": 0,
+  "integrated": false
+}

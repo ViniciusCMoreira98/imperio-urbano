@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/olympic-host/source/olympic-host-v1.png",
+  "sourceSha256": "2a990d3503145f198a5beabde0e627bf402a1abf11a3feb470bebc55e563815d",
+  "file": "apps/web/src/board/board34/art/olympic-host-v1.webp",
+  "sha256": "af88d9d773edc11bcebd68ec0497795186ced7e5f2b9d85f4038ddb103dd3a50",
+  "bytes": 75714,
+  "width": 512,
+  "height": 512,
+  "transparentPixels": 110163,
+  "solidPixels": 145830,
+  "prompt": "assets/olympic-host/prompt.json",
+  "encoder": "Chromium 141.0.7390.37 WebP quality 92",
+  "meshyCredits": 0,
+  "integrated": false
+}

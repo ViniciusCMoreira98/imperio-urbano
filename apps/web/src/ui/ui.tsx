@@ -1,6 +1,7 @@
 // Peças visuais comuns às telas (estilo da referência: painel azul-marinho, botões saturados).
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { playSound } from '../audio/audio';
+import './button-theme.css';
 
 type Variant = 'primary' | 'confirm' | 'secondary' | 'danger' | 'roll' | 'neon';
 
@@ -34,7 +35,7 @@ export function Button({
         if (e.pointerType === 'mouse' && !e.currentTarget.disabled) playSound('passarBotao');
         onPointerEnter?.(e);
       }}
-      className={`rounded-lg px-4 py-2 font-bold shadow transition disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-amber-300 ${VARIANTS[variant]} ${className}`}
+      className={`iu-button iu-button-${variant} rounded-lg px-4 py-2 font-bold shadow transition disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-amber-300 ${VARIANTS[variant]} ${className}`}
       {...props}
     />
   );

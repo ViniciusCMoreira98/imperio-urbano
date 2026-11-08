@@ -1,0 +1,57 @@
+{
+  "screens": [
+    {
+      "view": "menu",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "view": "account",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "view": "menu",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "view": "account",
+      "width": 844,
+      "height": 390
+    },
+    {
+      "view": "menu",
+      "width": 800,
+      "height": 360
+    },
+    {
+      "view": "account",
+      "width": 800,
+      "height": 360
+    },
+    {
+      "view": "menu",
+      "width": 667,
+      "height": 375
+    },
+    {
+      "view": "account",
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "linked": true,
+  "disabledConfiguration": true,
+  "signInError": true,
+  "sdkError": true,
+  "guestEntry": true,
+  "googleCallbacksPreserved": true,
+  "logout": true,
+  "officialGoogleButtonSourceUnchanged": true,
+  "neutralRendererSlot": true,
+  "noRealOAuth": true,
+  "noExternalRequests": true,
+  "errors": [],
+  "failed": []
+}

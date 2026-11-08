@@ -1,0 +1,8 @@
+/* Botões comuns do projeto: raio fixo e contorno próprio, sem imagens esticadas. */
+.iu-button:not(.hud-roll){border:1px solid #79a8be;border-radius:12px;background:linear-gradient(#1a4d71,#092b48);box-shadow:inset 0 1px #fff2,0 2px 5px #00192a44;color:#e6f0f6;line-height:1.2;cursor:pointer}
+.iu-button-primary:not(.hud-roll){border-color:#efd38b;background:linear-gradient(#f9df8c,#e2b84d);color:#193b3d}
+.iu-button-confirm:not(.hud-roll){border-color:#efd38b;background:linear-gradient(#2b936b,#0d5d49);color:#fff5d8}
+.iu-button-danger:not(.hud-roll){border-color:#e7a59d;background:linear-gradient(#a44b52,#6a2e3e);color:#ffe8dd}
+.iu-button-neon:not(.hud-roll),.game-hud-header .iu-button,.game-hud-history>.iu-button{border-color:#e6c77e;border-radius:12px;background:linear-gradient(#1a4d71,#092b48);box-shadow:inset 0 1px #fff2,0 2px 5px #00192a55;color:#fff0c6}
+.iu-button:not(:disabled):hover{filter:brightness(1.1)}.iu-button:focus-visible{outline:3px solid #fff0ab;outline-offset:3px}.iu-button:disabled{cursor:default}
+@media(max-height:500px){.iu-button:not(.hud-roll){border-radius:9px}.game-hud-header .iu-button,.game-hud-history>.iu-button{border-radius:9px}}

@@ -1,0 +1,22 @@
+{
+  "screens": [
+    {
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "width": 800,
+      "height": 360
+    },
+    {
+      "width": 667,
+      "height": 375
+    }
+  ],
+  "originalMenuArtworkPreserved": true,
+  "originalCharacterControlPreserved": true,
+  "menuCallbacks": true,
+  "commonButtonClass": true,
+  "errors": [],
+  "failed": []
+}

@@ -3,7 +3,7 @@
 // FPS, idioma, conta vinculada etc. entram quando existirem.
 // O som vale na hora e fica lembrado neste navegador (audioStore); não há "Salvar".
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
-import '../settings-art/settings-assets.css';
+import '../settings-art/settings-controls.css';
 import './settingsHost.css';
 import skylineArt from '../settings-art/art/skyline-v1.svg';
 import gearIcon from '../main-menu/art/gear-v1.svg';
@@ -13,10 +13,11 @@ import speakerIcon from '../settings-art/art/speaker-v1.svg';
 import checkIcon from '../settings-art/art/check-v1.svg';
 import resetIcon from '../settings-art/art/reset-v1.svg';
 import logoutIcon from '../settings-art/art/logout-v1.svg';
+import linkIcon from '../settings-art/art/link-v1.svg';
 import { playSound } from '../audio/audio';
 import { useAudioStore } from '../audio/audioStore';
 import { useAppStore } from '../store/appStore';
-import { GoogleButton } from '../auth/GoogleButton';
+import { GoogleButton, googleClientId } from '../auth/GoogleButton';
 import { api, ApiError, type GoogleSignIn } from '../net/api';
 
 type Tab = 'sound' | 'account';
@@ -194,6 +195,13 @@ function AccountTab({ onClose }: { onClose: () => void }) {
   const session = useAppStore((s) => s.session);
   const setSession = useAppStore((s) => s.setSession);
   const [notice, setNotice] = useState<string | null>(null);
+  const [googleEnabled, setGoogleEnabled] = useState(false);
+  useEffect(() => {
+    if (session?.google) return;
+    let alive = true;
+    void googleClientId().then(id => { if (alive) setGoogleEnabled(!!id); });
+    return () => { alive = false; };
+  }, [session?.google]);
   // Sessões salvas antes do login com Google não sabem se têm conta ligada: o servidor confirma.
   useEffect(() => {
     if (!session) return;
@@ -226,26 +234,16 @@ function AccountTab({ onClose }: { onClose: () => void }) {
         <img src={profileIcon} alt="" />
         PERFIL
       </h2>
-      <div className="st-fields">
+      <div className="st-fields st-account-fields">
+        <div className="st-account-summary">
         <div className="st-row">
           <span>Apelido</span>
           <strong className="st-account-name">{session?.nickname ?? '—'}</strong>
         </div>
         <div className="st-row">
           <span>Tipo de conta</span>
-          <span>{session?.google ? `Google${session.email ? ` · ${session.email}` : ''}` : 'Convidado neste navegador'}</span>
+          <span className="st-account-type"><strong>{session?.google ? 'Conta Google' : 'Convidado'}</strong>{session?.google && session.email ? <small title={session.email}>{session.email}</small> : <small>Neste navegador</small>}</span>
         </div>
-        {!session?.google && (
-          <div className="st-row st-google-row">
-            <span>Salvar progresso</span>
-            <GoogleButton text="signin_with" width={240} onCredential={(credential) => void linkGoogle(credential)} />
-          </div>
-        )}
-        {notice && (
-          <p className="st-google-notice" role="status">
-            {notice}
-          </p>
-        )}
         <div className="st-row">
           {/* Volta à tela do apelido; as partidas em andamento continuam com o jogador anterior. */}
           <button
@@ -261,6 +259,10 @@ function AccountTab({ onClose }: { onClose: () => void }) {
             {session?.google ? 'Sair da conta' : 'Trocar apelido'}
           </button>
         </div>
+        </div>
+        {!session?.google && googleEnabled && <section className="st-google-card" aria-label="Salvar progresso com Google"><div className="st-google-heading"><img src={linkIcon} alt=""/><div><strong>Seu progresso com você</strong><p>Entre para guardar ou recuperar seu jogador.</p></div></div><GoogleButton text="signin_with" width={240} onCredential={(credential) => void linkGoogle(credential)}/><small>Conta já usada? Você entra no jogador ligado a ela.</small></section>}
+        {session?.google && <section className="st-google-card st-google-connected"><img src={checkIcon} alt=""/><strong>Conta conectada</strong><p>Use esta conta para recuperar seu jogador em outro aparelho.</p></section>}
+        {notice && <p className="st-google-notice" role="status">{notice}</p>}
       </div>
     </section>
   );

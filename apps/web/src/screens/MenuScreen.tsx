@@ -9,6 +9,7 @@ import './menuScreen.css';
 import backgroundArt from '../main-menu/art/background-v1.webp';
 import logoArt from '../main-menu/art/logo-v1.webp';
 import mascotArt from '../main-menu/art/mascot-v1.webp';
+import accountLinkIcon from '../settings-art/art/link-v1.svg';
 import globeIcon from '../play-menu/art/globe-v1.svg';
 import laurelLeft from '../main-menu/art/laurel-left-v1.svg';
 import laurelRight from '../main-menu/art/laurel-right-v1.svg';
@@ -52,7 +53,7 @@ export function MenuScreen() {
       </>
     );
   return (
-    <main className="menu-scene" style={{ backgroundImage: `url(${backgroundArt})` }}>
+    <main className="menu-scene" data-entry={session ? 'menu' : 'nickname'} style={{ backgroundImage: `url(${backgroundArt})` }}>
       <CharacterPicker />
       <div className="menu-top">
         {session ? (
@@ -102,8 +103,9 @@ function NicknameForm() {
   }
 
   return (
-    <Panel title="Como quer ser chamado?" className="menu-card">
+    <Panel title="Como quer ser chamado?" className="menu-card menu-login-card">
       <form
+        className="menu-nickname-form"
         onSubmit={(e) => {
           e.preventDefault();
           void submit();
@@ -121,13 +123,13 @@ function NicknameForm() {
           className="w-full rounded-lg border border-sky-400/40 bg-slate-800 px-3 py-2 text-lg text-white outline-none focus:border-amber-300"
           placeholder="Ex.: Vinicius"
         />
-        <Button type="submit" variant="primary" className="mt-4 w-full text-lg" disabled={busy || !nickname.trim()}>
+        <Button type="submit" variant="primary" className="menu-login-submit mt-4 w-full text-lg" disabled={busy || !nickname.trim()}>
           ENTRAR
         </Button>
         <ErrorText message={error} />
       </form>
       {last && (
-        <Button variant="confirm" className="mt-3 w-full" onClick={() => setSession(last)}>
+        <Button variant="confirm" className="menu-last-session mt-3 w-full" onClick={() => setSession(last)}>
           Continuar como {last.nickname}
         </Button>
       )}
@@ -147,6 +149,7 @@ function GoogleSignInBlock({ onError }: { onError: (message: string | null) => v
   return (
     <div className="menu-google">
       <span className="menu-google-or">ou</span>
+      <div className="menu-google-heading"><img src={accountLinkIcon} alt=""/><div><strong>Leve seu progresso com você</strong><p>Entre para guardar ou recuperar seu jogador.</p></div></div>
       <GoogleButton
         text="continue_with"
         onCredential={async (credential) => {
@@ -159,7 +162,7 @@ function GoogleSignInBlock({ onError }: { onError: (message: string | null) => v
           }
         }}
       />
-      <small>Com o Google, seu progresso fica salvo e volta em qualquer aparelho.</small>
+      <small>Moedas, vitórias e personagem em outros aparelhos.</small>
     </div>
   );
 }
