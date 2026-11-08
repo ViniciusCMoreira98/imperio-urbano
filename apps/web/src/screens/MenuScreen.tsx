@@ -14,6 +14,7 @@ import globeIcon from '../play-menu/art/globe-v1.svg';
 import laurelLeft from '../main-menu/art/laurel-left-v1.svg';
 import laurelRight from '../main-menu/art/laurel-right-v1.svg';
 import { playSound } from '../audio/audio';
+import { promptInstall, useInstallMode } from '../app/install';
 import { AvatarPortrait, PlayerPortrait } from '../hud/AvatarPortrait';
 import { SettingsButton } from '../hud/SettingsButton';
 import { CreateOnlineRoomScreen, OnlinePlayScreen, PrivateRoomsScreen } from '../play-menu/PlayEntryScreens';
@@ -77,6 +78,7 @@ export function MenuScreen() {
         ) : (
           <span />
         )}
+        <InstallAppButton />
         <SettingsButton inGame={false} className="menu-settings" />
       </div>
       <img className="menu-logo" src={logoArt} alt="Império Urbano — Edição Brasil" />
@@ -392,6 +394,41 @@ function OnlineEntry({ onBack }: { onBack: () => void }) {
 }
 
 /** Folha sobre o menu (criar, entrar, suas partidas): fecha no ✕, no Esc ou tocando fora. */
+/** "Instalar app": pedido oficial no Android; no iPhone, o passo a passo do Safari. Some quando já é app. */
+function InstallAppButton() {
+  const mode = useInstallMode();
+  const [iosHelp, setIosHelp] = useState(false);
+  if (!mode) return null;
+  return (
+    <>
+      <button
+        type="button"
+        className="menu-install"
+        onClick={() => {
+          playSound('confirmarAcao');
+          if (mode === 'prompt') void promptInstall();
+          else setIosHelp(true);
+        }}
+      >
+        <span aria-hidden="true">📲</span> Instalar app
+      </button>
+      {iosHelp && (
+        <MenuSheet title="Instalar no iPhone" onClose={() => setIosHelp(false)}>
+          <ol className="menu-install-steps">
+            <li>
+              Toque em <strong>Compartilhar</strong> (o quadrado com a seta para cima, na barra do Safari).
+            </li>
+            <li>
+              Escolha <strong>Adicionar à Tela de Início</strong> e confirme em <strong>Adicionar</strong>.
+            </li>
+            <li>Abra o Império Urbano pelo ícone: ele abre em tela cheia, como um app.</li>
+          </ol>
+        </MenuSheet>
+      )}
+    </>
+  );
+}
+
 function MenuSheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {

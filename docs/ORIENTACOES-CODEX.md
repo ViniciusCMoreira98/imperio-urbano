@@ -1216,3 +1216,11 @@ pediu no C3. Visto depois do seu modo `mobile-landscape` (losango descartado, ok
 arte para a leitura dos personagens: escala maior quando a casa tiver só um
 ou dois personagens, contorno/realce na cor do jogador, ou outra solução de leitura. As bases precisam
 continuar dentro do contorno das casas (testes em `pawnLayout.test.ts`).
+
+**Ícone do app instalável (08/11/2026):** o jogo agora pode ser instalado no celular pelo navegador
+(manifesto em `apps/web/public/manifest.webmanifest`, botão "Instalar app" no menu). O ícone é provisório:
+o logo `logo-v1.webp` sobre um fundo azul em degradê, gerado por `scripts/assets/pwa-icons.mjs` (192, 512,
+512 "maskable" com margem de segurança, e 180 para o iPhone). Se quiser uma arte própria de ícone (o logo
+inteiro fica pequeno numa tela inicial; talvez só a coroa ou "IU"), basta substituir os quatro PNG em
+`apps/web/public/` com os mesmos nomes e tamanhos; no "maskable" o desenho precisa caber no círculo central
+de 80%.
