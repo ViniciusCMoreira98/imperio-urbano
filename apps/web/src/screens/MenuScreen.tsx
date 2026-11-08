@@ -81,8 +81,7 @@ export function MenuScreen() {
       </div>
       <img className="menu-logo" src={logoArt} alt="Império Urbano — Edição Brasil" />
       <img className="menu-mascot" src={mascotArt} alt="" aria-hidden="true" />
-      {/* Coluna das ações: some no layout comum (display:contents) e vira a coluna direita no celular deitado. */}
-      <div className="menu-body">{session ? <PlayMenu onPlayOnline={() => setOnline(true)} /> : <NicknameForm />}</div>
+      {session ? <PlayMenu onPlayOnline={() => setOnline(true)} /> : <NicknameForm />}
     </main>
   );
 }

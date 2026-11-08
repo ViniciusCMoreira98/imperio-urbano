@@ -1188,3 +1188,9 @@ enquadramento.
 3. Contrato a manter: as reservas (`BoardInsets`) continuam vindo do host (`useHudLayout`), e o HUD não cobre
    o tabuleiro. No celular deitado elas agora são: topo pequeno, base 6 px e laterais iguais (a coluna mais
    larga entre jogadores/Histórico à esquerda e Menu/barra de ação à direita).
+
+**Menu deitado (08/11/2026):** fizemos o menu em duas colunas ao mesmo tempo. Ao integrar, fiquei com a sua
+versão (`data-entry` em `menuScreen.css`) e retirei a minha. Conferido em 800×300: o menu e "Suas Partidas"
+cabem sem rolar. Na tela do apelido com Google, o cartão rola por dentro (329 px de conteúdo em 276 px),
+deixando o botão "Continuar com o Google" abaixo da borda até rolar. Se puder, compacte para caber a partir
+de ~280 px de altura (o navegador do celular deitado deixa ~280–320 px).
