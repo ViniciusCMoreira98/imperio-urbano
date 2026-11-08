@@ -1,0 +1,128 @@
+{
+  "width": 800,
+  "height": 330,
+  "insets": {
+    "top": 18,
+    "bottom": 6,
+    "left": 120,
+    "right": 120
+  },
+  "records": [
+    {
+      "kind": "current",
+      "width": 495.3,
+      "height": 294.3,
+      "boardArea": 126282,
+      "smallestProperty": 1091,
+      "largestProperty": 2255
+    },
+    {
+      "yaw": 0,
+      "elevation": 35,
+      "width": 550.7,
+      "height": 306,
+      "boardArea": 160078,
+      "smallestProperty": 1697,
+      "largestProperty": 2408
+    },
+    {
+      "yaw": 0,
+      "elevation": 43,
+      "width": 460.6,
+      "height": 306,
+      "boardArea": 134580,
+      "smallestProperty": 1442,
+      "largestProperty": 2006
+    },
+    {
+      "yaw": 0,
+      "elevation": 50,
+      "width": 407.7,
+      "height": 306,
+      "boardArea": 119771,
+      "smallestProperty": 1295,
+      "largestProperty": 1789
+    },
+    {
+      "yaw": 0,
+      "elevation": 60,
+      "width": 357.4,
+      "height": 306,
+      "boardArea": 105881,
+      "smallestProperty": 1119,
+      "largestProperty": 1619
+    },
+    {
+      "yaw": 25,
+      "elevation": 35,
+      "width": 528.5,
+      "height": 306,
+      "boardArea": 94581,
+      "smallestProperty": 997,
+      "largestProperty": 1439
+    },
+    {
+      "yaw": 25,
+      "elevation": 43,
+      "width": 444.8,
+      "height": 306,
+      "boardArea": 79584,
+      "smallestProperty": 832,
+      "largestProperty": 1223
+    },
+    {
+      "yaw": 25,
+      "elevation": 50,
+      "width": 396.2,
+      "height": 306,
+      "boardArea": 70881,
+      "smallestProperty": 735,
+      "largestProperty": 1100
+    },
+    {
+      "yaw": 25,
+      "elevation": 60,
+      "width": 350.6,
+      "height": 306,
+      "boardArea": 62725,
+      "smallestProperty": 642,
+      "largestProperty": 988
+    },
+    {
+      "yaw": 45,
+      "elevation": 35,
+      "width": 532.1,
+      "height": 306,
+      "boardArea": 84562,
+      "smallestProperty": 844,
+      "largestProperty": 1354
+    },
+    {
+      "yaw": 45,
+      "elevation": 43,
+      "width": 447.9,
+      "height": 306,
+      "boardArea": 71176,
+      "smallestProperty": 709,
+      "largestProperty": 1145
+    },
+    {
+      "yaw": 45,
+      "elevation": 50,
+      "width": 399,
+      "height": 306,
+      "boardArea": 63410,
+      "smallestProperty": 630,
+      "largestProperty": 1024
+    },
+    {
+      "yaw": 45,
+      "elevation": 60,
+      "width": 353.3,
+      "height": 306,
+      "boardArea": 56135,
+      "smallestProperty": 556,
+      "largestProperty": 913
+    }
+  ]
+}

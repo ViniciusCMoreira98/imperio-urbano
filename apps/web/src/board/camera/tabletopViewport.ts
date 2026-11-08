@@ -1,8 +1,9 @@
 import {PerspectiveCamera} from 'three';
 import {applyFixedCamera,FIXED_CAMERA} from './fixedCamera';
+import {applyMobileLandscapeCamera} from './mobileLandscapeCamera';
 
-/** Amplia a janela sobre a mesa; pose, escala entre eixos e calibração do tabuleiro são preservadas. */
-export type BoardFraming='standard'|'immersive';
+/** Desktop keeps the calibrated pose; the landscape host can select its fitted mobile camera. */
+export type BoardFraming='standard'|'immersive'|'mobile-landscape';
 /** Reservas medidas pelo host (px livres no topo e na base para o HUD). Sem elas, valem as do enquadramento. */
 export interface BoardInsets{top:number;bottom:number;left?:number;right?:number}
 export function tabletopViewport(width:number,height:number,framing:BoardFraming='standard',insets?:BoardInsets){
@@ -17,6 +18,10 @@ export function tabletopViewport(width:number,height:number,framing:BoardFraming
  return{width,height,scale,x,y,top,bottom};
 }
 export function applyTabletopCamera(camera:PerspectiveCamera,width:number,height:number,framing:BoardFraming='standard',insets?:BoardInsets){
+ camera.zoom=1;
+ if(framing==='mobile-landscape'){
+  applyMobileLandscapeCamera(camera,width,height,insets);return tabletopViewport(width,height,framing,insets);
+ }
  applyFixedCamera(camera);const fit=tabletopViewport(width,height,framing,insets),{reference,viewOffset}=FIXED_CAMERA;
  camera.setViewOffset(reference.width,reference.height,viewOffset[0]-fit.x/fit.scale,viewOffset[1]-fit.y/fit.scale,width/fit.scale,height/fit.scale);
  camera.updateProjectionMatrix();camera.updateMatrixWorld(true);return fit;

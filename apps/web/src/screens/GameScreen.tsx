@@ -59,7 +59,7 @@ export function GameScreen() {
       <div ref={viewportRef} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
         {/* Canvas de mesa em toda a janela; HUD flutua sobre o cenário. */}
         <div className="game-hud-board absolute inset-0">
-          <GameBoard insets={insets} taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
+          <GameBoard framing={insets?.left!==undefined&&insets?.right!==undefined?'mobile-landscape':'standard'} insets={insets} taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
         </div>
 
         <header ref={headerRef} className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
