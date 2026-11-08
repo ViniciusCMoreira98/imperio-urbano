@@ -83,6 +83,8 @@ export interface EventCard {
   title: string;
   text: string;
   effect: CardEffect;
+  /** Cópias no baralho (padrão 1); menos cópias = carta mais rara. */
+  copies?: number;
 }
 
 /** Por tempo: TIMED_25 e TIMED_60 (25 min e 1 h); ao fim do relógio vence o maior patrimônio. */

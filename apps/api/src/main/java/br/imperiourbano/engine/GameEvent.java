@@ -84,6 +84,13 @@ public sealed interface GameEvent {
     record EventCardDrawn(String playerId, String cardId) implements GameEvent {
     }
 
+    /**
+     * Carta de item (Passe Livre, Aluguel Zero) que o jogador já tem guardada: não acumula, então vai
+     * embora sem ser revelada e a próxima do baralho vale (decisão do usuário, 07/11/2026).
+     */
+    record EventCardSkipped(String playerId, String cardId) implements GameEvent {
+    }
+
     /** A carta pede um estado e há candidatos: o jogador escolhe no tabuleiro. */
     record EventTargetRequested(String playerId, String cardId) implements GameEvent {
     }

@@ -41,6 +41,7 @@ class GameJsonTest {
             new GameEvent.OlympicsHostSelected("ana", "SP", 2, 3, 50),
             new GameEvent.OlympicsSkipped("ana"),
             new GameEvent.EventCardDrawn("ana", "incendio"),
+            new GameEvent.EventCardSkipped("ana", "passe-livre"),
             new GameEvent.EventTargetRequested("ana", "incendio"),
             new GameEvent.EventCardWithoutEffect("ana", "apagao"),
             new GameEvent.EventTargetSkipped("ana", "incendio"),

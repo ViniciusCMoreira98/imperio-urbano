@@ -1077,3 +1077,32 @@ Detalhes em `docs/14-login-google.md`. Elementos novos de tela, funcionais, para
 O botão do Google é desenhado pelo próprio Google (`renderButton`), dentro de um iframe. As regras de marca
 dele não permitem redesenhar o botão; dá para mudar só o que está em volta (tema, posição e largura,
 em `auth/GoogleButton.tsx`).
+
+## PEDIDO DO USUÁRIO — ícone e gaveta de cartas guardadas (07/11/2026)
+
+O usuário pediu que as cartas guardadas (Passe Livre e Aluguel Zero) saíssem de cima da barra de ações
+e ficassem atrás de um **ícone de cartas** que abre uma **bandeja lateral**, sem ocupar o tabuleiro.
+A parte funcional está pronta (`hud/ItemTray.tsx`, componente `ItemDrawer`; estilo `.hud-cards-*` em `index.css`):
+
+- Botão "Cartas" com contador vermelho, na coluna da direita, acima do Histórico. Só aparece quando o
+  jogador tem alguma carta guardada e brilha (`.hud-cards-ready`) quando o Passe Livre pode ser usado.
+- Gaveta (`.hud-cards-drawer`) presa ao canto superior direito, com altura do conteúdo (não desce até a
+  barra de ações). Larguras conferidas para não cobrir o tabuleiro: 194 px em telas baixas (celular
+  deitado, 844×390 e 667×375) e `clamp(200px, 20vw, 280px)` nas demais. Fecha com ×, Esc ou no botão.
+- Dentro dela ficam os seus componentes `RestExitItemButton` e `RentWaiverItemIndicator`, sem alteração.
+  No celular deitado viram faixas de uma linha (só pelo CSS do host).
+
+**Pedido de arte:** o ícone atual é um SVG provisório desenhado no código (`CardsIcon` em `ItemTray.tsx`,
+duas cartas com estrela). Trocar por um ícone original no estilo do HUD, e refinar o visual do botão e da
+gaveta, se quiser. Contrato a manter: `aria-expanded`, `aria-controls`, `role="dialog"`, contador
+visível, o brilho quando o Passe Livre está disponível e as larguras acima (a gaveta não pode cobrir o
+tabuleiro nem a barra de ações).
+
+## Passe Livre e Aluguel Zero não acumulam (07/11/2026)
+
+Regra nova pedida pelo usuário (D27 em `docs/01-requisitos-e-decisoes.md`): cada jogador guarda no máximo
+um de cada item. Quem já tem o item e cai na carta dele não a recebe; a carta é pulada sem aparecer
+(evento `EVENT_CARD_SKIPPED`, sem texto no histórico) e vale a próxima. Na prática, a quantidade
+(`quantity`) dos seus componentes `RestExitItemButton` e `RentWaiverItemIndicator` passa a ser 0 ou 1;
+o contador "×1" pode ser simplificado ou removido na arte, se preferir. Partidas antigas com mais de um
+item guardado continuam mostrando a quantidade real.

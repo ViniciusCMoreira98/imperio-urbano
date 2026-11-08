@@ -13,7 +13,6 @@ import { Button } from '../ui/ui';
 import { DiceFaces } from './DiceFaces';
 import { TurnBadge } from './TurnBadge';
 import { RoundSeal } from './RoundSeal';
-import { ItemTray } from './ItemTray';
 
 const statesById = new Map(states.map((s) => [s.id, s]));
 
@@ -51,7 +50,6 @@ export function ActionBar({ myId }: { myId: string }) {
     <div className="hud-action-shell relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
       <RoundSeal snapshot={snapshot} />
       {selling && inDebt && <SellDrawer myId={myId} onClose={() => setSelling(false)} />}
-      <ItemTray snapshot={snapshot} myId={myId} busy={tableBusy} />
 
       <div className="hud-action-tray flex w-full flex-wrap items-center justify-center gap-2 hud-panel rounded-2xl px-2 py-1.5 sm:w-auto sm:px-3 sm:py-2">
         <TurnBadge myId={myId}/>

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { GameSnapshot, PlayerState } from '@imperio/shared-types';
 import { describeEvent } from '../game/presentation';
-import { canUseRestPass } from './ItemTray';
+import { canUseRestPass, heldItemCount } from './ItemTray';
 
 const player = (extra: Partial<PlayerState> = {}): PlayerState => ({
   id: 'ana',
@@ -50,5 +50,15 @@ describe('histórico das cartas guardáveis', () => {
     expect(describeEvent({ type: 'RENT_WAIVER_GRANTED', playerId: 'ana' }, name)).toBe('Ana guardou um Aluguel Zero.');
     expect(describeEvent({ type: 'RENT_WAIVED', playerId: 'ana', ownerId: 'bia', stateId: 'AP', amount: 10 }, name))
       .toBe('Ana usou o Aluguel Zero e não pagou R$ 10 a Bia em Amapá.');
+  });
+});
+
+describe('botão de cartas guardadas', () => {
+  it('conta Passe Livre e Aluguel Zero só de quem está jogando', () => {
+    expect(heldItemCount(snapshot({}, { restPasses: 1, rentWaivers: 2 }), 'ana')).toBe(3);
+    expect(heldItemCount(snapshot({}, { restPasses: 0, rentWaivers: 0 }), 'ana')).toBe(0);
+    expect(heldItemCount(snapshot({}, { bankrupt: true }), 'ana')).toBe(0);
+    expect(heldItemCount(snapshot({ status: 'FINISHED' }), 'ana')).toBe(0);
+    expect(heldItemCount(snapshot(), 'bia')).toBe(0);
   });
 });
