@@ -1,0 +1,6 @@
+{
+  "date": "2026-11-07",
+  "provider": "OpenAI image_gen built-in",
+  "editTarget": "assets/olympic-host/source/olympic-frame-v1.png",
+  "transparentBackground": true
+}

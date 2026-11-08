@@ -43,3 +43,7 @@ O host deve definir quais recursos já existem antes de exibi-los no produto e c
 `node scripts/assets/settings-vectors.mjs` reproduz os SVG e `assets/settings/manifest.json`, com hashes, tamanhos e referências dos mockups aprovados. O inventário comercial em `assets/3d/commercial-licenses.json` inclui os assets como arte vetorial original do projeto.
 
 `node scripts/assets/settings-qa.mjs` verifica as três abas em 1672×941, 1280×720, 1024×768, 844×390 e 667×375. Verifica carregamento das imagens, encaixe dos cartões/controles, alternâncias, FPS, atualização dos volumes, salvar/restaurar em memória, confirmação demonstrativa de exclusão, foco, navegação por teclado, estado desabilitado e fechamento/reabertura. Capturas e relatório ficam em `assets/3d/reviews/settings/`. Sem nova partida conectada ou teste em aparelho físico nesta entrega de arte.
+
+## Controles compactos — 07/11/2026
+
+Entrada atual do kit: apps/web/src/settings-art/settings-controls.css. Importa a base e aplica o mesmo cabeçalho, abas e botões retangulares arredondados do host real. As molduras SVG antigas continuam como fontes históricas. O botão oficial Google não é alterado.

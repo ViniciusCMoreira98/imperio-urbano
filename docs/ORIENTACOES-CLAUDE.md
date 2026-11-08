@@ -1,5 +1,58 @@
 # Orientações e pendências para o Claude Code
 
+## Publicação dos controles e da moldura olímpica (08/11/2026)
+
+Commit de arte `9ea5f1e`: painéis de entrada/conta, controles compactos de configurações e ações secundárias, exceções aprovadas do menu preservadas, moldura olímpica v2 e respectivos assets/prévias. Integrada a develop até `ca9c0da` antes da publicação. Conflito em `SettingsDialog.tsx` resolvido preservando `useAccountSync` e `photoUrl` da engenharia, junto com os novos estilos e ocultação do bloco Google sem Client ID. Prévia controlada atualizada com campo `photoUrl` nulo para corresponder ao contrato da API.
+
+Validação após integração: 174 testes e build aprovados. As mudanças de produção, cartas guardadas, foto Google e prazo de sete segundos vindas da develop foram preservadas. Os pedidos novos de arte da gaveta permanecem nas orientações abaixo, para a próxima tarefa; esta publicação não os implementa.
+
+## Moldura olímpica v2 integrada — 07/11/2026
+
+Após aprovação do usuário, `board/OlympicHost.tsx` passou a renderizar a moldura com os cinco anéis no tabuleiro de 34 casas. `olympicFrame.ts` projeta a arte no painel real, com divisão das barras para preservar anéis/cantos nos estados horizontais. Um mesh estático por sede, textura compartilhada de 41 KB, centro transparente, sem interceptar cliques; conserva o relevo anterior como fallback do tabuleiro de 33 casas. `Pieces.tsx` e `snapshot.olympics.hostStateId` continuam controlando a sede, sem mudanças de regras, aluguel, câmera, modelos ou áreas dos personagens.
+
+Validação: build e 171 testes aprovados; `scripts/assets/olympic-frame-qa.mjs` passou em RN/AC/RJ/MA, 1280×720 e 800×360, construção nível 2, mudança e remoção de sede, sem erros. Capturas/relatório em `assets/olympic-host/integration/`. A prévia padrão também usa o componente real. Para Claude: integração visual concluída, não recriar regras nem usar estádio/pira; asset vigente `olympic-frame-v2.webp`. Sem commit/merge nesta etapa, zero créditos Meshy adicionais.
+
+## Moldura olímpica com anéis — preferência vigente (07/11/2026)
+
+O usuário pediu substituir a pira pelos cinco anéis olímpicos. Asset vigente: `apps/web/src/board/board34/art/olympic-frame-v2.webp` (512×683, 41.138 bytes), com moldura e centro transparente preservados. Fonte, prompt de edição e manifesto em `assets/olympic-host/`. A prévia padrão no Rio usa v2; capturas em `assets/olympic-host/frame-rings-preview/`. A pira v1 foi superada, acessível só com `?variant=torch`. Para Claude: ainda é estudo visual, sem integração nas regras ou produção; preservar nome/aluguel/construções. image_gen integrado; zero créditos Meshy. Sem commit/merge.
+
+## Moldura da propriedade olímpica — preferência vigente (07/11/2026)
+
+O usuário prefere uma moldura ao estádio sobre a propriedade. Criado `apps/web/src/board/board34/art/olympic-frame-v1.webp` (512×683, 40.650 bytes), centro transparente, ouro/verde, louros e pira pequena. Fonte, prompt e manifesto em `assets/olympic-host/`. Prévia no Rio em `/scripts/assets/olympic-property-preview/`; capturas `assets/olympic-host/frame-preview/`. A casa usa posição e escala originais. O estudo de estádio foi superado e só abre com `?variant=stadium`. Para Claude: proposta visual ainda não integrada; manter regras de Olimpíadas e validar encaixe da moldura nos demais estados/celular. Zero créditos Meshy; sem commit/merge.
+
+## Arte da sede das Olimpíadas — correção de tema (07/11/2026)
+
+O usuário corrigiu o pedido: a sede é das Olimpíadas, não da Copa. Usar `apps/web/src/board/board34/art/olympic-host-v1.webp`: estádio de atletismo com pista oval e pira acesa, fundo transparente, acabamento brasileiro do projeto. Fonte, prompt e manifesto em `assets/olympic-host/`; otimização com `node scripts/assets/prepare-olympic-host.mjs`. O conceito de futebol em `assets/copa/` foi superado e não deve ser integrado. Prévia pedida pelo usuário no Rio de Janeiro: `/scripts/assets/olympic-property-preview/`, capturas em `assets/olympic-host/preview/`. Estádio e casa lado a lado; somente na prévia a casa tem deslocamento lateral e escala 82%. Aluguel-base ilustrativo do catálogo; sem simular bônus olímpico. Conferir demais estados e celular antes de integrar.
+
+Entrega de arte, sem alteração de regras ou aplicação automática no tabuleiro. Para Claude: manter os dados de Olimpíadas e `OlympicHost`; conferir a escala da arte antes de integrar, preservando nome, aluguel, construções e peões. Renderizar “Sede das Olimpíadas” pela interface. Gerado com image_gen integrado, zero créditos Meshy. Sem commit/merge nesta entrega.
+
+## Controles secundários — padrão compartilhado e exceções aprovadas (07/11/2026)
+
+**Decisão vigente do usuário:** o botão principal **Jogar Online** e a criação das partidas já estavam aprovados; preservar sua arte e proporção. Seu personagem, Trocar e Suas partidas também foram restaurados ao visual anterior por solicitação do usuário. Foi revertida a tentativa de transformar Jogar Online num botão horizontal. As telas/estilos `PlayEntryScreens`, `play-menu.css`, `OnlineMenuScreen` e `online-menu.css` não foram alterados nesta padronização. A prévia antiga também mantém a arte original dos botões de jogar.
+
+Aplicado o padrão compacto azul/dourado aos controles secundários: confirmações de propriedade, botões comuns `ui/Button`, abas/cabeçalho e ações de configurações. Avatares, seletores de cor e indicadores circulares preservados. `ui/button-theme.css` é o tema do Button comum; sem mudanças de handlers, variantes ou sons. O botão Rolar dados mantém seu tratamento específico e o rodapé do resultado mantém a hierarquia aprovada.
+
+Controles de configurações centralizados em `settings-art/settings-controls.css`, que importa o kit base e é usado pelo host real e pela prévia do kit. Evita molduras ovais esticadas também nas demais abas/ações do kit. O menu em celular deitado organiza marca à esquerda e ações à direita; Jogar Online usa a arte/razão originais e Suas partidas permanece visível. Sem alterar rotas, dados, conta, jogo, câmera ou modelos. Botão oficial Google intacto.
+
+Conferência: controles/menu em três tamanhos com callbacks; configurações reais em quatro tamanhos/estados; kit com três abas e cinco tamanhos (15 combinações); propriedade em três modos/quatro tamanhos; resultado em 28 combinações, com botão de retorno preservado. 171 testes e build aprovados durante a revisão. Guias e capturas em `assets/3d/reviews/controls-pattern/` e diretórios anteriores. Sem geração de imagens/Meshy/créditos ou commit/merge nesta entrega.
+
+
+## Configurações — proporções dos botões (07/11/2026)
+
+Pedido do usuário atendido no host `hud/settingsHost.css`: cabeçalho CONFIGURAÇÕES com largura do texto e moldura retangular arredondada, abas Som/Conta compactas, Sair da conta/Trocar apelido com largura do conteúdo e Concluir/Restaurar padrão com proporção própria. Substituídos os backgrounds ovais esticados por bordas/degradês CSS no host, sem gerar imagens nem alterar os assets históricos do kit. Ativo em verde, demais ações em azul, bordas douradas. Tamanhos menores próprios para celular deitado.
+
+**Para Claude:** ações, rótulos, role=tab/aria-selected, navegação por teclado, foco, logout e som preservados. Sem alteração no botão/iframe oficial Google. O roteiro `scripts/assets/google-account-qa.mjs` passou nos quatro tamanhos e estados de conta, com limites/textos dos controles conferidos; novas capturas de Som incluídas em `assets/3d/reviews/google-account/`. Sem geração/Meshy/créditos, commit ou merge nesta revisão.
+
+
+## Login Google — acabamento dos painéis (07/11/2026)
+
+**Pedido atendido localmente na develop_arte_3d, base 1fbd3bb.** Refinados `screens/MenuScreen.tsx`/`menuScreen.css` e `hud/SettingsDialog.tsx`/`settingsHost.css`. Tela do apelido ganhou moldura azul/dourada, campos e ações próprios, separador e bloco “Leve seu progresso com você”. Em celular deitado, logotipo fica à esquerda e formulário à direita, incluindo o acesso ao último convidado sem cortar controles. Conta mostra identidade/tipo/e-mail separados do painel de progresso, confirmação para conta conectada e avisos de erro/resultado. Reutilizados os ícones link/check e o cenário existentes; zero geração raster ou créditos.
+
+**Para Claude:** `auth/GoogleButton.tsx` permaneceu intacto. Não redesenhar logotipo/botão/iframe; renderButton, tema, larguras e textos oficiais preservados. CSS novo só nos contêineres externos. Entrada por apelido, sessão anterior, callback do Google, token do convidado, mensagens LINKED/SIGNED_IN/CREATED e logout mantidos. Sem Client ID, o cartão de acesso da aba Conta agora fica oculto junto com o botão, usando googleClientId em cache. Backend, rotas, prêmio/carteira e persistência não mudaram.
+
+Prévia controlada com os componentes reais: `/scripts/assets/google-account-preview/`; guia, capturas e relatório em `assets/3d/reviews/google-account/`. O botão é um SLOT NEUTRO identificado na prévia, sem copiar marca Google; a produção mantém o renderer oficial. Sem conta/credencial/API/OAuth reais na conferência. Ambiente de API local estava indisponível. QA `scripts/assets/google-account-qa.mjs`: oito combinações (menu/conta em 1280×720, 844×390, 800×360 e 667×375), conta conectada/e-mail longo, configuração ausente, falha de login/SDK, entrada de convidado e callbacks de login/vínculo/saída, sem requisição externa. 171 testes e build/TypeScript aprovados. Sem commit/merge nesta entrega.
+
+
 ## Publicação da escolha de personagem e fim de partida (07/11/2026)
 
 Commit e merge/publicação na develop solicitados pelo usuário. Inclui os dois refinamentos visuais, assets/fontes/prompts/manifestos, prévias/QA e orientações. Registros anteriores de “sem commit/merge” descrevem o estado antes desta solicitação. Preservar as atualizações recentes da develop, incluindo o login Google opcional. As regras, o ranking, os valores e as ações existentes permanecem os mesmos. Identificadores finais no histórico Git.

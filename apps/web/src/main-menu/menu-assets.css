@@ -9,3 +9,6 @@
 @media(prefers-reduced-motion:no-preference){.mi-scene button{transition:filter .15s,transform .1s}}
 
 .mi-play{position:relative;display:block}.mi-play>img{position:absolute;left:27%;top:0;width:46%;height:54%}.mi-play strong{position:absolute;left:0;right:0;top:51%}.mi-play small{position:absolute;left:0;right:0;top:77%}.mi-play.mi-online>img{left:34%;top:4%;width:32%;height:45%}
+
+/* Prévia original alinhada aos controles atuais do projeto. */
+.mi-help{border:1px solid #edcd7b;border-radius:1cqw;background:linear-gradient(#194e74,#092c49);filter:none;box-shadow:inset 0 1px #fff2,0 3px 6px #001b3c66}.mi-help .mi-laurel{display:none}
