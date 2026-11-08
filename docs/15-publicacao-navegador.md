@@ -131,6 +131,13 @@ Criar conta e pagar fica com o usuário.
 
 Cada push na branch escolhida gera um deploy novo. Se algo falhar, os logs ficam em *Deployments › View Logs*.
 
+### Fluxo de publicação (08/11/2026)
+
+No ar desde 08/11/2026 em `imperio-urbano-production.up.railway.app` e `imperiourbano.app.br` (DNS na
+Cloudflare, registros sem proxy). O Railway publica a **`main`**; o trabalho do dia a dia continua na
+`develop`, que não vai ao ar sozinha. Para lançar uma versão, com os testes passando e a pedido do
+usuário: avançar a `main` até a `develop` (`git push origin develop:main`, só avanço direto).
+
 Fontes: [Railway: preços](https://docs.railway.com/pricing/plans), [Railway: configuração por arquivo](https://docs.railway.com/config-as-code), [Railway: PostgreSQL](https://docs.railway.com/databases/postgresql), [Railway: variáveis](https://docs.railway.com/variables/reference),
 [Render](https://render.com/articles/how-much-does-cloud-application-hosting-cost-for-small-businesses),
 [Fly.io](https://fly.io/pricing.md), [Hetzner](https://vpsbenchmarks.com/hosters/hetzner/plans/cx22).

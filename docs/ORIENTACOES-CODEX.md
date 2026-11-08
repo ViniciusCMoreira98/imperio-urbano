@@ -1106,3 +1106,32 @@ um de cada item. Quem já tem o item e cai na carta dele não a recebe; a carta 
 (`quantity`) dos seus componentes `RestExitItemButton` e `RentWaiverItemIndicator` passa a ser 0 ou 1;
 o contador "×1" pode ser simplificado ou removido na arte, se preferir. Partidas antigas com mais de um
 item guardado continuam mostrando a quantidade real.
+
+## PEDIDO DO USUÁRIO — tabuleiro maior no celular deitado (08/11/2026)
+
+O usuário jogou pelo celular deitado e disse que "não dá pra enxergar nada praticamente": o tabuleiro
+ficava com cerca de um terço da tela. Como referência de **layout** (não de arte), mostrou um jogo de
+tabuleiro em que o tabuleiro aparece girado em losango, visto mais de cima, ocupando quase toda a tela, com
+jogadores e botões pequenos nos cantos. Não copiar arte, ícones nem visual de outro jogo: só a ideia de
+enquadramento.
+
+**Parte da engenharia, já feita** (só celular deitado, `@media (max-height:500px)` em `index.css`, e
+`screens/useHudLayout.ts`):
+
+- A barra de ação saiu da faixa de baixo e virou um cartão compacto no canto inferior direito (vez, dados e
+  prazo em cima, botão na largura do cartão). Histórico e Cartas foram para o canto inferior esquerdo, sob os
+  jogadores. Com isso a reserva de baixo do enquadramento caiu para 6 px e o tabuleiro ganhou a altura toda.
+- Resultado: em 800×330 o tabuleiro foi de ~360×225 para ~480×310 px (quase o dobro de área); em 667×300 e
+  915×412 também sem sobreposição. Computador e tablet não mudaram.
+
+**Pedido de câmera/arte para você (ainda não feito):**
+
+1. Avaliar um enquadramento só para o celular deitado com a câmera **mais de cima** (menos inclinação), para
+   o lado de longe não encolher tanto, e com o tabuleiro **girado ~45° (losango)**, que aproveita a largura
+   da tela deitada. Hoje `board/camera/tabletopViewport.ts` encaixa o quadro de referência 1482×906 da
+   câmera fixa (`fixedCamera.json`) entre as reservas que o host mede; um modo novo pode entrar como mais um
+   `BoardFraming`, escolhido pelo host no celular deitado.
+2. Conferir nesse ângulo: leitura das siglas e nomes das casas, prédios, personagens e dados.
+3. Contrato a manter: as reservas (`BoardInsets`) continuam vindo do host (`useHudLayout`), e o HUD não cobre
+   o tabuleiro. No celular deitado elas agora são: topo pequeno, base 6 px e laterais iguais (a coluna mais
+   larga entre jogadores/Histórico à esquerda e Menu/barra de ação à direita).

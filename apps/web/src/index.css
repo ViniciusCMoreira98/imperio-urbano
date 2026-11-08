@@ -182,4 +182,20 @@ body {
  .game-hud-players .hud-players { flex-direction:column;width:auto;gap:5px;padding:2px; }
  .game-hud-players .hud-player-row { flex:none;max-width:140px; }
  .game-viewport .game-hud-header { flex-direction:column;align-items:flex-end;gap:5px; }
+ /* Barra de ação compacta no canto inferior direito (pedido do usuário, 08/11/2026): sem faixa embaixo,
+    o tabuleiro ganha a altura toda. Vez, dados e prazo em cima; botões na largura do cartão. */
+ .game-hud-actions { left:auto;right:6px;bottom:6px;justify-content:flex-end; }
+ .game-hud-actions > div { width:auto; }
+ .hud-action-shell { width:auto;max-width:none;align-items:stretch; }
+ .hud-action-tray { width:clamp(142px,19vw,160px);min-height:0;flex-wrap:wrap;justify-content:center;gap:5px 6px;padding:7px 8px 8px;border-radius:16px; }
+ .hud-action-tray .hud-dice svg { width:22px;height:26px; }
+ .hud-action-tray .hud-turn-badge { flex:1 1 100%;max-width:none;justify-content:center;padding:0; }
+ .hud-action-tray .hud-turn-badge p:last-child { max-width:84px; }
+ .hud-action-tray > button { flex:1 1 100%;min-height:32px;padding:5px 6px;font-size:13px;white-space:nowrap; }
+ .hud-action-tray .hud-roll { font-size:13px;letter-spacing:0; }
+ .hud-action-tray .hud-rest-chip { flex:1 1 100%;justify-content:center; }
+ .hud-round-seal { left:50%;transform:translateX(-50%); }
+ /* Histórico e cartas guardadas no canto inferior esquerdo, sob os jogadores: a coluna direita fica só
+    com Menu, Configurações e a barra de ação. */
+ .game-hud-history { left:6px;right:auto;bottom:6px;align-items:flex-start; }
 }

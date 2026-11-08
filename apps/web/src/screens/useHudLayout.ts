@@ -43,11 +43,14 @@ export function useHudLayout(
         const bottom = Math.ceil(box.bottom - actionsBox.top + SEAL_OVERHANG + GAP);
         let next: BoardInsets;
         if (sideLayout) {
-          // Reserva igual dos dois lados (tabuleiro centralizado): a maior coluna, incluindo o Histórico.
+          // Celular deitado (CSS): jogadores e Histórico na coluna esquerda; Menu e barra de ação na direita.
+          // Sem faixa embaixo, a altura toda é do tabuleiro. Reserva igual dos dois lados (tabuleiro
+          // centralizado): a coluna mais larga.
           const history = root.querySelector<HTMLElement>('.game-hud-history')?.getBoundingClientRect();
-          const rightEdge = Math.min(headerBox?.left ?? box.right, history && history.width > 0 ? history.left : box.right);
-          const side = Math.ceil(Math.max(playersBox.right - box.left, box.right - rightEdge) + GAP);
-          next = { top: Math.ceil(GAP + box.height * PAWN_HEADROOM), bottom, left: side, right: side };
+          const leftEdge = Math.max(playersBox.right, history && history.width > 0 ? history.right : box.left);
+          const rightEdge = Math.min(headerBox?.left ?? box.right, actionsBox.left);
+          const side = Math.ceil(Math.max(leftEdge - box.left, box.right - rightEdge) + GAP);
+          next = { top: Math.ceil(GAP + box.height * PAWN_HEADROOM), bottom: GAP, left: side, right: side };
         } else {
           next = { top: Math.ceil(playersBox.bottom - box.top + GAP + box.height * PAWN_HEADROOM), bottom };
         }
