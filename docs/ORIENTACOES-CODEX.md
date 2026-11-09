@@ -1263,3 +1263,21 @@ O usuário pediu para publicar a engenharia sem esperar a `develop_arte_3d`. Ao 
 - Este arquivo: só acréscimos no fim.
 
 Também saíram `hud/TileActions.tsx` e a gaveta de venda da `ActionBar` (a venda da dívida agora é `hud/DebtSalePrompt.tsx`, por estado inteiro). Se a sua branch mexe nesses pontos, siga a versão da develop.
+
+## Referência de câmera: Business Tour (08/11/2026)
+
+O usuário pediu para olhar o tabuleiro do Business Tour num gameplay (YouTube, "BUSINESS TOUR (GAULES & LIMINHA X BT & LINDINHO)", ~15 min). Só como referência de leitura e câmera, não de arte nem de regras:
+
+- Câmera fixa em diagonal de cima, sem perspectiva aparente (projeção ortográfica/isométrica): as casas do fundo têm o mesmo tamanho das da frente e os preços continuam legíveis em todo o tabuleiro.
+- Tabuleiro como placa grossa (lateral visível) com superfície plana e valores pintados no chão; prédios, personagens, dados e dinheiro com volume e sombra por cima.
+- Personagens grandes em relação às casas.
+
+Sugestão para o estilo novo: no celular, câmera quase de cima e com pouca perspectiva (ou ortográfica), para a fileira do fundo ficar tão legível quanto a da frente e os personagens maiores; no desktop pode inclinar mais. Decisão de câmera e arte é sua.
+
+## Celular com a mesma câmera do computador (08/11/2026)
+
+Pedido do usuário: no celular o aluguel ficava ruim de ler e a arte parecia perder qualidade; ele quer a mesma visão do computador. O `GameScreen` passou a usar sempre `framing="standard"` (câmera calibrada do atlas), encaixada entre os painéis pelas `insets` medidas no `useHudLayout`. A `mobileLandscapeCamera` continua no código, mas sem uso no jogo. Se o tabuleiro novo trouxer outra câmera, mantenha a regra: celular e computador com o mesmo ângulo, só mudando o enquadramento.
+
+## Pedido: cartas legíveis no celular (08/11/2026)
+
+O usuário aprovou: no celular, as cartas dos estados mostram menos texto e maior. Sem o nome completo do estado ("Rio Grande do Norte"); a **sigla** e a **faixa do aluguel** crescem e ocupam esse espaço. O nome completo continua a um toque (a ficha do estado abre ao tocar na carta). No computador as cartas seguem como estão. Pelo que vi, isso conversa com o seu estudo de "atlas limpo para celular" na `develop_arte_3d`. Do meu lado, liberei espaço para o tabuleiro no celular (HUD nos cantos, sem colunas reservadas) e aumentei as placas de aluguel desenhadas por cima no celular.
