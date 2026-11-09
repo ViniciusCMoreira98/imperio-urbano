@@ -1,5 +1,13 @@
 # Orientações e pendências para o Codex
 
+## V1 — revisão de hotéis, ocupação e valores altos, 09/11/2026
+
+Criado scripts/assets/v1-adverse-qa.mjs e evidências em assets/3d/reviews/v1-adverse/. São nove capturas do GameScreen real com snapshots simulados: hotéis nos 26 estados, Olimpíadas ×10, Apagão, Taxa R$ 60.000, saldos até R$ 1.234.567 e quatro jogadores juntos em MA, RN e SP. Resoluções 1280×720, 800×360 e 667×280. O limite oficial atual é quatro jogadores; a fixture histórica de seis é apenas estresse fora da capacidade atual.
+
+Execução estrita concluída: nove cenários/resoluções, zero achados automatizados e zero erros de página; aluguéis oficiais e alcance dos botões conferidos. Nenhum transbordamento dos saldos, texto de aluguel cortado ou controle fora da janela. A revisão não alterou a aplicação nem gerou assets: preserva câmera, artes e família atual de modelos; zero créditos Meshy. O roteiro também verifica os valores contra o catálogo oficial, alcance dos botões pelo apontador e consulta da propriedade. Não é certificação em aparelho físico ou multiplayer real.
+
+Limitação observada nas capturas: quatro personagens juntos em casas estreitas têm parte dos corpos encoberta pela perspectiva. Quatro bases distintas não equivalem a quatro silhuetas identificáveis. Não considerar esse ponto resolvido nem diminuir mais os personagens ou trocar modelos. Registrado nas orientações do Claude o complemento de identificação dos ocupantes na consulta existente; preservar dados autoritativos do snapshot, sem nova regra. A V2 continua separada na codex/tabuleiro-v2. Publicação autorizada pelo usuário: incluir esta revisão no commit da develop_arte_3d e integrá-la à develop.
+
 ## V1 — mesma câmera e cartas móveis simplificadas, 08/11/2026
 
 Atendidas na develop_arte_3d as orientações novas da engenharia (commit de referência 3f00838): GameScreen usa framing="standard" no computador e no celular; CameraRig preserva pose/quaternion/FOV da câmera calibrada e só muda o enquadramento pelas reservas medidas do HUD. A barra de ações móvel foi compactada conforme a engenharia. Os estilos mobileBoard dos estudos antigos ficaram restritos a data-mobile-study, evitando que a distribuição arquivada do HUD e a câmera antiga se tornem o padrão da V1.
