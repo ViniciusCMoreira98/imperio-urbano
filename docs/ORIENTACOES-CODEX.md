@@ -1,5 +1,67 @@
 # Orientações e pendências para o Codex
 
+## Tabuleiro versão 2 — branch própria, 08/11/2026
+
+O usuário definiu esta apresentação como a versão 2 do tabuleiro e autorizou transferi-la para uma nova branch criada da develop. Branch vigente: codex/tabuleiro-v2, base origin/develop 7913772. O trabalho V2 continua aqui; referências anteriores à develop_arte_3d são histórico. Preservar os personagens atuais, as 34 casas oficiais, um PR e o centro sem construções soltas. A prévia segue independente da partida; a transferência não ativa o novo renderizador no GameScreen.
+
+Transferência revalidada na nova base: build/TypeScript e 197 testes aprovados; prévia 667×280 conferida, incluindo carregamento dos recursos e ausência de colisão entre legendas. O ícone de cartas foi incluído como recurso local V2, preservando o desenho original.
+
+## Refinamento por sobreposição e personagens preservados — 08/11/2026
+
+**Determinações vigentes do usuário:** manter o estilo e os modelos atuais dos personagens; não tratar a diferença em relação aos personagens ilustrativos da referência como pendência. Não gerar/retexturizar/substituir personagens para copiar a imagem. Manter 34 casas oficiais e um único PR. Não reintroduzir construções decorativas soltas no centro. A revisão atua em tabuleiro, câmera, molduras, cenário e HUD.
+
+Refinamento da prévia ReferenceStyleBoard: pontas laterais deslocadas para a frente, cantos superiores mais abertos e leve assimetria na ponta esquerda para acompanhar a referência. Vértices de cada casa passam a usar os ângulos reais do contorno, sem pressupor múltiplos de 45 graus. Câmera do computador revista e envelope considera topo e espessura da base. Centro mantém recorte proporcional à razão original da imagem. Comparação sobreposta em assets/board-mobile/reference-style-3d/review/alignment-overlay.png; roteiro reference-style-compare.mjs e referência preservada no mesmo diretório da entrega.
+
+Faixas de nome/imagem/aluguel acompanham as arestas reais de cada propriedade, com artes originais em recorte proporcional. Textos centralizados nas faixas, largura medida e valores a partir de 8 px nos exemplos da menor tela. Molduras com cantos mais suaves e acabamento metálico. Ícones e títulos dos quatro cantos voltados ao jogador. Logo, dados e botão reposicionados; composição central possui ajuste próprio em telas baixas para evitar sobreposição. Dados continuam usando DiceVisual existente.
+
+Nova moldura vetorial de jogadores em ReferencePlayerCard.tsx/reference-player-frame-v2.svg, sem alterar imagens dos retratos ou fluxo da foto Google. Novo ícone vetorial de Som em control-sound-v1.svg; o componente recebe callback do host, não modifica volume por conta própria. As três ações da prévia são Configurações, Jogadores e Som, conforme o modelo visual. Os modelos GLB, retratos e personagens não foram alterados: hashes registrados em asset-manifest.json e git diff desses diretórios vazio. Nenhum novo asset raster ou modelo foi gerado nesta revisão; zero créditos Meshy.
+
+Validação: build/TypeScript e 183 testes aprovados durante a revisão; três testes geométricos reexecutados após o último ajuste. Conferência em cinco viewports, com preços sem corte, dados realmente renderizados, 61 textos, callbacks e separação entre logo/dados/botão. Evidências no relatório de revisão. Comparação por sobreposição é inspeção visual, não aprovação estética automática. A prévia continua separada do GameScreen e da partida conectada. Preservar os limites de integração e a geometria nova descritos abaixo. Sem commit/merge.
+
+
+A conferência final também cobre colisão entre as caixas orientadas dos nomes e aluguéis laterais (SAT), além da ausência de corte. Em telas até 320 px de altura, sigla e preço das propriedades laterais compartilham uma única faixa, preservando o tamanho do valor e evitando sobreposição. Nas demais telas, as duas legendas mantêm posições separadas; siglas laterais são menores que os valores. Saque e Evento lateral possuem ícone e título lado a lado. Esta adaptação tipográfica não altera as imagens dos estados nem as regras.
+
+## Nova prévia 3D seguindo o modelo aprovado — 08/11/2026
+
+Pedido vigente: trabalhar para reproduzir a referência do usuário. Novo renderizador independente em apps/web/src/board-presentation/ReferenceStyleBoard.tsx; prévia /scripts/assets/reference-style-board-preview/. Esta revisão substitui a montagem frontal anterior como proposta de apresentação; não promove automaticamente o visual para produção nem representa aprovação estética do usuário.
+
+Geometria octogonal nativa, base de madeira com espessura/bevel, quatro cantos ampliados e centro a 70% do contorno. referenceStyleLayout.ts mantém rigorosamente as 34 casas/IDs/índices/sequência do catálogo e um único PR. UVs em bases ortonormais no plano, com recorte proporcional das 26 artes v3: a perspectiva vem da câmera, sem deformar retângulos por interpolação de vértices. Molduras arredondadas, títulos e aluguéis projetados em camada própria para preservar nitidez; símbolo monetário menor. A fonte é medida para caber, com aluguéis demonstrativos a partir de 8 px na menor tela. Isso não certifica leitura em aparelho físico ou valores longos/modificados.
+
+**Correção pedida durante esta etapa:** “Não precisa dessas casas no meio do tabuleiro”. Removidas todas as construções decorativas soltas do centro. Nenhuma casa GLB é montada nessa prévia. Preservar a família atual para construções reais nas propriedades; não reintroduzir modelos decorativos no centro. Os prédios pintados do cenário continuam fazendo parte da ilustração brasileira.
+
+Criadas artes próprias separadas para o centro e para a mesa/praia, com imagegen integrado: reference-center-v2.png e reference-environment-v1.png. Centro sem logo/dados/botão embutidos, Cristo reposicionado para caber no recorte. Prompts, fontes, hashes e dimensões em assets/board-mobile/reference-style-3d/. Dados usam DiceVisual e personagens usam AvatarFigure existentes. Zero créditos Meshy; consulta gratuita retornou saldo 670, sem criar tarefas pagas.
+
+Conferência em 1672×941, 1360×768, 932×430, 800×360 e 667×280: 34 superfícies, 61 textos, valores sem corte, pixels WebGL realmente presentes, carregamento, clique no RN, teclado no PR e callbacks. Capturas inspecionadas no computador e nas duas menores telas. Build aprovado; suíte completa de 183 testes passou durante a etapa e os três testes geométricos foram reexecutados após o ajuste final do layout. Roteiro reference-style-board-qa.mjs; capturas/relatório em assets/board-mobile/reference-style-3d/review/.
+
+**Para a continuidade/Claude:** GameScreen/renderizador padrão e regras não foram alterados. A prévia usa jogadores, saldo Taxa e aluguéis-base demonstrativos. Não conectar as coordenadas antigas de peões/construções ao contorno novo: publicar primeiro âncoras, áreas de ocupação, trajetórias e envelope dos dados coerentes com essa geometria; consumir BoardInsets, snapshot/currentRent/formatCredits e comandos oficiais do host. Depois validar construção nas propriedades, modificadores de aluguel, movimento, inventário, modais, todos os jogadores e reconexão. Preservar modo paisagem e mipmaps/DPR adequado. Os personagens atuais ainda têm acabamento diferente das figuras ilustrativas da referência; não declarar equivalência exata, aprovação visual, desempenho em celular físico ou partida conectada concluídos. Sem novo commit/merge.
+
+
+## Composição completa para revisão — 08/11/2026
+
+**Orientação mais recente do usuário:** pode criar novos modelos ou usar créditos Meshy se necessário. Essa autorização atualiza a restrição anterior de não gerar outra família; manter os modelos existentes por padrão e informar estimativa de consumo antes de novas gerações. Nesta etapa não foi necessário: zero créditos Meshy.
+
+Montada uma composição estática independente em board-presentation/ApprovedBoardComposition.tsx e prévia /scripts/assets/approved-board-composition-preview/. As 34 casas seguem exatamente IDs/sequência do catálogo (26 estados, oito especiais, um PR). Molduras próprias em proporções portrait/edge e especiais square/portrait/wide/edge; escala geral uniforme. Kit ampliado para 26 SVGs. Os ícones especiais usam recorte proporcional por viewBox documentado em special-icon-crops.json, sem modificar os PNGs originais.
+
+Novo panorama central brasileiro, separado de logo/dados/botão, gerado com imagegen integrado. Prompt, referências, dimensões e hash em assets/board-mobile/approved-composition/. Ilustrações dos estados e cenário de praia existentes preservados. As seis construções originais foram renderizadas em 24 sprites (seis níveis × quatro cores) exclusivamente para esta revisão estática; hashes dos GLBs conferidos, sem substituição dos modelos da partida.
+
+Verificação: build/TypeScript e 180 testes aprovados. Conferência da composição em 1360×900, 1360×768, 932×430, 800×360 e 667×280: 34 regiões, preços sem corte, proporção das molduras, carregamento, teclado/callbacks, sem HUD ou construções sobre preços/nomes/botão. Capturas reais inspecionadas em 800×360 e 667×280; relatório sem erros. Galeria do kit revalidada após ampliação.
+
+**Limites e continuidade:** é uma montagem frontal estática para comparar o acabamento com o conceito aprovado, ainda sem perspectiva de jogo, personagens, dados animados ou integração ao GameScreen. Preços/ocupação/jogadores são dados de demonstração; na integração usar currentRent/snapshot/formatCredits e handlers reais. As casas laterais são menores: em 667×280 os preços ainda exigem revisão de leitura; ausência de corte não prova legibilidade. Não declarar equivalência visual ao conceito, aprovação estética desta composição, experiência em celular físico ou multiplayer concluídos. Próxima etapa: resolver a leitura lateral e converter a direção aprovada para o renderizador, conservando modelos, catálogo, áreas de interação e HUD real. Sem novo commit/merge.
+
+
+## Primeira etapa do visual aprovado: kit de assets e componentes — 08/11/2026
+
+Concluída a preparação dos elementos independentes para a direção aprovada. Novo módulo apps/web/src/board-presentation/ApprovedBoardKit.tsx e estilos próprios, sem alterar o GameScreen ou os modelos atuais. Kit com 14 SVGs (12 molduras/faixas/controles e dois ícones), cinco componentes de apresentação e reutilização das 26 ilustrações v3, ícones especiais, retratos originais e logotipo existentes.
+
+ApprovedPropertyCard possui composições próprias portrait 3:4 e landscape 2:1; header e aluguel em faixas marfim, moldura champagne/dourada, ilustração grande. Não adaptar uma orientação esticando a outra. Imagens usam object-fit:cover (recorte proporcional), sem redimensionamento desigual dos arquivos; fontes ajustadas para valores longos. OwnerColor é somente um filete opcional. ApprovedSpecialCard cobre os sete tipos das oito casas especiais, com saldo Taxa recebido pelo host. ApprovedRollButton/ApprovedRoundControl recebem callbacks; ApprovedPlayerCard reutiliza PlayerPortrait (inclusive foto Google/fallback). Sem novas regras, cálculo de aluguel ou envio de comandos nesta camada.
+
+Gerador reproduzível scripts/assets/build-approved-board-kit.mjs, SVGs em board-presentation/art/, manifesto/hashes e guia em assets/board-mobile/approved-kit/. Referências de centro, retratos e construções originais registradas no manifesto para a próxima montagem. Modelos de terreno, casas 1–4 e hotel preservados.
+
+Prévia real dos componentes (não é captura de partida) em /scripts/assets/approved-board-kit-preview/. Conferidas as 26 UFs nas duas orientações, oito especiais oficiais e um PR por catálogo, proporção das molduras, preços longos/Apagão, seleção por mouse/teclado e callbacks. Tamanhos 56/72/96 px e telas 800×360 e 667×280, sem corte de preços ou rolagem horizontal; movimento reduzido respeitado. Script approved-board-kit-qa.mjs e capturas/relatório em assets/board-mobile/approved-kit/review/. Ilustrações, figuras centrais e componentes também inspecionados visualmente nas folhas completas de estados. Valores da galeria são exemplos do aluguel house2 do catálogo; na partida deverão continuar vindo de currentRent/snapshot, inclusive Olimpíadas/Apagão.
+
+Próxima tarefa: compor o tabuleiro completo com este kit, respeitando 34 casas, IDs/sequência e referência aprovada; comparar antes de integrar ao renderizador/HUD reais. Não apresentar a galeria de componentes como jogo implementado. Build aprovado e conferência da galeria sem erros. Arte vetorial própria no padrão do projeto; não houve geração externa nem créditos Meshy. Sem commit/merge nesta etapa.
+
+
 ## Publicação dos ajustes do celular (08/11/2026)
 
 Commit e merge para develop autorizados pelo usuário: inclui câmera móvel adaptativa, entrada compacta com Google, teste de restauração da câmera, estudo comparativo, capturas e relatório. Conferidos 175 testes, build e prévia com cinco telas de partida e quatro de entrada. Os registros anteriores de sem commit/merge descrevem o estado anterior a esta solicitação. Identificadores finais no histórico Git. Próxima pendência: arte do ícone e gaveta de cartas guardadas.

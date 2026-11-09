@@ -1,0 +1,151 @@
+{
+  "reference": "../art-direction-v2/concept.png",
+  "generator": "scripts/assets/build-approved-board-kit.mjs",
+  "format": "SVG",
+  "vectorOriginal": true,
+  "reused": {
+    "states": "apps/web/src/board/board34/art/v3/*-board-v3.png",
+    "specialIcons": "apps/web/src/board/board34/art/v3/*-v3.png",
+    "center": "apps/web/src/board/board34/art/center-brasil-v2.png",
+    "logo": "apps/web/src/main-menu/art/logo-v1.webp",
+    "portraits": "apps/web/src/hud/art/avatars-c8/",
+    "buildings": "apps/web/src/board/buildings/buildings.json"
+  },
+  "assets": [
+    {
+      "name": "control-sound-v1.svg",
+      "sha256": "eb8a2a110bbb1ddc612833d834b20da3882a501ab4aed212a587ed56abb839aa",
+      "bytes": 532
+    },
+    {
+      "name": "property-frame-portrait-v1.svg",
+      "sha256": "a2684dd37e3f10a154e3511c2f89db6c413a6716d0b49b4f6bae8d3eabb3db2e",
+      "bytes": 1361
+    },
+    {
+      "name": "rent-strip-portrait-v1.svg",
+      "sha256": "f9510c9cdff9c845fa522fcf7c28ed37516b8d82bd4f402c5d6dc40b8feb4ae3",
+      "bytes": 1092
+    },
+    {
+      "name": "property-frame-landscape-v1.svg",
+      "sha256": "bfe2f353dd693cceae2d1915619676a19cd55fcd59da57ac31fd423aeefd2d55",
+      "bytes": 1361
+    },
+    {
+      "name": "rent-strip-landscape-v1.svg",
+      "sha256": "99617172370fa60eb371c95735d502b9b68cf124e8d3c15ae4b4767b036c986f",
+      "bytes": 1092
+    },
+    {
+      "name": "property-name-portrait-v1.svg",
+      "sha256": "b798f1f16357a1fac0d4651af36ad04e23085a10bc4088ab52bf624e9b43d56e",
+      "bytes": 1041
+    },
+    {
+      "name": "property-name-landscape-v1.svg",
+      "sha256": "28f718cd1c92744c9304ed14047f92cf4bd924ed5901777b713f4f1821dd09d1",
+      "bytes": 1194
+    },
+    {
+      "name": "special-frame-emerald-v1.svg",
+      "sha256": "871f7bd8fead5c50a9d6fcec6c604ad3c6294d8f16534336ed45947af708b028",
+      "bytes": 1190
+    },
+    {
+      "name": "special-frame-navy-v1.svg",
+      "sha256": "34551a861d28851eb179a907817793055cc922503bdb01962f7fce07cf482192",
+      "bytes": 1189
+    },
+    {
+      "name": "special-frame-gold-v1.svg",
+      "sha256": "fc3c879ae5517b16160c313837053b64c46d9150ef51c0a3e8e25f53d1c9a891",
+      "bytes": 1190
+    },
+    {
+      "name": "roll-button-v1.svg",
+      "sha256": "30c1c16826222c7863a1f905179e70e630d79979f66c331767d8f63bd75f857c",
+      "bytes": 1327
+    },
+    {
+      "name": "round-control-v1.svg",
+      "sha256": "f204d1daae983cb9a3131cc7a24d62bcff5546021b8269babe1602691a8462eb",
+      "bytes": 1176
+    },
+    {
+      "name": "player-card-v1.svg",
+      "sha256": "ca80499413c452a934f3c5b7308384a25720813971094745d699fa44429f5781",
+      "bytes": 1395
+    },
+    {
+      "name": "property-frame-landscape-edge-v1.svg",
+      "sha256": "da9d580d7cabf44688fef2df5194ef0b27f2c408ac10e26a46d13a6185fcc094",
+      "bytes": 1361
+    },
+    {
+      "name": "property-name-landscape-edge-v1.svg",
+      "sha256": "90fa9d9d1ca3b78381878fcaf11758649350549fbf104c8f1376de817de643d8",
+      "bytes": 1192
+    },
+    {
+      "name": "rent-strip-landscape-edge-v1.svg",
+      "sha256": "dff27d3c67375728c64202e7694c71a11ce281e9ff68534004ed12e5758256d7",
+      "bytes": 1038
+    },
+    {
+      "name": "special-frame-emerald-portrait-v1.svg",
+      "sha256": "4423017b4ab8c43691520ecb362dd4534bc9e69c3cace83df8b1847c33dc84e6",
+      "bytes": 1190
+    },
+    {
+      "name": "special-frame-emerald-wide-v1.svg",
+      "sha256": "a84f00ca7bbe6ac9b3607aebe7b2c4964f806d0b35006e3726332e5c70046793",
+      "bytes": 1190
+    },
+    {
+      "name": "special-frame-emerald-edge-v1.svg",
+      "sha256": "3407eeaad9b2227e309a7631b5b716330e60bc6e734729bc211c7d0b87d5a305",
+      "bytes": 1190
+    },
+    {
+      "name": "special-frame-navy-portrait-v1.svg",
+      "sha256": "cfff11d3a27dbf138b413caf1bb4e621ed9672d6239c3f8c7b7578ca254b9e79",
+      "bytes": 1189
+    },
+    {
+      "name": "special-frame-navy-wide-v1.svg",
+      "sha256": "b9876069e6d63b7ba2114c1f1edb74e1a32f9897f84f61edcd7d5376f748ecf5",
+      "bytes": 1189
+    },
+    {
+      "name": "special-frame-navy-edge-v1.svg",
+      "sha256": "3c0036af50ce00ef571887d2ee6353c788748060c8ca6e36510e3420ef3da4d9",
+      "bytes": 1189
+    },
+    {
+      "name": "special-frame-gold-portrait-v1.svg",
+      "sha256": "877ac6e3072e9f7b42cd08880aa970cb5538ddb5b0f6e07d8af2b666c7548d18",
+      "bytes": 1190
+    },
+    {
+      "name": "special-frame-gold-wide-v1.svg",
+      "sha256": "0248e06d4d4a758bcd0ee7409abe145c2dd43f837fa5ddd5d4b18ddd5277be8d",
+      "bytes": 1190
+    },
+    {
+      "name": "special-frame-gold-edge-v1.svg",
+      "sha256": "2b93a82b9fd43f153363788936918c701a57dc6edffeb517df97362f9fb032b6",
+      "bytes": 1190
+    },
+    {
+      "name": "credit-notes-v1.svg",
+      "sha256": "bed46c7ff2516359858ae154f47b0b556ba1648e219d5e6cf1b6043dd2f7600d",
+      "bytes": 1451
+    },
+    {
+      "name": "control-gear-v1.svg",
+      "sha256": "a0cf16254754be45d8f462ca4b7362070e69e943e51c83979b706b0206584515",
+      "bytes": 971
+    }
+  ]
+}

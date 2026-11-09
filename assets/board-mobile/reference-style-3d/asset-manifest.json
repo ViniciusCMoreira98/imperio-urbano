@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-08",
+  "tool": "integrated imagegen",
+  "promptFile": "prompts.json",
+  "newMeshyCredits": 0,
+  "sourceModelsPreserved": true,
+  "assets": [
+    {
+      "path": "apps/web/src/board-presentation/art/reference-center-v1.png",
+      "width": 1374,
+      "height": 1145,
+      "sha256": "19c81a1bac14b987eda5a83692dd0205f192b6392bc911f22e028d08421855df",
+      "role": "Center source before positioning revision"
+    },
+    {
+      "path": "apps/web/src/board-presentation/art/reference-center-v2.png",
+      "width": 1374,
+      "height": 1145,
+      "sha256": "8bd704776ddea12352ab41bdc05b4794f8c0cb0cbc6609ce96ac792268fc9637",
+      "role": "Active center illustration"
+    },
+    {
+      "path": "apps/web/src/board-presentation/art/reference-environment-v1.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "6dd8d1063b7e517becfd7f3724ec9521b845223d91ed829a3e6c71b7fe309e45",
+      "role": "Table and beach background"
+    }
+  ],
+  "characterStylePolicy": "Preserve current character models and portraits; user instruction 2026-11-08",
+  "preservedCharacterSources": [
+    {
+      "id": "kenney-female-a",
+      "path": "apps/web/public/models/characters/character-female-a.glb",
+      "sha256": "8cfcff43460da8b421f2a7fdfb43ec177321cad2746db9497cbf128d5806e2a8"
+    },
+    {
+      "id": "kenney-male-a",
+      "path": "apps/web/public/models/characters/character-male-a.glb",
+      "sha256": "77572792bfe2773b715b8cd8e18644b52b3e1f155fe10450254b50f9c364382a"
+    },
+    {
+      "id": "steampunk-brasil-v01-textured",
+      "path": "apps/web/public/models/characters/steampunk-brasil-v01-rest-v01.glb",
+      "sha256": "21636805b6a0f2d9ee2c788343aa5db362f58e13fccfd851f11185b361ca40bd"
+    },
+    {
+      "id": "kenney-female-b",
+      "path": "apps/web/public/models/characters/character-female-b.glb",
+      "sha256": "2288438e7baf9acc91a870c82dc00d66710bb486592cfc3474ef8ed93a03863a"
+    },
+    {
+      "id": "kenney-male-d",
+      "path": "apps/web/public/models/characters/character-male-d.glb",
+      "sha256": "dd12b2e75ffb1cdb45aaec3916c3d6e732929ccb4a8b89b946f69baaabfa64da"
+    },
+    {
+      "id": "kenney-male-b",
+      "path": "apps/web/public/models/characters/character-male-b.glb",
+      "sha256": "791fc0c203924c175c0a3d5b60d030daf36797b039506689cf7cd01ef5253b3c"
+    }
+  ],
+  "preservedPortraitSources": [
+    {
+      "path": "apps/web/src/hud/art/avatars-c8/avatar-1.webp",
+      "sha256": "332ce2c05b447c2a7607c21f24c46d0f6cfe9e1d5354b90e9db796fb9c4b1402"
+    },
+    {
+      "path": "apps/web/src/hud/art/avatars-c8/avatar-2.webp",
+      "sha256": "3d2ef4c9e2b08c4237dda45dd163355c99f6965fe85681369ca01e8f70a40d42"
+    },
+    {
+      "path": "apps/web/src/hud/art/avatars-c8/avatar-3.webp",
+      "sha256": "c02033ea8bf46972a4c3ed10c72f44f6c90a96a9090e5241b8663571143c5fa8"
+    },
+    {
+      "path": "apps/web/src/hud/art/avatars-c8/avatar-4.webp",
+      "sha256": "390210428366746810d533e14dcde4634b9ec1bcfd7b7add513213bdf3908372"
+    },
+    {
+      "path": "apps/web/src/hud/art/avatars-c8/avatar-5.webp",
+      "sha256": "388c67e0602bf252dab9c30d9d3006aff5eebcf7a0fabf4436eba45700de91fc"
+    }
+  ],
+  "vectorRevision": [
+    {
+      "path": "apps/web/src/board-presentation/art/reference-player-frame-v2.svg",
+      "sha256": "e8c252f59f1c7f8f5205cc27c2e28d7c5176f1321bb82abd8ad635d125ffda00",
+      "source": "Original editable SVG; no imagegen or Meshy credits"
+    },
+    {
+      "path": "apps/web/src/board-presentation/art/control-sound-v1.svg",
+      "sha256": "eb8a2a110bbb1ddc612833d834b20da3882a501ab4aed212a587ed56abb839aa",
+      "source": "Original editable SVG; no imagegen or Meshy credits"
+    },
+    {
+      "path": "apps/web/src/board-presentation/art/cards-control-v1.svg",
+      "sha256": "07ed3cf9c64223146f0fe3d75181e098e18189323063f9a829b7a077a27a02a3",
+      "source": "Original cards icon copied from 235a18f:apps/web/src/hud/art/cards/cards-v1.svg to keep V2 self-contained"
+    }
+  ],
+  "reference": {
+    "path": "assets/board-mobile/reference-style-3d/reference-approved.png",
+    "sha256": "170e0b8b1bc54d3d53ff8575f722c296693d89555e975c7f786bab8759dd2a34"
+  }
+}

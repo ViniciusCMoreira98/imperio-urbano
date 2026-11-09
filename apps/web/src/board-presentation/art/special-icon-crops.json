@@ -1,0 +1,65 @@
+{
+  "arrow": {
+    "x": 246,
+    "y": 182,
+    "width": 1179,
+    "height": 558,
+    "sourceWidth": 1671,
+    "sourceHeight": 941,
+    "source": "apps/web/src/board/board34/art/v3/arrow-v3.png"
+  },
+  "event": {
+    "x": 191,
+    "y": 138,
+    "width": 866,
+    "height": 994,
+    "sourceWidth": 1254,
+    "sourceHeight": 1254,
+    "source": "apps/web/src/board/board34/art/v3/event-v3.png"
+  },
+  "flame": {
+    "x": 255,
+    "y": 59,
+    "width": 921,
+    "height": 984,
+    "sourceWidth": 1448,
+    "sourceHeight": 1086,
+    "source": "apps/web/src/board/board34/art/v3/flame-v3.png"
+  },
+  "rest": {
+    "x": 223,
+    "y": 103,
+    "width": 887,
+    "height": 942,
+    "sourceWidth": 1335,
+    "sourceHeight": 1178,
+    "source": "apps/web/src/board/board34/art/v3/rest-v3.png"
+  },
+  "tax": {
+    "x": 179,
+    "y": 95,
+    "width": 968,
+    "height": 1007,
+    "sourceWidth": 1331,
+    "sourceHeight": 1181,
+    "source": "apps/web/src/board/board34/art/v3/tax-v3.png"
+  },
+  "airport": {
+    "x": 148,
+    "y": 142,
+    "width": 1280,
+    "height": 673,
+    "sourceWidth": 1672,
+    "sourceHeight": 941,
+    "source": "apps/web/src/board/board34/art/v3/airport-v3.png"
+  },
+  "chest": {
+    "x": 315,
+    "y": 122,
+    "width": 803,
+    "height": 840,
+    "sourceWidth": 1448,
+    "sourceHeight": 1086,
+    "source": "apps/web/src/board/board34/art/v3/chest-v3.png"
+  }
+}

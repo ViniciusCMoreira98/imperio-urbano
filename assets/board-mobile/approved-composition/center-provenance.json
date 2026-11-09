@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-08",
+  "tool": "integrated imagegen",
+  "asset": "apps/web/src/board-presentation/art/approved-center-panorama-v1.png",
+  "sha256": "7988c39117cc08cc10a0111dc3c49c98ae15626770d539f91ff63c0b5e98b3d1",
+  "width": 1983,
+  "height": 793,
+  "prompt": "center-prompt.txt",
+  "references": [
+    "assets/board-mobile/art-direction-v2/concept.png",
+    "apps/web/src/board/board34/art/center-brasil-v2.png"
+  ],
+  "scope": "Separate scenic center layer. Not a board atlas, UI or screenshot.",
+  "newMeshyCredits": 0
+}
