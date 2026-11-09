@@ -1,5 +1,13 @@
 # Orientações e pendências para o Claude Code
 
+## V1 — revisão adversa e identificação de ocupantes, 09/11/2026
+
+Evidências em assets/3d/reviews/v1-adverse/ e reprodução em scripts/assets/v1-adverse-qa.mjs --strict. Nove capturas do GameScreen real com snapshots simulados: hotéis, Olimpíadas ×10, Apagão, Taxa R$ 60.000, saldos até R$ 1.234.567 e quatro jogadores juntos em MA/RN/SP. Telas 1280×720, 800×360 e 667×280. Execução estrita concluída: nove cenários/resoluções, zero achados automatizados e zero erros de página, com aluguéis oficiais e alcance dos botões conferidos. Nenhum saldo transbordando, aluguel cortado ou controle fora da janela. Sem mudanças na aplicação, regras, câmera, artes ou modelos e sem créditos Meshy. Não equivale a teste em telefone físico ou multiplayer real.
+
+Pendência visual observada: em casas estreitas, quatro personagens têm oclusão parcial dos corpos. As quatro bases permanecem distintas, mas isso não garante identificar todos os jogadores. Preservar estilo/modelos atuais e não reduzir mais as figuras. Complemento solicitado à engenharia: na consulta já existente ao tocar uma propriedade, apresentar os ocupantes pelo snapshot.players filtrado por position === índice da casa, excluindo falidos, em ordem de seat, com nickname e cor do peão. Atualizar ao entrar/sair um jogador; não confundir ocupante com proprietário, não criar nova regra nem comando de servidor. Respeitar o diálogo de decisão e os prazos existentes. Codex pode ajustar a apresentação dessa lista após disponibilizado esse conteúdo. Validação esperada: 1–4 ocupantes, entradas/saídas, jogador falido e consulta em 667×280 sem perder o fechamento ou esconder ações obrigatórias. Capturas crowd-side-blackout/crowd-north/crowd-front reproduzem o problema; não declarar a oclusão dos modelos solucionada pela lista.
+
+O limite válido do jogo é quatro jogadores, conforme rules.players.max; a antiga fixture de seis é estresse fora da capacidade. V1 na develop_arte_3d; V2 separada na codex/tabuleiro-v2. Publicação autorizada pelo usuário: incluir esta revisão no commit da develop_arte_3d e integrá-la à develop.
+
 ## V1 — mesma câmera e cartas móveis simplificadas, 08/11/2026
 
 Atendidas na develop_arte_3d as orientações novas da engenharia (commit de referência 3f00838): GameScreen usa framing="standard" no computador e no celular; CameraRig preserva pose/quaternion/FOV da câmera calibrada e só muda o enquadramento pelas reservas medidas do HUD. A barra de ações móvel foi compactada conforme a engenharia. Os estilos mobileBoard dos estudos antigos ficaram restritos a data-mobile-study, evitando que a distribuição arquivada do HUD e a câmera antiga se tornem o padrão da V1.
