@@ -17,6 +17,15 @@ const SHARPNESS = 8;
 type PlaqueTile = ZoneTile & { id: string; stateId?: string | null };
 const tiles = (layout.tiles as unknown as PlaqueTile[]).filter((t) => t.stateId && t.panel?.rent);
 const byState = new Map(tiles.map((t) => [t.stateId!, t]));
+const enlargedCache = new Map<PlaqueTile,PlaqueTile>();
+/** Mantém a base da placa no lugar e usa mais da largura e da altura da propriedade. */
+function enlarged(tile:PlaqueTile):PlaqueTile{
+  let result=enlargedCache.get(tile);if(result)return result;
+  const rent=tile.panel.rent!,width=Math.min(tile.panel.width-6,rent.width*1.25),height=rent.height*1.6;
+  const x=Math.max(3,Math.min(tile.panel.width-3-width,rent.x+(rent.width-width)/2));
+  result={...tile,panel:{...tile.panel,rent:{x,y:Math.max(3,rent.y+rent.height-height),width,height}}};
+  enlargedCache.set(tile,result);return result;
+}
 
 /** Mesma placa e mesmo texto que a arte pinta (Board34Scene), num canvas só da placa. */
 function tagTexture(tile: PlaqueTile, label: string,clean=false) {
@@ -52,6 +61,7 @@ function tagTexture(tile: PlaqueTile, label: string,clean=false) {
   texture.colorSpace = SRGBColorSpace;
   texture.minFilter = texture.magFilter = LinearFilter;
   texture.generateMipmaps = false;
+  texture.userData={label,fontAtlas:font,sharpness:SHARPNESS};
   return texture;
 }
 
@@ -93,15 +103,15 @@ function RentTag({ tile:source, label,clean=false }: { tile: PlaqueTile; label: 
     [material],
   );
   // Só mostra; o toque segue indo para a casa embaixo.
-  return <mesh name={`RENT_TAG_${tile.id}`} geometry={geometry} material={material} renderOrder={RENT_TAG_RENDER_ORDER} raycast={() => null} />;
+  return <mesh name={`RENT_TAG_${tile.id}`} geometry={geometry} material={material} renderOrder={RENT_TAG_RENDER_ORDER} userData={{...material.map?.userData,plaque:tile.panel.rent}} raycast={() => null} />;
 }
 
-export function RentTags({ labels,mobile=false,clean=false }: { labels: BoardRentLabel[];mobile?:boolean;clean?:boolean }) {
+export function RentTags({ labels,mobile=false,clean=false,large=false }: { labels: BoardRentLabel[];mobile?:boolean;clean?:boolean;large?:boolean }) {
   return (
     <>
       {labels.map(({ stateId, rentLabel }) => {
         const tile = byState.get(stateId);
-        return tile ? clean&&mobile?<RentTag key={stateId} tile={tile} label={rentLabel} clean/>:mobile?<MobileRentTag key={stateId} tile={tile} label={rentLabel}/>:<RentTag key={stateId} tile={tile} label={rentLabel} /> : null;
+        return tile ? clean&&mobile?<RentTag key={stateId} tile={tile} label={rentLabel} clean/>:mobile?<MobileRentTag key={stateId} tile={tile} label={rentLabel}/>:<RentTag key={stateId} tile={large?enlarged(tile):tile} label={rentLabel} /> : null;
       })}
     </>
   );

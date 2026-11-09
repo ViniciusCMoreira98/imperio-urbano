@@ -1,5 +1,16 @@
 # Orientações e pendências para o Codex
 
+## V1 — mesma câmera e cartas móveis simplificadas, 08/11/2026
+
+Atendidas na develop_arte_3d as orientações novas da engenharia (commit de referência 3f00838): GameScreen usa framing="standard" no computador e no celular; CameraRig preserva pose/quaternion/FOV da câmera calibrada e só muda o enquadramento pelas reservas medidas do HUD. A barra de ações móvel foi compactada conforme a engenharia. Os estilos mobileBoard dos estudos antigos ficaram restritos a data-mobile-study, evitando que a distribuição arquivada do HUD e a câmera antiga se tornem o padrão da V1.
+
+No celular deitado, Board34Scene repinta os 26 cabeçalhos somente com a sigla maior, inclusive propriedades sem dono; o nome completo continua no computador e na consulta por toque. RentTags amplia a placa existente em 25% na largura e 60% na altura, mantendo a base e limitando a região aos limites do painel. Valores continuam vindo do host/currentRent, inclusive Apagão; sem mudança de regras. Preservados os PNGs/atlas originais, mipmaps, bias, anisotropia/DPR e os modelos/personagens atuais. No celular usa o atlas original 6K quando o hardware suporta, com fallback ao original padrão. Aluguéis continuam na fila opaca de ordem 20 e personagens em 30; os toques atravessam as etiquetas. Nenhuma geração de arte ou crédito Meshy.
+
+Validação: build/TypeScript e 195 testes aprovados. Novo roteiro scripts/assets/v1-mobile-same-camera-qa.mjs monta o GameScreen real com WebSocket simulado e confere 1280×720, 800×360, 667×280 e 932×430 (seis jogadores), exatamente a mesma pose de câmera, 26 etiquetas e suas medidas, siglas maiores/ausência do nome completo na pintura móvel, atlas 6K, Apagão, consulta do nome completo ao tocar, gaveta de cartas, comando ROLL_DICE e bloqueio da partida em 390×844 com toque. Capturas/relatório em assets/3d/reviews/v1-mobile-same-camera/. Captura de consulta: property-full-name.png. Não é validação de multiplayer ou aparelho físico; limites de leitura dependem do viewport.
+
+Essa orientação substitui as expectativas dos roteiros antigos mobile-diamond/mobile-clarity que exigiam outra pose ou etiquetas voltadas para a câmera. Mantê-los como histórico dos estudos. Publicação autorizada pelo usuário: registrar os ajustes na develop_arte_3d e integrá-los à develop. O tabuleiro V2 continua separado na codex/tabuleiro-v2.
+
+
 ## Versão 1 — atualização com a develop, 08/11/2026
 
 Definição vigente do usuário: develop_arte_3d é a branch da versão 1; codex/tabuleiro-v2 é a branch da versão 2. Atualizada a V1 com origin/develop 7913772. A implementação nova do tabuleiro V2 permanece na sua branch própria; referências a esse conceito nas seções antigas abaixo são histórico anterior à separação das versões.

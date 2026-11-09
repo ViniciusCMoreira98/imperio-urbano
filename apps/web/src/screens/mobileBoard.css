@@ -1,33 +1,33 @@
 .hud-history-mobile-icon{display:none}
 @media(max-height:500px) and (orientation:landscape){
- .game-viewport .game-hud-players{inset:auto 6px 6px;display:block;pointer-events:none;max-width:none;width:auto;padding:0}
- .game-viewport .hud-players{display:grid;grid-template-columns:clamp(100px,15vw,132px) 1fr clamp(100px,15vw,132px);grid-template-rows:repeat(var(--mobile-player-rows),32px);gap:4px;width:100%;padding:0!important;overflow:visible}
- .game-viewport .hud-players>li{grid-column:var(--mobile-player-column);grid-row:var(--mobile-player-row);height:32px;min-height:0;width:100%;padding:2px 4px;gap:4px;border-width:1px;border-radius:9px;pointer-events:auto;box-shadow:0 2px 6px #001a2e88!important}
- .game-viewport .hud-players .hud-avatar-frame{width:25px;height:25px;min-width:25px}
- .game-viewport .hud-player-name{font-size:10px;line-height:1.1}
- .game-viewport .hud-player-balance{font-size:12px;line-height:1.1}
- .game-viewport .game-hud-header{inset:4px 4px auto auto;padding:2px;gap:5px;flex-direction:column;width:36px}
- .game-viewport .game-hud-header>button{width:30px;height:30px;min-width:0;min-height:0;padding:2px;font-size:13px;border-radius:10px}
- .game-viewport .game-hud-header>button span{display:none}
- .game-viewport .game-hud-history{inset:auto 6px calc(var(--mobile-player-height,68px) + 12px) auto;width:auto;max-width:194px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
- .game-viewport .game-hud-history>button{width:32px;height:32px;padding:3px;min-width:0;display:flex;align-items:center;justify-content:center;border-radius:10px}
- .game-viewport .game-hud-history>button>span:not(.hud-cards-count){display:none}
- .game-viewport .hud-history-mobile-icon{display:block;width:24px;height:24px}
- .game-viewport .game-hud-actions{inset:50% auto auto var(--mobile-action-x,50%);transform:translate(-50%,-50%);width:auto;max-width:42vw}
- .game-viewport .hud-action-shell{width:auto;max-width:none}
- .game-viewport .hud-action-tray{width:auto;min-width:0;min-height:0;padding:4px 6px;gap:5px;flex-wrap:wrap;justify-content:center;border-radius:12px}
- .game-viewport .hud-action-tray .hud-turn-badge{padding:0;min-width:0;flex:0 1 auto}
- .game-viewport .hud-action-tray .hud-turn-badge .hud-avatar-frame{display:none}
- .game-viewport .hud-action-tray .hud-turn-badge p:last-child{font-size:10px}
- .game-viewport .hud-action-tray .hud-dice svg{width:15px;height:18px}
- .game-viewport .hud-action-tray>button{flex:0 1 auto}
- .game-viewport .hud-turn-badge img,.game-viewport .hud-turn-badge p:first-child{display:none}
- .game-viewport .hud-turn-badge p{font-size:10px;line-height:1.1}
- .game-viewport .hud-action-tray button{min-height:29px;height:auto;padding:4px 10px;font-size:11px}
- .game-viewport .hud-cards-drawer{max-height:var(--hud-cards-max-height,70vh)}
+ .game-viewport[data-mobile-study] .game-hud-players{inset:auto 6px 6px;display:block;pointer-events:none;max-width:none;width:auto;padding:0}
+ .game-viewport[data-mobile-study] .hud-players{display:grid;grid-template-columns:clamp(100px,15vw,132px) 1fr clamp(100px,15vw,132px);grid-template-rows:repeat(var(--mobile-player-rows),32px);gap:4px;width:100%;padding:0!important;overflow:visible}
+ .game-viewport[data-mobile-study] .hud-players>li{grid-column:var(--mobile-player-column);grid-row:var(--mobile-player-row);height:32px;min-height:0;width:100%;padding:2px 4px;gap:4px;border-width:1px;border-radius:9px;pointer-events:auto;box-shadow:0 2px 6px #001a2e88!important}
+ .game-viewport[data-mobile-study] .hud-players .hud-avatar-frame{width:25px;height:25px;min-width:25px}
+ .game-viewport[data-mobile-study] .hud-player-name{font-size:10px;line-height:1.1}
+ .game-viewport[data-mobile-study] .hud-player-balance{font-size:12px;line-height:1.1}
+ .game-viewport[data-mobile-study] .game-hud-header{inset:4px 4px auto auto;padding:2px;gap:5px;flex-direction:column;width:36px}
+ .game-viewport[data-mobile-study] .game-hud-header>button{width:30px;height:30px;min-width:0;min-height:0;padding:2px;font-size:13px;border-radius:10px}
+ .game-viewport[data-mobile-study] .game-hud-header>button span{display:none}
+ .game-viewport[data-mobile-study] .game-hud-history{inset:auto 6px calc(var(--mobile-player-height,68px) + 12px) auto;width:auto;max-width:194px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+ .game-viewport[data-mobile-study] .game-hud-history>button{width:32px;height:32px;padding:3px;min-width:0;display:flex;align-items:center;justify-content:center;border-radius:10px}
+ .game-viewport[data-mobile-study] .game-hud-history>button>span:not(.hud-cards-count){display:none}
+ .game-viewport[data-mobile-study] .hud-history-mobile-icon{display:block;width:24px;height:24px}
+ .game-viewport[data-mobile-study] .game-hud-actions{inset:50% auto auto var(--mobile-action-x,50%);transform:translate(-50%,-50%);width:auto;max-width:42vw}
+ .game-viewport[data-mobile-study] .hud-action-shell{width:auto;max-width:none}
+ .game-viewport[data-mobile-study] .hud-action-tray{width:auto;min-width:0;min-height:0;padding:4px 6px;gap:5px;flex-wrap:wrap;justify-content:center;border-radius:12px}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-turn-badge{padding:0;min-width:0;flex:0 1 auto}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-turn-badge .hud-avatar-frame{display:none}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-turn-badge p:last-child{font-size:10px}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-dice svg{width:15px;height:18px}
+ .game-viewport[data-mobile-study] .hud-action-tray>button{flex:0 1 auto}
+ .game-viewport[data-mobile-study] .hud-turn-badge img,.game-viewport[data-mobile-study] .hud-turn-badge p:first-child{display:none}
+ .game-viewport[data-mobile-study] .hud-turn-badge p{font-size:10px;line-height:1.1}
+ .game-viewport[data-mobile-study] .hud-action-tray button{min-height:29px;height:auto;padding:4px 10px;font-size:11px}
+ .game-viewport[data-mobile-study] .hud-cards-drawer{max-height:var(--hud-cards-max-height,70vh)}
 }
 @media(max-height:320px) and (orientation:landscape){
- .game-viewport .hud-action-tray .hud-turn-badge,.game-viewport .hud-action-tray .hud-dice{display:none}
- .game-viewport .hud-action-tray .hud-roll{min-height:28px;padding:3px 10px;font-size:11px}
- .game-viewport .hud-action-tray{padding:3px 5px}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-turn-badge,.game-viewport[data-mobile-study] .hud-action-tray .hud-dice{display:none}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-roll{min-height:28px;padding:3px 10px;font-size:11px}
+ .game-viewport[data-mobile-study] .hud-action-tray{padding:3px 5px}
 }

@@ -65,7 +65,8 @@ export function GameScreen() {
       <div ref={viewportRef} data-mobile-study={mobileCleanStudy||undefined} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
         {/* Canvas de mesa em toda a janela; HUD flutua sobre o cenário. */}
         <div className="game-hud-board absolute inset-0">
-          <GameBoard framing={insets?.occlusions?'mobile-diamond':insets?.left!==undefined&&insets?.right!==undefined?'mobile-landscape':'standard'} insets={insets} taxPoolLabel={taxPool === null ? null : formatCredits(taxPool)} />
+          {/* O ângulo calibrado da arte é o mesmo no computador e no celular. */}
+          <GameBoard framing="standard" insets={insets} taxPoolLabel={taxPool === null ? null : formatCredits(taxPool)} />
         </div>
 
         <header ref={headerRef} className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">

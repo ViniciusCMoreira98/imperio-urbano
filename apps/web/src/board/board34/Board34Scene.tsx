@@ -20,23 +20,24 @@ export interface Board34SceneProps{framing?:BoardFraming;insets?:BoardInsets;env
 export function board34TileAnchor(id:string){const tile=layout.tiles.find(t=>t.id===id);if(!tile)throw Error(`Casa desconhecida na cena de 34 casas: ${id}`);return tile.anchor;}
 const nodes=new Set(layout.tiles.map(t=>t.modelNode));
 function tileOf(object:Object3D,root:Object3D){for(let node:Object3D|null=object;node&&node!==root;node=node.parent)if(nodes.has(node.name))return node.name.slice(5);return null;}
-function labelTexture(labels:BoardRentLabel[],taxPoolLabel:string|null,compact=false,clean=false){
+function labelTexture(labels:BoardRentLabel[],taxPoolLabel:string|null,compact=false,clean=false,externalRents=compact){
  const c=document.createElement('canvas');c.width=3072;c.height=2048;const x=c.getContext('2d')!;x.scale(2,2);x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff7d4';
  const values=new Map(labels.map(l=>[l.stateId,l.rentLabel]));
  for(const tile of layout.tiles){const owner=labels.find(l=>l.stateId===tile.id)?.ownerColor;if(clean||(!owner&&!compact))continue;if(!tile.panel.rent)continue;const rect=ownerHeaderRect(tile.panel,tile.id);paintPanel(x,tile.panel,ctx=>paintOwnerHeader(ctx,rect,tile.id,tile.label??tile.id,owner??'#e8eef5',compact),rect);}
- for(const tile of layout.tiles){const rect=tile.panel.rent,label=values.get(tile.id);if(clean||compact||!rect||label===undefined)continue;paintPanel(x,tile.panel,ctx=>{paintRentalPlaque(ctx,rect);let font=rect.height*.66;ctx.font=`900 ${font}px Arial,sans-serif`;while(ctx.measureText(label).width>rect.width*.83&&font>7){font-=.25;ctx.font=`900 ${font}px Arial,sans-serif`;}ctx.fillStyle='#fff5d3';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,rect.x+rect.width/2,rect.y+rect.height/2+.3);},rect);}
+ for(const tile of layout.tiles){const rect=tile.panel.rent,label=values.get(tile.id);if(clean||externalRents||!rect||label===undefined)continue;paintPanel(x,tile.panel,ctx=>{paintRentalPlaque(ctx,rect);let font=rect.height*.66;ctx.font=`900 ${font}px Arial,sans-serif`;while(ctx.measureText(label).width>rect.width*.83&&font>7){font-=.25;ctx.font=`900 ${font}px Arial,sans-serif`;}ctx.fillStyle='#fff5d3';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,rect.x+rect.width/2,rect.y+rect.height/2+.3);},rect);}
  const tax=layout.tiles.find(t=>t.id==='TAX')!;paintPanel(x,tax.panel,ctx=>{const rect=tax.panel.pool!;let size=14;const amount=taxPoolLabel??'—';ctx.font=`900 ${size}px Arial,sans-serif`;while(ctx.measureText(amount).width>rect.width*.88&&size>8){size-=.5;ctx.font=`900 ${size}px Arial,sans-serif`;}ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=clean?'#173a44':'#ffe47b';ctx.fillText(amount,rect.x+rect.width/2,rect.y+rect.height*.70);},tax.panel.pool!);
  const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;texture.magFilter=LinearFilter;texture.minFilter=LinearMipmapLinearFilter;texture.generateMipmaps=true;return texture;
 }
 function material(atlas:Texture,overlay:Texture){return new ShaderMaterial({side:DoubleSide,toneMapped:false,uniforms:{atlas:{value:atlas},overlay:{value:overlay},highlight:{value:0}},vertexShader:'attribute vec3 sourceQ;varying vec3 q;void main(){q=sourceQ;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'uniform sampler2D atlas;uniform sampler2D overlay;uniform float highlight;varying vec3 q;void main(){vec2 uv=q.xy/q.z;vec4 a=texture2D(atlas,uv,-.5);vec4 b=texture2D(overlay,uv,-.5);gl_FragColor=vec4(mix(a.rgb,b.rgb,b.a)*(1.0+highlight),1.0);\n#include <colorspace_fragment>\n}'});}
 function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null,framing}:Board34SceneProps){
  const {gl,size}=useThree();
- const large=(framing==='mobile-diamond'||tabletopViewport(size.width,size.height).scale*1536*gl.getPixelRatio()>3072)&&gl.capabilities.maxTextureSize>=6144;
+ const compactHeaders=size.height<=500&&size.width>size.height;
+ const large=(compactHeaders||framing==='mobile-diamond'||tabletopViewport(size.width,size.height).scale*1536*gl.getPixelRatio()>3072)&&gl.capabilities.maxTextureSize>=6144;
  const clean=mobileCleanStudy&&framing==='mobile-diamond';
  const atlasUrl=useDeferredValue(clean?(mobileSpaciousStudy?'/models/board/board34-mobile-spacious-v1.webp':'/models/board/board34-mobile-clean-v1.webp'):large?layout.atlas.replace('.webp','-6k.webp'):layout.atlas);
  const {scene}=useGLTF(layout.model),atlas=useTexture(atlasUrl),hovered=useRef<string|null>(null);
- const labelsKey=JSON.stringify([rentLabels,taxPoolLabel,framing,clean]);
- const overlay=useMemo(()=>labelTexture(rentLabels,taxPoolLabel,framing==='mobile-diamond',clean),[labelsKey]);
+ const labelsKey=JSON.stringify([rentLabels,taxPoolLabel,framing,clean,compactHeaders]);
+ const overlay=useMemo(()=>labelTexture(rentLabels,taxPoolLabel,compactHeaders||framing==='mobile-diamond',clean,compactHeaders||framing==='mobile-diamond'),[labelsKey]);
  useEffect(()=>()=>overlay.dispose(),[overlay]);
  const prepared=useMemo(()=>{
   atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=gl.capabilities.getMaxAnisotropy();atlas.generateMipmaps=true;atlas.minFilter=LinearMipmapLinearFilter;atlas.magFilter=LinearFilter;atlas.needsUpdate=true;
@@ -61,7 +62,7 @@ function BoardModel({selectedId,onSelect,rentLabels=[],taxPoolLabel=null,framing
  const highlight=(id:string|null)=>prepared.materials.forEach(m=>{const tile=m.userData.tileId;m.uniforms.highlight.value=tile&&tile===selectedId? .12:tile&&tile===id?.toString()? .04:0;});
  useEffect(()=>{highlight(hovered.current);},[selectedId,prepared]);
  useEffect(()=>()=>{prepared.materials.forEach(m=>m.dispose());prepared.surfaceMaterials.forEach(m=>m.dispose());prepared.geometries.forEach(g=>g.dispose());document.body.style.cursor='';},[prepared]);
- useEffect(()=>{if(import.meta.env.DEV){const inspect=()=>({model:prepared.model,layout,printedFaces:prepared.materials.filter(m=>m.userData.tileId).length,rentalStates:rentLabels.map(l=>l.stateId),viewport:{width:size.width,height:size.height,dpr:gl.getPixelRatio(),large},atlas:{url:atlasUrl,width:(atlas.image as HTMLImageElement).width,height:(atlas.image as HTMLImageElement).height}});(window as any).__board34=inspect;return()=>{delete(window as any).__board34;};}},[prepared,labelsKey,atlasUrl,size.width,size.height,large,gl]);
+ useEffect(()=>{if(import.meta.env.DEV){const inspect=()=>({model:prepared.model,layout,printedFaces:prepared.materials.filter(m=>m.userData.tileId).length,rentalStates:rentLabels.map(l=>l.stateId),compactHeaders,overlay,viewport:{width:size.width,height:size.height,dpr:gl.getPixelRatio(),large},atlas:{url:atlasUrl,width:(atlas.image as HTMLImageElement).width,height:(atlas.image as HTMLImageElement).height}});(window as any).__board34=inspect;return()=>{delete(window as any).__board34;};}},[prepared,labelsKey,atlasUrl,size.width,size.height,large,gl]);
  const click=(event:ThreeEvent<MouseEvent>)=>{const id=tileOf(event.object,prepared.model);if(id){event.stopPropagation();onSelect?.(id);}};
  const move=(event:ThreeEvent<PointerEvent>)=>{const id=tileOf(event.object,prepared.model);hovered.current=id;highlight(id);document.body.style.cursor=id?'pointer':'';};
  return <primitive object={prepared.model} onClick={click} onPointerMove={move} onPointerOut={()=>{hovered.current=null;highlight(null);document.body.style.cursor='';}}/>;
