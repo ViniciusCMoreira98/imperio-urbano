@@ -1,8 +1,13 @@
 # Orientações e pendências para o Claude Code
 
+## Divisão oficial das versões — 08/11/2026
+
+Definição explícita do usuário: develop_arte_3d fica destinada à versão 1 do tabuleiro; codex/tabuleiro-v2 fica destinada à versão 2. A develop_arte_3d continua sendo a branch de trabalho da V1. Fazer a manutenção e evolução de cada apresentação na branch correspondente.
+
+
 ## Tabuleiro versão 2 — branch própria, 08/11/2026
 
-O usuário definiu esta apresentação como a versão 2 do tabuleiro e autorizou transferi-la para uma nova branch criada da develop. Branch vigente: codex/tabuleiro-v2, base origin/develop 7913772. O trabalho V2 continua aqui; referências anteriores à develop_arte_3d são histórico. Preservar os personagens atuais, as 34 casas oficiais, um PR e o centro sem construções soltas. A prévia segue independente da partida; a transferência não ativa o novo renderizador no GameScreen.
+O usuário definiu esta apresentação como a versão 2 do tabuleiro e autorizou transferi-la para uma nova branch criada da develop. Branch vigente: codex/tabuleiro-v2, base origin/develop 7913772. O trabalho V2 continua aqui; as referências à develop_arte_3d nas etapas anteriores da V2 registram o histórico da migração. Essa branch permanece destinada à V1. Preservar os personagens atuais, as 34 casas oficiais, um PR e o centro sem construções soltas. A prévia segue independente da partida; a transferência não ativa o novo renderizador no GameScreen.
 
 Transferência revalidada na nova base: build/TypeScript e 197 testes aprovados; prévia 667×280 conferida, incluindo carregamento dos recursos e ausência de colisão entre legendas. O ícone de cartas foi incluído como recurso local V2, preservando o desenho original.
 
