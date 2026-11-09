@@ -4,6 +4,8 @@ import type { BoardInsets } from '../board/camera/tabletopViewport';
 /** Folga entre o HUD e o tabuleiro, além da altura dos bonecos que sobem acima da fileira de cima. */
 const GAP = 6;
 const PAWN_HEADROOM = 0.035;
+/** Larger solo figures need room over the far row; keep this stable as occupants change. */
+const MOBILE_PAWN_HEADROOM = 0.07;
 /** Recorte do selo da rodada, que fica acima da barra de ações. */
 const SEAL_OVERHANG = 16;
 /** Encolhimento menor que isso mantém a reserva anterior (evita o tabuleiro pulando). */
@@ -35,26 +37,43 @@ export function useHudLayout(
         if (headerBox) root.style.setProperty('--hud-header-w', `${Math.ceil(headerBox.width)}px`);
         const list = players.current?.querySelector<HTMLElement>('ol');
         // Celular deitado: cards em coluna à esquerda e botões em coluna à direita (CSS).
+        const cornerLayout=!!list&&getComputedStyle(list).display==='grid';
         const sideLayout = !!list && getComputedStyle(list).flexDirection === 'column';
         if (sideLayout) root.style.setProperty('--hud-players-pad', '2px');
-        else centerPlayers(root, box, headerBox, players.current);
+        else if(!cornerLayout) centerPlayers(root, box, headerBox, players.current);
         const playersBox = players.current?.getBoundingClientRect();
         const tray = actions.current?.querySelector<HTMLElement>('.hud-action-tray') ?? actions.current;
         const actionsBox = tray?.getBoundingClientRect();
         if (!playersBox || !actionsBox || box.height === 0) return;
+        const drawer=root.querySelector<HTMLElement>('.hud-cards-drawer');
+        const drawerWidth=drawer?.getBoundingClientRect().width??0;
+        if(drawer)root.style.setProperty('--hud-cards-max-height',`${Math.max(80,Math.floor(actionsBox.top-box.top-SEAL_OVERHANG-GAP))}px`);
         const bottom = Math.ceil(box.bottom - actionsBox.top + SEAL_OVERHANG + GAP);
         let next: BoardInsets;
-        if (sideLayout) {
+        if(cornerLayout){
+          root.style.setProperty('--mobile-player-height',Math.ceil(playersBox.height)+'px');
+          const actionCenter=(box.width-drawerWidth)/2;
+          root.style.setProperty('--mobile-action-x',actionCenter+'px');
+          const actionShift=actionCenter-(actionsBox.left-box.left+actionsBox.width/2);
+          const history=root.querySelector<HTMLElement>('.game-hud-history')?.getBoundingClientRect();
+          const local=(r:DOMRect)=>({left:Math.floor(r.left-box.left),top:Math.floor(r.top-box.top),right:Math.ceil(r.right-box.left),bottom:Math.ceil(r.bottom-box.top)});
+          const occlusions=[...(list?.querySelectorAll('li')??[])].map(el=>local(el.getBoundingClientRect()));
+          if(headerBox)occlusions.push(local(headerBox));
+          if(history)occlusions.push(local(history));
+          if(drawer){const r=drawer.getBoundingClientRect();occlusions.push({left:box.width-drawerWidth,top:0,right:box.width,bottom:r.height});root.style.setProperty('--hud-cards-max-height',Math.max(80,(history?.top??box.bottom)-box.top-GAP)+'px');}
+          const actionRect=local(actionsBox);
+          next={top:18,bottom:8,left:6,right:6,occlusions,interior:{...actionRect,left:actionRect.left+actionShift,right:actionRect.right+actionShift,top:actionRect.top-SEAL_OVERHANG}};
+        }else if (sideLayout) {
           // Celular deitado (CSS): jogadores e Histórico na coluna esquerda; Menu e barra de ação na direita.
           // Sem faixa embaixo, a altura toda é do tabuleiro. Reserva igual dos dois lados (tabuleiro
           // centralizado): a coluna mais larga.
           const history = root.querySelector<HTMLElement>('.game-hud-history')?.getBoundingClientRect();
           const leftEdge = Math.max(playersBox.right, history && history.width > 0 ? history.right : box.left);
-          const rightEdge = Math.min(headerBox?.left ?? box.right, actionsBox.left);
+          const rightEdge = Math.min(headerBox?.left ?? box.right, actionsBox.left,box.right-drawerWidth);
           const side = Math.ceil(Math.max(leftEdge - box.left, box.right - rightEdge) + GAP);
-          next = { top: Math.ceil(GAP + box.height * PAWN_HEADROOM), bottom: GAP, left: side, right: side };
+          next = { top: Math.ceil(GAP + box.height * MOBILE_PAWN_HEADROOM), bottom: GAP, left: side, right: side };
         } else {
-          next = { top: Math.ceil(playersBox.bottom - box.top + GAP + box.height * PAWN_HEADROOM), bottom };
+          next = { top: Math.ceil(playersBox.bottom - box.top + GAP + box.height * PAWN_HEADROOM), bottom,...(drawerWidth?{right:Math.ceil(drawerWidth+GAP)}:{}) };
         }
         setInsets((prev) => {
           if (!prev) return next;
@@ -62,10 +81,10 @@ export function useHudLayout(
           // ficava pulando (a tela "piscava"). Crescer vale sempre, para nada ficar por cima do tabuleiro.
           const keep = (now: number | undefined, before: number | undefined) =>
             now !== undefined && before !== undefined && now <= before && before - now < SHRINK_TOLERANCE ? before : now;
-          const settled: BoardInsets = { top: keep(next.top, prev.top)!, bottom: keep(next.bottom, prev.bottom)! };
+          const settled: BoardInsets = { ...next, top: keep(next.top, prev.top)!, bottom: keep(next.bottom, prev.bottom)! };
           if (next.left !== undefined) settled.left = keep(next.left, prev.left);
           if (next.right !== undefined) settled.right = keep(next.right, prev.right);
-          return prev.top === settled.top && prev.bottom === settled.bottom && prev.left === settled.left && prev.right === settled.right ? prev : settled;
+          return JSON.stringify(prev) === JSON.stringify(settled) ? prev : settled;
         });
       });
     };
@@ -77,11 +96,19 @@ export function useHudLayout(
       rows.observe(players.current, { childList: true, subtree: true });
       players.current.querySelectorAll('li').forEach((li) => observer.observe(li));
     }
+    let observedDrawer:HTMLElement|null=null;
+    const overlays=new MutationObserver(()=>{
+      const drawer=root.querySelector<HTMLElement>('.hud-cards-drawer');
+      if(drawer!==observedDrawer){if(observedDrawer)observer.unobserve(observedDrawer);if(drawer)observer.observe(drawer);observedDrawer=drawer;}
+      measure();
+    });
+    overlays.observe(root,{childList:true,subtree:true});
     measure();
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
       rows.disconnect();
+      overlays.disconnect();
     };
   }, [viewport, header, players, actions, ready]);
 

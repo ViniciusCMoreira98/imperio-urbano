@@ -22,6 +22,9 @@ import { useGameStore } from '../store/gameStore';
 import { useShownTaxPool } from '../store/shownTaxPool';
 import { Button } from '../ui/ui';
 import { useHudLayout } from './useHudLayout';
+import './mobileBoard.css';
+import {mobileCleanStudy} from '../board/mobileStudy';
+import './mobileCleanStudy.css';
 
 /** Partida conectada ao servidor: o tabuleiro e os painéis só refletem o snapshot recebido. */
 export function GameScreen() {
@@ -60,10 +63,10 @@ export function GameScreen() {
   return (
     <>
       <GameSounds myId={session.playerId} />
-      <div ref={viewportRef} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
+      <div ref={viewportRef} data-mobile-study={mobileCleanStudy||undefined} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
         {/* Canvas de mesa em toda a janela; HUD flutua sobre o cenário. */}
         <div className="game-hud-board absolute inset-0">
-          {/* Mesma câmera do computador também no celular (08/11/2026): é o ângulo em que a arte foi pintada; só encaixa entre os painéis. */}
+          {/* O ângulo calibrado da arte é o mesmo no computador e no celular. */}
           <GameBoard framing="standard" insets={insets} taxPoolLabel={taxPool === null ? null : formatCredits(taxPool)} />
         </div>
 

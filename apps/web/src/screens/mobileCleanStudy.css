@@ -1,0 +1,24 @@
+@media(max-height:500px) and (orientation:landscape){
+ .game-viewport[data-mobile-study] .game-hud-players{inset:6px;height:auto}
+ .game-viewport[data-mobile-study] .hud-players{height:calc(100dvh - 12px);grid-template-rows:32px 1fr 32px}
+ .game-viewport[data-mobile-study] .hud-players>li:nth-child(1){grid-column:1;grid-row:1}
+ .game-viewport[data-mobile-study] .hud-players>li:nth-child(2){grid-column:3;grid-row:1}
+ .game-viewport[data-mobile-study] .hud-players>li:nth-child(3){grid-column:1;grid-row:3}
+ .game-viewport[data-mobile-study] .hud-players>li:nth-child(4){grid-column:3;grid-row:3}
+ .game-viewport[data-mobile-study] .game-hud-header{top:calc(50% - 70px)}
+ .game-viewport[data-mobile-study] [data-dev-tools]{display:none}
+ .game-viewport[data-mobile-study] .game-hud-history{inset:calc(50% + 4px) 6px auto auto}
+ .game-viewport[data-mobile-study]::after{content:'Aluguéis em R$';position:absolute;top:45px;left:9px;color:#254a52;font:9px Arial,sans-serif;pointer-events:none}
+ .game-viewport[data-mobile-study] .hud-action-tray{background:none;border:0;box-shadow:none;padding:0}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-turn-badge,.game-viewport[data-mobile-study] .hud-dice{display:none}
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-roll{width:140px;min-height:34px;background:linear-gradient(#22b6dc,#078aad);border:2px solid #e8f8f6;border-radius:10px;box-shadow:0 3px 0 #307786;color:white;font-size:13px;letter-spacing:0;text-shadow:0 1px #246f80}
+ .game-viewport[data-mobile-study] .hud-action-shell>div:first-child:not(.hud-action-tray){filter:saturate(.4)}
+ .game-viewport[data-mobile-study] .hud-round-seal{background:#edf3e9;border:1px solid #b7cfc9;box-shadow:none;color:#3e6465;font-size:8px;top:-14px}
+ .game-viewport[data-mobile-study] .hud-players>li{background:#f1f2e8!important;border:2px solid #84b4b2;border-radius:9px;box-shadow:0 2px 4px #173c3933!important}
+ .game-viewport[data-mobile-study] .hud-player-name{color:#254c54;font-size:10px}
+ .game-viewport[data-mobile-study] .hud-player-balance{color:#183e45;text-shadow:none;filter:none;font-size:12px}
+ .game-viewport[data-mobile-study] .game-hud-header>button,.game-viewport[data-mobile-study] .game-hud-history>button{border:2px solid #d9f0ec;background:#0a8ba7;box-shadow:0 2px 2px #183e4544;border-radius:50%;color:white}
+}
+@media(max-height:320px) and (orientation:landscape){
+ .game-viewport[data-mobile-study] .hud-action-tray .hud-roll{width:112px;min-height:28px;font-size:11px}
+}

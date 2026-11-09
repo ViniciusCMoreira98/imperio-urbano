@@ -48,7 +48,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
   );
 
   return (
-    <ol className="hud-players flex gap-1.5 sm:w-56 sm:flex-col sm:gap-2" aria-label="Jogadores">
+    <ol style={{['--mobile-player-rows' as string]:Math.ceil(ranked.length/2)}} className="hud-players flex gap-1.5 sm:w-56 sm:flex-col sm:gap-2" aria-label="Jogadores">
       {ranked.map((p, index) => {
         const owned = snapshot.properties.filter((prop) => prop.ownerId === p.id);
         const houses = owned.reduce((n, prop) => n + (prop.buildingLevel < HOTEL_LEVEL ? prop.buildingLevel : 0), 0);
@@ -75,6 +75,8 @@ export function PlayersPanel({ myId }: { myId: string }) {
               p.bankrupt ? 'opacity-45 grayscale' : ''
             }`}
             style={{
+              ['--mobile-player-column' as string]:index<Math.ceil(ranked.length/2)?1:3,
+              ['--mobile-player-row' as string]:index<Math.ceil(ranked.length/2)?index+1:index-Math.ceil(ranked.length/2)+1+Math.ceil(ranked.length/2)-(ranked.length-Math.ceil(ranked.length/2)),
               background: playerCardBackground(color),
               borderColor: color,
               boxShadow: isTurn ? `0 0 18px ${color}, 0 0 0 2px #fde68a` : `0 0 10px ${color}66`,

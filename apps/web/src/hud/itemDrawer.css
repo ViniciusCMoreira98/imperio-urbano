@@ -1,0 +1,32 @@
+.game-viewport .hud-cards-button{gap:6px;padding:5px 12px 5px 7px;border:1.5px solid #efcc7c;border-radius:12px;background:linear-gradient(145deg,#174b70,#092940);box-shadow:inset 0 1px #d8f5ff26,0 3px 0 #051d30,0 5px 10px #00132466;color:#fff4d8}
+.game-viewport .hud-cards-icon{width:28px;height:28px;object-fit:contain;filter:drop-shadow(0 1px 1px #00182c99)}
+.game-viewport .hud-cards-button.hud-cards-ready{border-color:#ffe69c;background:linear-gradient(145deg,#176d64,#093d4c)}
+.game-viewport .hud-cards-count{background:linear-gradient(#ec5470,#bc2446);border-color:#fff0b8;box-shadow:0 2px 3px #061a2d66}
+.game-viewport .hud-cards-drawer{box-sizing:border-box;border:2px solid #e5c47b;border-radius:0 0 0 18px;background:linear-gradient(150deg,#124868,#092e4a 55%,#08263d);box-shadow:inset 3px 0 #fff5b70a,-7px 5px 24px #00142688;max-height:min(calc(100% - 110px),var(--hud-cards-max-height,100dvh));overflow:hidden}
+.game-viewport .hud-cards-drawer>header{flex:none;gap:8px;padding:11px 10px 11px 12px;border-bottom:1px solid #8cb8bf38;background:#092c4455}
+.game-viewport .hud-cards-heading{display:flex;align-items:center;gap:8px;min-width:0}
+.game-viewport .hud-cards-heading>img{width:30px;height:30px;object-fit:contain;flex:none}
+.game-viewport .hud-cards-heading h2{margin:0;color:#fff0bf;font:bold 16px/1.15 Arial,sans-serif}
+.game-viewport .hud-cards-heading p{margin:4px 0 0;color:#accbd9;font:11px/1.2 Arial,sans-serif}
+.game-viewport .hud-cards-drawer header button{flex:none;width:30px;height:30px;display:grid;place-items:center;border:1px solid #bda96d88;border-radius:9px;background:#06283e;color:#fff2c8;font:21px/1 Arial,sans-serif}
+.game-viewport .hud-cards-drawer header button:hover{background:#1c526e}
+.game-viewport .hud-cards-drawer header button:focus-visible{outline:3px solid #fff3ac;outline-offset:2px}
+.game-viewport .hud-cards-list{min-height:0;gap:9px;padding:11px 9px 13px;scrollbar-width:thin;scrollbar-color:#b69d59 #06283e}
+.game-viewport .hud-cards-list .rest-pass-item{box-shadow:inset 0 1px #fff1aa33,0 3px 7px #00172455;border-width:1.5px;border-radius:12px}
+.game-viewport .hud-cards-list .rest-pass-action{border-radius:8px}
+.game-viewport .hud-cards-list .rest-pass-item:focus-visible{outline-width:2px;outline-offset:1px}
+@media(max-height:500px){
+ .game-viewport .hud-cards-button{padding:3px 9px 3px 5px;border-radius:10px;font-size:11px}
+ .game-viewport .hud-cards-icon{width:23px;height:23px}
+ .game-viewport .hud-cards-drawer{width:194px;max-height:min(calc(100% - 70px),var(--hud-cards-max-height,100dvh));border-bottom-left-radius:14px}
+ .game-viewport .hud-cards-drawer>header{padding:5px 7px 5px 8px;gap:5px}
+ .game-viewport .hud-cards-heading{gap:5px}.game-viewport .hud-cards-heading>img{width:22px;height:22px}
+ .game-viewport .hud-cards-heading h2{font-size:13px}.game-viewport .hud-cards-heading p{display:none}
+ .game-viewport .hud-cards-drawer header button{width:25px;height:25px;border-radius:8px;font-size:19px}
+ .game-viewport .hud-cards-list{gap:6px;padding:7px 6px 9px}
+ .game-viewport .hud-cards-list .rest-pass-item{border-radius:9px}
+ .game-viewport .hud-cards-list .rest-pass-action{padding:3px 6px;border-radius:6px}
+}
+@media(max-height:340px){
+ .game-viewport .game-hud-players .hud-player-name,.game-viewport .game-hud-players .hud-player-balance{line-height:1.15}
+}

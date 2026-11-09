@@ -1,0 +1,152 @@
+{
+  "checks": [
+    {
+      "width": 800,
+      "height": 360,
+      "board": {
+        "left": 112.95088755021823,
+        "right": 687.0491124497814,
+        "top": 18.000000000000036,
+        "bottom": 351.99999999999994
+      },
+      "actions": {
+        "x": 330,
+        "y": 163,
+        "width": 140,
+        "height": 34
+      },
+      "players": [
+        {
+          "x": 6,
+          "y": 6,
+          "width": 120,
+          "height": 32
+        },
+        {
+          "x": 674,
+          "y": 6,
+          "width": 120,
+          "height": 32
+        },
+        {
+          "x": 6,
+          "y": 322,
+          "width": 120,
+          "height": 32
+        },
+        {
+          "x": 674,
+          "y": 322,
+          "width": 120,
+          "height": 32
+        }
+      ],
+      "header": {
+        "x": 760,
+        "y": 110,
+        "width": 36,
+        "height": 69
+      },
+      "history": {
+        "x": 762,
+        "y": 184,
+        "width": 32,
+        "height": 70
+      },
+      "camera": {
+        "zoom": 3.3404707273380927,
+        "view": {
+          "enabled": true,
+          "fullWidth": 800,
+          "fullHeight": 360,
+          "offsetX": -11.818249896087991,
+          "offsetY": 2.962825850949173,
+          "width": 800,
+          "height": 360
+        },
+        "position": [
+          -57.60907445103538,
+          57.98611111111111,
+          57.60907445103539
+        ]
+      },
+      "dpr": 2,
+      "propertySelection": true,
+      "drawerOpenClose": true,
+      "officialRollCommand": true
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "board": {
+        "left": 103.82469988116712,
+        "right": 563.1753001188328,
+        "top": 18.880000000000067,
+        "bottom": 262.72
+      },
+      "actions": {
+        "x": 277.5,
+        "y": 126,
+        "width": 112,
+        "height": 28
+      },
+      "players": [
+        {
+          "x": 6,
+          "y": 6,
+          "width": 100.046875,
+          "height": 32
+        },
+        {
+          "x": 560.953125,
+          "y": 6,
+          "width": 100.046875,
+          "height": 32
+        },
+        {
+          "x": 6,
+          "y": 242,
+          "width": 100.046875,
+          "height": 32
+        },
+        {
+          "x": 560.953125,
+          "y": 242,
+          "width": 100.046875,
+          "height": 32
+        }
+      ],
+      "header": {
+        "x": 627,
+        "y": 70,
+        "width": 36,
+        "height": 69
+      },
+      "history": {
+        "x": 629,
+        "y": 144,
+        "width": 32,
+        "height": 70
+      },
+      "camera": {
+        "zoom": 3.4366620322725554,
+        "view": {
+          "enabled": true,
+          "fullWidth": 667,
+          "fullHeight": 280,
+          "offsetX": -9.44874106932457,
+          "offsetY": 5.362303331984845,
+          "width": 667,
+          "height": 280
+        },
+        "position": [
+          -60.01093426938545,
+          52.890221555888715,
+          60.010934269385466
+        ]
+      },
+      "dpr": 2
+    }
+  ],
+  "errors": []
+}

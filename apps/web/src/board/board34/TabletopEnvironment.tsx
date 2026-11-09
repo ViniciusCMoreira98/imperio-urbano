@@ -7,6 +7,7 @@ import{RoomEnvironment}from'three/examples/jsm/environments/RoomEnvironment.js';
 import woodUrl from './art/table-wood-v1.png';
 import beachUrl from './art/beach-environment-v1.webp';
 import{applyTabletopCamera}from'../camera/tabletopViewport';
+import{mobileCleanStudy,mobileSpaciousStudy}from'../mobileStudy';
 
 function StudioReflections(){
  const{gl,scene}=useThree();
@@ -29,7 +30,7 @@ function coinTexture(){
 }
 /** Praia pronta para composição: fundo sem tabuleiro/UI e sombras das peças reais. */
 function BeachEnvironment(){
- const source=useTexture(beachUrl),{scene,size}=useThree();
+ const source=useTexture(mobileCleanStudy&&!mobileSpaciousStudy?'/models/board/mobile-clean-environment-v1.webp':beachUrl),{scene,size}=useThree();
  const texture=useMemo(()=>{const map=source.clone();map.colorSpace=SRGBColorSpace;return map;},[source]);
  useLayoutEffect(()=>{
   const image=source.image as HTMLImageElement,aspect=image.width/image.height,screen=size.width/size.height;

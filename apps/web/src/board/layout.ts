@@ -4,6 +4,7 @@
 // aponta para fora do tabuleiro.
 
 import { board } from '@imperio/game-data';
+import{mobileSpaciousStudy}from'./mobileStudy';
 import {boardVisualManifest} from './boardVisualManifest';
 import { type ZoneTile, tileZones } from './board34/buildingZone';
 import { uniformBuildingScale } from './buildings/buildingPresentation';
@@ -56,7 +57,7 @@ const anchors: TileAnchor[] = board.tiles.map((tile) => {
   const a = art.anchor;
   // No tabuleiro de 34 casas a construção vem da arte de cada casa (fora do nome e da placa de aluguel)
   // e os personagens ficam do outro lado dela.
-  const zones = tile.type === 'PROPERTY' && 'panel' in art && art.panel ? tileZones(art as unknown as ZoneTile, a.pawnArea) : null;
+  const zones = !mobileSpaciousStudy && tile.type === 'PROPERTY' && 'panel' in art && art.panel ? tileZones(art as unknown as ZoneTile, a.pawnArea) : null;
   return {
     index: tile.index,
     id: tile.id,

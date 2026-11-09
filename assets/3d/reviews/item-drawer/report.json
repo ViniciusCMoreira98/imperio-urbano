@@ -1,0 +1,127 @@
+{
+  "realGameScreen": true,
+  "mockedWebSocket": true,
+  "checks": [
+    {
+      "width": 800,
+      "height": 330,
+      "drawer": {
+        "x": 606,
+        "y": 0,
+        "width": 194,
+        "height": 122
+      },
+      "bounds": {
+        "left": 207.95203229820896,
+        "right": 592.047967701791,
+        "top": 32.20499999999997,
+        "bottom": 316.8788696190229
+      },
+      "escape": true,
+      "toggle": true,
+      "closeButton": true,
+      "useAndCount": true,
+      "autoHide": true,
+      "restored": true
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "drawer": {
+        "x": 473,
+        "y": 0,
+        "width": 194,
+        "height": 99
+      },
+      "bounds": {
+        "left": 202.0025,
+        "right": 464.9975,
+        "top": 41.08686348843329,
+        "bottom": 256.11284991289665
+      },
+      "escape": true,
+      "toggle": true,
+      "closeButton": true,
+      "useAndCount": true,
+      "autoHide": true,
+      "restored": true
+    },
+    {
+      "width": 932,
+      "height": 430,
+      "drawer": {
+        "x": 738,
+        "y": 0,
+        "width": 194,
+        "height": 122
+      },
+      "bounds": {
+        "left": 210.5465644005842,
+        "right": 721.4534355994157,
+        "top": 39.902500000000096,
+        "bottom": 414.4550076822901
+      },
+      "escape": true,
+      "toggle": true,
+      "closeButton": true,
+      "useAndCount": true,
+      "autoHide": true,
+      "restored": true
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "drawer": {
+        "x": 1024,
+        "y": 0,
+        "width": 256,
+        "height": 323.546875
+      },
+      "bounds": {
+        "left": 106.89812464207385,
+        "right": 917.7724733491382,
+        "top": 114.14890504377178,
+        "bottom": 596.0413128901876
+      },
+      "escape": true,
+      "toggle": true,
+      "closeButton": true,
+      "useAndCount": true,
+      "autoHide": true,
+      "restored": true
+    }
+  ],
+  "legacyCounts": true,
+  "reducedMotion": true,
+  "commands": [
+    {
+      "commandId": "064db79b-b992-41ef-a04f-b0016a01b326",
+      "expectedVersion": 2,
+      "command": {
+        "type": "USE_REST_PASS"
+      }
+    },
+    {
+      "commandId": "09b474b6-439f-4623-8a2b-155fd165d81b",
+      "expectedVersion": 5,
+      "command": {
+        "type": "USE_REST_PASS"
+      }
+    },
+    {
+      "commandId": "257362e8-a127-4280-ae0a-68f98b815c75",
+      "expectedVersion": 8,
+      "command": {
+        "type": "USE_REST_PASS"
+      }
+    },
+    {
+      "commandId": "b319b0b7-3b13-4701-8e96-658b4bcee39b",
+      "expectedVersion": 11,
+      "command": {
+        "type": "USE_REST_PASS"
+      }
+    }
+  ],
+  "errors": []
+}

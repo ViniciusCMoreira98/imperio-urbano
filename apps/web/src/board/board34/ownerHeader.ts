@@ -38,7 +38,7 @@ function fitFont(ctx: CanvasRenderingContext2D, text: string, weight: string, si
   return size;
 }
 
-export function paintOwnerHeader(ctx: CanvasRenderingContext2D, r: PanelRect, abbreviation: string, name: string, color: string) {
+export function paintOwnerHeader(ctx: CanvasRenderingContext2D, r: PanelRect, abbreviation: string, name: string, color: string, compact=false) {
   const gradient = ctx.createLinearGradient(0, r.y, 0, r.y + r.height);
   gradient.addColorStop(0, shade(color, 0.28));
   gradient.addColorStop(0.55, color);
@@ -55,6 +55,7 @@ export function paintOwnerHeader(ctx: CanvasRenderingContext2D, r: PanelRect, ab
   const light = ink === '#ffffff';
   const cx = r.x + r.width / 2;
   const maxWidth = r.width * 0.88;
+  if(compact){fitFont(ctx,abbreviation,'900',Math.min(r.height*.74,32),maxWidth);ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=ink;ctx.fillText(abbreviation,cx,r.y+r.height/2+.4);return;}
   const big = fitFont(ctx, abbreviation, '900', Math.min(r.height * 0.5, 21), maxWidth);
   const small = fitFont(ctx, name, '700', Math.min(r.height * 0.24, big * 0.5), maxWidth);
   const total = big + small * 1.15;

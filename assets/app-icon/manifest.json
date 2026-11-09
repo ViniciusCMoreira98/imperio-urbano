@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-08",
+  "provider": "Original project vector artwork",
+  "source": "assets/app-icon/source/app-icon-v1.svg",
+  "sourceSha256": "453e7c28d3da80d534d6e4b95027f4ea3930154e2088cbd98aa554fe22f50e70",
+  "records": [
+    {
+      "file": "apps/web/public/icon-192.png",
+      "size": 192,
+      "bytes": 30548,
+      "sha256": "49a8fa82d5c4aa7cf8c274c5aeacf7049118c312ea06016b816583336863ff4f"
+    },
+    {
+      "file": "apps/web/public/icon-512.png",
+      "size": 512,
+      "bytes": 152767,
+      "sha256": "3db245f9989065693a670de19ca968ca85ee5d76759751adb4d0380a2628f355"
+    },
+    {
+      "file": "apps/web/public/icon-maskable-512.png",
+      "size": 512,
+      "bytes": 152767,
+      "sha256": "3db245f9989065693a670de19ca968ca85ee5d76759751adb4d0380a2628f355"
+    },
+    {
+      "file": "apps/web/public/apple-touch-icon.png",
+      "size": 180,
+      "bytes": 27277,
+      "sha256": "38329e5210053dc9e8440d52826b548146f5dd66eebd3c11623157ab511d5526"
+    }
+  ],
+  "maskable": {
+    "radius": 176.16043823742035,
+    "limit": 204.8
+  },
+  "meshyCredits": 0
+}
