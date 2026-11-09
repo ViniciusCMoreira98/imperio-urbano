@@ -38,11 +38,11 @@ export function BoardChoicePrompt({ myId }: { myId: string }) {
   };
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-3">
-      <section
+    // Dentro do miolo do tabuleiro (BoardCenterSlot): as casas destacadas ficam à vista.
+    <section
         role="dialog"
         aria-label={choice.title}
-        className="hud-panel pointer-events-auto w-[min(26rem,100%)] rounded-2xl border border-amber-300/60 px-4 py-3 text-center text-white shadow-2xl"
+        className="hud-panel pointer-events-auto w-[26rem] rounded-2xl border border-amber-300/60 px-4 py-3 text-center text-white shadow-2xl"
       >
         <div className="mb-1 flex items-center justify-center gap-2">
           <h2 className="text-lg font-black tracking-wide text-amber-200 sm:text-xl">{choice.title}</h2>
@@ -64,7 +64,6 @@ export function BoardChoicePrompt({ myId }: { myId: string }) {
             </Button>
           )}
         </div>
-      </section>
-    </div>
+    </section>
   );
 }

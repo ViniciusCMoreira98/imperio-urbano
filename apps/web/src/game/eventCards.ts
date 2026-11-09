@@ -63,11 +63,11 @@ export function cardsFromEvents(events: DomainEvent[], firstVersion: number): Ca
   return cards;
 }
 
-/** Soma, por jogador, do dinheiro das cartas que ainda não sumiram da tela. */
-export function heldCredits(cards: readonly CardShow[], doneId: number): Record<string, number> {
+/** Soma, por jogador, do dinheiro das cartas que ainda não sumiram da tela (só o que o snapshot já inclui). */
+export function heldCredits(cards: readonly CardShow[], doneId: number, snapshotVersion = Number.POSITIVE_INFINITY): Record<string, number> {
   const held: Record<string, number> = {};
   for (const card of cards) {
-    if (card.id <= doneId) continue;
+    if (card.id <= doneId || card.id > snapshotVersion) continue;
     for (const [playerId, amount] of Object.entries(card.credits)) held[playerId] = (held[playerId] ?? 0) + amount;
   }
   return held;

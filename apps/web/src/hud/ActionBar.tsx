@@ -40,7 +40,6 @@ export function ActionBar({ myId }: { myId: string }) {
   const restLeft = snapshot.status === 'IN_PROGRESS' && me && !me.bankrupt ? me.skipTurns : 0;
   const offline = connection !== 'open';
   const act = (command: Command) => send(command);
-  const canRoll = mine && turnId === myId && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
   const tableBusy = diceRolling || tableMoving || cardBusy;
 
   return (
@@ -66,11 +65,7 @@ export function ActionBar({ myId }: { myId: string }) {
         {/* Some enquanto a mesa mostra a jogada: o prazo do servidor só começa a correr quando ela termina. */}
         {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && <Countdown deadline={deadline} warn={mine} />}
 
-        {canRoll && (
-          <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline || tableBusy} title={tableBusy ? 'Aguarde a jogada anterior terminar na mesa' : undefined} onClick={() => act({ type: 'ROLL_DICE' })}>
-            ROLAR DADOS
-          </Button>
-        )}
+        {/* Rolar os dados fica no miolo do tabuleiro (RollButton, 08/11/2026). */}
         {/* Comprar/construir e recusar ("×") ficam no modal de evolução da propriedade; vender para pagar dívida, no aviso de venda (DebtSalePrompt). */}
         {mine && phase === 'AWAITING_END_TURN' && (
           <Button variant="confirm" disabled={offline || cardBusy} onClick={() => act({ type: 'END_TURN' })}>
@@ -88,7 +83,33 @@ export function ActionBar({ myId }: { myId: string }) {
   );
 }
 
-/** Segundos até o servidor jogar pelo jogador da vez (rolar, recusar a compra...). */
+/** Botão de rolar no miolo do tabuleiro (BoardCenterSlot): só na própria vez, depois que a mesa para. */
+export function RollButton({ myId }: { myId: string }) {
+  const snapshot = useGameStore((s) => s.snapshot);
+  const send = useGameStore((s) => s.send);
+  const offline = useGameStore((s) => s.connection !== 'open');
+  const diceRolling = useDiceStore((s) => s.rolling);
+  const tableMoving = usePawnStore((s) => Object.keys(s.moving).length > 0);
+  const cardBusy = useCardBusy();
+  const turnId = useShownTurnPlayerId();
+  if (!snapshot || snapshot.status !== 'IN_PROGRESS') return null;
+  const phase = snapshot.phase;
+  const canRoll = isMyTurn(snapshot, myId) && turnId === myId && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
+  if (!canRoll) return null;
+  // Some enquanto a mesa mostra a jogada anterior: os dados rolam no miolo, embaixo do botão.
+  if (diceRolling || tableMoving || cardBusy) return null;
+  return (
+    <Button
+      variant="roll"
+      className="board-roll-button px-8 py-3 text-lg font-black tracking-wide shadow-2xl sm:text-xl"
+      disabled={offline}
+      onClick={() => send({ type: 'ROLL_DICE' })}
+    >
+      ROLAR DADOS
+    </Button>
+  );
+}
+
 /** Aviso do Descanso para o próprio jogador: rodadas que ainda perde e como sair antes. */
 export function RestChip({ turns }: { turns: number }) {
   const text = turns === 1 ? 'falta 1 rodada' : `faltam ${turns} rodadas`;

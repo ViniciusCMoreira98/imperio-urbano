@@ -39,8 +39,8 @@ export function PlayersPanel({ myId }: { myId: string }) {
   // O destaque da vez acompanha a mesa, como o card da vez.
   const turnId = useShownTurnPlayerId();
   if (!snapshot) return null;
-  const held = heldCredits(cards, doneId);
-  for (const [id, amount] of Object.entries(heldMoveCredits(money, landed, passedStart))) held[id] = (held[id] ?? 0) + amount;
+  const held = heldCredits(cards, doneId, snapshot.version);
+  for (const [id, amount] of Object.entries(heldMoveCredits(money, landed, passedStart, snapshot.version))) held[id] = (held[id] ?? 0) + amount;
   const leading = new Set(leaders(snapshot));
   // Falidos vão para o fim; os demais pelo patrimônio, mantendo o assento como desempate.
   const ranked = [...snapshot.players].sort(

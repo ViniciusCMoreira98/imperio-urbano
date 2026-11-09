@@ -46,14 +46,20 @@ export function moneyFromEvents(events: DomainEvent[], firstVersion: number): Mo
   return holds;
 }
 
-/** Quanto ainda não aparece no saldo de cada jogador (e no fundo da Taxa, em TAX_POOL) porque o personagem não chegou. */
+/**
+ * Quanto ainda não aparece no saldo de cada jogador (e no fundo da Taxa, em TAX_POOL) porque o personagem não chegou.
+ * {@code snapshotVersion}: só segura o que o snapshot já inclui. Os eventos chegam um instante antes do snapshot
+ * novo; descontar do saldo antigo fazia o painel piscar errado (taxa +100, bônus do Início -300 até o snapshot).
+ */
 export function heldMoveCredits(
   holds: readonly MoneyHold[],
   landed: Readonly<Record<string, number>>,
   passedStart: Readonly<Record<string, number>>,
+  snapshotVersion = Number.POSITIVE_INFINITY,
 ): Record<string, number> {
   const held: Record<string, number> = {};
   for (const h of holds) {
+    if (h.moveId > snapshotVersion) continue;
     if ((landed[h.mover] ?? -1) >= h.moveId) continue;
     if (h.atStart && (passedStart[h.mover] ?? -1) >= h.moveId) continue;
     for (const [playerId, amount] of Object.entries(h.credits)) held[playerId] = (held[playerId] ?? 0) + amount;

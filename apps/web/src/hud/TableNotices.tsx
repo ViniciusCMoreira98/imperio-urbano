@@ -2,7 +2,7 @@
 // sons, cada aviso espera a mesa mostrar a jogada: os dados iguais aparecem quando os dados param; os
 // demais, quando o personagem pousa (e a carta da vez fecha). Todos no meio da tela, um de cada vez; somem sozinhos, pelo × ou
 // com um toque fora. Ressincronia (reconexão) descarta a fila.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import rentWaiverArt from '../event-art/art/aluguel-zero-v1.webp';
 import { type TableNotice, tableNotices } from '../game/tableNotices';
 import { cardPending, useCardStore } from '../store/cardStore';
@@ -66,6 +66,17 @@ export function TableNotices({ myId }: { myId: string }) {
     setQueue((q) => q.slice(1));
   }, [shown, queue, tick]);
 
+  // Tocar fora do aviso também fecha, para não esperar o tempo acabar.
+  const panelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!shown) return;
+    const onDown = (e: PointerEvent) => {
+      if (!panelRef.current?.contains(e.target as Node)) setShown(null);
+    };
+    window.addEventListener('pointerdown', onDown, true);
+    return () => window.removeEventListener('pointerdown', onDown, true);
+  }, [shown]);
+
   // Some sozinho depois de um tempo.
   useEffect(() => {
     if (!shown) return;
@@ -78,13 +89,12 @@ export function TableNotices({ myId }: { myId: string }) {
 
   const tone = TONES[shown.kind];
   return (
-    // Tocar fora do aviso também fecha, para não esperar o tempo acabar.
-    <div className="absolute inset-0 z-30 flex items-center justify-center px-3" onClick={close}>
+    // No miolo do tabuleiro (BoardCenterSlot), sem camada por cima dos estados.
       <div
+        ref={panelRef}
         role="status"
         aria-live="polite"
-        onClick={(e) => e.stopPropagation()}
-        className={`table-notice table-notice-${shown.kind} hud-panel relative flex w-[min(22rem,100%)] items-center gap-3 rounded-2xl border py-2 pl-3 pr-9 text-left text-white shadow-2xl ${tone.split(' ')[0]}`}
+        className={`table-notice table-notice-${shown.kind} hud-panel relative flex w-[22rem] items-center gap-3 rounded-2xl border py-2 pl-3 pr-9 text-left text-white shadow-2xl ${tone.split(' ')[0]}`}
       >
         {shown.kind === 'rentWaiver' ? (
           <img src={rentWaiverArt} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
@@ -97,7 +107,6 @@ export function TableNotices({ myId }: { myId: string }) {
         </span>
         <CloseButton onClick={close} />
       </div>
-    </div>
   );
 }
 

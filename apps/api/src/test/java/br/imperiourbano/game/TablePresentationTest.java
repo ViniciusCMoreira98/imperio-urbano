@@ -22,9 +22,10 @@ class TablePresentationTest {
     }
 
     @Test
-    void travelAndRestAreASingleLeap() {
+    void travelWalksFastTileByTileAndRestIsASingleLeap() {
         var travel = List.<GameEvent>of(new GameEvent.TravelChosen("ana", 20, 50), new GameEvent.PlayerMoved("ana", 26, 20, 200, false));
-        assertThat(TablePresentation.of(travel, TILES)).isEqualTo(Duration.ofMillis(1_000 + 500));
+        // 26 -> 20 passando pelo Início: 28 casas da viagem acelerada.
+        assertThat(TablePresentation.of(travel, TILES)).isEqualTo(Duration.ofMillis(28 * 180 + 500));
         var rest = List.<GameEvent>of(new GameEvent.PlayerMoved("ana", 5, 17, 0, true));
         assertThat(TablePresentation.of(rest, TILES)).isEqualTo(Duration.ofMillis(1_000 + 500));
     }

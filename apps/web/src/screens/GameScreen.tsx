@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { GameSounds } from '../audio/GameSounds';
 import { GameBoard } from '../board/GameBoard';
-import { ActionBar } from '../hud/ActionBar';
+import { ActionBar, RollButton } from '../hud/ActionBar';
+import { BoardCenterSlot } from '../hud/BoardCenterSlot';
 import { BoardChoicePrompt } from '../hud/BoardChoicePrompt';
 import { CardReveal } from '../hud/CardReveal';
 import { DevDicePanel } from '../hud/DevDicePanel';
@@ -103,10 +104,13 @@ export function GameScreen() {
             </footer>
             {/* Carta de evento no meio da tela, sem bloquear o tabuleiro; some sozinha. */}
             <CardReveal />
-            {/* Sediar ou viajar: aviso no meio da tela e casas destacadas no tabuleiro. */}
-            <BoardChoicePrompt myId={session.playerId} />
-            {/* Avisos rápidos: Aluguel Zero, falta de saldo, dados iguais. */}
-            <TableNotices myId={session.playerId} />
+            {/* Miolo do tabuleiro: nada aqui cobre os estados. Sediar, viajar ou vender (casas destacadas),
+                avisos rápidos (Aluguel Zero, falta de saldo, dados iguais) e o botão de rolar. */}
+            <BoardCenterSlot insets={insets}>
+              <BoardChoicePrompt myId={session.playerId} />
+              <TableNotices myId={session.playerId} />
+              <RollButton myId={session.playerId} />
+            </BoardCenterSlot>
             {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
             <PropertyDecisionDialog myId={session.playerId} />
             {snapshot.status === 'FINISHED' && <GameOverScreen myId={session.playerId} token={session.token} gameId={gameId} onLeave={leave} />}

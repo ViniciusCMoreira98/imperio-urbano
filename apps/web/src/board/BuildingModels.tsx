@@ -25,3 +25,5 @@ export function PropertyBuildingModel({level,color,scale=1}:{level:number;color:
 export function HouseModel({color,size=.19,level=1}:{color:string;size?:number;level?:number}){const asset=buildingAsset(level);return asset?<PropertyBuildingModel level={level} color={color} scale={size/Math.max(asset.width,asset.depth)}/>:null;}
 /** Compatibilidade com o envelope antigo do hotel; escala sempre uniforme. */
 export function HotelModel({color,width=.5,height=.42,depth=.26}:{color:string;width?:number;height?:number;depth?:number}){const a=buildingAsset(5)!;return <PropertyBuildingModel level={5} color={color} scale={Math.min(width/a.width,height/a.height,depth/a.depth)}/>;}
+// Pré-carrega casas e hotel: a primeira construção aparece pronta, sem atraso.
+for(const level of [1,2,3,4,5]){const asset=buildingAsset(level);if(asset)useGLTF.preload(asset.model);}

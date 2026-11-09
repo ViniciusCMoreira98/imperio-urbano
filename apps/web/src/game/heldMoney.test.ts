@@ -29,6 +29,11 @@ describe('saldo que espera o personagem chegar', () => {
   it('movimento antigo já pousado não segura nada', () => {
     expect(heldMoveCredits(holds, { ana: 40 }, {})).toEqual({});
   });
+
+  it('antes do snapshot novo chegar não desconta nada do saldo antigo (o bônus do Início não some)', () => {
+    expect(heldMoveCredits(holds, {}, {}, 19)).toEqual({});
+    expect(heldMoveCredits(holds, {}, {}, 24)).toEqual({ ana: 267, bia: 33 });
+  });
 });
 
 describe('fundo da Taxa que espera o personagem chegar', () => {

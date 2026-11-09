@@ -6,6 +6,8 @@ const GAP = 6;
 const PAWN_HEADROOM = 0.035;
 /** Recorte do selo da rodada, que fica acima da barra de ações. */
 const SEAL_OVERHANG = 16;
+/** Encolhimento menor que isso mantém a reserva anterior (evita o tabuleiro pulando). */
+const SHRINK_TOLERANCE = 32;
 
 /**
  * Mede o HUD da partida para nada se sobrepor:
@@ -54,9 +56,17 @@ export function useHudLayout(
         } else {
           next = { top: Math.ceil(playersBox.bottom - box.top + GAP + box.height * PAWN_HEADROOM), bottom };
         }
-        setInsets((prev) =>
-          prev && prev.top === next.top && prev.bottom === next.bottom && prev.left === next.left && prev.right === next.right ? prev : next,
-        );
+        setInsets((prev) => {
+          if (!prev) return next;
+          // Encolher pouco não reenquadra: o saldo muda a largura dos cards a cada jogada e o tabuleiro
+          // ficava pulando (a tela "piscava"). Crescer vale sempre, para nada ficar por cima do tabuleiro.
+          const keep = (now: number | undefined, before: number | undefined) =>
+            now !== undefined && before !== undefined && now <= before && before - now < SHRINK_TOLERANCE ? before : now;
+          const settled: BoardInsets = { top: keep(next.top, prev.top)!, bottom: keep(next.bottom, prev.bottom)! };
+          if (next.left !== undefined) settled.left = keep(next.left, prev.left);
+          if (next.right !== undefined) settled.right = keep(next.right, prev.right);
+          return prev.top === settled.top && prev.bottom === settled.bottom && prev.left === settled.left && prev.right === settled.right ? prev : settled;
+        });
       });
     };
     const observer = new ResizeObserver(measure);

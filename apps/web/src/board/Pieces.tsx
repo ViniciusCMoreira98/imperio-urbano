@@ -1,7 +1,7 @@
 // Construções e marcadores desenhados a partir do snapshot do servidor (arte: Codex).
 // Os personagens moram em Pawns.tsx (engenharia); a reexportação mantém o import da cena.
 import { Line } from '@react-three/drei';
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import { board } from '@imperio/game-data';
 import { PAWN_COLORS } from '../game/presentation';
 import { useGameStore } from '../store/gameStore';
@@ -47,11 +47,14 @@ export function Buildings() {
                 <PropertyBuildingModel level={building.level} color={ownerColor} scale={building.scale}/>
               </group>
             )}
+            {/* Carregamento próprio: a primeira moldura não apaga a cena inteira (a tela piscava). */}
             {isHost && (
-              <OlympicHost
-                contour={olympicContour}
-                placement={{ index: anchor.index, x: anchor.x, z: anchor.z, rotationY: anchor.rotationY, width: anchor.width, depth: anchor.depth, isCorner: false }}
-              />
+              <Suspense fallback={null}>
+                <OlympicHost
+                  contour={olympicContour}
+                  placement={{ index: anchor.index, x: anchor.x, z: anchor.z, rotationY: anchor.rotationY, width: anchor.width, depth: anchor.depth, isCorner: false }}
+                />
+              </Suspense>
             )}
           </group>
         </group>

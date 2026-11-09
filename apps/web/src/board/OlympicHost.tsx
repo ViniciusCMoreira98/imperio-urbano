@@ -52,3 +52,4 @@ function OlympicLaurelRelief({placement,contour}:OlympicHostProps){
  useFrame(({clock})=>{if(reduced)return;const pulse=Math.sin(clock.elapsedTime*Math.PI/2);assets.gold.emissiveIntensity=.17+pulse*.045;assets.green.emissiveIntensity=.16+pulse*.035;});
  return <group name="OLYMPIC_LAUREL_RELIEF" userData={{tileIndex:placement.index}}><mesh name="OLYMPIC_GOLD_LAURELS" geometry={assets.goldGeometry} material={assets.gold} raycast={()=>undefined}/><mesh name="OLYMPIC_GREEN_INLAY" geometry={assets.greenGeometry} material={assets.green} raycast={()=>undefined}/><Line name="OLYMPIC_GOLD_THREAD" points={assets.thread} color="#ffe078" lineWidth={Math.min(1.4,Math.max(.55,viewportHeight/520))} raycast={()=>undefined}/></group>;
 }
+useTexture.preload(frameArtwork);

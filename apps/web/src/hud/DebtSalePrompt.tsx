@@ -52,8 +52,8 @@ export function DebtSalePrompt({ myId }: { myId: string }) {
   };
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-3">
-      <section role="dialog" aria-label="Pagar a dívida" className="debt-sale hud-panel pointer-events-auto w-[min(24rem,100%)] rounded-2xl border border-rose-300/60 px-4 py-3 text-white shadow-2xl">
+    // Dentro do miolo do tabuleiro (BoardCenterSlot): os estados a vender ficam à vista para tocar.
+    <section role="dialog" aria-label="Pagar a dívida" className="debt-sale hud-panel pointer-events-auto w-[24rem] rounded-2xl border border-rose-300/60 px-4 py-3 text-white shadow-2xl">
         <div className="mb-1 flex items-center justify-center gap-2">
           <h2 className="text-lg font-black tracking-wide text-amber-200 sm:text-xl">💰 Pagar a dívida</h2>
           {deadline !== null && <Countdown deadline={deadline} warn />}
@@ -110,7 +110,6 @@ export function DebtSalePrompt({ myId }: { myId: string }) {
             Falência
           </Button>
         </div>
-      </section>
-    </div>
+    </section>
   );
 }
