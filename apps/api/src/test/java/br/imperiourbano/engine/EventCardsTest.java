@@ -138,7 +138,7 @@ class EventCardsTest {
         GameEngine.Result result = anaDraws("caramelo-viral");
 
         assertThat(result.events()).contains(new CreditsFromBank("ana", 300));
-        assertThat(credits("ana")).isEqualTo(1800);
+        assertThat(credits("ana")).isEqualTo(2800);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
@@ -147,7 +147,7 @@ class EventCardsTest {
         GameEngine.Result result = anaDraws("assalto");
 
         assertThat(result.events()).last().isEqualTo(new CreditsToBank("ana", 200));
-        assertThat(credits("ana")).isEqualTo(1300);
+        assertThat(credits("ana")).isEqualTo(2300);
     }
 
     @Test
@@ -176,7 +176,7 @@ class EventCardsTest {
 
         assertThat(chosen.events()).containsExactly(new PropertyBurned("ana", "AP", "bia"));
         assertThat(state.property("AP")).isEmpty();
-        assertThat(credits("bia")).isEqualTo(1500);
+        assertThat(credits("bia")).isEqualTo(2500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
         assertThat(state.eventDeck().pendingCardId()).isNull();
     }
@@ -252,7 +252,7 @@ class EventCardsTest {
 
         assertThat(state.player("ana").position()).isEqualTo(ap);
         assertThat(result.events()).noneMatch(e -> e instanceof RentPaid);
-        assertThat(credits("ana")).isEqualTo(1500);
+        assertThat(credits("ana")).isEqualTo(2500);
     }
 
     @Test
@@ -296,7 +296,7 @@ class EventCardsTest {
 
         assertThat(chosen.events()).containsExactly(new OlympicsHostAppointed("ana", "AP", "bia", 1, 2));
         assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AP", "bia", 2));
-        assertThat(credits("ana")).isEqualTo(1500);
+        assertThat(credits("ana")).isEqualTo(2500);
     }
 
     @Test
@@ -314,7 +314,7 @@ class EventCardsTest {
         anaDraws("visita-olimpica");
 
         assertThat(state.player("ana").position()).isEqualTo(CATALOG.tileIndex("AP"));
-        assertThat(credits("ana")).isEqualTo(1500 - 2 * CATALOG.state("AP").rent().base());
+        assertThat(credits("ana")).isEqualTo(2500 - 2 * CATALOG.state("AP").rent().base());
     }
 
     @Test
@@ -329,7 +329,7 @@ class EventCardsTest {
         run("ana", new RollDice(), 1, 3);
 
         assertThat(state.player("ana").position()).isEqualTo(CATALOG.tileIndex("AC"));
-        assertThat(credits("ana")).isEqualTo(1500 + CATALOG.rules().passStartBonus() - 2 * CATALOG.state("AC").rent().base());
+        assertThat(credits("ana")).isEqualTo(2500 + CATALOG.rules().passStartBonus() - 2 * CATALOG.state("AC").rent().base());
     }
 
     @Test

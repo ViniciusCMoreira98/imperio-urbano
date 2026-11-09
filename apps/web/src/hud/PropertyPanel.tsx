@@ -6,8 +6,8 @@ import { pendingDecision, viewDecision } from '../game/propertyDecision';
 import { HOTEL_LEVEL, currentRent, propertyAt } from '../game/rules';
 import { formatCredits, regionName, tileInfo } from '../property-card/tileInfo';
 import { useGameStore } from '../store/gameStore';
+import { useShownTaxPool } from '../store/shownTaxPool';
 import { useViewStore } from '../store/viewStore';
-import { TileActions } from './TileActions';
 
 const panelClass = 'w-full overflow-hidden hud-panel rounded-2xl text-sm sm:w-80';
 
@@ -25,6 +25,7 @@ export function PropertyPanel({ myId }: { myId: string }) {
   const index = useViewStore((s) => s.selectedTile);
   const clearSelection = useViewStore((s) => s.clearSelection);
   const snapshot = useGameStore((s) => s.snapshot);
+  const taxPool = useShownTaxPool();
 
   if (index === null) return null;
   // Estados abrem o modal (PropertyDecisionDialog); aqui ficam as casas especiais e os cliques de
@@ -56,10 +57,9 @@ export function PropertyPanel({ myId }: { myId: string }) {
           <p className="leading-relaxed">{info.description}</p>
           {(info.type === 'SAQUE' || info.type === 'TAX') && snapshot && (
             <p className="rounded-lg bg-emerald-900/70 px-3 py-2 font-bold text-emerald-100">
-              Fundo do Saque agora: {formatCredits(snapshot.taxPool)}
+              Fundo do Saque agora: {formatCredits(taxPool ?? snapshot.taxPool)}
             </p>
           )}
-          <TileActions tileIndex={index} myId={myId} />
         </div>
       </section>
     );
@@ -144,7 +144,6 @@ export function PropertyPanel({ myId }: { myId: string }) {
           </p>
         )}
 
-        <TileActions tileIndex={index} myId={myId} />
       </div>
     </section>
   );

@@ -61,7 +61,7 @@ class TurnFlowTest {
         assertThat(state.currentPlayer().id()).isEqualTo("ana");
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_ROLL);
         assertThat(state.players()).allSatisfy(p -> {
-            assertThat(p.credits()).isEqualTo(1500);
+            assertThat(p.credits()).isEqualTo(2500);
             assertThat(p.position()).isZero();
         });
     }
@@ -122,7 +122,7 @@ class TurnFlowTest {
         roll("ana", 2, 3);
 
         assertThat(state.player("ana").position()).isEqualTo(2);
-        assertThat(state.player("ana").credits()).isEqualTo(1700);
+        assertThat(state.player("ana").credits()).isEqualTo(2800);
     }
 
     @Test
@@ -132,7 +132,7 @@ class TurnFlowTest {
         roll("ana", 2, 4);
 
         assertThat(state.player("ana").position()).isZero();
-        assertThat(state.player("ana").credits()).isEqualTo(1700);
+        assertThat(state.player("ana").credits()).isEqualTo(2800);
     }
 
     @Test

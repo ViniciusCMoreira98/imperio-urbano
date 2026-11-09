@@ -7,7 +7,7 @@ import { formatCredits, tileInfo } from '../property-card/tileInfo';
 import { cardEffect, eventTargets, tilesOf } from './eventCards';
 import { isMyTurn, playerOf } from './rules';
 
-export type BoardChoiceKind = 'olympics' | 'travel' | 'event';
+export type BoardChoiceKind = 'olympics' | 'travel' | 'event' | 'sale';
 
 export interface BoardChoice {
   kind: BoardChoiceKind;
@@ -61,6 +61,18 @@ export function boardChoice(snapshot: GameSnapshot, myId: string): BoardChoice |
       invalidHint: 'Só dá para viajar para um estado. Escolha um destacado.',
     };
   }
+  if (snapshot.phase === 'AWAITING_DEBT_RESOLUTION') {
+    // Venda para pagar dívida: marca vários estados próprios (DebtSalePrompt soma e confirma).
+    const owned = new Set(snapshot.properties.filter((p) => p.ownerId === myId).map((p) => p.stateId));
+    return {
+      kind: 'sale',
+      tiles: board.tiles.filter((t) => t.stateId && owned.has(t.stateId)).map((t) => t.index),
+      title: '💰 Pagar a dívida',
+      instruction: 'Toque nos seus estados para vender ao banco.',
+      fee: 0,
+      invalidHint: 'Esse estado não é seu. Escolha um estado destacado.',
+    };
+  }
   if (snapshot.phase === 'AWAITING_EVENT_TARGET') {
     const effect = cardEffect(snapshot.pendingEventCardId);
     if (!effect || !(effect.type in EVENT_CHOICES)) return null;
@@ -72,7 +84,7 @@ export function boardChoice(snapshot: GameSnapshot, myId: string): BoardChoice |
 
 /** Comando e rótulo do botão de confirmar para a casa escolhida; null se ela não vale. */
 export function choiceAction(choice: BoardChoice, tileIndex: number | null): { label: string; command: Command } | null {
-  if (tileIndex === null || !choice.tiles.includes(tileIndex)) return null;
+  if (choice.kind === 'sale' || tileIndex === null || !choice.tiles.includes(tileIndex)) return null;
   const name = tileName(tileIndex);
   if (choice.kind === 'olympics') {
     const stateId = board.tiles[tileIndex].stateId!;

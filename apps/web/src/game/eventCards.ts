@@ -28,12 +28,15 @@ export function cardEffect(cardId: string | null | undefined): CardEffect | unde
 export function cardsFromEvents(events: DomainEvent[], firstVersion: number): CardShow[] {
   const cards: CardShow[] = [];
   let current: CardShow | null = null;
+  // Quem andou depois da carta: o aluguel da casa onde pousou espera o pouso (game/heldMoney), não a carta.
+  const moved = new Set<string>();
   const add = (playerId: string, amount: number) => {
     if (current && amount !== 0) current.credits[playerId] = (current.credits[playerId] ?? 0) + amount;
   };
   events.forEach((event, i) => {
     switch (event.type) {
       case 'EVENT_CARD_DRAWN':
+        moved.clear();
         current = { id: firstVersion + i, playerId: event.playerId, cardId: event.cardId, withoutEffect: false, credits: {} };
         cards.push(current);
         break;
@@ -47,9 +50,11 @@ export function cardsFromEvents(events: DomainEvent[], firstVersion: number): Ca
         add(event.playerId, -event.amount);
         break;
       case 'PLAYER_MOVED':
-        add(event.playerId, event.startBonus);
+        // O bônus do Início espera o personagem passar pela casa (game/heldMoney).
+        moved.add(event.playerId);
         break;
       case 'RENT_PAID':
+        if (moved.has(event.fromId)) break;
         add(event.fromId, -event.amount);
         add(event.toId, event.amount);
         break;

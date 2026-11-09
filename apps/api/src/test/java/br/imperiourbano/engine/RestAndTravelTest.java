@@ -113,7 +113,7 @@ class RestAndTravelTest {
 
         run("bia", new RollDice(), 4, 5);
 
-        assertThat(state.player("ana").credits()).isEqualTo(1500 + CATALOG.state("AC").rent().base());
+        assertThat(state.player("ana").credits()).isEqualTo(2500 + CATALOG.state("AC").rent().base());
     }
 
     @Test
@@ -149,7 +149,7 @@ class RestAndTravelTest {
 
         assertThat(result.events()).first().isEqualTo(new TravelChosen("ana", 32, TRAVEL_FEE));
         assertThat(state.player("ana").position()).isEqualTo(32);
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - TRAVEL_FEE);
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - TRAVEL_FEE);
         assertThat(state.player("ana").travelPending()).isFalse();
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
     }
@@ -160,7 +160,7 @@ class RestAndTravelTest {
 
         run("ana", new ChooseTravel(1));
 
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - TRAVEL_FEE + 200);
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - TRAVEL_FEE + CATALOG.rules().passStartBonus());
     }
 
     @Test
@@ -183,7 +183,7 @@ class RestAndTravelTest {
         assertThat(result.events()).first().isEqualTo(new TravelDeclined("ana"));
         assertThat(state.player("ana").position()).isEqualTo(TRAVEL_TILE + 3);
         assertThat(state.player("ana").travelPending()).isFalse();
-        assertThat(state.player("ana").credits()).isEqualTo(1500);
+        assertThat(state.player("ana").credits()).isEqualTo(2500);
     }
 
     @Test
@@ -193,7 +193,7 @@ class RestAndTravelTest {
         GameEngine.Result result = run("ana", new RollDice(), 1, 2);
 
         assertThat(result.events()).last().isEqualTo(new TaxPaid("ana", TAX));
-        assertThat(state.player("ana").credits()).isEqualTo(1500 - TAX);
+        assertThat(state.player("ana").credits()).isEqualTo(2500 - TAX);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 

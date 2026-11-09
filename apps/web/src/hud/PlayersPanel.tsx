@@ -3,8 +3,11 @@ import { LeaderCrown, PlayerPortrait } from './AvatarPortrait';
 import { HOTEL_LEVEL, leaders, netWorth } from '../game/rules';
 import { formatCredits } from '../property-card/tileInfo';
 import { heldCredits } from '../game/eventCards';
+import { heldMoveCredits } from '../game/heldMoney';
+import { usePawnStore } from '../store/pawnStore';
 import { useCardStore } from '../store/cardStore';
 import { useGameStore } from '../store/gameStore';
+import { useShownTurnPlayerId } from '../store/shownTurn';
 
 /** Escurece a cor (0 a 1); escura o bastante para o saldo amarelo e o nome branco seguirem legíveis. */
 function darken(hex: string, amount: number): string {
@@ -29,8 +32,15 @@ export function PlayersPanel({ myId }: { myId: string }) {
   // Dinheiro de carta de evento só aparece quando a carta some da tela.
   const cards = useGameStore((s) => s.cards);
   const doneId = useCardStore((s) => s.doneId);
+  // Aluguel, taxa, saque e bônus do Início só aparecem quando o personagem chega.
+  const money = useGameStore((s) => s.money);
+  const landed = usePawnStore((s) => s.landed);
+  const passedStart = usePawnStore((s) => s.passedStart);
+  // O destaque da vez acompanha a mesa, como o card da vez.
+  const turnId = useShownTurnPlayerId();
   if (!snapshot) return null;
   const held = heldCredits(cards, doneId);
+  for (const [id, amount] of Object.entries(heldMoveCredits(money, landed, passedStart))) held[id] = (held[id] ?? 0) + amount;
   const leading = new Set(leaders(snapshot));
   // Falidos vão para o fim; os demais pelo patrimônio, mantendo o assento como desempate.
   const ranked = [...snapshot.players].sort(
@@ -43,7 +53,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
         const owned = snapshot.properties.filter((prop) => prop.ownerId === p.id);
         const houses = owned.reduce((n, prop) => n + (prop.buildingLevel < HOTEL_LEVEL ? prop.buildingLevel : 0), 0);
         const hotels = owned.filter((prop) => prop.buildingLevel === HOTEL_LEVEL).length;
-        const isTurn = snapshot.currentPlayerId === p.id && snapshot.status === 'IN_PROGRESS';
+        const isTurn = turnId === p.id && snapshot.status === 'IN_PROGRESS';
         const color = PAWN_COLORS[p.pawnColor].hex;
         const crowned = leading.has(p.id) || snapshot.winnerIds.includes(p.id);
         const status = p.bankrupt ? '💀' : !p.connected ? '🤖' : p.skipTurns > 0 ? '😴' : p.travelPending ? '✈️' : null;

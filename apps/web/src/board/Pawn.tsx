@@ -26,6 +26,8 @@ const TILE_COUNT = board.tiles.length;
 
 /** Tempos (s) e altura de cada salto: o curto, casa a casa; o longo, direto ao destino. */
 const HOP = { turn: 0.12, prepare: 0.06, air: 0.24, land: 0.08, height: 0.22 };
+/** Viagem do Aeroporto: casa a casa, mais rápida e baixa (pode passar de 30 casas). */
+const TRAVEL = { turn: 0.04, prepare: 0.02, air: 0.11, land: 0.03, height: 0.14 };
 const LEAP = { turn: 0.18, prepare: 0.1, air: 0.7, land: 0.12, height: 1.3 };
 /** Agachamento antes de sair e ao pousar (só o grupo do corpo desce; nada estica). */
 const CROUCH = 0.03;
@@ -105,6 +107,8 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
     body.position.y = BASE_HEIGHT;
     shownTile.current = tile;
     reportPawn(playerId, { tile, resting: true });
+    // Sem animação, o saldo que esperava o personagem chegar aparece já.
+    usePawnStore.getState().setLanded(playerId, handled.current);
   };
 
   /** Ao fim dos saltos: confere com o oficial e acomoda no lugar certo dentro da casa. */
@@ -162,7 +166,7 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
       return;
     }
     const tiles = hopTiles(move, TILE_COUNT);
-    const style = move.kind === 'jump' ? LEAP : HOP;
+    const style = move.kind === 'jump' ? LEAP : move.kind === 'travel' ? TRAVEL : HOP;
     reportPawn(playerId, { tile: move.to, resting: false });
     // Movimento que vem de um lance: o primeiro salto espera esses dados pararem na mesa.
     if (move.rollId !== null && useDiceStore.getState().shownRollId < move.rollId) {
@@ -197,11 +201,17 @@ export function Pawn({ playerId, position, spot, avatarId, color, active, leavin
         .to(root.position, { x: () => target().x, y: () => target().y, z: () => target().z, duration: style.air, ease: 'power1.inOut' }, label)
         .to(body.position, { y: BASE_HEIGHT + style.height, duration: style.air / 2, ease: 'power2.out' }, label)
         .to(body.position, { y: BASE_HEIGHT - CROUCH, duration: style.air / 2, ease: 'power2.in' }, `${label}+=${style.air / 2}`)
-        .call(land, [i])
+        .call(() => {
+          land(i);
+          // Passou pelo Início: o bônus aparece no saldo agora.
+          if (tile === 0) usePawnStore.getState().setPassedStart(playerId, move.id);
+        })
         .to(body.position, { y: BASE_HEIGHT, duration: style.land, ease: 'power2.out' });
     });
     tl.call(() => {
       shownTile.current = move.to;
+      // Pousou: aluguel, taxa e saque desta casa aparecem no saldo.
+      usePawnStore.getState().setLanded(playerId, move.id);
     });
     timeline.current = tl;
   };

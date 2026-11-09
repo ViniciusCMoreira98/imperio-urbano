@@ -32,7 +32,7 @@ export function validateCatalog(
   for (const s of states) {
     if (s.abbreviation !== s.id) errors.push(`${s.id}: sigla diferente do id`);
     if (!groupIds.has(s.colorGroup)) errors.push(`${s.id}: grupo de cor inexistente ${s.colorGroup}`);
-    if (s.price < 100 || s.price > 500) errors.push(`${s.id}: preço fora de 100–500`);
+    if (s.price < 50 || s.price > 500) errors.push(`${s.id}: preço fora de 50–500`);
     const r = s.rent;
     const ladder = [r.base, r.house1, r.house2, r.house3, r.house4, r.hotel];
     if (ladder.some((v, i) => v <= 0 || (i > 0 && v <= ladder[i - 1]))) {
@@ -41,8 +41,10 @@ export function validateCatalog(
     if (s.houseCost <= 0 || s.hotelCost <= 0) errors.push(`${s.id}: custos de construção inválidos`);
   }
 
-  const prices = states.map((s) => s.price);
-  if (new Set(prices).size !== prices.length) errors.push('Preços de compra repetidos');
+  // Os preços nunca diminuem ao longo do percurso (vizinhos podem repetir): casa 1 a mais barata.
+  const priceOf = new Map(states.map((s) => [s.id, s.price]));
+  const route = board.tiles.filter((t) => t.type === 'PROPERTY').map((t) => priceOf.get(t.stateId!) ?? 0);
+  if (route.some((p, i) => i > 0 && p < route[i - 1])) errors.push('Preços não podem diminuir ao longo do tabuleiro');
 
   if (board.tiles.length !== BOARD_SIZE) {
     errors.push(`Tabuleiro deve ter ${BOARD_SIZE} casas, possui ${board.tiles.length}`);

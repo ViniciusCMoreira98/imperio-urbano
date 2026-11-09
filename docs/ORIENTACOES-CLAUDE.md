@@ -1,5 +1,14 @@
 # Orientações e pendências para o Claude Code
 
+## Versão 1 — atualização com a develop, 08/11/2026
+
+Definição vigente do usuário: develop_arte_3d é a branch da versão 1; codex/tabuleiro-v2 é a branch da versão 2. Atualizada a V1 com origin/develop 7913772. A implementação nova do tabuleiro V2 permanece na sua branch própria; referências a esse conceito nas seções antigas abaixo são histórico anterior à separação das versões.
+
+Conflito de GameScreen resolvido combinando o enquadramento existente da V1 com useShownTaxPool da develop, para que a Taxa acompanhe a chegada do personagem. Mantidas as correções de movimento, saldo, turno, escolha de estado, venda e regras recebidas da develop, assim como os ajustes visuais já existentes da V1.
+
+
+Validação da atualização: build/TypeScript e 195 testes do frontend aprovados; 241 testes do servidor aprovados, sem falhas ou testes ignorados.
+
 ## Checkpoint autorizado na develop_arte_3d — 08/11/2026
 
 O usuário autorizou commitar o trabalho pendente nesta branch e depois atualizá-la com a develop. Este checkpoint inclui correções de personagens/aluguel, ícone do app, gaveta de cartas, estudos e direção de arte aprovada. Os protótipos rejeitados ficam registrados como histórico de revisão; não representam a implementação aprovada. Preservar os modelos atuais de terreno/casas/hotel. A nova arte ainda precisa ser implementada. Não fazer merge destas alterações na develop nesta solicitação.

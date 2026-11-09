@@ -28,7 +28,7 @@ describe('movimentos a partir dos eventos', () => {
     expect(hopTiles(corner, N)).toEqual([8, 9, 10, 11]);
   });
 
-  it('Descanso, viagem, recuo e avanço longo viram salto único', () => {
+  it('Descanso, recuo e avanço longo viram salto único; a viagem anda casa a casa', () => {
     const moves = movesFromEvents(
       [
         moved('ana', 6, 18, { sentToRest: true }),
@@ -40,8 +40,18 @@ describe('movimentos a partir dos eventos', () => {
       10,
       N,
     );
-    expect(moves.map((m) => m.kind)).toEqual(['jump', 'jump', 'jump', 'jump']);
-    expect(hopTiles(moves[1], N)).toEqual([25]);
+    expect(moves.map((m) => m.kind)).toEqual(['jump', 'travel', 'jump', 'jump']);
+    expect(hopTiles(moves[1], N)).toEqual([21, 22, 23, 24, 25]);
+  });
+
+  it('viagem que dá a volta passa pelo Início casa a casa', () => {
+    const [trip] = movesFromEvents(
+      [{ type: 'TRAVEL_CHOSEN', playerId: 'ana', tileIndex: 2, fee: 50 }, moved('ana', 30, 2, { startBonus: 300 })],
+      1,
+      N,
+    );
+    expect(trip.kind).toBe('travel');
+    expect(hopTiles(trip, N)).toEqual([31, 32, 33, 34, 35, 0, 1, 2]);
   });
 
   it('carta em sequência ao lance gera dois movimentos em ordem', () => {
@@ -55,7 +65,7 @@ describe('movimentos a partir dos eventos', () => {
 });
 
 describe('fila de movimentos no store', () => {
-  const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], cards: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
+  const empty: ServerState = { snapshot: null, log: [], rejection: null, turnDeadline: null, moves: [], cards: [], money: [], eventsVersion: null, resync: 0, roll: null, unavailable: null };
   const snapshot = (version: number) => ({ version, turnTimeLeftMs: null }) as GameSnapshot;
   const start = reduceServerMessage(empty, { kind: 'SNAPSHOT', snapshot: snapshot(10) });
 

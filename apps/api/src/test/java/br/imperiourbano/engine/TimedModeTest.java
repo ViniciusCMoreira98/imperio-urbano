@@ -66,7 +66,7 @@ class TimedModeTest {
     void midTurnThePlayerFinishesTheTurnAndThenTheGameEnds() {
         start(GameMode.TIMED_60);
         state = state.withPhase(TurnPhase.AWAITING_PURCHASE);
-        state = state.updatePlayer("ana", p -> p.withCredits(2000));
+        state = state.updatePlayer("ana", p -> p.withCredits(3000));
 
         assertThat(applyAll(engine.timeUp(state))).containsExactly(new TimeLimitReached());
         assertThat(state.status()).isEqualTo(GameStatus.IN_PROGRESS);
@@ -92,11 +92,11 @@ class TimedModeTest {
     void investedPropertiesCountTheirCurrentRentOnTopOfTheCost() {
         start(GameMode.TIMED_25);
         state = state.withProperty(new PropertyState("PB", "ana", 3, 1, 1));
-        state = state.updatePlayer("ana", p -> p.withCredits(930));
+        state = state.updatePlayer("ana", p -> p.withCredits(1500));
 
         int pbRent = CATALOG.state("PB").rent().forLevel(3);
         int pbCost = CATALOG.state("PB").price() + 3 * CATALOG.state("PB").houseCost();
-        assertThat(engine.equity(state, "ana")).isEqualTo(930 + pbCost + pbRent);
+        assertThat(engine.equity(state, "ana")).isEqualTo(1500 + pbCost + pbRent);
         assertThat(applyAll(engine.timeUp(state))).last().isEqualTo(new GameFinished(List.of("ana")));
     }
 

@@ -3,11 +3,13 @@ package br.imperiourbano.game;
 import br.imperiourbano.catalog.Catalog;
 import br.imperiourbano.catalog.StateDefinition;
 import br.imperiourbano.engine.GameCommand;
+import br.imperiourbano.engine.GameEngine;
 import br.imperiourbano.engine.GameEvent;
 import br.imperiourbano.engine.GameState;
 import br.imperiourbano.engine.GameStatus;
 import br.imperiourbano.engine.PropertyState;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -63,26 +65,22 @@ public record TurnTimeouts(Duration roll, Duration decision, Duration debt, Dura
     }
 
     /**
-     * Um passo para pagar a dívida (pedido do usuário): vende o bem mais barato primeiro. Em cada estado
-     * o candidato é a última construção (casa ou hotel) ou, sem construções, o próprio estado; vale o que
-     * o banco paga (50%, D10). Empate: construção antes do estado, depois a ordem do catálogo.
+     * Sem decisão a tempo (pedido do usuário): vende estados inteiros, do que rende menos ao que rende mais,
+     * até a soma com o saldo pagar a dívida. Nem vendendo tudo: falência.
      */
     GameCommand debtStep(GameState state) {
-        return state.propertiesOf(state.currentPlayer().id()).stream()
-                .min(Comparator.comparingInt(this::saleRefund)
-                        .thenComparing(p -> p.buildingLevel() == 0)
-                        .thenComparing(PropertyState::stateId))
-                .<GameCommand>map(p -> p.buildingLevel() > 0
-                        ? new GameCommand.SellBuilding(p.stateId())
-                        : new GameCommand.SellProperty(p.stateId()))
-                .orElseGet(GameCommand.DeclareBankruptcy::new);
-    }
-
-    /** Quanto o banco paga pelo próximo bem a vender deste estado (mesmo cálculo do motor). */
-    private int saleRefund(PropertyState property) {
-        StateDefinition definition = catalog.state(property.stateId());
-        if (property.buildingLevel() == 0) return definition.price() / 2;
-        int cost = property.buildingLevel() == PropertyState.HOTEL_LEVEL ? definition.hotelCost() : definition.houseCost();
-        return cost / 2;
+        String playerId = state.currentPlayer().id();
+        int missing = state.pendingDebt().amount() - state.player(playerId).credits();
+        List<PropertyState> cheapestFirst = state.propertiesOf(playerId).stream()
+                .sorted(Comparator.comparingInt((PropertyState p) -> GameEngine.saleRefund(catalog, p)).thenComparing(PropertyState::stateId))
+                .toList();
+        List<String> chosen = new ArrayList<>();
+        int total = 0;
+        for (PropertyState property : cheapestFirst) {
+            if (total >= missing) break;
+            chosen.add(property.stateId());
+            total += GameEngine.saleRefund(catalog, property);
+        }
+        return total >= missing && !chosen.isEmpty() ? new GameCommand.SellStates(chosen) : new GameCommand.DeclareBankruptcy();
     }
 }

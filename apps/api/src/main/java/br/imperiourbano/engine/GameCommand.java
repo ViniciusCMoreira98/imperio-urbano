@@ -1,5 +1,7 @@
 package br.imperiourbano.engine;
 
+import java.util.List;
+
 /** Intenções do jogador. Nunca carregam valores calculados: o motor decide. */
 public sealed interface GameCommand {
 
@@ -31,12 +33,15 @@ public sealed interface GameCommand {
     record SkipOlympics() implements GameCommand {
     }
 
-    /** Só com dívida pendente: vende ao banco uma casa (ou o hotel, que volta a quatro casas) por metade do custo. */
-    record SellBuilding(String stateId) implements GameCommand {
-    }
+    /**
+     * Só com dívida pendente: vende ao banco os estados escolhidos, inteiros (terreno + construções), pelo
+     * percentual de {@code rules.debtSale}. Só vale se a venda, somada ao saldo, pagar a dívida (08/11/2026).
+     */
+    record SellStates(List<String> stateIds) implements GameCommand {
 
-    /** Só com dívida pendente: vende o estado ao banco por metade do preço e das construções. */
-    record SellProperty(String stateId) implements GameCommand {
+        public SellStates {
+            stateIds = stateIds == null ? List.of() : List.copyOf(stateIds);
+        }
     }
 
     record DeclareBankruptcy() implements GameCommand {

@@ -13,7 +13,7 @@ class CatalogLoaderTest {
         assertThat(CatalogValidator.validate(catalog)).isEmpty();
         assertThat(catalog.states()).hasSize(26);
         assertThat(catalog.board().tileCount()).isEqualTo(34);
-        assertThat(catalog.rules().startingCredits()).isEqualTo(1500);
+        assertThat(catalog.rules().startingCredits()).isEqualTo(2500);
     }
 
     @Test

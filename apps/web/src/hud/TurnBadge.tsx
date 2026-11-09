@@ -1,11 +1,14 @@
 import { PAWN_COLORS } from '../game/presentation';
 import { PlayerPortrait } from './AvatarPortrait';
 import { useGameStore } from '../store/gameStore';
+import { useShownTurnPlayerId } from '../store/shownTurn';
 
 /** Retrato e vez integrados à barra de ação; o rótulo acessível preserva o contrato da engenharia. */
 export function TurnBadge({ myId }: { myId: string }) {
   const snapshot = useGameStore((s) => s.snapshot);
-  const current = snapshot?.players.find((p) => p.id === snapshot.currentPlayerId);
+  // Só troca para o próximo jogador quando a mesa termina de mostrar a jogada anterior.
+  const turnId = useShownTurnPlayerId();
+  const current = snapshot?.players.find((p) => p.id === turnId);
   if (!snapshot || snapshot.status !== 'IN_PROGRESS' || !current) return null;
   const color = PAWN_COLORS[current.pawnColor].hex;
   const name = current.id === myId ? 'Você' : current.nickname;

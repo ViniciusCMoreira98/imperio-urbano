@@ -21,23 +21,43 @@ Percurso definitivo, sentido horário. Cada casa tem um **id estável** (`board.
 | 27–33 | BA SE AL · **Saque** (`SAQUE`) · CE PI MA |
 
 - 8 grupos de cor seguindo as regiões geográficas; Nordeste (9 UFs) dividido em 3 grupos. Sem Tocantins, o Norte II fica com RO, AM e PA.
-- 26 preços distintos entre 100 e 500, definidos por estado (não crescem ao longo do percurso).
+- Preços que **nunca diminuem ao longo do percurso** (vizinhos podem repetir): a casa 1 (RN) é a mais barata e a 33 (MA) a mais cara. Terreno de 60 a 350 (decisão do usuário em 08/11/2026).
 - A ordem e os ids seguem o manifesto da arte (`apps/web/src/board/reference33/layout.json`); um teste confere índice, id e tipo das casas (o manifesto de 34 casas depende da recalibração do Codex).
-- Validação automática (`packages/game-data/src/catalog.test.ts`): sem UF ausente/duplicada, preços únicos, cada UF exatamente uma vez no tabuleiro, ids únicos, todas as casas especiais presentes.
+- Validação automática (`packages/game-data/src/catalog.test.ts`): sem UF ausente/duplicada, preços que não diminuem ao longo do tabuleiro, cada UF exatamente uma vez no tabuleiro, ids únicos, todas as casas especiais presentes.
 - Partidas salvas no tabuleiro anterior ficam guardadas, mas não continuam: o servidor avisa "Esta partida usa o tabuleiro antigo e não pode continuar" (versão do tabuleiro gravada em cada snapshot).
 
-## 2. Balanceamento inicial (PROPOSTA)
+## 2. Balanceamento (valores do usuário, 08/11/2026)
 
-Derivado do preço `P`, arredondado para múltiplos de 5, e gravado explicitamente em `states.json` (editável estado a estado):
+Cada jogador começa com **2.500** créditos e recebe **300** ao passar pelo Início (`rules.json`, decisão do usuário em 08/11/2026). Valores definidos pelo usuário casa a casa e gravados em `states.json`. Custos de construção em quatro faixas (RJ e SP com hotel mais caro); aluguéis em créditos:
 
-| Item | Fórmula | AC (100) | SP (500) |
-|---|---|---|---|
-| Aluguel base | 0,10 P | 10 | 50 |
-| 1 / 2 / 3 casas | 0,40 / 0,90 / 1,60 P | 40 / 90 / 160 | 200 / 450 / 800 |
-| 4 casas | 2,20 P | 220 | 1100 |
-| Hotel | 3,00 P | 300 | 1500 |
-| Custo por casa | 0,50 P | 50 | 250 |
-| Custo do hotel | 1,00 P | 100 | 500 |
+| # | Estado | Terreno | Casa | Hotel | Aluguel: terreno · 1 · 2 · 3 · 4 casas · hotel |
+|---|---|---|---|---|---|
+| 1 | RN | 60 | 50 | 150 | 2 · 25 · 50 · 75 · 100 · 150 |
+| 2 | AM | 60 | 50 | 150 | 2 · 28 · 55 · 83 · 112 · 180 |
+| 3 | RR | 60 | 50 | 150 | 4 · 30 · 60 · 90 · 125 · 200 |
+| 5 | AP | 100 | 50 | 150 | 6 · 33 · 65 · 98 · 135 · 220 |
+| 6 | PA | 100 | 50 | 150 | 6 · 35 · 75 · 105 · 140 · 240 |
+| 7 | RO | 120 | 50 | 150 | 8 · 38 · 75 · 113 · 150 · 260 |
+| 9 | AC | 140 | 100 | 250 | 10 · 70 · 140 · 210 · 280 · 440 |
+| 10 | MT | 140 | 100 | 250 | 10 · 75 · 150 · 225 · 300 · 465 |
+| 11 | MS | 160 | 100 | 250 | 12 · 80 · 160 · 240 · 320 · 490 |
+| 12 | GO | 160 | 100 | 250 | 12 · 85 · 170 · 255 · 340 · 515 |
+| 14 | DF | 180 | 100 | 250 | 14 · 90 · 180 · 270 · 360 · 540 |
+| 15 | MG | 180 | 100 | 250 | 14 · 95 · 190 · 285 · 380 · 565 |
+| 16 | ES | 200 | 100 | 250 | 16 · 100 · 200 · 300 · 400 · 590 |
+| 18 | RJ | 220 | 150 | 400 | 20 · 215 · 430 · 535 · 700 · 900 |
+| 19 | PR | 220 | 150 | 350 | 18 · 120 · 240 · 350 · 470 · 745 |
+| 20 | SP | 240 | 150 | 400 | 20 · 125 · 450 · 570 · 795 · 1000 |
+| 22 | RS | 260 | 150 | 350 | 18 · 125 · 245 · 370 · 495 · 845 |
+| 23 | SC | 260 | 150 | 350 | 18 · 130 · 255 · 385 · 515 · 870 |
+| 24 | PE | 280 | 150 | 350 | 20 · 135 · 265 · 400 · 535 · 895 |
+| 25 | PB | 280 | 150 | 350 | 20 · 140 · 275 · 415 · 455 · 920 |
+| 27 | BA | 300 | 200 | 500 | 22 · 150 · 290 · 435 · 480 · 950 |
+| 28 | SE | 300 | 200 | 500 | 20 · 160 · 305 · 455 · 505 · 980 |
+| 29 | AL | 300 | 200 | 500 | 20 · 170 · 320 · 475 · 530 · 1100 |
+| 31 | CE | 350 | 200 | 500 | 35 · 190 · 360 · 535 · 610 · 1200 |
+| 32 | PI | 350 | 200 | 500 | 35 · 210 · 400 · 595 · 690 · 1300 |
+| 33 | MA | 350 | 200 | 500 | 40 · 230 · 440 · 655 · 770 · 1400 |
 
 Patrimônio (fim do modo Rápido e dos modos por tempo de 25 min e 1 h) = saldo + preço dos estados + valor investido em construções + aluguel que cada estado cobra no momento (com sede olímpica; zero durante o apagão). Empate: vence quem tem mais saldo; persistindo, todos os empatados vencem. O aluguel no patrimônio foi decidido pelo usuário em 07/11/2026, para que bens valham mais que o custo.
 
@@ -54,7 +74,7 @@ Patrimônio (fim do modo Rápido e dos modos por tempo de 25 min e 1 h) = saldo 
 | D7 | **Multiplicador olímpico** | Aplica sobre aluguel base ou total? Após ×10? | Multiplica o aluguel total (com construções). Após a 9ª edição permanece ×10. Mesma sede pode ser reescolhida (sobe a edição). |
 | D8 | **Sede olímpica e posse** | O que acontece se a sede for vendida ou o dono falir? | Marcador é removido; a próxima edição continua a contagem. |
 | D9 | **Duplas nos dados** | Não definido. | Dupla dá nova jogada; 3ª dupla seguida manda para Descanso. |
-| D10 | **Dívida sem saldo** | Não há hipoteca nem venda definida. | Venda ao banco **só quando o saldo não cobre uma dívida** (decisão do usuário): construções (50% do custo) e estados (50% do preço + investido); ao juntar o valor, a dívida é paga sozinha. Sem venda livre e sem hipoteca. |
+| D10 | **Dívida sem saldo** | Não há hipoteca nem venda definida. | Venda ao banco **só quando o saldo não cobre uma dívida**. Desde 08/11/2026 (decisão do usuário) só se vende o **estado inteiro** (terreno + construções juntos), por **80%** do preço + investido (`rules.debtSale.refundPercent`). O jogador marca os estados no tabuleiro, como na escolha da sede; um aviso soma o valor, mostra a dívida e só libera "Vender" quando a soma com o saldo paga a dívida (comando `SELL_STATES`, uma venda só). Sem decisão no prazo, o servidor vende do estado que rende menos ao que rende mais até cobrir; nem vendendo tudo, falência. Sem venda livre, sem venda de casa avulsa e sem hipoteca. |
 | D11 | **Falência** | Para quem vão os bens? | Dívida com jogador: estados (com construções) vão ao credor. Dívida com banco: estados voltam livres ao banco. |
 | D12 | **Negociação** | Escopo indefinido. | **Fora do jogo.** Não há negociação entre jogadores: estados só mudam de dono por compra, venda ao banco ou falência. |
 | D13 | **Cartas de eventos** | Conteúdo não definido. | Baralho de 16 cartas originais (ganhar/pagar, mover, ir para Descanso, viagem grátis), embaralhado pelo servidor. Lista em entrega própria. |

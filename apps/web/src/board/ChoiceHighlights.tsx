@@ -11,6 +11,7 @@ import { useAppStore } from '../store/appStore';
 import { useTableBusy } from '../store/tableBusy';
 import { useGameStore } from '../store/gameStore';
 import { useViewStore } from '../store/viewStore';
+import { useSaleStore } from '../store/saleStore';
 import { board } from '@imperio/game-data';
 import { tileAnchor } from './layout';
 
@@ -25,6 +26,8 @@ export function ChoiceHighlights() {
   const myId = useAppStore((s) => s.session?.playerId);
   const snapshot = useGameStore((s) => s.snapshot);
   const selected = useViewStore((s) => s.selectedTile);
+  // Venda para pagar dívida: vários estados marcados de uma vez.
+  const salePicked = useSaleStore((s) => s.picked);
   // Só depois que o peão chega na casa (Olimpíadas ou Aeroporto), junto com o aviso do meio da tela.
   const tableBusy = useTableBusy();
   const choice = snapshot && myId ? boardChoice(snapshot, myId) : null;
@@ -74,7 +77,7 @@ export function ChoiceHighlights() {
   return (
     <group>
       {shapes.map(({ index, candidate, geometry, outline, y, lift }) => {
-        const isPicked = candidate && index === selected;
+        const isPicked = candidate && (choice.kind === 'sale' ? salePicked.includes(index) : index === selected);
         return (
           <group key={index} position={[0, y + (isPicked ? lift : 0), 0]}>
             <mesh geometry={geometry} material={isPicked ? picked : candidate ? fill : dim} rotation={[-Math.PI / 2, 0, 0]} renderOrder={3} />

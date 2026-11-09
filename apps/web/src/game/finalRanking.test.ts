@@ -12,7 +12,7 @@ describe('classificação final', () => {
   it('põe os vencedores do servidor primeiro, depois patrimônio, falidos no fim', () => {
     const game = snapshot(
       [player('ana', 900), player('bia', 1200, { bankrupt: true }), player('caio', 1500), player('davi', 700)],
-      { winnerIds: ['caio'], properties: [{ stateId: 'SP', ownerId: 'davi', buildingLevel: 0 } as GameSnapshot['properties'][number]] },
+      { winnerIds: ['caio'], properties: [{ stateId: 'MA', ownerId: 'davi', buildingLevel: 0 } as GameSnapshot['properties'][number]] },
     );
     const ranking = finalRanking(game);
     expect(ranking.map((r) => r.player.id)).toEqual(['caio', 'davi', 'ana', 'bia']);

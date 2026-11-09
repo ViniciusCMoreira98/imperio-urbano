@@ -6,6 +6,7 @@ import { BoardChoicePrompt } from '../hud/BoardChoicePrompt';
 import { CardReveal } from '../hud/CardReveal';
 import { DevDicePanel } from '../hud/DevDicePanel';
 import { EventLog } from '../hud/EventLog';
+import { TableNotices } from '../hud/TableNotices';
 import { ItemDrawer } from '../hud/ItemTray';
 import { GameOverScreen } from '../hud/GameOverScreen';
 import { PlayersPanel } from '../hud/PlayersPanel';
@@ -17,6 +18,7 @@ import { GameConnection } from '../net/gameSocket';
 import { formatCredits } from '../property-card/tileInfo';
 import { useAppStore } from '../store/appStore';
 import { useGameStore } from '../store/gameStore';
+import { useShownTaxPool } from '../store/shownTaxPool';
 import { Button } from '../ui/ui';
 import { useHudLayout } from './useHudLayout';
 import './mobileBoard.css';
@@ -29,6 +31,7 @@ export function GameScreen() {
   const gameId = useAppStore((s) => s.gameId)!;
   const leave = useAppStore((s) => s.leave);
   const snapshot = useGameStore((s) => s.snapshot);
+  const taxPool = useShownTaxPool();
   const connection = useGameStore((s) => s.connection);
   const unavailable = useGameStore((s) => s.unavailable);
   // Celular em pé: a partida fica coberta e inerte (sem toque nem foco), mas segue conectada.
@@ -62,7 +65,7 @@ export function GameScreen() {
       <div ref={viewportRef} data-mobile-study={mobileCleanStudy||undefined} className="game-viewport relative h-full w-full overflow-hidden" inert={askToRotate} aria-hidden={askToRotate || undefined}>
         {/* Canvas de mesa em toda a janela; HUD flutua sobre o cenário. */}
         <div className="game-hud-board absolute inset-0">
-          <GameBoard framing={insets?.occlusions?'mobile-diamond':insets?.left!==undefined&&insets?.right!==undefined?'mobile-landscape':'standard'} insets={insets} taxPoolLabel={typeof snapshot?.taxPool === 'number' ? formatCredits(snapshot.taxPool) : null} />
+          <GameBoard framing={insets?.occlusions?'mobile-diamond':insets?.left!==undefined&&insets?.right!==undefined?'mobile-landscape':'standard'} insets={insets} taxPoolLabel={taxPool === null ? null : formatCredits(taxPool)} />
         </div>
 
         <header ref={headerRef} className="game-hud-header absolute right-0 top-0 flex items-center justify-end gap-2 p-2 sm:p-3">
@@ -104,6 +107,8 @@ export function GameScreen() {
             <CardReveal />
             {/* Sediar ou viajar: aviso no meio da tela e casas destacadas no tabuleiro. */}
             <BoardChoicePrompt myId={session.playerId} />
+            {/* Avisos rápidos: Aluguel Zero, falta de saldo, dados iguais. */}
+            <TableNotices myId={session.playerId} />
             {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
             <PropertyDecisionDialog myId={session.playerId} />
             {snapshot.status === 'FINISHED' && <GameOverScreen myId={session.playerId} token={session.token} gameId={gameId} onLeave={leave} />}

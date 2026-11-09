@@ -7,7 +7,7 @@ import br.imperiourbano.catalog.CatalogLoader;
 import br.imperiourbano.catalog.GameMode;
 import br.imperiourbano.engine.GameCommand.DeclareBankruptcy;
 import br.imperiourbano.engine.GameCommand.RollDice;
-import br.imperiourbano.engine.GameCommand.SellProperty;
+import br.imperiourbano.engine.GameCommand.SellStates;
 import br.imperiourbano.engine.GameEvent.DebtIncurred;
 import br.imperiourbano.engine.GameEvent.DebtSettled;
 import br.imperiourbano.engine.GameEvent.SaqueCollected;
@@ -91,7 +91,7 @@ class TaxAndSaqueTest {
         assertThat(landed.events()).contains(new DebtIncurred("ana", null, TAX, true));
         assertThat(state.pendingDebt().toTaxPool()).isTrue();
 
-        GameEngine.Result sold = run(new SellProperty("AC"));
+        GameEngine.Result sold = run(new SellStates(java.util.List.of("AC")));
 
         assertThat(sold.events()).last().isEqualTo(new DebtSettled("ana", null, TAX));
         assertThat(state.taxPool()).isEqualTo(TAX);

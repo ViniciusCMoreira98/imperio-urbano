@@ -1,8 +1,8 @@
 {
   "version": 1,
   "players": { "min": 2, "max": 4 },
-  "startingCredits": 1500,
-  "passStartBonus": 200,
+  "startingCredits": 2500,
+  "passStartBonus": 300,
   "dice": { "count": 2, "faces": 6, "maxDoublesInRow": 3 },
   "construction": {
     "maxHouses": 4,
@@ -17,6 +17,7 @@
   "rest": { "turnsLost": 1 },
   "nationalTravel": { "fee": 50 },
   "tax": { "amount": 100 },
+  "debtSale": { "refundPercent": 80 },
   "turnTimers": { "rollSeconds": 7, "decisionSeconds": 7, "debtSeconds": 10, "automaticSeconds": 2 },
   "abandonment": { "seconds": 120 },
   "economy": {

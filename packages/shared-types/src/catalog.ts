@@ -109,6 +109,8 @@ export interface RulesConfig {
   nationalTravel: { fee: number };
   /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida. */
   tax: { amount: number };
+  /** Venda ao banco para pagar dívida: estado inteiro (terreno + construções) por este percentual. */
+  debtSale: { refundPercent: number };
   /**
    * Tempo para rolar (ou escolher a viagem) e para decidir compra/construção/Olimpíadas; ao acabar, o servidor joga.
    * debtSeconds: prazo para vender e pagar uma dívida; ao acabar, o servidor vende o necessário.

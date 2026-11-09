@@ -10,8 +10,7 @@ import br.imperiourbano.catalog.StateDefinition;
 import br.imperiourbano.engine.GameCommand.DeclareBankruptcy;
 import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.RollDice;
-import br.imperiourbano.engine.GameCommand.SellBuilding;
-import br.imperiourbano.engine.GameCommand.SellProperty;
+import br.imperiourbano.engine.GameCommand.SellStates;
 import br.imperiourbano.engine.GameEvent.DebtSettled;
 import br.imperiourbano.engine.GameEvent.GameFinished;
 import br.imperiourbano.engine.GameEvent.PlayerBankrupt;
@@ -57,39 +56,44 @@ class DebtBankruptcyAndVictoryTest {
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_DEBT_RESOLUTION);
     }
 
+    /** Banco paga o estado inteiro (terreno + construções) pelo percentual das regras: 80% (08/11/2026). */
+    private static int refund(StateDefinition state, int houses) {
+        return (state.price() + houses * state.houseCost()) * CATALOG.rules().debtSale().refundPercent() / 100;
+    }
+
+    private static SellStates sell(String... ids) {
+        return new SellStates(List.of(ids));
+    }
+
     @Test
-    void sellingAHouseSettlesTheDebtAutomatically() {
+    void sellingAWholeStateSettlesTheDebtAutomatically() {
         start(GameMode.CLASSIC, "ana", "bia");
         state = state.withProperty(new PropertyState("AP", "ana", 2, 1, 1));
         anaOwesRentToBia(5);
 
-        GameEngine.Result result = run("ana", new SellBuilding("AP"));
+        GameEngine.Result result = run("ana", sell("AP"));
 
-        int refund = AP.houseCost() / 2;
         int rent = AC.rent().base();
         assertThat(result.events()).last().isEqualTo(new DebtSettled("ana", "bia", rent));
-        assertThat(state.property("AP").orElseThrow().buildingLevel()).isEqualTo(1);
-        assertThat(state.player("ana").credits()).isEqualTo(5 + refund - rent);
-        assertThat(state.player("bia").credits()).isEqualTo(1500 + rent);
+        assertThat(state.property("AP")).isEmpty();
+        assertThat(state.player("ana").credits()).isEqualTo(5 + refund(AP, 2) - rent);
+        assertThat(state.player("bia").credits()).isEqualTo(2500 + rent);
         assertThat(state.pendingDebt()).isNull();
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
     @Test
-    void debtStaysWhileSalesAreNotEnough() {
+    void aSaleThatDoesNotCoverTheDebtIsRefused() {
         start(GameMode.CLASSIC, "ana", "bia");
-        // Acre de Bia com 3 casas: aluguel maior que a venda de uma casa do Amapá.
         state = state.withProperty(new PropertyState("AP", "ana", 1, 1, 1))
                 .withProperty(new PropertyState("AC", "bia", 3, 1, 1));
         setCredits("ana", 0);
         run("ana", new RollDice(), 4, 5);
-        assertThat(AP.houseCost() / 2).isLessThan(AC.rent().house3());
+        assertThat(refund(AP, 1)).isLessThan(AC.rent().house3());
 
-        run("ana", new SellBuilding("AP"));
-
-        assertThat(state.player("ana").credits()).isEqualTo(AP.houseCost() / 2);
+        assertThatThrownBy(() -> run("ana", sell("AP"))).hasMessage("A venda não cobre a dívida. Escolha mais estados.");
+        assertThat(state.property("AP")).isPresent();
         assertThat(state.pendingDebt()).isEqualTo(new Debt("ana", "bia", AC.rent().house3()));
-        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_DEBT_RESOLUTION);
     }
 
     @Test
@@ -97,24 +101,28 @@ class DebtBankruptcyAndVictoryTest {
         start(GameMode.CLASSIC, "ana", "bia");
         state = state.withProperty(new PropertyState("AP", "ana", 2, 1, 1));
 
-        assertThatThrownBy(() -> run("ana", new SellBuilding("AP")))
-                .hasMessage("Só é possível vender ao banco para pagar uma dívida.");
-        assertThatThrownBy(() -> run("ana", new SellProperty("AP")))
-                .hasMessage("Só é possível vender ao banco para pagar uma dívida.");
+        assertThatThrownBy(() -> run("ana", sell("AP"))).hasMessage("Só é possível vender ao banco para pagar uma dívida.");
         run("ana", new RollDice(), 4, 5);
-        assertThatThrownBy(() -> run("ana", new SellProperty("AP"))).isInstanceOf(RuleViolationException.class);
+        assertThatThrownBy(() -> run("ana", sell("AP"))).isInstanceOf(RuleViolationException.class);
     }
 
     @Test
-    void sellingAHotelGoesBackToFourHouses() {
+    void severalStatesAreSoldTogetherWithTheirBuildings() {
         start(GameMode.CLASSIC, "ana", "bia");
-        state = state.withProperty(new PropertyState("AP", "ana", PropertyState.HOTEL_LEVEL, 3, 3));
-        anaOwesTheBank(9_999);
+        StateDefinition rr = CATALOG.state("RR");
+        state = state.withProperty(new PropertyState("AP", "ana", PropertyState.HOTEL_LEVEL, 3, 3))
+                .withProperty(PropertyState.purchased("RR", "ana"));
+        int hotel = (AP.price() + 4 * AP.houseCost() + AP.hotelCost()) * CATALOG.rules().debtSale().refundPercent() / 100;
+        int debt = 2500 + hotel + 1;
+        anaOwesTheBank(debt);
 
-        run("ana", new SellBuilding("AP"));
+        assertThatThrownBy(() -> run("ana", sell("AP"))).isInstanceOf(RuleViolationException.class);
+        run("ana", sell("AP", "RR"));
 
-        assertThat(state.property("AP").orElseThrow().buildingLevel()).isEqualTo(4);
-        assertThat(state.player("ana").credits()).isEqualTo(1500 + AP.hotelCost() / 2);
+        assertThat(state.property("AP")).isEmpty();
+        assertThat(state.property("RR")).isEmpty();
+        assertThat(state.player("ana").credits()).isEqualTo(2500 + hotel + refund(rr, 0) - debt);
+        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
     @Test
@@ -122,27 +130,25 @@ class DebtBankruptcyAndVictoryTest {
         start(GameMode.CLASSIC, "ana", "bia");
         state = state.withProperty(new PropertyState("AP", "ana", 2, 1, 1))
                 .withOlympics(new OlympicsState(3, "AP", "ana", 4));
-        anaOwesTheBank(9_999);
+        anaOwesTheBank(2501);
 
-        run("ana", new SellProperty("AP"));
+        run("ana", sell("AP"));
 
         assertThat(state.property("AP")).isEmpty();
-        assertThat(state.player("ana").credits()).isEqualTo(1500 + (AP.price() + 2 * AP.houseCost()) / 2);
+        assertThat(state.player("ana").credits()).isEqualTo(2500 + refund(AP, 2) - 2501);
         assertThat(state.olympics()).isEqualTo(new OlympicsState(3, null, null, 1));
     }
 
     @Test
-    void canOnlySellOwnStatesAndExistingBuildings() {
+    void canOnlySellOwnStatesEachOnce() {
         start(GameMode.CLASSIC, "ana", "bia");
         state = state.withProperty(PropertyState.purchased("AP", "ana"))
                 .withProperty(PropertyState.purchased("RR", "bia"));
-        anaOwesTheBank(9_999);
+        anaOwesTheBank(2501);
 
-        assertThatThrownBy(() -> run("ana", new SellProperty("RR")))
-                .hasMessage("Você só pode vender estados que possui.");
-        assertThatThrownBy(() -> run("ana", new SellBuilding("AP")))
-                .hasMessage("Não há construções para vender neste estado.");
-        assertThatThrownBy(() -> run("ana", new SellProperty(null))).isInstanceOf(RuleViolationException.class);
+        assertThatThrownBy(() -> run("ana", sell("RR"))).hasMessage("Você só pode vender estados que possui.");
+        assertThatThrownBy(() -> run("ana", sell())).hasMessage("Escolha ao menos um estado para vender.");
+        assertThatThrownBy(() -> run("ana", sell("AP", "AP"))).hasMessage("Cada estado só pode ser vendido uma vez.");
     }
 
     @Test
@@ -166,7 +172,7 @@ class DebtBankruptcyAndVictoryTest {
                 new TurnEnded("ana", "bia", 1));
         assertThat(state.player("ana").bankrupt()).isTrue();
         assertThat(state.player("ana").credits()).isZero();
-        assertThat(state.player("bia").credits()).isEqualTo(1505);
+        assertThat(state.player("bia").credits()).isEqualTo(2505);
         assertThat(state.property("AP")).contains(new PropertyState("AP", "bia", 3, 0, 0));
         assertThat(state.olympics().hostStateId()).isNull();
         assertThat(state.status()).isEqualTo(GameStatus.IN_PROGRESS);
@@ -200,7 +206,7 @@ class DebtBankruptcyAndVictoryTest {
         run("ana", new DeclareBankruptcy());
 
         assertThat(state.property("AP")).isEmpty();
-        assertThat(state.player("bia").credits()).isEqualTo(1500);
+        assertThat(state.player("bia").credits()).isEqualTo(2500);
     }
 
     @Test
@@ -226,7 +232,7 @@ class DebtBankruptcyAndVictoryTest {
 
         GameEngine.Result result = run("bia", new EndTurn());
 
-        assertThat(engine.equity(state, "ana")).isEqualTo(1500 + AP.price() + AP.houseCost() + AP.rent().forLevel(1));
+        assertThat(engine.equity(state, "ana")).isEqualTo(2500 + AP.price() + AP.houseCost() + AP.rent().forLevel(1));
         assertThat(result.events()).containsExactly(new GameFinished(List.of("ana")));
         assertThat(state.status()).isEqualTo(GameStatus.FINISHED);
     }
@@ -237,7 +243,7 @@ class DebtBankruptcyAndVictoryTest {
         // Mesmo patrimônio: Ana tem o Amapá (preço + aluguel atual), Bia tem esse valor em dinheiro.
         state = state.withProperty(PropertyState.purchased("AP", "ana"))
                 .withTurn(1, 15, TurnPhase.AWAITING_END_TURN, 0);
-        setCredits("bia", 1500 + AP.price() + AP.rent().base());
+        setCredits("bia", 2500 + AP.price() + AP.rent().base());
 
         run("bia", new EndTurn());
 

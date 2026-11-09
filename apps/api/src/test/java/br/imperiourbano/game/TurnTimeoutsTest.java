@@ -48,42 +48,44 @@ class TurnTimeoutsTest {
                 .hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(12), new GameCommand.DeclareBankruptcy()));
     }
 
-    @Test
-    void debtSellsTheCheapestFirst() {
-        // Acre (o banco paga 50) sai antes de uma casa de SP (125).
-        GameState state = anaInDebt(
-                new GameEvent.PropertyPurchased("ana", "AC", 100),
-                new GameEvent.PropertyPurchased("ana", "SP", 500),
-                new GameEvent.HouseBuilt("ana", "SP", 2, 500));
-
-        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellProperty("AC"));
+    /** Dívida que o saldo não cobre por {@code missing}. */
+    private GameState anaShortBy(int missing, GameEvent... holdings) {
+        List<GameEvent> log = new ArrayList<>();
+        log.add(engine.start("g1", GameMode.CLASSIC, List.of(new StartingPlayer("ana", "Ana"), new StartingPlayer("bia", "Bia"))));
+        log.addAll(List.of(holdings));
+        // As compras já descontaram o preço: a dívida passa o saldo atual em {@code missing}.
+        int credits = engine.replay(log).player("ana").credits();
+        log.add(new GameEvent.DebtIncurred("ana", null, credits + missing));
+        return engine.replay(log);
     }
 
     @Test
-    void debtSellsACheapBuildingBeforeAnExpensiveState() {
-        // Casa do Acre (25) antes do Espírito Santo (200).
-        GameState state = anaInDebt(
-                new GameEvent.PropertyPurchased("ana", "ES", 400),
-                new GameEvent.PropertyPurchased("ana", "AC", 100),
-                new GameEvent.HouseBuilt("ana", "AC", 1, 50));
+    void debtSellsWholeStatesFromTheCheapestUntilItIsCovered() {
+        // RO (80% de 120 = 96) sozinho não cobre 150; com AC (80% de 140 = 112) cobre. MA fica.
+        GameState state = anaShortBy(150,
+                new GameEvent.PropertyPurchased("ana", "AC", 140),
+                new GameEvent.PropertyPurchased("ana", "RO", 120),
+                new GameEvent.PropertyPurchased("ana", "MA", 350));
 
-        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellBuilding("AC"));
+        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellStates(List.of("RO", "AC")));
     }
 
     @Test
-    void aStateWithBuildingsLosesTheBuildingsBeforeTheStateItself() {
-        GameState state = anaInDebt(
-                new GameEvent.PropertyPurchased("ana", "SP", 500),
-                new GameEvent.HouseBuilt("ana", "SP", 2, 500));
+    void buildingsCountInTheStateValueAndAreSoldWithIt() {
+        // SP com 2 casas vale (240 + 300) × 80% = 432, mais que o MA vazio (280): o MA sai primeiro.
+        GameState state = anaShortBy(100,
+                new GameEvent.PropertyPurchased("ana", "SP", 240),
+                new GameEvent.HouseBuilt("ana", "SP", 2, 300),
+                new GameEvent.PropertyPurchased("ana", "MA", 350));
 
-        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellBuilding("SP"));
+        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellStates(List.of("MA")));
     }
 
     @Test
-    void automaticDebtSellsStatesWhenThereAreNoBuildings() {
-        GameState state = anaInDebt(new GameEvent.PropertyPurchased("ana", "AC", 100));
+    void automaticDebtThatEvenEverythingCannotCoverDeclaresBankruptcy() {
+        GameState state = anaShortBy(10_000, new GameEvent.PropertyPurchased("ana", "AC", 140));
 
-        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.SellProperty("AC"));
+        assertThat(automaticCommand(state)).isEqualTo(new GameCommand.DeclareBankruptcy());
     }
 
     @Test

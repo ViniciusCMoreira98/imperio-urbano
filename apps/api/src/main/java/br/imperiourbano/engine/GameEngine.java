@@ -19,8 +19,7 @@ import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.HostOlympics;
 import br.imperiourbano.engine.GameCommand.RollDice;
-import br.imperiourbano.engine.GameCommand.SellBuilding;
-import br.imperiourbano.engine.GameCommand.SellProperty;
+import br.imperiourbano.engine.GameCommand.SellStates;
 import br.imperiourbano.engine.GameCommand.SkipBuild;
 import br.imperiourbano.engine.GameCommand.SkipEventTarget;
 import br.imperiourbano.engine.GameCommand.SkipOlympics;
@@ -351,8 +350,7 @@ public final class GameEngine {
             case SkipOlympics ignored -> skipOlympics(decision);
             case ChooseEventTarget c -> chooseEventTarget(decision, c.stateId());
             case SkipEventTarget ignored -> skipEventTarget(decision);
-            case SellBuilding c -> sellBuilding(decision, c.stateId());
-            case SellProperty c -> sellProperty(decision, c.stateId());
+            case SellStates c -> sellStates(decision, c.stateIds());
             case DeclareBankruptcy ignored -> declareBankruptcy(decision);
             case UseRestPass ignored -> useRestPass(decision);
             case EndTurn ignored -> endTurn(decision);
@@ -705,26 +703,30 @@ public final class GameEngine {
         d.emit(new OlympicsSkipped(d.state.currentPlayer().id()));
     }
 
-    private void sellBuilding(Decision d, String stateId) {
+    /** Estados inteiros, todos de uma vez; a soma com o saldo precisa pagar a dívida. */
+    private void sellStates(Decision d, List<String> stateIds) {
         requireDebt(d.state);
         PlayerState player = d.state.currentPlayer();
-        PropertyState property = ownedBy(d.state, player, stateId);
-        if (property.buildingLevel() == 0) {
-            throw new RuleViolationException("Não há construções para vender neste estado.");
+        if (stateIds.isEmpty()) throw new RuleViolationException("Escolha ao menos um estado para vender.");
+        if (stateIds.stream().distinct().count() != stateIds.size()) {
+            throw new RuleViolationException("Cada estado só pode ser vendido uma vez.");
         }
-        StateDefinition definition = catalog.state(stateId);
-        int cost = property.buildingLevel() == PropertyState.HOTEL_LEVEL ? definition.hotelCost() : definition.houseCost();
-        d.emit(new BuildingSold(player.id(), stateId, cost / 2));
+        List<PropertyState> properties = stateIds.stream().map(id -> ownedBy(d.state, player, id)).toList();
+        int total = properties.stream().mapToInt(this::saleRefund).sum();
+        if (player.credits() + total < d.state.pendingDebt().amount()) {
+            throw new RuleViolationException("A venda não cobre a dívida. Escolha mais estados.");
+        }
+        properties.forEach(p -> d.emit(new PropertySold(player.id(), p.stateId(), saleRefund(p))));
         settleDebtIfPossible(d);
     }
 
-    private void sellProperty(Decision d, String stateId) {
-        requireDebt(d.state);
-        PlayerState player = d.state.currentPlayer();
-        PropertyState property = ownedBy(d.state, player, stateId);
-        int refund = (catalog.state(stateId).price() + investedIn(property)) / 2;
-        d.emit(new PropertySold(player.id(), stateId, refund));
-        settleDebtIfPossible(d);
+    /** Quanto o banco paga pelo estado inteiro: terreno + construções, no percentual de {@code rules.debtSale}. */
+    public int saleRefund(PropertyState property) {
+        return saleRefund(catalog, property);
+    }
+
+    public static int saleRefund(Catalog catalog, PropertyState property) {
+        return catalog.rules().debtSale().refund(catalog.state(property.stateId()).price() + investedIn(catalog, property));
     }
 
     /** Vender ao banco só serve para pagar uma dívida que o saldo não cobre (D10). */
@@ -799,8 +801,12 @@ public final class GameEngine {
     }
 
     private int investedIn(PropertyState property) {
+        return investedIn(catalog, property);
+    }
+
+    private static int investedIn(Catalog catalog, PropertyState property) {
         StateDefinition definition = catalog.state(property.stateId());
-        int houses = Math.min(property.buildingLevel(), rules.construction().maxHouses());
+        int houses = Math.min(property.buildingLevel(), catalog.rules().construction().maxHouses());
         int hotel = property.buildingLevel() == PropertyState.HOTEL_LEVEL ? definition.hotelCost() : 0;
         return houses * definition.houseCost() + hotel;
     }
