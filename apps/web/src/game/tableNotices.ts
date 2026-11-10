@@ -4,6 +4,8 @@
 // - Sem saldo: o servidor pula a compra, a construção, a sede das Olimpíadas e a Viagem Nacional quando
 //   o saldo não paga; o jogador da tela precisa saber por que nada foi oferecido.
 // - Dados iguais: quem tirou, e o que acontece (joga de novo, sai do Descanso ou vai para ele).
+// - Taxa e Saque (09/11/2026): quem pagou a taxa ao banco (o valor vai para o fundo do Saque) e quem
+//   sacou o fundo; todos veem, quando o personagem chega na casa.
 import { board, rules, states } from '@imperio/game-data';
 import type { DomainEvent, GameSnapshot } from '@imperio/shared-types';
 import { formatCredits } from '../property-card/tileInfo';
@@ -11,7 +13,7 @@ import { buildOptions } from './rules';
 
 const statesById = new Map(states.map((s) => [s.id, s]));
 
-export type TableNoticeKind = 'rentWaiver' | 'noFunds' | 'doubles';
+export type TableNoticeKind = 'rentWaiver' | 'noFunds' | 'doubles' | 'tax' | 'saque';
 
 export interface TableNotice {
   /** Versão do evento que gerou o aviso: identifica o aviso. */
@@ -62,6 +64,24 @@ export function tableNotices(
               ? `${name(event.playerId)} usou o Aluguel Zero e não pagou seus ${amount} em ${where}.`
               : `${name(event.playerId)} usou o Aluguel Zero e não pagou ${amount} a ${name(event.ownerId)} em ${where}.`;
         notices.push({ id, kind: 'rentWaiver', title: 'Aluguel Zero!', text, after: 'table' });
+        break;
+      }
+      case 'TAX_PAID': {
+        const amount = formatCredits(event.amount);
+        const text =
+          event.playerId === myId
+            ? `Você está pagando ${amount} de taxa ao banco. O valor fica guardado para quem parar no Saque.`
+            : `${name(event.playerId)} está pagando ${amount} de taxa ao banco. O valor fica guardado para quem parar no Saque.`;
+        notices.push({ id, kind: 'tax', title: 'Taxa', text, after: 'table' });
+        break;
+      }
+      case 'SAQUE_COLLECTED': {
+        const amount = formatCredits(event.amount);
+        const text =
+          event.playerId === myId
+            ? `Você sacou ${amount}, todo o dinheiro guardado na casa Taxa.`
+            : `${name(event.playerId)} sacou ${amount}, todo o dinheiro guardado na casa Taxa.`;
+        notices.push({ id, kind: 'saque', title: 'Saque!', text, after: 'table' });
         break;
       }
       case 'PLAYER_MOVED':

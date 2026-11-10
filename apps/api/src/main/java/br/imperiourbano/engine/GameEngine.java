@@ -479,7 +479,7 @@ public final class GameEngine {
             case EVENT -> {
                 if (depth < MAX_CHAINED_LANDINGS) drawEventCard(d, depth);
             }
-            case TAX -> payTax(d, player, rules.tax().amount());
+            case TAX -> payTax(d, player, rules.tax().amountFor(equity(d.state, player.id())));
             case SAQUE -> {
                 if (d.state.taxPool() > 0) d.emit(new SaqueCollected(player.id(), d.state.taxPool()));
             }
@@ -551,13 +551,13 @@ public final class GameEngine {
 
     /**
      * Estados que a carta permite escolher: Incêndio e Apagão, os de adversários; Escolha da sede,
-     * qualquer estado com dono (inclusive os do próprio jogador).
+     * só um estado do próprio jogador (pedido do usuário, 09/11/2026).
      */
     public List<String> eventTargets(GameState state, String playerId, CardEffect effect) {
         return state.properties().values().stream()
                 .filter(p -> switch (effect.type()) {
                     case BURN_PROPERTY, BLACKOUT -> !p.ownerId().equals(playerId);
-                    case CHOOSE_OLYMPICS_HOST -> true;
+                    case CHOOSE_OLYMPICS_HOST -> p.ownerId().equals(playerId);
                     default -> false;
                 })
                 .map(PropertyState::stateId)
@@ -572,7 +572,7 @@ public final class GameEngine {
         CardEffect effect = card.effect();
         if (stateId == null || !eventTargets(d.state, player.id(), effect).contains(stateId)) {
             throw new RuleViolationException(effect.type() == CardEffectType.CHOOSE_OLYMPICS_HOST
-                    ? "Escolha um estado que tenha dono para sediar as Olimpíadas."
+                    ? "Escolha um dos seus estados para sediar as Olimpíadas."
                     : "Escolha um estado de um oponente.");
         }
         PropertyState property = d.state.property(stateId).orElseThrow();
@@ -603,6 +603,7 @@ public final class GameEngine {
 
     /** Taxa vai para o fundo do Saque; sem saldo, vira dívida com o mesmo destino. */
     private void payTax(Decision d, PlayerState player, int amount) {
+        if (amount == 0) return; // sem patrimônio, nada a pagar
         if (d.state.player(player.id()).credits() >= amount) {
             d.emit(new TaxPaid(player.id(), amount));
         } else {

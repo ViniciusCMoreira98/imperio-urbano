@@ -16,9 +16,9 @@
   },
   "rest": { "turnsLost": 1 },
   "nationalTravel": { "fee": 50 },
-  "tax": { "amount": 100 },
+  "tax": { "equityPercent": 10 },
   "debtSale": { "refundPercent": 80 },
-  "turnTimers": { "rollSeconds": 7, "decisionSeconds": 7, "debtSeconds": 10, "automaticSeconds": 2 },
+  "turnTimers": { "rollSeconds": 7, "decisionSeconds": 10, "debtSeconds": 10, "automaticSeconds": 2 },
   "abandonment": { "seconds": 120 },
   "economy": {
     "stakes": [200, 1000, 5000, 10000, 100000],

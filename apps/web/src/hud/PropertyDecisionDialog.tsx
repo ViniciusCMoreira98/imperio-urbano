@@ -100,10 +100,8 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
   if (decide && offline) message = 'Sem conexão com o servidor. Aguarde a reconexão para decidir.';
   // Só a recusa do que saiu deste modal; uma anterior (ex.: rolar fora de hora) não é sobre esta decisão.
   else if (decide && rejection && sentAt !== null) message = rejection;
-  else if (decide) {
-    const balance = me ? `Seu saldo: ${formatCredits(me.credits)}` : '';
-    message = balance || undefined;
-  } else message = !decision.property?.ownerId ? `Disponível para compra por ${formatCredits(definition.price)}.` : undefined;
+  // O saldo fica em destaque no resumo do painel (balance), não mais nesta linha pequena (09/11/2026).
+  else if (!decide) message = !decision.property?.ownerId ? `Disponível para compra por ${formatCredits(definition.price)}.` : undefined;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/65 backdrop-blur-[2px]" onClick={decide ? undefined : clearSelection}>
@@ -135,6 +133,7 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
             selectedLevel={selected}
             costLabel={decide && selected !== null ? formatCredits(costFor(decision, selected)) : '—'}
             newRentLabel={target >= 0 ? formatCredits(rentAt(snapshot, definition, target)) : '—'}
+            balance={decide && me ? decisionBalance(me.credits, selected === null ? null : costFor(decision, selected)) : undefined}
             actionLabel={actionLabel(decision, selected)}
             actionDisabled={!decide || offline || selected === null}
             pending={pending}
@@ -148,6 +147,16 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
       </div>
     </div>
   );
+}
+
+/** Saldo em destaque na compra/construção (pedido do usuário, 09/11/2026) e quanto sobra com a etapa escolhida. */
+function decisionBalance(credits: number, cost: number | null) {
+  const after = cost === null ? null : credits - cost;
+  return {
+    label: formatCredits(credits),
+    note: after === null ? undefined : after < 0 ? `faltam ${formatCredits(-after)}` : `fica ${formatCredits(after)}`,
+    short: after !== null && after < 0,
+  };
 }
 
 /**

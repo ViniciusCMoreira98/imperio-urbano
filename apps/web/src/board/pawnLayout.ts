@@ -8,8 +8,11 @@ import { anchorToWorld, tileAnchor } from './layout';
  * personagens só cabem com a base de até ~0,19 de raio; os testes de layout conferem com o contorno real.
  */
 export const PAWN_SCALE = 0.75;
-/** Only the figure grows; bases, slots and movement anchors keep their tested footprint. */
-export function pawnFigureScale(occupants:number):number{return occupants<=1?1.7:occupants===2?1.35:1;}
+/**
+ * Tamanho do corpo: sempre o mesmo, o de quando anda (pedido do usuário, 09/11/2026). Antes crescia
+ * parado sozinho (×1,7) ou em dupla (×1,35) e encolhia ao andar, e o personagem parecia mudar de tamanho.
+ */
+export function pawnFigureScale(_occupants:number):number{return 1;}
 /** Raio que a base do personagem ocupa no tabuleiro (base de 0,25 na escala PAWN_SCALE). */
 export const PAWN_RADIUS = 0.25 * PAWN_SCALE;
 /** Afastamento de cada personagem até o centro do grupo quando dividem a casa. */

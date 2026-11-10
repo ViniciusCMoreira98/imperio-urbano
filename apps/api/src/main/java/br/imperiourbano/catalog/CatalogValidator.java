@@ -131,8 +131,8 @@ public final class CatalogValidator {
         if (m.length == 0 || m[0] != 2 || m[m.length - 1] != 10 || !isStrictlyIncreasingPositive(m)) {
             errors.add("Multiplicadores olímpicos devem crescer de ×2 a ×10");
         }
-        if (rules.tax().amount() <= 0) {
-            errors.add("Valor da Taxa deve ser positivo");
+        if (rules.tax().equityPercent() <= 0 || rules.tax().equityPercent() > 100) {
+            errors.add("Percentual da Taxa deve ficar entre 1 e 100");
         }
         if (rules.construction().firstVisitMaxHouses() > rules.construction().maxHouses()) {
             errors.add("Casas da primeira visita excedem o máximo");

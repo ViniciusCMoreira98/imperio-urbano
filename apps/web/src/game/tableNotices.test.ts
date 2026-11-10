@@ -64,4 +64,25 @@ describe('avisos da mesa', () => {
     expect(tableNotices([rolled(5, 5), moved(9, 'ana', true)], 1, s, 'ana', name)[0].text).toBe('Três duplas seguidas: você vai direto para o Descanso.');
     expect(tableNotices([rolled(5, 4), moved(9)], 1, s, 'ana', name)).toEqual([]);
   });
+
+  it('Taxa: todos veem quem está pagando ao banco, quando o personagem chega', () => {
+    const s = snap({}, { credits: 5000 });
+    const tax = [rolled(1, 2), moved(3), { type: 'TAX_PAID', playerId: 'ana', amount: 60 } as DomainEvent];
+    expect(tableNotices(tax, 1, s, 'ana', name).find((n) => n.kind === 'tax')).toMatchObject({
+      id: 3,
+      title: 'Taxa',
+      after: 'table',
+      text: 'Você está pagando R$ 60 de taxa ao banco. O valor fica guardado para quem parar no Saque.',
+    });
+    expect(tableNotices(tax, 1, s, 'bia', name).find((n) => n.kind === 'tax')?.text).toBe(
+      'Ana está pagando R$ 60 de taxa ao banco. O valor fica guardado para quem parar no Saque.',
+    );
+  });
+
+  it('Saque: avisa quem sacou o dinheiro guardado na Taxa', () => {
+    const s = snap({}, { credits: 5000 });
+    const saque = [{ type: 'SAQUE_COLLECTED', playerId: 'bia', amount: 180 } as DomainEvent];
+    expect(tableNotices(saque, 7, s, 'bia', name)[0]).toMatchObject({ id: 7, kind: 'saque', title: 'Saque!', text: 'Você sacou R$ 180, todo o dinheiro guardado na casa Taxa.' });
+    expect(tableNotices(saque, 7, s, 'ana', name)[0].text).toBe('Bia sacou R$ 180, todo o dinheiro guardado na casa Taxa.');
+  });
 });

@@ -25,7 +25,7 @@ export interface BoardChoice {
 const EVENT_CHOICES = {
   BURN_PROPERTY: { title: '🔥 Incêndio', instruction: 'Toque no estado de um oponente: ele volta a ficar livre, sem as construções.', invalidHint: 'Escolha um estado de um oponente, destacado.' },
   BLACKOUT: { title: '💡 Apagão', instruction: 'Toque no estado de um oponente: ninguém paga aluguel nele até o dono parar lá 3 vezes.', invalidHint: 'Escolha um estado de um oponente, destacado.' },
-  CHOOSE_OLYMPICS_HOST: { title: '🏅 Escolha da sede', instruction: 'Toque no estado que vai sediar as Olimpíadas (sem taxa).', invalidHint: 'Só um estado com dono pode sediar. Escolha um destacado.' },
+  CHOOSE_OLYMPICS_HOST: { title: '🏅 Escolha da sede', instruction: 'Toque num dos seus estados para sediar as Olimpíadas (sem taxa).', invalidHint: 'Esse estado não é seu. Escolha um estado destacado.' },
 } as const;
 
 export const tileName = (index: number): string => {

@@ -73,14 +73,14 @@ export function heldCredits(cards: readonly CardShow[], doneId: number, snapshot
   return held;
 }
 
-/** Mesma regra do servidor: Incêndio e Apagão, estados de oponentes; Escolha da sede, qualquer estado com dono. */
+/** Mesma regra do servidor: Incêndio e Apagão, estados de oponentes; Escolha da sede, só os próprios (09/11/2026). */
 export function eventTargets(snapshot: GameSnapshot, playerId: string, effect: CardEffect | undefined): StateId[] {
   if (!effect) return [];
   return snapshot.properties
     .filter((p) => p.ownerId !== null)
     .filter((p) => {
       if (effect.type === 'BURN_PROPERTY' || effect.type === 'BLACKOUT') return p.ownerId !== playerId;
-      return effect.type === 'CHOOSE_OLYMPICS_HOST';
+      return effect.type === 'CHOOSE_OLYMPICS_HOST' && p.ownerId === playerId;
     })
     .map((p) => p.stateId);
 }

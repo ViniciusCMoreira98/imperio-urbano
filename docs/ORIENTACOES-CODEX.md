@@ -1,5 +1,19 @@
 # Orientações e pendências para o Codex
 
+## V1 — saldo no modal de compra e tamanho único dos personagens, 09/11/2026
+
+Pedidos diretos do usuário, feitos na claude/engenharia:
+
+- **Saldo no resumo da compra/construção.** O usuário pediu o saldo mais evidente e dentro do modal.
+  - `PropertyEvolutionPanel` ganhou a prop opcional `balance: { label, note?, short? }`. Ela vira a terceira coluna do `pe-summary` ("Seu saldo", com "fica R$ X" ou "faltam R$ X" em vermelho), com a classe `pe-summary-with-balance`.
+  - O CSS está em `index.css`, não em `property-evolution.css`. Abaixo de 1000 px de largura os ícones do resumo somem e os três textos diminuem juntos, sem quebrar linha. O usuário pediu explicitamente que não ficasse amontoado.
+  - A linha pequena "Seu saldo" saiu do `message`.
+  - Conferido em 1280×720 e 667×280, inclusive com R$ 1.234.567.
+  - Podem ajustar a arte da coluna à vontade (o ícone hoje é 💰), mantendo a leitura fácil no celular.
+- **Personagens do mesmo tamanho o tempo todo.** `pawnFigureScale` agora devolve sempre 1, o tamanho de quando anda. O corpo crescia parado (×1,7 sozinho, ×1,35 em dupla) e encolhia ao andar, e o usuário achou estranho.
+  - Isso contraria a anotação da revisão adversa ("não reduzir mais as figuras"), mas foi decisão do usuário.
+  - A folga `MOBILE_PAWN_HEADROOM` em `useHudLayout` ficou como estava; se sobrar espaço acima da fileira de cima, ela pode ser revista.
+
 ## V1 — ocupantes da casa na consulta da propriedade, 09/11/2026
 
 Atendido o pedido da revisão adversa, na claude/engenharia:

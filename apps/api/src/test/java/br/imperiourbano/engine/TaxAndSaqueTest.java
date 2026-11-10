@@ -21,7 +21,8 @@ import org.junit.jupiter.api.Test;
 class TaxAndSaqueTest {
 
     private static final Catalog CATALOG = CatalogLoader.load();
-    private static final int TAX = CATALOG.rules().tax().amount();
+    /** Fundo de exemplo para os testes do Saque. */
+    private static final int TAX = 100;
     private static final int TAX_TILE = CATALOG.tileIndex("TAX");
     private static final int SAQUE_TILE = CATALOG.tileIndex("SAQUE");
 
@@ -54,9 +55,23 @@ class TaxAndSaqueTest {
 
         GameEngine.Result result = run(new RollDice(), 2, 4);
 
-        assertThat(result.events()).contains(new TaxPaid("ana", TAX));
-        assertThat(state.player("ana").credits()).isEqualTo(1000 - TAX);
-        assertThat(state.taxPool()).isEqualTo(TAX);
+        // Sem estados, o patrimônio é o saldo: 10% de 1000.
+        assertThat(result.events()).contains(new TaxPaid("ana", 100));
+        assertThat(state.player("ana").credits()).isEqualTo(900);
+        assertThat(state.taxPool()).isEqualTo(100);
+    }
+
+    @Test
+    void taxIsTenPercentOfTheWholeEquityRoundedDown() {
+        state = state.withProperty(PropertyState.purchased("AC", "ana")).withProperty(PropertyState.purchased("SP", "ana"));
+        anaSixStepsBefore(TAX_TILE, 1234);
+        int equity = engine.equity(state, "ana");
+        assertThat(equity).isGreaterThan(1234);
+
+        GameEngine.Result result = run(new RollDice(), 2, 4);
+
+        assertThat(result.events()).contains(new TaxPaid("ana", equity / 10));
+        assertThat(state.player("ana").credits()).isEqualTo(1234 - equity / 10);
     }
 
     @Test
@@ -84,28 +99,32 @@ class TaxAndSaqueTest {
 
     @Test
     void anUnpaidTaxBecomesADebtThatStillFillsThePoolWhenSettled() {
+        // Pouco saldo e um estado: 10% do patrimônio passa do saldo.
         state = state.withProperty(PropertyState.purchased("AC", "ana"));
-        anaSixStepsBefore(TAX_TILE, TAX - 1);
+        anaSixStepsBefore(TAX_TILE, 5);
+        int tax = engine.equity(state, "ana") / 10;
+        assertThat(tax).isGreaterThan(5);
 
         GameEngine.Result landed = run(new RollDice(), 2, 4);
-        assertThat(landed.events()).contains(new DebtIncurred("ana", null, TAX, true));
+        assertThat(landed.events()).contains(new DebtIncurred("ana", null, tax, true));
         assertThat(state.pendingDebt().toTaxPool()).isTrue();
 
         GameEngine.Result sold = run(new SellStates(java.util.List.of("AC")));
 
-        assertThat(sold.events()).last().isEqualTo(new DebtSettled("ana", null, TAX));
-        assertThat(state.taxPool()).isEqualTo(TAX);
+        assertThat(sold.events()).last().isEqualTo(new DebtSettled("ana", null, tax));
+        assertThat(state.taxPool()).isEqualTo(tax);
     }
 
     @Test
     void bankruptcyOnTheTaxSendsTheRemainingCreditsToThePool() {
-        anaSixStepsBefore(TAX_TILE, TAX - 1);
+        state = state.withProperty(PropertyState.purchased("AC", "ana"));
+        anaSixStepsBefore(TAX_TILE, 5);
         run(new RollDice(), 2, 4);
 
         run(new DeclareBankruptcy());
 
         assertThat(state.player("ana").bankrupt()).isTrue();
-        assertThat(state.taxPool()).isEqualTo(TAX - 1);
+        assertThat(state.taxPool()).isEqualTo(5);
     }
 
     @Test

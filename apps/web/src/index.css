@@ -217,3 +217,17 @@ body {
 .tile-occupants small { color:#a3cce6; font-weight:600; }
 .tile-occupants-dot { width:14px; height:14px; border-radius:50%; border:2px solid #fff; box-shadow:0 1px 3px #000a; flex-shrink:0; }
 @media (max-height:500px) { .tile-occupants { font-size:12px; padding:3px 10px; left:12px; max-width:calc(100% - 60px); } .tile-occupants-dot { width:11px; height:11px; } }
+
+/* Compra/construção (09/11/2026): "Seu saldo" como terceira coluna do resumo do painel. */
+.pe-summary.pe-summary-with-balance { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.pe-summary.pe-summary-with-balance > .pe-summary-balance strong { color:#fff; }
+.pe-summary-balance .pe-summary-icon { font-size:52px; text-shadow:none; }
+.pe-summary-balance small { display:block; font-size:14px; font-weight:700; color:#9bfa1f; font-variant-numeric:tabular-nums; }
+.pe-summary-balance small.pe-balance-short { color:#ff8a80; }
+@media (max-width:900px) { .pe-summary-balance .pe-summary-icon { font-size:36px; } }
+@media (max-width:600px) { .pe-summary-balance small { font-size:11px; } }
+.pe-summary.pe-summary-with-balance strong, .pe-summary.pe-summary-with-balance span { white-space:nowrap; }
+.pe-summary-balance small { font-size:16px; }
+/* Telas menores: três colunas sem amontoar — some o ícone e os três textos diminuem juntos. */
+@media (max-width:1000px) { .pe-summary.pe-summary-with-balance { gap:8px; padding:12px 10px; } .pe-summary.pe-summary-with-balance .pe-summary-icon { display:none; } .pe-summary.pe-summary-with-balance strong { font-size:24px; } .pe-summary.pe-summary-with-balance span:not(.pe-summary-icon) { font-size:14px; } .pe-summary-balance small { font-size:12px; } }
+@media (max-width:700px) { .pe-summary.pe-summary-with-balance strong { font-size:19px; } .pe-summary.pe-summary-with-balance span:not(.pe-summary-icon) { font-size:12px; } .pe-summary-balance small { font-size:11px; } }

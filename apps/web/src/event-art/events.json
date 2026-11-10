@@ -61,13 +61,13 @@
     "category": "Decisão olímpica",
     "tone": "olympics",
     "image": "escolha-sede-v1.webp",
-    "description": "O Comitê Olímpico entrou em contato e pediu que você escolhesse um estado para sediar as Olimpíadas.",
-    "rule": "Selecione o estado que será a nova sede das Olimpíadas.",
+    "description": "O Comitê Olímpico entrou em contato e pediu que você escolhesse um dos seus estados para sediar as Olimpíadas.",
+    "rule": "Selecione um dos seus estados para ser a nova sede das Olimpíadas.",
     "badge": "Escolha a nova sede",
     "requiresTarget": true,
     "targetKind": "host-state",
     "cardTitle": "Escolha da sede",
-    "cardText": "O Comitê Olímpico convidou você para escolher um estado para sediar as Olimpíadas."
+    "cardText": "O Comitê Olímpico convidou você para escolher um dos seus estados para sediar as Olimpíadas."
   },
   {
     "id": "apagao",

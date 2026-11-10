@@ -12,7 +12,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Prazos do turno e a ação que o servidor executa quando acabam.
@@ -28,8 +30,16 @@ public record TurnTimeouts(Duration roll, Duration decision, Duration debt, Dura
     public record Timeout(Duration duration, GameCommand defaultCommand) {
     }
 
+    /** Uma política de bot por catálogo (o motor é imutável, então pode ser compartilhado). */
+    private static final Map<Catalog, BotPolicy> BOTS = new ConcurrentHashMap<>();
+
     public Optional<Timeout> forState(GameState state, boolean automaticMode) {
         if (state.status() != GameStatus.IN_PROGRESS || state.phase() == null) return Optional.empty();
+        // Bot da vez (10/11/2026): joga a própria política, depois de "pensar" um instante.
+        if (Bots.isBot(state.currentPlayer().id())) {
+            GameCommand move = BOTS.computeIfAbsent(catalog, BotPolicy::new).command(state, this);
+            return move == null ? Optional.empty() : Optional.of(new Timeout(Bots.THINK, move));
+        }
         GameCommand command = defaultCommand(state);
         if (command == null) return Optional.empty();
         if (automaticMode) return Optional.of(new Timeout(automatic, command));

@@ -66,6 +66,8 @@ export const api = {
   logout: (token: string) => request<void>('POST', '/sessions/logout', token),
   createGame: (token: string, mode: GameMode, stake: number, publicRoom: boolean) =>
     request<LobbyView>('POST', '/games', token, { mode, stake, publicRoom }),
+  /** Partida contra bots (10/11/2026): começa na hora, sem aposta. */
+  createBotGame: (token: string, mode: GameMode, bots: number) => request<LobbyView>('POST', '/games/bots', token, { mode, bots }),
   /** Salas públicas em que o jogador pode entrar agora. */
   publicRooms: (token: string) => request<PublicRoom[]>('GET', '/games/public', token),
   joinPublic: (token: string, gameId: string) => request<LobbyView>('POST', `/games/${gameId}/join`, token),

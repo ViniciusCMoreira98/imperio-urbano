@@ -29,6 +29,7 @@ import { useAppStore } from '../store/appStore';
 import { useCharacterStore, useMenuAvatar } from '../store/characterStore';
 import { CharacterPicker } from '../play-menu/CharacterPicker';
 import { AVATARS, PAWN_COLORS } from '../game/presentation';
+import { MODES, modeName, modeRule } from '../game/modes';
 import { Button, ErrorText, Panel } from '../ui/ui';
 
 /** Abre a escolha do personagem com o som de confirmação. */
@@ -201,6 +202,7 @@ function PlayMenu({ onPlayOnline }: { onPlayOnline: () => void }) {
   const setSession = useAppStore((s) => s.setSession);
   const openLobby = useAppStore((s) => s.openLobby);
   const [gamesOpen, setGamesOpen] = useState(false);
+  const [botsOpen, setBotsOpen] = useState(false);
   const [myGames, setMyGames] = useState<LobbyView[]>([]);
 
   // Token que não vale mais volta a pedir o apelido; com token válido, lista as partidas em aberto.
@@ -226,7 +228,20 @@ function PlayMenu({ onPlayOnline }: { onPlayOnline: () => void }) {
           <strong>Jogar Online</strong>
           <small>Criar sala ou entrar com código</small>
         </button>
+        <button
+          type="button"
+          className="menu-play menu-bots"
+          onClick={() => {
+            playSound('confirmarAcao');
+            setBotsOpen(true);
+          }}
+        >
+          <span className="menu-bots-icon" aria-hidden="true">🤖</span>
+          <strong>Jogar contra Bots</strong>
+          <small>Partida na hora, sem aposta</small>
+        </button>
       </div>
+      {botsOpen && <BotGameSheet onClose={() => setBotsOpen(false)} />}
       <CharacterButton />
       {myGames.length > 0 && (
         <button
@@ -261,6 +276,60 @@ function PlayMenu({ onPlayOnline }: { onPlayOnline: () => void }) {
         </MenuSheet>
       )}
     </>
+  );
+}
+
+/**
+ * Jogar contra bots (pedido do usuário, 10/11/2026): modo e quantos bots; a partida começa na hora, sem aposta
+ * e sem contar vitória. Os bots compram e constroem sempre até o maior nível que podem.
+ */
+function BotGameSheet({ onClose }: { onClose: () => void }) {
+  const session = useAppStore((s) => s.session)!;
+  const openLobby = useAppStore((s) => s.openLobby);
+  const [mode, setMode] = useState<GameMode>('CLASSIC');
+  const [bots, setBots] = useState(1);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  async function start() {
+    playSound('confirmarAcao');
+    setPending(true);
+    setError(null);
+    try {
+      openLobby(await api.createBotGame(session.token, mode, bots));
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'Não foi possível começar a partida.');
+      playSound('erroAcaoInvalida');
+      setPending(false);
+    }
+  }
+  const choice = (active: boolean) => `bot-choice ${active ? 'is-active' : ''}`;
+  return (
+    <MenuSheet title="Jogar contra Bots" onClose={onClose}>
+      <p className="bot-sheet-label">Modo</p>
+      <div className="bot-choices">
+        {MODES.map((m) => (
+          <button key={m} type="button" className={choice(mode === m)} aria-pressed={mode === m} onClick={() => setMode(m)}>
+            <strong>{modeName(m)}</strong>
+            <small>{modeRule(m)}</small>
+          </button>
+        ))}
+      </div>
+      <p className="bot-sheet-label">Bots na mesa</p>
+      <div className="bot-choices">
+        {[1, 2, 3].map((n) => (
+          <button key={n} type="button" className={choice(bots === n)} aria-pressed={bots === n} onClick={() => setBots(n)}>
+            <strong>
+              {n} {n === 1 ? 'bot' : 'bots'}
+            </strong>
+          </button>
+        ))}
+      </div>
+      <p className="bot-sheet-note">Sem aposta: não gasta nem ganha moedas, e a vitória não conta no seu total.</p>
+      <ErrorText message={error} />
+      <Button variant="primary" className="mt-3 w-full" disabled={pending} onClick={() => void start()}>
+        {pending ? 'Começando…' : 'Começar partida'}
+      </Button>
+    </MenuSheet>
   );
 }
 

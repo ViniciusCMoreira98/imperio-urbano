@@ -53,10 +53,11 @@ describe('cartas de evento no cliente', () => {
     expect(choiceAction(choice, tileOf('MA'))).toBeNull();
   });
 
-  it('Escolha da sede aceita qualquer estado com dono, inclusive os próprios', () => {
+  it('Escolha da sede aceita só os estados de quem tirou a carta', () => {
     const choice = boardChoice(choosing('escolha-sede'), 'ana')!;
     expect(choice.tiles).toContain(tileOf('MA'));
-    expect(choice.tiles).toContain(tileOf('SP'));
+    expect(choice.tiles).not.toContain(tileOf('SP'));
+    expect(choiceAction(choice, tileOf('SP'))).toBeNull();
     expect(choiceAction(choice, tileOf('MA'))?.label).toBe('Sede em Maranhão');
   });
 

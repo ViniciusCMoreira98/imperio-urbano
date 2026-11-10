@@ -58,8 +58,15 @@ public record RulesConfig(
     public record NationalTravelRules(int fee) {
     }
 
-    /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida com o banco. */
-    public record TaxRules(int amount) {
+    /**
+     * Taxa: {@code equityPercent}% do patrimônio de quem para na casa (pedido do usuário, 10/11/2026), arredondado
+     * para baixo. O valor vai para o fundo do Saque; sem saldo, vira dívida com o banco.
+     */
+    public record TaxRules(int equityPercent) {
+
+        public int amountFor(int equity) {
+            return Math.max(0, equity) * equityPercent / 100;
+        }
     }
 
     /** Dívida sem saldo: vende estados inteiros (terreno + construções) ao banco por {@code refundPercent}%. */

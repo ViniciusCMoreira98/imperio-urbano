@@ -73,7 +73,9 @@ public class TurnTimer {
             // Quem está jogando só começa a perder tempo depois que a mesa mostra as jogadas ainda na
             // fila (dados e personagens andando, inclusive as do adversário em lotes anteriores). O modo
             // automático segue rápido: a mesa de quem assiste já enfileira as jogadas.
-            Instant start = automatic ? now : tableFree;
+            // O bot também espera a mesa: quem assiste vê cada jogada dele antes da próxima.
+            boolean bot = update.state().status() == GameStatus.IN_PROGRESS && Bots.isBot(update.state().currentPlayer().id());
+            Instant start = automatic && !bot ? now : tableFree;
             Instant deadline = start.plus(timeout.duration());
             ScheduledFuture<?> future = scheduler.schedule(() -> fire(gameId, version, automatic),
                     Duration.between(now, deadline).toMillis(), TimeUnit.MILLISECONDS);

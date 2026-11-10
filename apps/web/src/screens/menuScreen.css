@@ -83,3 +83,12 @@
 .menu-top .menu-wallets+.menu-install{margin-left:0}
 .menu-install-steps{margin:0;padding-left:20px;list-style:decimal;display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.4;color:#eaf3fa}
 @media(max-height:500px){.menu-install{height:34px;padding:0 10px;font-size:12px;border-radius:10px}}
+/* Jogar contra Bots (10/11/2026): mesmo botão do menu, com o robô no lugar do globo. */
+.menu-play.menu-bots{background-image:url('../main-menu/art/button-blue-v1.svg')}
+.menu-bots-icon{position:absolute;left:38%;top:5%;width:24%;height:42%;display:grid;place-items:center;font-size:clamp(28px,7vmin,64px);line-height:1;filter:drop-shadow(0 .3vmin .2vmin #0006)}
+.bot-sheet-label{margin:12px 0 6px;font-size:13px;font-weight:700;color:#a3cce6}
+.bot-choices{display:flex;flex-wrap:wrap;gap:8px}
+.bot-choice{flex:1 1 90px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 10px;border:2px solid #27507a;border-radius:12px;background:#0b2447;color:#fff;cursor:pointer}
+.bot-choice small{font-size:11px;color:#a3cce6}
+.bot-choice.is-active{border-color:#ffd12d;background:#173a6b;box-shadow:0 0 0 1px #9b4b04}
+.bot-sheet-note{margin:12px 0 0;font-size:12px;color:#a3cce6}

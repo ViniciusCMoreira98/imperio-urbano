@@ -11,13 +11,18 @@ import { useGameStore } from '../store/gameStore';
 import { usePawnStore } from '../store/pawnStore';
 
 /** Tempo na tela: os dados iguais são só um lembrete; os outros pedem leitura. */
-const SHOW_MS: Record<TableNotice['kind'], number> = { doubles: 2500, rentWaiver: 4500, noFunds: 4500 };
+const SHOW_MS: Record<TableNotice['kind'], number> = { doubles: 2500, rentWaiver: 4500, noFunds: 4500, tax: 3500, saque: 3500 };
+
+/** Ícone de cada aviso (o Aluguel Zero usa a arte da carta). */
+const NOTICE_ICONS: Partial<Record<TableNotice['kind'], string>> = { doubles: '🎲', noFunds: '💸', tax: '🏦', saque: '💰' };
 
 /** Cor da borda e do título de cada aviso. */
 const TONES: Record<TableNotice['kind'], string> = {
   doubles: 'border-amber-300/70 text-amber-200',
   rentWaiver: 'border-emerald-300/60 text-emerald-200',
   noFunds: 'border-rose-300/70 text-rose-200',
+  tax: 'border-orange-300/70 text-orange-200',
+  saque: 'border-emerald-300/70 text-emerald-200',
 };
 
 const ready = (notice: TableNotice) => {
@@ -99,7 +104,7 @@ export function TableNotices({ myId }: { myId: string }) {
         {shown.kind === 'rentWaiver' ? (
           <img src={rentWaiverArt} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
         ) : (
-          <span aria-hidden className="text-4xl">{shown.kind === 'doubles' ? '🎲' : '💸'}</span>
+          <span aria-hidden className="text-4xl">{NOTICE_ICONS[shown.kind]}</span>
         )}
         <span className="leading-tight">
           <strong className={`block text-base font-black ${tone.split(' ')[1]}`}>{shown.title}</strong>

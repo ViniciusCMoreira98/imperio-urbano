@@ -284,23 +284,27 @@ class EventCardsTest {
     }
 
     @Test
-    void hostChoiceAppointsAnyOwnedStateWithoutFee() {
+    void hostChoiceAppointsOneOfThePlayersOwnStatesWithoutFee() {
         give("bia", "AP");
         give("ana", "AC");
         anaDraws("escolha-sede");
         assertThat(engine.eventTargets(state, "ana", CATALOG.eventCard("escolha-sede").effect()))
-                .containsExactly("AC", "AP");
+                .containsExactly("AC");
         assertThatThrownBy(() -> run("ana", new ChooseEventTarget("RR"))).isInstanceOf(RuleViolationException.class);
+        // Estado do oponente não pode ser sede pela carta (pedido do usuário, 09/11/2026).
+        assertThatThrownBy(() -> run("ana", new ChooseEventTarget("AP"))).isInstanceOf(RuleViolationException.class);
 
-        GameEngine.Result chosen = run("ana", new ChooseEventTarget("AP"));
+        GameEngine.Result chosen = run("ana", new ChooseEventTarget("AC"));
 
-        assertThat(chosen.events()).containsExactly(new OlympicsHostAppointed("ana", "AP", "bia", 1, 2));
-        assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AP", "bia", 2));
+        assertThat(chosen.events()).containsExactly(new OlympicsHostAppointed("ana", "AC", "ana", 1, 2));
+        assertThat(state.olympics()).isEqualTo(new OlympicsState(1, "AC", "ana", 2));
         assertThat(credits("ana")).isEqualTo(2500);
     }
 
     @Test
     void hostChoiceWithoutOwnedStatesHasNoEffect() {
+        // Só o oponente tem estado: quem tirou a carta não tem onde sediar.
+        give("bia", "AP");
         GameEngine.Result result = anaDraws("escolha-sede");
 
         assertThat(result.events()).last().isEqualTo(new EventCardWithoutEffect("ana", "escolha-sede"));

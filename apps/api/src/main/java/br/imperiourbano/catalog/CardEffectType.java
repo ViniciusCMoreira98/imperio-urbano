@@ -13,7 +13,7 @@ public enum CardEffectType {
     BURN_PROPERTY,
     /** Vai até a sede atual das Olimpíadas (bônus ao passar pelo Início). */
     VISIT_OLYMPICS_HOST,
-    /** Escolhe, sem taxa, um estado com dono para sediar a próxima edição das Olimpíadas. */
+    /** Escolhe, sem taxa, um dos próprios estados para sediar a próxima edição das Olimpíadas. */
     CHOOSE_OLYMPICS_HOST,
     /** Apagão: estado de adversário sem aluguel até o dono parar nele {@code visits} vezes. */
     BLACKOUT,

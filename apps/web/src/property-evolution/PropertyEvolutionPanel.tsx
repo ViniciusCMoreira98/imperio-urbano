@@ -29,6 +29,8 @@ interface PropertyEvolutionActions {
   selectedLevel: number | null;
   costLabel: string;
   newRentLabel: string;
+  /** Saldo de quem decide, em destaque no resumo (09/11/2026), e quanto sobra ou falta com a etapa escolhida. */
+  balance?: { label: string; note?: string; short?: boolean };
   actionLabel: string;
   actionDisabled?: boolean;
   pending?: boolean;
@@ -81,7 +83,7 @@ export function PropertyEvolutionPanel(props: PropertyEvolutionPanelProps) {
           </button>
         </li>)}
       </ol>
-      {!viewing && <div className="pe-summary"><div><span className="pe-summary-icon"><InvestmentArtwork/></span><div><span>{props.mode === 'purchase' ? 'Custo da aquisição' : 'Custo da construção'}</span><strong>{props.costLabel}</strong></div></div><div><span className="pe-summary-icon pe-growth"><InvestmentArtwork growth/></span><div><span>Novo aluguel</span><strong>{props.newRentLabel}</strong></div></div></div>}
+      {!viewing && <div className={`pe-summary${props.balance ? " pe-summary-with-balance" : ""}`}><div><span className="pe-summary-icon"><InvestmentArtwork/></span><div><span>{props.mode === 'purchase' ? 'Custo da aquisição' : 'Custo da construção'}</span><strong>{props.costLabel}</strong></div></div><div><span className="pe-summary-icon pe-growth"><InvestmentArtwork growth/></span><div><span>Novo aluguel</span><strong>{props.newRentLabel}</strong></div></div>{props.balance && <div className="pe-summary-balance"><span className="pe-summary-icon" aria-hidden="true">💰</span><div><span>Seu saldo</span><strong>{props.balance.label}</strong>{props.balance.note && <small className={props.balance.short ? "pe-balance-short" : undefined}>{props.balance.note}</small>}</div></div>}</div>}
       {props.message && <p className="pe-message" role="status">{props.message}</p>}
       {viewing ? <p className="pe-view-caption">Aluguéis em cada etapa da evolução da propriedade</p> : <button type="button" className="pe-confirm" disabled={disabled} onClick={props.onConfirm}><BuildToolsArtwork/>{props.pending ? 'AGUARDE…' : props.actionLabel}</button>}
     </div>

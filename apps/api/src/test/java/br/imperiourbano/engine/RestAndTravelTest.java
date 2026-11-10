@@ -28,7 +28,6 @@ class RestAndTravelTest {
     private static final int TRAVEL_TILE = 26;
     private static final int TRAVEL_FEE = CATALOG.rules().nationalTravel().fee();
     private static final int TAX_TILE = 21;
-    private static final int TAX = CATALOG.rules().tax().amount();
 
     private final GameEngine engine = new GameEngine(CATALOG);
     private GameState state;
@@ -192,19 +191,21 @@ class RestAndTravelTest {
 
         GameEngine.Result result = run("ana", new RollDice(), 1, 2);
 
-        assertThat(result.events()).last().isEqualTo(new TaxPaid("ana", TAX));
-        assertThat(state.player("ana").credits()).isEqualTo(2500 - TAX);
+        // Sem estados, o patrimônio é o saldo: 10% de 2500.
+        assertThat(result.events()).last().isEqualTo(new TaxPaid("ana", 250));
+        assertThat(state.player("ana").credits()).isEqualTo(2250);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
     @Test
     void taxWithoutBalanceBecomesDebtToTheBank() {
         placeAna(TAX_TILE - 3);
-        state = state.updatePlayer("ana", p -> p.withCredits(TAX - 1));
+        state = state.withProperty(PropertyState.purchased("AC", "ana")).updatePlayer("ana", p -> p.withCredits(5));
+        int tax = engine.equity(state, "ana") / 10;
 
         GameEngine.Result result = run("ana", new RollDice(), 1, 2);
 
-        assertThat(result.events()).last().isEqualTo(new DebtIncurred("ana", null, TAX, true));
+        assertThat(result.events()).last().isEqualTo(new DebtIncurred("ana", null, tax, true));
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_DEBT_RESOLUTION);
     }
 

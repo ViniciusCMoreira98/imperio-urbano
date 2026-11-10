@@ -108,7 +108,8 @@ export interface RulesConfig {
   /** Viagem Nacional (D3): taxa para viajar a qualquer estado na jogada seguinte. */
   nationalTravel: { fee: number };
   /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida. */
-  tax: { amount: number };
+  /** Taxa: este percentual do patrimônio de quem para na casa, arredondado para baixo (10/11/2026). */
+  tax: { equityPercent: number };
   /** Venda ao banco para pagar dívida: estado inteiro (terreno + construções) por este percentual. */
   debtSale: { refundPercent: number };
   /**

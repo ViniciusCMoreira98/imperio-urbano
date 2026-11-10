@@ -7,6 +7,7 @@ import br.imperiourbano.engine.GameEvent.GameStarted;
 import br.imperiourbano.engine.GameEvent.StartingPlayer;
 import br.imperiourbano.engine.GameState;
 import br.imperiourbano.engine.GameStatus;
+import br.imperiourbano.game.Bots;
 import br.imperiourbano.game.GameUpdated;
 import br.imperiourbano.identity.GuestPrincipal;
 import br.imperiourbano.persistence.GameInfo;
@@ -83,6 +84,35 @@ public class LobbyService {
         CharacterPreferences.Character preferred = characters.of(player.playerId());
         members.save(new LobbyMemberRecord(gameId, player.playerId(), player.nickname(), 0,
                 preferred.avatarId(), seatColor(preferred, EnumSet.allOf(PawnColor.class))));
+        return view(gameId);
+    }
+
+    /**
+     * Partida contra bots (pedido do usuário, 10/11/2026): começa na hora, sem sala de espera, com o jogador
+     * no primeiro assento e de 1 a 3 bots. É privada e sem aposta: não cobra nem paga moedas, nem conta vitória.
+     */
+    @Transactional
+    public LobbyView createVsBots(GuestPrincipal player, GameMode mode, int botCount) {
+        int maxBots = Math.min(Bots.IDS.size(), maxPlayers - 1);
+        if (botCount < 1 || botCount > maxBots) {
+            throw new LobbyException(HttpStatus.BAD_REQUEST, "Escolha de 1 a %d bots.".formatted(maxBots));
+        }
+        String gameId = UUID.randomUUID().toString();
+        store.createGame(gameId, newInviteCode(), mode, player.playerId(), 0, false);
+        CharacterPreferences.Character preferred = characters.of(player.playerId());
+        EnumSet<PawnColor> free = EnumSet.allOf(PawnColor.class);
+        PawnColor mine = seatColor(preferred, free);
+        free.remove(mine);
+        members.save(new LobbyMemberRecord(gameId, player.playerId(), player.nickname(), 0, preferred.avatarId(), mine));
+        for (int i = 0; i < botCount; i++) {
+            String botId = Bots.IDS.get(i);
+            CharacterPreferences.Character look = characters.of(botId);
+            PawnColor color = seatColor(look, free);
+            free.remove(color);
+            members.save(new LobbyMemberRecord(gameId, botId, Bots.nickname(botId), i + 1, look.avatarId(), color));
+        }
+        members.flush();
+        begin(lockGame(gameId), members.findByGameIdOrderBySeatAsc(gameId));
         return view(gameId);
     }
 

@@ -24,6 +24,9 @@ class LobbyController {
     record CreateGameRequest(GameMode mode, Integer stake, Boolean publicRoom) {
     }
 
+    record BotGameRequest(GameMode mode, Integer bots) {
+    }
+
     record JoinRequest(String inviteCode) {
     }
 
@@ -46,6 +49,15 @@ class LobbyController {
         Integer stake = request == null ? null : request.stake();
         boolean publicRoom = request == null || request.publicRoom() == null || request.publicRoom();
         return lobby.create(player, mode, stake == null ? lobby.lowestStake() : stake, publicRoom);
+    }
+
+    /** Partida contra bots: começa na hora, sem aposta (10/11/2026). */
+    @PostMapping("/bots")
+    @ResponseStatus(HttpStatus.CREATED)
+    LobbyView createVsBots(@AuthenticationPrincipal GuestPrincipal player, @RequestBody(required = false) BotGameRequest request) {
+        GameMode mode = request == null || request.mode() == null ? GameMode.CLASSIC : request.mode();
+        int bots = request == null || request.bots() == null ? 1 : request.bots();
+        return lobby.createVsBots(player, mode, bots);
     }
 
     @PostMapping("/join")
