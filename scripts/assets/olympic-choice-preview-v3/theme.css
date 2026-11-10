@@ -1,0 +1,15 @@
+@import url('../olympic-choice-preview-v2/theme.css');
+/* Moldura ilustrada de louros e flora brasileira, com papel marfim no centro. */
+.dialog,.center-layout .dialog{background:none;border-color:transparent;border-radius:6px;overflow:hidden;box-shadow:0 2px 3px #071d3330}
+.dialog:before{content:'';position:absolute;inset:-1px;z-index:-1;border:1px solid transparent;border-image-source:url('/assets/olympic-host/selection-v3/frame.webp');border-image-slice:174 fill;border-image-width:18px;border-image-repeat:stretch;pointer-events:none}
+.intro:before,.intro:after,.dialog:after{display:none}
+.intro,.center-layout .intro{display:flex;align-items:center;justify-content:center;gap:10px}
+.center-layout .intro{min-height:42px}
+.dialog h1,.center-layout h1{color:#07553b;text-shadow:0 1px #fff9}
+.dialog .eyebrow{color:#5a792d}
+.dialog .emblem{flex-shrink:0;filter:drop-shadow(0 1px 1px #718b5a66)}
+.dialog .instruction{background:none;border-color:transparent}
+.dialog .skip{background:#fff8df}
+@media(min-height:501px){.art-only .dialog:before{border-image-width:30px}.art-only .intro{padding:4px 12px}}
+@media(max-height:500px){.intro,.center-layout .intro{gap:7px}.center-layout .intro{min-height:26px}.dialog,.center-layout .dialog{box-shadow:0 1px 2px #071d3330}}
+@media(max-width:700px) and (max-height:500px){.intro,.center-layout .intro{gap:6px}.center-layout .intro{min-height:20px}.dialog:before{border-image-width:15px}}

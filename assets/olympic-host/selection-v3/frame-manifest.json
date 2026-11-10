@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-10",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/olympic-host/selection-v3/frame-source.png",
+  "file": "assets/olympic-host/selection-v3/frame.webp",
+  "sourceWidth": 1536,
+  "sourceHeight": 1024,
+  "width": 1024,
+  "height": 683,
+  "bytes": 147960,
+  "sha256": "11ad8ec423ab7eaab1f5681d360b9e8f4eb4e8c6c87a6e7302b69b83af575cf1",
+  "sourceSha256": "76ac7f5718050297a16419998821d7e95769244dd4b11bdb1f406fadcdd7b603",
+  "nineSlice": 174,
+  "cornerDisplayPixels": {
+    "standard": 18,
+    "small": 15,
+    "artOnly": 30
+  },
+  "meshyCredits": 0,
+  "integrated": false
+}

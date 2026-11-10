@@ -25,6 +25,40 @@ Atendido o pedido da revisão adversa, na claude/engenharia:
 
 Fiquem à vontade para trazer a lista para dentro da arte do painel (por exemplo, no quadro do proprietário). Basta receber `tileOccupants` por prop. A oclusão dos modelos no tabuleiro continua não resolvida, como vocês anotaram.
 
+## Publicação dos kits de seleção — 10/11/2026
+
+O usuário autorizou commit na develop_arte_3d e integração à develop de toda a entrega dos modais de Aeroporto e Olimpíadas: emblemas, molduras/fundos ilustrados, fontes, prompts, versões anteriores, protótipos, capturas, QA e orientações. A apresentação vigente é a revisão 3 de cada modal. Os registros de “sem commit/merge” nas etapas abaixo descrevem a situação na entrega inicial, anterior a esta autorização. Validação final: treze capturas da revisão 3 sem erros/interseção com estados e hashes dos assets conferidos. Esta publicação entrega os kits; a integração funcional ao BoardChoicePrompt continua pendente para o Claude. A branch do tabuleiro V2 permanece separada.
+
+## Assets ilustrados para os dois modais de seleção — 10/11/2026
+
+O usuário pediu assets próprios para melhorar o acabamento. Criadas duas imagens originais com image_gen integrado: moldura/fundo de aviação (asas douradas, folhagem, rebites, papel azul-claro e pontilhado) e de sede olímpica (louros, flora brasileira, pista e papel marfim). Kits mais recentes: assets/airport/destination-v3/ e assets/olympic-host/selection-v3/. Fontes PNG, WebPs, prompts integrais, hashes e parâmetros próprios em cada kit. Emblemas anteriores reutilizados. Zero créditos Meshy.
+
+Protótipos em scripts/assets/airport-choice-preview-v3/ e olympic-choice-preview-v3/: molduras raster com nove partes, cantos preservados sem deformar, trilhos retos e papel central adaptáveis; texto/controladores separados. Não ampliar o painel para acomodar a ornamentação. Treze capturas, onze composições de tabuleiro sem interseção com os 26 estados (margem 3 px), sem transbordamento/erro de página, em 800×360/667×280 antes e depois da seleção. Flag --illustrated no roteiro compartilhado, combinada com --airport para viagem. Assets de modais para a V1; não correspondem a outra versão do tabuleiro. Arte/protótipo, ainda sem substituir BoardChoicePrompt; contratos de fluxo anteriores preservados. Sem commit/merge nesta entrega.
+
+## Personalização dos modais de Aeroporto e Olimpíadas — 10/11/2026
+
+Atendido pedido de dar identidade própria aos dois painéis. Arte de apresentação mais recente em assets/airport/destination-v2/ (cartão de embarque azul/turquesa, separador pontilhado, etiqueta de destino e botão azul) e assets/olympic-host/selection-v2/ (credencial verde-esmeralda/dourada, linhas de pista, etiqueta dourada, botão verde e detalhe nas cinco cores). São revisões dos modais **na V1**, não uma mudança para a branch do tabuleiro V2. Emblemas originais preservados, sem nova geração de imagem ou créditos Meshy.
+
+Fontes HTML/CSS em scripts/assets/airport-choice-preview-v2/ e olympic-choice-preview-v2/. Preservados arquivos da revisão anterior. O roteiro olympic-choice-art-qa.mjs aceita --personalized, combinado com --airport para viagem. Treze capturas no total, incluindo seleção inicial/final em 800×360 e 667×280; onze composições de tabuleiro sem interseção com os 26 estados, com margem de 3 px; sem transbordamento ou erros de página. Não aumentar o painel para acomodar a decoração. Continua arte/protótipo, sem substituir o BoardChoicePrompt real; contratos funcionais anteriores preservados. Sem commit/merge nesta entrega.
+
+## Arte — escolha do destino pelo Aeroporto, 10/11/2026
+
+Criado kit assets/airport/destination-v1/: avião/marcador de destino originais, fonte PNG transparente, WebP 640×640, prompt e manifesto. Composição no mesmo padrão do modal olímpico: painel no miolo, sem cobrir estados; instrução “Toque no estado de destino”, Viajar bloqueado até selecionar, nome/sigla na confirmação e custo separado. Alternativa Rolar dados preserva o fluxo atual, sem criar comando de cancelar viagem. Protótipo em scripts/assets/airport-choice-preview/index.html, ainda sem substituir BoardChoicePrompt.
+
+Roteiro compartilhado olympic-choice-art-qa.mjs agora aceita --airport. Seis capturas, incluindo selecionado em 800×360 e 667×280; cinco composições no tabuleiro sem interseção com os polígonos dos 26 estados, margem de 3 px, sem texto transbordando ou erros de página. Capturas são composição estática, não integração funcional. Contrato detalhado no README do kit e nas orientações do Claude. Sem créditos Meshy, mudanças em câmera/modelos ou commit/merge.
+
+## Correção da escolha olímpica: central e sem cobrir estados — 09/11/2026
+
+Validação final: sete capturas, incluindo estado escolhido em 667×280. Nas seis composições sobre o tabuleiro, painel/moldura com margem de 3 px sem interseção com nenhum dos 26 estados; sem transbordamento de texto ou erro de página. O estudo isolado serve apenas ao acabamento. Preservados emblema, regras e modelos; sem nova geração de imagem ou créditos Meshy.
+
+O usuário reforçou que a arte não pode cobrir os estados e preferiu manter o painel no meio do tabuleiro. Proposta superior/lateral descartada. Refinado o protótipo olympic-choice-preview: painel central compacto, dentro do miolo; ao escolher, o nome/sigla substitui a instrução para não aumentar a área ocupada. Não transplantar o tamanho do estudo isolado modal-art.png para a partida. O QA passa a comparar os limites do painel com os polígonos completos dos 26 estados, com margem adicional, nas capturas correspondentes. A integração real deve usar o miolo projetado e preservar nomes, artes, aluguéis e toda a superfície de toque das propriedades. Arte/protótipo apenas, ainda sem alterar BoardChoicePrompt.
+
+## Arte — escolha do estado-sede das Olimpíadas, 09/11/2026
+
+Criado kit em assets/olympic-host/selection-v1/: emblema original de estádio/aros olímpicos, fonte PNG transparente, WebP 640×640, prompt e manifesto. Protótipo do modal em scripts/assets/olympic-choice-preview/index.html: marfim, verde e dourado; instrução explícita para tocar no tabuleiro, confirmação bloqueada antes da seleção e nome/sigla depois. Versão móvel compacta sem escurecer a partida. São seis prévias (isolada, computador, 800×360, 667×280, selecionado e evento), verificadas pelo roteiro olympic-choice-art-qa.mjs, sem transbordamento ou erros de página.
+
+Somente arte/protótipo: BoardChoicePrompt ainda não foi substituído. Capturas usam fundo estático da V1 e não representam integração funcional. Textos e controles separados do bitmap. Fluxo normal usa estados próprios e custo de choice.fee; evento usa seus alvos próprios, sem taxa e sem recusa. Contrato completo no README do kit e nas orientações do Claude. Zero créditos Meshy; nenhuma alteração em câmera, tabuleiro ou personagens. Sem commit/merge nesta entrega.
+
 ## V1 — revisão de hotéis, ocupação e valores altos, 09/11/2026
 
 Criado scripts/assets/v1-adverse-qa.mjs e evidências em assets/3d/reviews/v1-adverse/. São nove capturas do GameScreen real com snapshots simulados: hotéis nos 26 estados, Olimpíadas ×10, Apagão, Taxa R$ 60.000, saldos até R$ 1.234.567 e quatro jogadores juntos em MA, RN e SP. Resoluções 1280×720, 800×360 e 667×280. O limite oficial atual é quatro jogadores; a fixture histórica de seis é apenas estresse fora da capacidade atual.

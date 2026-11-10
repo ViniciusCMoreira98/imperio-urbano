@@ -1,0 +1,205 @@
+{
+  "date": "2026-11-10",
+  "scope": "Art prototype on static V1 captures, not integrated gameplay",
+  "checks": [
+    {
+      "width": 1000,
+      "height": 640,
+      "query": "?art",
+      "name": "modal-art",
+      "bounds": {
+        "left": 168.5,
+        "top": 125,
+        "right": 831.5,
+        "bottom": 515
+      },
+      "panels": [
+        {
+          "left": 168.5,
+          "top": 125,
+          "right": 831.5,
+          "bottom": 515
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "query": "",
+      "name": "board-desktop",
+      "bounds": {
+        "left": 505.59375,
+        "top": 310.671875,
+        "right": 825.59375,
+        "bottom": 466.921875
+      },
+      "panels": [
+        {
+          "left": 505.59375,
+          "top": 310.671875,
+          "right": 825.59375,
+          "bottom": 466.921875
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000962873700926024,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "query": "",
+      "name": "board-mobile",
+      "bounds": {
+        "left": 308,
+        "top": 136.5703125,
+        "right": 524,
+        "bottom": 252.2109375
+      },
+      "panels": [
+        {
+          "left": 308,
+          "top": 136.5703125,
+          "right": 524,
+          "bottom": 252.2109375
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000868170025586489,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "query": "",
+      "name": "board-small",
+      "bounds": {
+        "left": 260.15625,
+        "top": 83.03125,
+        "right": 420.15625,
+        "bottom": 202.5625
+      },
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 83.03125,
+          "right": 420.15625,
+          "bottom": 202.5625
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "query": "?selected",
+      "name": "selected-mobile",
+      "bounds": {
+        "left": 308,
+        "top": 133.890625,
+        "right": 524,
+        "bottom": 254.890625
+      },
+      "panels": [
+        {
+          "left": 308,
+          "top": 133.890625,
+          "right": 524,
+          "bottom": 254.890625
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": true,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000868170025586489,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "query": "?selected",
+      "name": "selected-small",
+      "bounds": {
+        "left": 260.15625,
+        "top": 86.625,
+        "right": 420.15625,
+        "bottom": 198.96875
+      },
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 86.625,
+          "right": 420.15625,
+          "bottom": 198.96875
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": true,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "query": "?event",
+      "name": "event-small",
+      "bounds": {
+        "left": 260.15625,
+        "top": 84.359375,
+        "right": 420.15625,
+        "bottom": 201.234375
+      },
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 84.359375,
+          "right": 420.15625,
+          "bottom": 201.234375
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": false,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    }
+  ],
+  "errors": []
+}
