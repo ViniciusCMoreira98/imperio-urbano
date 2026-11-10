@@ -1,5 +1,14 @@
 # Orientações e pendências para o Codex
 
+## V1 — artes do Aeroporto e das Olimpíadas integradas, 10/11/2026
+
+Na claude/engenharia, as escolhas de viagem (AWAITING_TRAVEL_DESTINATION), de sede normal (AWAITING_OLYMPICS_HOST) e de sede pela carta "Escolha da sede" usam o novo `apps/web/src/hud/ChoiceArtCard.tsx` + `choiceArt.css`. Ele aplica a revisão 3: moldura em nove partes (`border-image-slice:174 fill`, 18 px / 15 px na menor tela) e emblemas da revisão 1, com cópias em `apps/web/src/hud/art/{airport,olympic}-{frame,emblem}.webp`. Incêndio, Apagão e venda para dívida continuam no cartão antigo.
+
+- O cartão segue no `BoardCenterSlot`, que reduz o conteúdo inteiro quando não cabe no miolo. Conferido em 1280×720, 800×360 e 667×280, antes e depois da seleção, sem cobrir estados.
+- Comandos, alvos, custo, prazo, offline e tableBusy não mudaram. "Rolar dados" continua sendo o botão de sempre, abaixo do cartão. Na viagem, o rodapé diz "ou role os dados", e isso some na menor tela.
+- Na menor tela, o título pode quebrar em duas linhas para o emblema e o contador caberem. O contador nativo ganhou fundo escuro sobre o papel.
+- Se quiser ajustar o visual, mexa só em `choiceArt.css` ou nos WebP. Não altere os comandos.
+
 ## V1 — saldo no modal de compra e tamanho único dos personagens, 09/11/2026
 
 Pedidos diretos do usuário, feitos na claude/engenharia:

@@ -1,0 +1,106 @@
+/* Cartão ilustrado da viagem e da sede (ChoiceArtCard), a partir dos protótipos do Codex
+   scripts/assets/{airport,olympic}-choice-preview-v3. A moldura é uma imagem em nove partes
+   (border-image-slice:174 fill): os cantos ficam inteiros e só os trilhos e o papel se adaptam. */
+
+.choice-art {
+  position: relative;
+  isolation: isolate;
+  width: 320px;
+  padding: 14px 16px 12px;
+  border-radius: 6px;
+  color: #173c39;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  box-shadow: 0 2px 3px #071d3330;
+}
+.choice-art::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border: 1px solid transparent;
+  border-image-slice: 174 fill;
+  border-image-width: 18px;
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+.choice-art-airport::before { border-image-source: url('./art/airport-frame.webp'); }
+.choice-art-olympic::before { border-image-source: url('./art/olympic-frame.webp'); }
+
+.choice-art-intro { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 42px; }
+.choice-art-emblem { width: 42px; height: 42px; flex-shrink: 0; object-fit: contain; }
+.choice-art h2 { margin: 0; white-space: nowrap; font-size: 20px; line-height: 1.05; font-weight: 900; letter-spacing: -0.4px; text-shadow: 0 1px #fff9; }
+.choice-art-airport h2 { color: #074c68; }
+.choice-art-olympic h2 { color: #07553b; }
+.choice-art-airport .choice-art-emblem { filter: drop-shadow(0 1px 1px #567a8366); }
+.choice-art-olympic .choice-art-emblem { filter: drop-shadow(0 1px 1px #718b5a66); }
+
+/* O contador nativo é branco sobre vidro escuro; aqui fica sobre o papel claro. */
+.choice-art-timer { flex-shrink: 0; white-space: nowrap; }
+.choice-art-timer > span:not(.bg-rose-600) { background: #0d4f45; color: #fff; }
+.choice-art-airport .choice-art-timer > span:not(.bg-rose-600) { background: #075573; }
+
+.choice-art-instruction { margin: 9px 0 10px; font-size: 13px; line-height: 1.25; font-weight: 700; }
+.choice-art-airport .choice-art-instruction { color: #214963; }
+.choice-art-olympic .choice-art-instruction { color: #265b47; }
+
+.choice-art-selection {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  margin: 9px 0 10px; font-size: 11px; color: #53635a;
+}
+.choice-art-selection strong {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 4px 6px; border: 1px solid; border-radius: 5px; font-size: 12px;
+}
+.choice-art-airport .choice-art-selection strong { color: #074968; border-color: #66a6bc; background: #e0f0f5; box-shadow: inset 3px 0 #087a9f; }
+.choice-art-olympic .choice-art-selection strong { color: #14563f; border-color: #b69b49; background: linear-gradient(#fff9dc, #eadbab); box-shadow: inset 3px 0 #167052; }
+
+.choice-art-invalid { margin: -4px 0 8px; font-size: 11px; font-weight: 700; color: #a3172b; }
+
+.choice-art-actions { display: grid; grid-template-columns: 1fr; gap: 9px; }
+.choice-art-olympic .choice-art-actions:has(.choice-art-skip) { grid-template-columns: 1fr auto; }
+.choice-art-confirm, .choice-art-skip {
+  min-height: 32px; padding: 7px; border: 1px solid; border-radius: 10px;
+  font: inherit; font-size: 12px; font-weight: 800; cursor: pointer;
+}
+.choice-art-confirm:disabled, .choice-art-skip:disabled { cursor: not-allowed; }
+.choice-art-confirm:disabled { background: #e4dfd0; border-color: #c4c0b2; box-shadow: inset 0 1px #fff; color: #7b7a70; }
+.choice-art-airport .choice-art-confirm:not(:disabled) { color: #fffaf0; background: linear-gradient(#138db1, #075573); border-color: #064263; box-shadow: inset 0 1px #74ccdf, 0 2px #07394f; text-shadow: 0 1px #05425b; }
+.choice-art-olympic .choice-art-confirm:not(:disabled) { color: #fff7cf; background: linear-gradient(#218d69, #07543b); border-color: #06432e; box-shadow: inset 0 1px #7acba5, 0 2px #063d2c; text-shadow: 0 1px #03452f; }
+.choice-art-skip { padding: 7px 12px; font-size: 11px; color: #536246; background: #fff8df; border-color: #aaa780; }
+
+.choice-art-cost { margin: 7px 0 0; font-size: 10px; color: #6f6a55; }
+.choice-art-airport .choice-art-cost { color: #527184; }
+.choice-art-airport .choice-art-cost b { color: #064d6d; }
+.choice-art-olympic .choice-art-cost b { color: #1a6348; }
+
+/* Celular deitado: o miolo é pequeno; o cartão encolhe sem crescer sobre os estados. */
+@media (max-height: 500px) {
+  .choice-art { width: clamp(184px, 27vw, 224px); padding: 9px 10px 8px; box-shadow: 0 1px 2px #071d3330; }
+  .choice-art-intro { gap: 7px; min-height: 26px; }
+  .choice-art-emblem { width: 26px; height: 26px; }
+  .choice-art h2 { font-size: 14px; letter-spacing: -0.3px; }
+  .choice-art-timer > span { padding: 0 5px; font-size: 10px; }
+  .choice-art-instruction { margin: 7px 0 8px; font-size: 11px; line-height: 1.15; }
+  .choice-art-selection { margin: 6px 0 7px; gap: 4px; font-size: 10px; }
+  .choice-art-selection strong { padding: 3px 5px; font-size: 11px; }
+  .choice-art-invalid { font-size: 10px; margin: -3px 0 6px; }
+  .choice-art-actions { gap: 6px; }
+  .choice-art-confirm, .choice-art-skip { min-height: 28px; padding: 5px 4px; font-size: 10px; }
+  .choice-art-cost { font-size: 9px; margin-top: 6px; }
+}
+@media (max-width: 700px) and (max-height: 500px) {
+  .choice-art { width: 168px; padding: 7px 8px; }
+  .choice-art::before { border-image-width: 15px; }
+  .choice-art-intro { gap: 6px; min-height: 20px; }
+  .choice-art-emblem { width: 20px; height: 20px; }
+  .choice-art h2 { font-size: 12.5px; white-space: normal; min-width: 0; }
+  .choice-art-timer > span { padding: 0 4px; font-size: 9.5px; }
+  .choice-art-cost-extra { display: none; }
+  .choice-art-instruction { font-size: 10.5px; line-height: 1.1; margin: 5px 0; }
+  .choice-art-selection { margin: 5px 0; gap: 2px; }
+  .choice-art-selection strong { padding: 2px 3px; font-size: 10px; }
+  .choice-art-actions { gap: 4px; }
+  .choice-art-confirm, .choice-art-skip { min-height: 26px; padding: 4px 2px; font-size: 10px; }
+  .choice-art-cost { font-size: 8.5px; line-height: 1.1; margin-top: 4px; }
+}

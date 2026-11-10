@@ -8,6 +8,7 @@ import { useTableBusy } from '../store/tableBusy';
 import { useViewStore } from '../store/viewStore';
 import { Button } from '../ui/ui';
 import { Countdown } from './ActionBar';
+import { ChoiceArtCard, hasChoiceArt } from './ChoiceArtCard';
 import { DebtSalePrompt } from './DebtSalePrompt';
 
 export function BoardChoicePrompt({ myId }: { myId: string }) {
@@ -36,6 +37,10 @@ export function BoardChoicePrompt({ myId }: { myId: string }) {
     clearSelection();
     send(command);
   };
+  // Viagem e sede das Olimpíadas: cartão ilustrado (arte do Codex), mesmos comandos.
+  if (hasChoiceArt(choice)) {
+    return <ChoiceArtCard choice={choice} selected={selected} deadline={deadline} offline={offline} onCommand={act} />;
+  }
 
   return (
     // Dentro do miolo do tabuleiro (BoardCenterSlot): as casas destacadas ficam à vista.
