@@ -1,0 +1,22 @@
+/* Credencial da sede: verde-esmeralda, dourado e faixas das cinco cores dos jogos. */
+.dialog,.center-layout .dialog{
+ isolation:isolate;border-color:#d9ae4c;border-radius:13px;
+ background:radial-gradient(ellipse at 100% 100%,#dce9bd88,transparent 55%),repeating-radial-gradient(ellipse at 110% 120%,#fff0 0 13px,#b9c99b1a 14px 15px),linear-gradient(135deg,#fffdf0,#f4ecd2);
+ box-shadow:0 0 0 1px #075b43,0 0 0 3px #e5bd62,0 2px 3px #071d3330;
+}
+.intro{position:relative;isolation:isolate}
+.intro:before{content:'';position:absolute;inset:-9px -9px -5px;z-index:-1;border-radius:10px 10px 0 0;border-bottom:1px solid #e0c16e;background:linear-gradient(120deg,#004b37,#0b7860 70%,#155743)}
+.intro:after{content:'';position:absolute;inset:-7px -7px -3px;border:1px solid #e5c56b55;border-radius:8px 8px 0 0;pointer-events:none;z-index:-1}
+.dialog h1,.center-layout h1{color:#fff2c4;text-shadow:0 1px 1px #003829;letter-spacing:-.3px}
+.dialog .eyebrow{color:#ffe8a4}
+.dialog .emblem{filter:drop-shadow(0 1px 1px #013b2a77)}
+.dialog .instruction{color:#265b47}
+.dialog .selection.chosen .value{border-color:#b69b49;background:linear-gradient(#fff9dc,#eadbab);border-radius:5px;box-shadow:inset 3px 0 #167052}
+.dialog .selection strong{color:#14563f}
+.dialog .confirm:not(:disabled){color:#fff7cf;background:linear-gradient(#218d69,#07543b);border-color:#06432e;box-shadow:inset 0 1px #7acba5,0 2px #063d2c;text-shadow:0 1px #03452f}
+.dialog .confirm:disabled{background:#e7e4d3;border-color:#c6c1a5;color:#8b8975;box-shadow:inset 0 1px #fff}
+.dialog .skip{color:#536246;background:#fffbed;border-color:#aaa780}
+.dialog .cost b{color:#1a6348}
+.dialog:after{content:'';position:absolute;height:2px;bottom:2px;left:28%;right:28%;border-radius:2px;background:linear-gradient(to right,#2386d0 0 20%,#25343a 20% 40%,#db4a53 40% 60%,#e7b927 60% 80%,#2d9566 80%);pointer-events:none}
+@media(max-height:500px){.intro:before{inset:-6px -6px -4px;border-radius:8px 8px 0 0}.intro:after{inset:-4px -4px -2px;border-radius:6px 6px 0 0}.dialog,.center-layout .dialog{border-radius:11px;box-shadow:0 0 0 1px #075b43,0 0 0 2px #e5bd62}}
+@media(max-width:700px) and (max-height:500px){.intro:before{inset:-4px -4px -3px}.intro:after{inset:-2px -2px -1px}.dialog:after{bottom:1px;height:1px}}

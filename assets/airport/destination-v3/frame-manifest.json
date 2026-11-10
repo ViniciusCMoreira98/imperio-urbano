@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-10",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/airport/destination-v3/frame-source.png",
+  "file": "assets/airport/destination-v3/frame.webp",
+  "sourceWidth": 1536,
+  "sourceHeight": 1024,
+  "width": 1024,
+  "height": 683,
+  "bytes": 121286,
+  "sha256": "87dd271c0773717b62587c26b9d6ae160a755c3ccd214387035804ad18ffd28f",
+  "sourceSha256": "83869af546f1babce8266d4370b7d84e17ee96b1bf260de4551d51196c00b9de",
+  "nineSlice": 174,
+  "cornerDisplayPixels": {
+    "standard": 18,
+    "small": 15,
+    "artOnly": 30
+  },
+  "meshyCredits": 0,
+  "integrated": false
+}

@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-09",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/olympic-host/selection-v1/emblem-source.png",
+  "file": "assets/olympic-host/selection-v1/emblem.webp",
+  "sourceWidth": 1254,
+  "sourceHeight": 1254,
+  "width": 640,
+  "height": 640,
+  "transparent": 149269,
+  "solid": 241511,
+  "bytes": 167458,
+  "sha256": "455c532d837bc69d2245a9978c9a74c701ea3f1c67f58bf105d94193593b4da9",
+  "sourceSha256": "fd6259580d19655082d24740797f36e2b3d869fc66d2053b8e7616c1f059d9f8",
+  "meshyCredits": 0,
+  "integrated": false,
+  "encoder": "Chromium WebP 92; aspect ratio and alpha preserved"
+}

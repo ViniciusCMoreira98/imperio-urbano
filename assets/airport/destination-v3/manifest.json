@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-10",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/airport/destination-v1/emblem-source.png",
+  "file": "assets/airport/destination-v1/emblem.webp",
+  "sourceWidth": 1254,
+  "sourceHeight": 1254,
+  "width": 640,
+  "height": 640,
+  "transparent": 148809,
+  "solid": 251932,
+  "bytes": 99180,
+  "sha256": "b788b43465474baf5f96eb76c23265fe18db3662bb56b5755855a506df9fda45",
+  "sourceSha256": "bae70007745627d4f8c186d8f7544e5fe2f208e051a7f1e16dbf059b30021d1e",
+  "meshyCredits": 0,
+  "integrated": false,
+  "encoder": "Chromium WebP 92; aspect ratio and alpha preserved"
+}
