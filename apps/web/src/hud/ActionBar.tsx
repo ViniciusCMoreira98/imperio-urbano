@@ -74,8 +74,13 @@ export function ActionBar({ myId }: { myId: string }) {
         )}
       </div>
 
+      {/* Por cima, fora do fluxo: uma mensagem larga não pode alargar a coluna da barra (ela é medida
+          para reservar o espaço do tabuleiro, que encolhia no celular). */}
       {rejection && (
-        <p role="alert" className="rounded-lg bg-rose-900/85 px-3 py-1 text-sm text-rose-100">
+        <p
+          role="alert"
+          className="pointer-events-none absolute bottom-full right-0 z-40 mb-2 w-max max-w-[min(24rem,calc(100vw-1rem))] rounded-lg bg-rose-900/90 px-3 py-1 text-right text-sm text-rose-100 shadow-lg"
+        >
           {rejection}
         </p>
       )}
@@ -101,7 +106,7 @@ export function RollButton({ myId }: { myId: string }) {
   return (
     <Button
       variant="roll"
-      className="board-roll-button px-8 py-3 text-lg font-black tracking-wide shadow-2xl sm:text-xl"
+      className="board-roll-button font-black tracking-wide"
       disabled={offline}
       onClick={() => send({ type: 'ROLL_DICE' })}
     >

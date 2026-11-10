@@ -15,6 +15,7 @@ import {
   rentAt,
   viewDecision,
 } from '../game/propertyDecision';
+import { tileOccupants } from '../game/occupants';
 import { playerOf } from '../game/rules';
 import { PAWN_COLORS } from '../game/presentation';
 import { PlayerPortrait } from './AvatarPortrait';
@@ -122,6 +123,8 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
               <Countdown deadline={deadline} />
             </div>
           )}
+          {/* No alto, onde a consulta não tem prazo: no celular deitado embaixo do painel ficava fora da tela. */}
+          {!decide && <TileOccupants tileIndex={decision.tileIndex} myId={myId} />}
           <PropertyEvolutionPanel
             stateCode={definition.abbreviation}
             stateName={definition.name}
@@ -143,6 +146,30 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Quem está parado na casa, só na consulta (09/11/2026): em casas estreitas os personagens se escondem
+ * uns atrás dos outros. Fora do painel do Codex, que pode trazer a lista para dentro da arte depois.
+ */
+function TileOccupants({ tileIndex, myId }: { tileIndex: number; myId: string }) {
+  const snapshot = useGameStore((s) => s.snapshot);
+  const occupants = snapshot ? tileOccupants(snapshot, tileIndex) : [];
+  if (occupants.length === 0) return null;
+  return (
+    <div className="tile-occupants" role="status" aria-label="Jogadores nesta casa">
+      <span className="tile-occupants-label">Nesta casa:</span>
+      <ul>
+        {occupants.map((p) => (
+          <li key={p.id}>
+            <span className="tile-occupants-dot" style={{ background: PAWN_COLORS[p.pawnColor].hex }} aria-hidden="true" />
+            {p.nickname}
+            {p.id === myId && <small> (você)</small>}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

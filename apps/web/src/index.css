@@ -204,3 +204,16 @@ body {
     com Menu, Configurações e a barra de ação. */
  .game-hud-history { left:6px;right:auto;bottom:6px;align-items:flex-start; }
 }
+/* Botão de rolar no miolo do tabuleiro (09/11/2026: estava grande demais). Regra própria: as classes
+   utilitárias de tamanho disputavam com as do componente Button. */
+.iu-button.board-roll-button { font-size:14px;line-height:1.1;padding:7px 16px;border-radius:10px;letter-spacing:.02em; }
+@media (max-height:500px) { .iu-button.board-roll-button { font-size:11px;padding:5px 11px;border-radius:8px; } }
+
+/* Ocupantes da casa na consulta da propriedade (09/11/2026): embaixo do painel, fora da arte do Codex. */
+.tile-occupants { position:absolute; z-index:10; bottom:calc(100% + 4px); left:24px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 10px; width:max-content; max-width:calc(100% - 110px); padding:4px 12px; border:2px solid #16b8ff; border-radius:999px; background:#031c44e6; color:#fff; font-size:14px; font-weight:700; box-shadow:0 4px 10px #0008; }
+.tile-occupants-label { color:#a3cce6; font-weight:600; }
+.tile-occupants ul { display:flex; flex-wrap:wrap; justify-content:center; gap:4px 12px; margin:0; padding:0; list-style:none; }
+.tile-occupants li { display:flex; align-items:center; gap:6px; white-space:nowrap; }
+.tile-occupants small { color:#a3cce6; font-weight:600; }
+.tile-occupants-dot { width:14px; height:14px; border-radius:50%; border:2px solid #fff; box-shadow:0 1px 3px #000a; flex-shrink:0; }
+@media (max-height:500px) { .tile-occupants { font-size:12px; padding:3px 10px; left:12px; max-width:calc(100% - 60px); } .tile-occupants-dot { width:11px; height:11px; } }

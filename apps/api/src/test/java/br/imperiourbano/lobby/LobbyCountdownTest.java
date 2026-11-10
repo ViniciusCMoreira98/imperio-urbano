@@ -88,6 +88,27 @@ class LobbyCountdownTest {
     }
 
     @Test
+    void roomsWaitingMoreThanFiveMinutesAreClosedButNotTheOnesAboutToStart() {
+        GuestPrincipal ana = guest("Ana");
+        LobbyView stale = lobby.create(ana, GameMode.CLASSIC, 200, true);
+        LobbyView fresh = lobby.create(guest("Caio"), GameMode.CLASSIC, 200, true);
+        LobbyView starting = lobby.create(guest("Duda"), GameMode.CLASSIC, 200, true);
+        lobby.joinPublic(guest("Edu"), starting.gameId());
+        jdbc.update("update games set created_at = now() - interval '6 minutes' where id in (?, ?)",
+                stale.gameId(), starting.gameId());
+
+        assertThat(lobby.closeStaleLobbies()).isGreaterThanOrEqualTo(1);
+
+        assertThat(jdbc.queryForObject("select count(*) from games where id = ?", Integer.class, stale.gameId())).isZero();
+        assertThat(jdbc.queryForObject("select count(*) from game_players where game_id = ?", Integer.class, stale.gameId())).isZero();
+        assertThat(jdbc.queryForObject("select count(*) from games where id = ?", Integer.class, fresh.gameId())).isOne();
+        // Contagem ligada (2 jogadores): começa em instantes, não é fechada.
+        assertThat(jdbc.queryForObject("select count(*) from games where id = ?", Integer.class, starting.gameId())).isOne();
+        // Nada foi cobrado: a aposta só sai no início.
+        assertThat(wallet.coins(ana.playerId())).isEqualTo(1000);
+    }
+
+    @Test
     void whoCanNoLongerPayLeavesAndWithOnePlayerLeftTheRoomKeepsWaiting() {
         GuestPrincipal ana = guest("Ana");
         LobbyView room = lobby.create(ana, GameMode.CLASSIC, 1000, true);

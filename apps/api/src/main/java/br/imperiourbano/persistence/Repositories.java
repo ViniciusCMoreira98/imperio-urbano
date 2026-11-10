@@ -49,6 +49,14 @@ interface GameRecordRepository extends JpaRepository<GameRecord, String> {
     @Query("delete from GameRecord g where g.id = :id and g.status = 'LOBBY'")
     int deleteLobby(@Param("id") String id);
 
+    /**
+     * Salas paradas: criadas antes de {@code cutoff}, ainda sem começar e sem contagem do início automático
+     * ligada (quem acabou de completar 2 jogadores não perde a sala). Assentos saem junto (ON DELETE CASCADE).
+     */
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from GameRecord g where g.status = 'LOBBY' and g.startsAt is null and g.createdAt < :cutoff")
+    int deleteStaleLobbies(@Param("cutoff") Instant cutoff);
+
     /** Concorrência otimista: só avança se a versão no banco ainda for a esperada. */
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("update GameRecord g set g.version = :newVersion, g.status = :status, g.updatedAt = :now"

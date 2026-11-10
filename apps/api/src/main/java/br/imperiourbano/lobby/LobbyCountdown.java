@@ -21,6 +21,9 @@ class LobbyCountdown {
 
     private static final Logger log = LoggerFactory.getLogger(LobbyCountdown.class);
     private static final long TICK_MS = 500;
+    /** 20 voltas de 0,5 s: as salas paradas são conferidas a cada 10 s. */
+    private static final int STALE_EVERY_TICKS = 20;
+    private int ticks;
 
     private final LobbyService lobby;
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
@@ -49,6 +52,15 @@ class LobbyCountdown {
             }
         } catch (RuntimeException e) {
             log.warn("Falha ao procurar salas para iniciar", e);
+        }
+        // Salas paradas há mais de 5 minutos: conferidas a cada 10 s, sem pesar no relógio do início.
+        if (++ticks % STALE_EVERY_TICKS == 0) {
+            try {
+                int closed = lobby.closeStaleLobbies();
+                if (closed > 0) log.info("{} sala(s) parada(s) fechada(s)", closed);
+            } catch (RuntimeException e) {
+                log.warn("Falha ao fechar salas paradas", e);
+            }
         }
     }
 

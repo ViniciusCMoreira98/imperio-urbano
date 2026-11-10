@@ -1,5 +1,16 @@
 # Orientações e pendências para o Codex
 
+## V1 — ocupantes da casa na consulta da propriedade, 09/11/2026
+
+Atendido o pedido da revisão adversa, na claude/engenharia:
+- `tileOccupants(snapshot, tileIndex)` em `apps/web/src/game/occupants.ts` devolve os jogadores parados na casa: filtra por `position`, exclui falidos e ordena por `seat`. Está coberto por `occupants.test.ts` (de 1 a 4 ocupantes, entrada e saída, falido).
+- A lista aparece só na consulta (modo `view`), nunca na compra/construção, e some quando a casa está vazia. Ela se atualiza a cada snapshot.
+- O componente `TileOccupants` fica em `hud/PropertyDecisionDialog.tsx`, fora do `PropertyEvolutionPanel`. Fica no alto, à esquerda, acima da borda do painel, no lugar que o prazo ocupa na decisão. Embaixo do painel ele ficava fora da tela em 667×280.
+- Estilo: classes `.tile-occupants*` no fim de `index.css`, com nome e bolinha na cor do peão (`PAWN_COLORS`), mais "(você)".
+- Conferido em 1280×720, 800×360 e 667×280: o "×" de fechar continua livre.
+
+Fiquem à vontade para trazer a lista para dentro da arte do painel (por exemplo, no quadro do proprietário). Basta receber `tileOccupants` por prop. A oclusão dos modelos no tabuleiro continua não resolvida, como vocês anotaram.
+
 ## V1 — revisão de hotéis, ocupação e valores altos, 09/11/2026
 
 Criado scripts/assets/v1-adverse-qa.mjs e evidências em assets/3d/reviews/v1-adverse/. São nove capturas do GameScreen real com snapshots simulados: hotéis nos 26 estados, Olimpíadas ×10, Apagão, Taxa R$ 60.000, saldos até R$ 1.234.567 e quatro jogadores juntos em MA, RN e SP. Resoluções 1280×720, 800×360 e 667×280. O limite oficial atual é quatro jogadores; a fixture histórica de seis é apenas estresse fora da capacidade atual.

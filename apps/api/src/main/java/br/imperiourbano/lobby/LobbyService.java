@@ -42,6 +42,8 @@ public class LobbyService {
     private static final int PUBLIC_LIST_LIMIT = 50;
     /** Contagem do início automático, a partir de 2 jogadores na sala (pedido do usuário, 07/11/2026). */
     public static final Duration AUTO_START = Duration.ofSeconds(10);
+    /** Sala que não começou em 5 minutos desde a criação é fechada (pedido do usuário, 09/11/2026). */
+    public static final Duration STALE_LOBBY = Duration.ofMinutes(5);
 
     private final GameStore store;
     private final LobbyMemberRepository members;
@@ -201,6 +203,16 @@ public class LobbyService {
         } else if (seated < minPlayers && running) {
             store.setStartsAt(gameId, null);
         }
+    }
+
+    /**
+     * Fecha salas que não começaram em {@link #STALE_LOBBY} desde a criação (pedido do usuário, 09/11/2026).
+     * A aposta só é cobrada no início, então não há nada a devolver; quem ainda estiver na sala volta ao menu
+     * (a sala passa a responder "não encontrada").
+     */
+    @Transactional
+    public int closeStaleLobbies() {
+        return store.deleteStaleLobbies(Instant.now().minus(STALE_LOBBY));
     }
 
     /** Salas com a contagem vencida (o relógio da sala chama {@link #autoStart} para cada uma). */

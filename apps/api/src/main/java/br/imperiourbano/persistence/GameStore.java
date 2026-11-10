@@ -98,6 +98,12 @@ public class GameStore {
         return games.findDueLobbies(now);
     }
 
+    /** Fecha as salas paradas criadas antes de {@code cutoff}; devolve quantas fechou. */
+    @Transactional
+    public int deleteStaleLobbies(java.time.Instant cutoff) {
+        return games.deleteStaleLobbies(cutoff);
+    }
+
     /** Apaga uma sala que ainda não começou (ficou vazia). */
     @Transactional
     public void deleteLobby(String gameId) {

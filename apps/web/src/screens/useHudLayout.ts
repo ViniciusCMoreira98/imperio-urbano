@@ -10,6 +10,8 @@ const MOBILE_PAWN_HEADROOM = 0.07;
 const SEAL_OVERHANG = 16;
 /** Encolhimento menor que isso mantém a reserva anterior (evita o tabuleiro pulando). */
 const SHRINK_TOLERANCE = 32;
+/** Celular deitado: cada lateral reserva no máximo esta fração da largura para o HUD. */
+const MAX_SIDE_SHARE = 0.28;
 
 /**
  * Mede o HUD da partida para nada se sobrepor:
@@ -70,7 +72,9 @@ export function useHudLayout(
           const history = root.querySelector<HTMLElement>('.game-hud-history')?.getBoundingClientRect();
           const leftEdge = Math.max(playersBox.right, history && history.width > 0 ? history.right : box.left);
           const rightEdge = Math.min(headerBox?.left ?? box.right, actionsBox.left,box.right-drawerWidth);
-          const side = Math.ceil(Math.max(leftEdge - box.left, box.right - rightEdge) + GAP);
+          // Teto: algo fora do lugar na coluna (uma mensagem larga empurrando a barra para o meio) não pode
+          // espremer o tabuleiro num canto (09/11/2026: ficou minúsculo no celular).
+          const side = Math.min(Math.ceil(box.width * MAX_SIDE_SHARE), Math.ceil(Math.max(leftEdge - box.left, box.right - rightEdge) + GAP));
           next = { top: Math.ceil(GAP + box.height * MOBILE_PAWN_HEADROOM), bottom: GAP, left: side, right: side };
         } else {
           next = { top: Math.ceil(playersBox.bottom - box.top + GAP + box.height * PAWN_HEADROOM), bottom,...(drawerWidth?{right:Math.ceil(drawerWidth+GAP)}:{}) };

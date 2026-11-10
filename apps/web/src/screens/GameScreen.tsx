@@ -50,7 +50,10 @@ export function GameScreen() {
       onStatus: store.setConnection,
     });
     store.setSender((command) => {
-      const version = useGameStore.getState().snapshot?.version ?? 0;
+      // A versão mais nova que o cliente conhece: os eventos chegam um instante antes do snapshot, e um
+      // clique nesse intervalo ia com a versão antiga ("A partida mudou; tente de novo").
+      const { snapshot: current, eventsVersion } = useGameStore.getState();
+      const version = Math.max(current?.version ?? 0, eventsVersion ?? 0);
       return connectionToGame.send(command, version);
     });
     connectionToGame.connect();
