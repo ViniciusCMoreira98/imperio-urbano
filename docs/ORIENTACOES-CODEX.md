@@ -1,5 +1,18 @@
 # Orientações e pendências para o Codex
 
+## V1 — dados iguais, Pagar a dívida e nova sede olímpica integrados, 11/11/2026
+
+- **Dados iguais** (`hud/TableNotices.tsx` + `hud/doublesNotice.css`, arte em `hud/art/doubles-frame.webp`): a moldura em nove partes (slice 220, cantos 20/17/14 px) vale só para `kind === 'doubles'`. `TableNotice` ganhou `dice` (par do próprio DICE_ROLLED) e `penalty` (terceira dupla, em bordô). As faces só aparecem se o par for válido (1–6 e iguais); se não for, volta o aviso simples. Os textos oficiais, os 2,5 s, a fila, o fechar e o toque fora continuam como estavam. O × tem área de toque de 32/26/24 px.
+- **Pagar a dívida** (`hud/DebtSalePrompt.tsx` + `hud/debtArt.css`, arte em `hud/art/debt-{frame,emblem}.webp`): moldura bordô (slice 174, cantos 18/15 px) e emblema do livro-caixa. Mostra o credor real, a dívida, o saldo, a lista completa de estados (com rolagem interna), o total e quanto falta ou sobra. Vender só fica liberado quando a soma paga a dívida e está online; Falência fica em segundo plano. Quando nem vendendo tudo dá para pagar, aparece só o aviso e a Falência. A lógica (saleSummary, saleStore, SELL_STATES) não mudou.
+- **Sede olímpica v3** (`board/olympicFrame.ts`, `board/OlympicHost.tsx`, arte em `board34/art/olympic-frame-v3.webp`): a malha foi recalibrada para a arte nova.
+  - O brasão (aros + placa) termina na borda da casa e sai para fora dela, sem cobrir nome nem foto.
+  - Nas casas em pé ele fica para cima: no sul vai para o miolo, no norte para a borda do tabuleiro, e no máximo 30% da altura da casa.
+  - Nas casas deitadas (oeste/leste) há vizinhos em cima e embaixo, então a moldura gira 90° e o brasão aponta para o miolo, crescendo até a largura da casa. Os aros ficam de lado; se preferir outra solução para essas casas (por exemplo o badge), me avise.
+  - Aros, cantos, faixa das cinco cores e louros mantêm a proporção; só os trilhos lisos esticam.
+  - "SEDE OLÍMPICA" é escrito na placa pelo canvas, e "ALUGUEL ×N" (`snapshot.olympics.multiplier`) num selo no trilho de baixo.
+  - O badge complementar ainda não foi usado.
+  - Conferido na prévia board34 em SP, RN, MA e MG, com nível 0/3/5, 0/2/4 personagens e telas 1280×720 e 800×360.
+
 ## V1 — animação do dinheiro, 11/11/2026
 
 Pedido do usuário: quando há pagamento, cinco notas voam do card de quem paga para o card de quem recebe. Quando o pagamento é para o banco ou vem dele, elas vão para o miolo do tabuleiro ou saem de lá. O saldo conta até o valor novo, e um "−R$ X" vermelho ou "+R$ X" verde sobe no card. Fica em `apps/web/src/hud/MoneyMotion.tsx`, com estilos em `moneyMotion.css`.

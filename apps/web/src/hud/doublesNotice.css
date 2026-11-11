@@ -1,0 +1,93 @@
+/* Aviso de dados iguais ilustrado (11/11/2026), a partir do protótipo do Codex
+   scripts/assets/doubles-notice-preview. Moldura em nove partes (border-image-slice:220 fill): os cantos
+   ficam inteiros e só os trilhos e o papel se adaptam. As faces são desenhadas aqui, a partir do lance. */
+
+.doubles-notice {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 300px;
+  min-height: 90px;
+  padding: 15px 34px 15px 18px;
+  border-radius: 7px;
+  font-family: Arial, sans-serif;
+  text-align: left;
+  box-shadow: 0 2px 3px #071d3330;
+}
+.doubles-notice::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border: 1px solid transparent;
+  border-image-source: url('./art/doubles-frame.webp');
+  border-image-slice: 220 fill;
+  border-image-width: 20px;
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+
+.doubles-dice { display: flex; gap: 5px; flex-shrink: 0; }
+.doubles-die {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border: 1px solid #bd8c33;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #fffef5, #f6e3b4);
+  box-shadow: inset 1px 1px 1px #fff, 1px 2px 0 #aa7e2f;
+}
+.doubles-pip { border-radius: 50%; background: #124f42; box-shadow: inset 0 1px #002c21; }
+
+.doubles-copy { min-width: 0; }
+.doubles-notice h2 { margin: 0 0 5px; font-size: 21px; line-height: 1.05; font-weight: 900; letter-spacing: -0.4px; color: #10563f; }
+.doubles-message { margin: 0; font-size: 13px; line-height: 1.25; color: #52634e; }
+
+/* Terceira dupla seguida: vai ao Descanso, sem prometer outra jogada. */
+.doubles-penalty h2, .doubles-penalty .doubles-message { color: #8a3c36; }
+.doubles-penalty .doubles-pip { background: #8a3c36; box-shadow: none; }
+
+/* Fechar: área de toque de 32 px, mesmo com o × pequeno sobre o papel. */
+.doubles-close {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #646c4e;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.doubles-close:hover { background: #0001; color: #2f3a28; }
+
+@media (max-height: 500px) {
+  .doubles-notice { width: 208px; min-height: 66px; padding: 10px 26px 10px 10px; gap: 8px; }
+  .doubles-notice::before { border-image-width: 17px; }
+  .doubles-dice { gap: 3px; }
+  .doubles-die { width: 25px; height: 25px; padding: 3px; gap: 1px; border-radius: 5px; }
+  .doubles-notice h2 { margin-bottom: 3px; font-size: 14px; }
+  .doubles-message { font-size: 11px; }
+  .doubles-close { width: 26px; height: 26px; font-size: 14px; }
+}
+@media (max-width: 700px) and (max-height: 500px) {
+  .doubles-notice { width: 168px; min-height: 58px; padding: 8px 22px 8px 8px; gap: 7px; }
+  .doubles-notice::before { border-image-width: 14px; }
+  .doubles-die { width: 19px; height: 19px; padding: 2px; border-radius: 4px; }
+  .doubles-notice h2 { font-size: 12px; line-height: 1.1; }
+  .doubles-message { font-size: 10.5px; line-height: 1.2; }
+  .doubles-close { width: 24px; height: 24px; font-size: 12px; }
+}

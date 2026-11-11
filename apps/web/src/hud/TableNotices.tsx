@@ -9,6 +9,7 @@ import { cardPending, useCardStore } from '../store/cardStore';
 import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
 import { usePawnStore } from '../store/pawnStore';
+import './doublesNotice.css';
 
 /** Tempo na tela: os dados iguais são só um lembrete; os outros pedem leitura. */
 const SHOW_MS: Record<TableNotice['kind'], number> = { doubles: 2500, rentWaiver: 4500, noFunds: 4500, tax: 3500, saque: 3500 };
@@ -92,6 +93,34 @@ export function TableNotices({ myId }: { myId: string }) {
   if (!shown) return null;
   const close = () => setShown(null);
 
+  const pair = shown.kind === 'doubles' ? validPair(shown.dice) : null;
+  if (pair !== null) {
+    return (
+      // Ilustrado (11/11/2026): as faces vêm do próprio lance; sem par válido, cai no aviso simples abaixo.
+      <div
+        ref={panelRef}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={`table-notice table-notice-doubles doubles-notice${shown.penalty ? ' doubles-penalty' : ''}`}
+      >
+        <span className="doubles-dice" aria-hidden="true">
+          <DieFace value={pair} />
+          <DieFace value={pair} />
+        </span>
+        <span className="doubles-copy">
+          <h2>
+            Dados iguais!<span className="sr-only"> {pair} e {pair}.</span>
+          </h2>
+          <p className="doubles-message">{shown.text}</p>
+        </span>
+        <button type="button" aria-label="Fechar aviso" onClick={close} className="doubles-close">
+          ×
+        </button>
+      </div>
+    );
+  }
+
   const tone = TONES[shown.kind];
   return (
     // No miolo do tabuleiro (BoardCenterSlot), sem camada por cima dos estados.
@@ -112,6 +141,25 @@ export function TableNotices({ myId }: { myId: string }) {
         </span>
         <CloseButton onClick={close} />
       </div>
+  );
+}
+
+/** Valor dos dois dados quando é mesmo um par de 1 a 6; null se não houver o que desenhar. */
+function validPair(dice: TableNotice['dice']): number | null {
+  if (!dice || dice.first !== dice.second) return null;
+  return Number.isInteger(dice.first) && dice.first >= 1 && dice.first <= 6 ? dice.first : null;
+}
+
+/** Casas da grade 3×3 com ponto em cada face. */
+const PIPS: Record<number, number[]> = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+
+function DieFace({ value }: { value: number }) {
+  return (
+    <span className="doubles-die">
+      {PIPS[value].map((cell) => (
+        <i key={cell} className="doubles-pip" style={{ gridColumn: (cell % 3) + 1, gridRow: Math.floor(cell / 3) + 1 }} />
+      ))}
+    </span>
   );
 }
 

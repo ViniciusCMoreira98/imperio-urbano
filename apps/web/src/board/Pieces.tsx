@@ -52,6 +52,7 @@ export function Buildings() {
               <Suspense fallback={null}>
                 <OlympicHost
                   contour={olympicContour}
+                  multiplier={snapshot?.olympics.multiplier}
                   placement={{ index: anchor.index, x: anchor.x, z: anchor.z, rotationY: anchor.rotationY, width: anchor.width, depth: anchor.depth, isCorner: false }}
                 />
               </Suspense>

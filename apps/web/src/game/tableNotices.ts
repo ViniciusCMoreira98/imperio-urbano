@@ -23,6 +23,10 @@ export interface TableNotice {
   text: string;
   /** 'dice': aparece quando os dados param; 'table': quando a mesa termina de mostrar a jogada. */
   after: 'dice' | 'table';
+  /** Só nos dados iguais: o par do próprio lance (DICE_ROLLED), para desenhar as faces. */
+  dice?: { first: number; second: number };
+  /** Só nos dados iguais: terceira dupla seguida, que manda ao Descanso em vez de dar outra jogada. */
+  penalty?: boolean;
 }
 
 export function tableNotices(
@@ -51,7 +55,15 @@ export function tableNotices(
           : leftRest
             ? `${who} saiu do Descanso.`
             : `${who} joga de novo.`;
-        notices.push({ id, kind: 'doubles', title: `Dados iguais: ${event.dice.first} e ${event.dice.second}!`, text, after: 'dice' });
+        notices.push({
+          id,
+          kind: 'doubles',
+          title: `Dados iguais: ${event.dice.first} e ${event.dice.second}!`,
+          text,
+          after: 'dice',
+          dice: { first: event.dice.first, second: event.dice.second },
+          penalty: toRest,
+        });
         break;
       }
       case 'RENT_WAIVED': {

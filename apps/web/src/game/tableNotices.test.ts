@@ -59,9 +59,9 @@ describe('avisos da mesa', () => {
 
   it('dados iguais: joga de novo, sai do Descanso ou vai para ele', () => {
     const s = snap({}, { credits: 5000 });
-    expect(tableNotices([rolled(3, 3), moved(10)], 1, s, 'ana', name)[0]).toMatchObject({ kind: 'doubles', after: 'dice', text: 'Você joga de novo.' });
+    expect(tableNotices([rolled(3, 3), moved(10)], 1, s, 'ana', name)[0]).toMatchObject({ kind: 'doubles', after: 'dice', text: 'Você joga de novo.', dice: { first: 3, second: 3 }, penalty: false });
     expect(tableNotices([rolled(2, 2, 'bia'), { type: 'REST_LEFT', playerId: 'bia' } as DomainEvent], 1, s, 'ana', name)[0].text).toBe('Bia saiu do Descanso.');
-    expect(tableNotices([rolled(5, 5), moved(9, 'ana', true)], 1, s, 'ana', name)[0].text).toBe('Três duplas seguidas: você vai direto para o Descanso.');
+    expect(tableNotices([rolled(5, 5), moved(9, 'ana', true)], 1, s, 'ana', name)[0]).toMatchObject({ text: 'Três duplas seguidas: você vai direto para o Descanso.', penalty: true });
     expect(tableNotices([rolled(5, 4), moved(9)], 1, s, 'ana', name)).toEqual([]);
   });
 

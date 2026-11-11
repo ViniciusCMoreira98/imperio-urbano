@@ -2,21 +2,48 @@
 import {useFrame,useThree} from '@react-three/fiber';
 import {Line,useTexture} from '@react-three/drei';
 import {useEffect,useMemo,useState} from 'react';
-import {ExtrudeGeometry,MeshStandardMaterial,Path,Shape,ShapeGeometry,Vector2,type BufferGeometry} from 'three';
+import {CanvasTexture,ExtrudeGeometry,MeshStandardMaterial,Path,Shape,ShapeGeometry,Vector2,type BufferGeometry,type Texture} from 'three';
 import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type {TilePlacement} from './layout';
 import {insetOlympicContour,olympicLeaves,OLYMPIC_RELIEF,type OlympicPoint} from './olympicPresentation';
-import {olympicFrameGrid} from './olympicFrame';
-import frameArtwork from './board34/art/olympic-frame-v2.webp';
+import {OLYMPIC_FRAME_TEXT,olympicFrameGrid} from './olympicFrame';
+import frameArtwork from './board34/art/olympic-frame-v3.webp';
 
-type OlympicHostProps={placement:TilePlacement;contour?:readonly OlympicPoint[]};
+/** multiplier: o multiplicador atual do aluguel, escrito à parte (o aluguel da casa já vem multiplicado). */
+type OlympicHostProps={placement:TilePlacement;contour?:readonly OlympicPoint[];multiplier?:number};
 export function OlympicHost(props:OlympicHostProps){
  const grid=useMemo(()=>olympicFrameGrid(props.placement.index),[props.placement.index]);
- return grid?<OlympicFrame grid={grid} index={props.placement.index}/>:<OlympicLaurelRelief {...props}/>;
+ return grid?<OlympicFrame grid={grid} index={props.placement.index} multiplier={props.multiplier}/>:<OlympicLaurelRelief {...props}/>;
 }
-function OlympicFrame({grid,index}:{grid:NonNullable<ReturnType<typeof olympicFrameGrid>>;index:number}){
- const texture=useTexture(frameArtwork);
- return <group name="OLYMPIC_PROPERTY_FRAME" userData={{tileIndex:index,horizontal:grid.horizontal}}><mesh key={index} name="OLYMPIC_FRAME_ART" renderOrder={5} raycast={()=>undefined}>
+
+/** A arte não traz texto: "SEDE OLÍMPICA" vai na placa e o multiplicador no trilho de baixo, desenhados aqui. */
+function useLabelledFrame(base:Texture,multiplier?:number){
+ const texture=useMemo(()=>{
+  const image=base.image as CanvasImageSource&{width:number;height:number},canvas=document.createElement('canvas');
+  canvas.width=image.width;canvas.height=image.height;
+  const ctx=canvas.getContext('2d')!,w=canvas.width,h=canvas.height,{plate,multiplier:pill}=OLYMPIC_FRAME_TEXT;
+  ctx.drawImage(image,0,0,w,h);
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font=`900 ${Math.round(plate.size*h)}px Arial, sans-serif`;
+  ctx.shadowColor='#001349';ctx.shadowBlur=h*.004;ctx.shadowOffsetY=h*.002;ctx.fillStyle='#fff1b3';
+  ctx.fillText('SEDE OLÍMPICA',plate.x*w,plate.y*h,plate.maxWidth*w);
+  if(multiplier&&multiplier>1){
+   const text=`ALUGUEL ×${multiplier}`,size=Math.round(pill.size*h);
+   ctx.font=`900 ${size}px Arial, sans-serif`;
+   const pw=ctx.measureText(text).width+size*1.1,ph=size*1.45,px=pill.x*w-pw/2,py=pill.y*h-ph/2;
+   ctx.shadowColor='transparent';ctx.fillStyle='#f4df90';ctx.strokeStyle='#8a6510';ctx.lineWidth=h*.003;
+   ctx.beginPath();ctx.roundRect(px,py,pw,ph,ph*.3);ctx.fill();ctx.stroke();
+   ctx.fillStyle='#5e4206';ctx.fillText(text,pill.x*w,pill.y*h+size*.04);
+  }
+  const t=new CanvasTexture(canvas);t.colorSpace=base.colorSpace;t.anisotropy=base.anisotropy;t.needsUpdate=true;return t;
+ },[base,multiplier]);
+ useEffect(()=>()=>texture.dispose(),[texture]);
+ return texture;
+}
+
+function OlympicFrame({grid,index,multiplier}:{grid:NonNullable<ReturnType<typeof olympicFrameGrid>>;index:number;multiplier?:number}){
+ const texture=useLabelledFrame(useTexture(frameArtwork),multiplier);
+ return <group name="OLYMPIC_PROPERTY_FRAME" userData={{tileIndex:index,horizontal:grid.horizontal,orientation:grid.orientation}}><mesh key={index} name="OLYMPIC_FRAME_ART" renderOrder={5} raycast={()=>undefined}>
   <bufferGeometry><bufferAttribute attach="attributes-position" args={[grid.positions,3]}/><bufferAttribute attach="attributes-uv" args={[grid.uvs,2]}/><bufferAttribute attach="index" args={[grid.indices,1]}/></bufferGeometry>
   <meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false} side={2}/>
  </mesh></group>;
