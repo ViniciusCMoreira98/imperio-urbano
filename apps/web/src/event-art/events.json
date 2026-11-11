@@ -76,13 +76,13 @@
     "tone": "blackout",
     "image": "apagao-v1.webp",
     "description": "Roubaram os fios de energia de uma casa! Escolha um estado de um oponente.",
-    "rule": "Durante o apagão, ninguém paga aluguel nesse estado. A energia volta depois que o dono parar nele 3 vezes.",
+    "rule": "Durante o apagão, ninguém paga aluguel nesse estado. A energia volta depois que o dono passar por ele 3 vezes (parar também conta).",
     "badge": "Sem aluguel",
     "requiresTarget": true,
     "targetKind": "opponent-property",
     "recoveryVisits": 3,
     "cardTitle": "Apagão",
-    "cardText": "Roubaram os fios! Escolha um estado de um oponente. Sem aluguel até o dono parar nele 3 vezes."
+    "cardText": "Roubaram os fios! Escolha um estado de um oponente. Sem aluguel até o dono passar por ele 3 vezes."
   },
   {
     "id": "descanso-merecido",

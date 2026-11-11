@@ -38,11 +38,19 @@ export function boardCenterRect(width: number, height: number, insets?: BoardIns
   };
 }
 
-export function BoardCenterSlot({ insets, children }: { insets?: BoardInsets; children: ReactNode }) {
+/** Espaço entre o conteúdo que encolhe e o rodapé (botão de rolar). */
+const FOOTER_GAP = 8;
+
+/**
+ * `children` encolhem por inteiro quando não cabem; `footer` (o botão de rolar) fica sempre no tamanho
+ * normal, embaixo, e o resto encolhe no espaço que sobra (11/11/2026: um aviso deixava o botão pequeno).
+ */
+export function BoardCenterSlot({ insets, children, footer }: { insets?: BoardInsets; children: ReactNode; footer?: ReactNode }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
   const [rect, setRect] = useState<Rect | null>(null);
-  const [scale, setScale] = useState(1);
+  const [fit, setFit] = useState({ scale: 1, width: 0, height: 0 });
 
   // Tamanho da área da partida: o miolo acompanha giro de tela, tela cheia e as reservas do HUD.
   useLayoutEffect(() => {
@@ -59,29 +67,43 @@ export function BoardCenterSlot({ insets, children }: { insets?: BoardInsets; ch
   useLayoutEffect(() => {
     const content = contentRef.current;
     if (!content || !rect) return;
-    const fit = () => {
-      const w = content.offsetWidth;
-      const h = content.offsetHeight;
-      setScale(w && h ? Math.min(1, rect.width / w, rect.height / h) : 1);
+    const measure = () => {
+      const width = content.offsetWidth;
+      const height = content.offsetHeight;
+      const footerHeight = footerRef.current?.offsetHeight ?? 0;
+      const room = rect.height - (footerHeight ? footerHeight + FOOTER_GAP : 0);
+      const scale = width && height ? Math.max(0, Math.min(1, rect.width / width, room / height)) : 1;
+      setFit((prev) => (prev.scale === scale && prev.width === width && prev.height === height ? prev : { scale, width, height }));
     };
-    fit();
-    const observer = new ResizeObserver(fit);
+    measure();
+    const observer = new ResizeObserver(measure);
     observer.observe(content);
+    if (footerRef.current) observer.observe(footerRef.current);
     return () => observer.disconnect();
   }, [rect]);
 
+  const hasContent = fit.width > 0 && fit.height > 0;
   return (
     <div
       ref={frameRef}
-      className="board-center-slot pointer-events-none absolute z-30 flex items-center justify-center"
+      className="board-center-slot pointer-events-none absolute z-30 flex flex-col items-center justify-center"
       style={rect ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height } : { inset: 0 }}
     >
+      {/* Caixa no tamanho já encolhido, para o rodapé ficar logo abaixo. */}
       <div
-        ref={contentRef}
-        className="flex w-max max-w-[26rem] flex-col items-center gap-2 [&>*]:pointer-events-auto"
-        style={{ transform: scale < 1 ? `scale(${scale})` : undefined }}
+        className="relative shrink-0"
+        style={{ width: fit.width * fit.scale, height: fit.height * fit.scale, marginBottom: hasContent ? FOOTER_GAP : 0 }}
       >
-        {children}
+        <div
+          ref={contentRef}
+          className="absolute left-0 top-0 flex w-max max-w-[26rem] origin-top-left flex-col items-center gap-2 [&>*]:pointer-events-auto"
+          style={{ transform: fit.scale < 1 ? `scale(${fit.scale})` : undefined }}
+        >
+          {children}
+        </div>
+      </div>
+      <div ref={footerRef} className="shrink-0 [&>*]:pointer-events-auto">
+        {footer}
       </div>
     </div>
   );

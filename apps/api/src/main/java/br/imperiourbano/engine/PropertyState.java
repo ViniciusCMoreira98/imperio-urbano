@@ -4,7 +4,8 @@ package br.imperiourbano.engine;
  * Estado de um estado comprado. Estados sem entrada no mapa pertencem ao banco.
  * {@code buildingLevel}: 0–4 casas, 5 = hotel. Visitas contam só quando o dono para na casa (D4);
  * {@code levelReachedAtVisit} limita a evolução a uma etapa por visita.
- * {@code blackoutVisitsLeft} > 0: apagão (carta de evento), sem aluguel até o dono parar aqui essa quantidade de vezes.
+ * {@code blackoutVisitsLeft} > 0: apagão (carta de evento), sem aluguel até o dono parar ou passar aqui essa quantidade de
+ * vezes (passar também conta desde 11/11/2026).
  */
 public record PropertyState(String stateId, String ownerId, int buildingLevel, int ownerVisits, int levelReachedAtVisit,
         int blackoutVisitsLeft) {
@@ -23,6 +24,11 @@ public record PropertyState(String stateId, String ownerId, int buildingLevel, i
     PropertyState withOwnerVisit() {
         return new PropertyState(stateId, ownerId, buildingLevel, ownerVisits + 1, levelReachedAtVisit,
                 Math.max(0, blackoutVisitsLeft - 1));
+    }
+
+    /** Dono passou pelo estado sem parar: só a contagem do apagão anda (visitas de construção não). */
+    PropertyState withBlackoutPass() {
+        return new PropertyState(stateId, ownerId, buildingLevel, ownerVisits, levelReachedAtVisit, Math.max(0, blackoutVisitsLeft - 1));
     }
 
     PropertyState withLevel(int level) {

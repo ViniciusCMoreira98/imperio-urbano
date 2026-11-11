@@ -88,7 +88,7 @@ export function describeEvent(event: DomainEvent, name: (playerId: string) => st
     case 'PROPERTY_BURNED':
       return `Incêndio! ${stateNames.get(event.stateId)} de ${name(event.ownerId)} voltou a ficar livre.`;
     case 'BLACKOUT_STARTED':
-      return `Apagão em ${stateNames.get(event.stateId)}: sem aluguel até o dono parar lá ${event.visits} vezes.`;
+      return `Apagão em ${stateNames.get(event.stateId)}: sem aluguel até o dono passar por lá ${event.visits} vezes.`;
     case 'OLYMPICS_HOST_APPOINTED':
       return `${name(event.playerId)} escolheu ${stateNames.get(event.stateId)} como sede da ${event.edition}ª Olimpíada (×${event.multiplier})!`;
     case 'CREDITS_TRANSFERRED':

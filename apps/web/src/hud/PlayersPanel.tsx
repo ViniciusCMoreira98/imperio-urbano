@@ -8,6 +8,7 @@ import { usePawnStore } from '../store/pawnStore';
 import { useCardStore } from '../store/cardStore';
 import { useGameStore } from '../store/gameStore';
 import { useShownTurnPlayerId } from '../store/shownTurn';
+import { AnimatedBalance, useMoneyFlights } from './MoneyMotion';
 
 /** Escurece a cor (0 a 1); escura o bastante para o saldo amarelo e o nome branco seguirem legíveis. */
 function darken(hex: string, amount: number): string {
@@ -38,9 +39,14 @@ export function PlayersPanel({ myId }: { myId: string }) {
   const passedStart = usePawnStore((s) => s.passedStart);
   // O destaque da vez acompanha a mesa, como o card da vez.
   const turnId = useShownTurnPlayerId();
+  const resync = useGameStore((s) => s.resync);
+  const held = snapshot ? heldCredits(cards, doneId, snapshot.version) : {};
+  if (snapshot) for (const [id, amount] of Object.entries(heldMoveCredits(money, landed, passedStart, snapshot.version))) held[id] = (held[id] ?? 0) + amount;
+  // Saldo que o painel mostra; quando muda, o dinheiro voa entre os cards.
+  const shown: Record<string, number> = {};
+  for (const p of snapshot?.players ?? []) shown[p.id] = p.credits - (held[p.id] ?? 0);
+  useMoneyFlights(shown, resync);
   if (!snapshot) return null;
-  const held = heldCredits(cards, doneId, snapshot.version);
-  for (const [id, amount] of Object.entries(heldMoveCredits(money, landed, passedStart, snapshot.version))) held[id] = (held[id] ?? 0) + amount;
   const leading = new Set(leaders(snapshot));
   // Falidos vão para o fim; os demais pelo patrimônio, mantendo o assento como desempate.
   const ranked = [...snapshot.players].sort(
@@ -111,7 +117,7 @@ export function PlayersPanel({ myId }: { myId: string }) {
                 {p.nickname}
                 {p.id === myId && <span className="font-normal text-white/60"> (você)</span>}
               </p>
-              <p className="hud-player-balance text-sm font-black text-amber-300 drop-shadow sm:text-lg">{formatCredits(p.credits - (held[p.id] ?? 0))}</p>
+              <p className="hud-player-balance text-sm font-black text-amber-300 drop-shadow sm:text-lg"><AnimatedBalance playerId={p.id} value={shown[p.id]} resync={resync} /></p>
             </div>
           </li>
         );

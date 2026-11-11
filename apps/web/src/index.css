@@ -18,7 +18,7 @@ body {
   background: linear-gradient(180deg, rgba(52, 26, 104, 0.92), rgba(24, 14, 62, 0.94));
   border: 2px solid rgba(167, 139, 250, 0.65);
   box-shadow: 0 0 14px rgba(139, 92, 246, 0.45), inset 0 0 12px rgba(139, 92, 246, 0.18);
-  backdrop-filter: blur(6px);
+  /* Sem backdrop-filter: desfoque sobre o tabuleiro 3D fazia a tela piscar no celular (11/11/2026). */
 }
 
 .hud-roll {
@@ -206,8 +206,8 @@ body {
 }
 /* Botão de rolar no miolo do tabuleiro (09/11/2026: estava grande demais). Regra própria: as classes
    utilitárias de tamanho disputavam com as do componente Button. */
-.iu-button.board-roll-button { font-size:14px;line-height:1.1;padding:7px 16px;border-radius:10px;letter-spacing:.02em; }
-@media (max-height:500px) { .iu-button.board-roll-button { font-size:11px;padding:5px 11px;border-radius:8px; } }
+.iu-button.board-roll-button { font-size:17px;line-height:1.1;padding:10px 22px;border-radius:12px;letter-spacing:.02em; }
+@media (max-height:500px) { .iu-button.board-roll-button { font-size:13px;padding:7px 15px;border-radius:10px; } }
 
 /* Ocupantes da casa na consulta da propriedade (09/11/2026): embaixo do painel, fora da arte do Codex. */
 .tile-occupants { position:absolute; z-index:10; bottom:calc(100% + 4px); left:24px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 10px; width:max-content; max-width:calc(100% - 110px); padding:4px 12px; border:2px solid #16b8ff; border-radius:999px; background:#031c44e6; color:#fff; font-size:14px; font-weight:700; box-shadow:0 4px 10px #0008; }

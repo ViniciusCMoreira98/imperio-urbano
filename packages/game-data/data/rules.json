@@ -14,12 +14,12 @@
     "hostFee": 50,
     "multipliers": [2, 3, 4, 5, 6, 7, 8, 9, 10]
   },
-  "rest": { "turnsLost": 1 },
+  "rest": { "turnsLost": 2 },
   "nationalTravel": { "fee": 50 },
   "tax": { "equityPercent": 10 },
   "debtSale": { "refundPercent": 80 },
   "turnTimers": { "rollSeconds": 7, "decisionSeconds": 10, "debtSeconds": 10, "automaticSeconds": 2 },
-  "abandonment": { "seconds": 120 },
+  "abandonment": { "seconds": 120, "botGameSeconds": 180 },
   "economy": {
     "stakes": [200, 1000, 5000, 10000, 100000],
     "guestStartingCoins": 1000,

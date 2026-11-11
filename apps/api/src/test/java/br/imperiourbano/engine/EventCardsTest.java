@@ -8,6 +8,7 @@ import br.imperiourbano.catalog.CatalogLoader;
 import br.imperiourbano.catalog.EventCard;
 import br.imperiourbano.catalog.GameMode;
 import br.imperiourbano.engine.GameCommand.ChooseEventTarget;
+import br.imperiourbano.engine.GameCommand.DeclinePurchase;
 import br.imperiourbano.engine.GameCommand.EndTurn;
 import br.imperiourbano.engine.GameCommand.RollDice;
 import br.imperiourbano.engine.GameCommand.SkipEventTarget;
@@ -263,6 +264,28 @@ class EventCardsTest {
 
         run("ana", new RollDice(), 1, 2);
 
+        assertThat(state.property("AP").orElseThrow().blackoutVisitsLeft()).isEqualTo(2);
+    }
+
+    /** Passar pelo estado também conta (pedido do usuário, 11/11/2026); passagem de outro jogador não. */
+    @Test
+    void ownerPassingByCountsTowardsTheEndOfTheBlackout() {
+        int ap = CATALOG.tileIndex("AP");
+        state = state.withProperty(PropertyState.purchased("AP", "ana").withBlackout(3))
+                .updatePlayer("ana", p -> p.withPosition(ap - 3))
+                .updatePlayer("bia", p -> p.withPosition(ap - 3));
+
+        run("ana", new RollDice(), 2, 3);
+
+        assertThat(state.player("ana").position()).isEqualTo(ap + 2);
+        PropertyState passed = state.property("AP").orElseThrow();
+        assertThat(passed.blackoutVisitsLeft()).isEqualTo(2);
+        // Passar não conta como visita para construir.
+        assertThat(passed.ownerVisits()).isEqualTo(1);
+
+        run("ana", new DeclinePurchase());
+        run("ana", new EndTurn());
+        run("bia", new RollDice(), 2, 3);
         assertThat(state.property("AP").orElseThrow().blackoutVisitsLeft()).isEqualTo(2);
     }
 

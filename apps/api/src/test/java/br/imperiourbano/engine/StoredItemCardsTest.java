@@ -77,7 +77,7 @@ class StoredItemCardsTest {
 
         assertThat(result.events()).contains(new PlayerMoved("ana", 4, REST_TILE, 0, true));
         assertThat(ana().position()).isEqualTo(REST_TILE);
-        assertThat(ana().skipTurns()).isEqualTo(1);
+        assertThat(ana().skipTurns()).isEqualTo(CatalogLoader.load().rules().rest().turnsLost());
         assertThat(ana().credits()).isEqualTo(2500);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
@@ -311,7 +311,7 @@ class StoredItemCardsTest {
 
     @Test
     void bankruptcyLosesStoredItems() {
-        PlayerState broke = new PlayerState("x", "X", 10, 0, false, 1, true, 2, 3).asBankrupt();
+        PlayerState broke = new PlayerState("x", "X", 10, 0, false, 1, true, 2, 3, true).asBankrupt();
 
         assertThat(broke.restPasses()).isZero();
         assertThat(broke.rentWaivers()).isZero();

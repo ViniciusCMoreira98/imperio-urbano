@@ -112,10 +112,9 @@ export function GameScreen() {
             <CardReveal />
             {/* Miolo do tabuleiro: nada aqui cobre os estados. Sediar, viajar ou vender (casas destacadas),
                 avisos rápidos (Aluguel Zero, falta de saldo, dados iguais) e o botão de rolar. */}
-            <BoardCenterSlot insets={insets}>
+            <BoardCenterSlot insets={insets} footer={<RollButton myId={session.playerId} />}>
               <BoardChoicePrompt myId={session.playerId} />
               <TableNotices myId={session.playerId} />
-              <RollButton myId={session.playerId} />
             </BoardCenterSlot>
             {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
             <PropertyDecisionDialog myId={session.playerId} />

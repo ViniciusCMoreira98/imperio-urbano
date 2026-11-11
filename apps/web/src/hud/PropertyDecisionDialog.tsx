@@ -104,7 +104,7 @@ function DecisionDialog({ decision, myId }: { decision: PropertyDecision; myId: 
   else if (!decide) message = !decision.property?.ownerId ? `Disponível para compra por ${formatCredits(definition.price)}.` : undefined;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/65 backdrop-blur-[2px]" onClick={decide ? undefined : clearSelection}>
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/65" onClick={decide ? undefined : clearSelection}>
       <div className="flex min-h-full items-center justify-center px-3 pb-4 pt-8 sm:px-8 sm:pt-10">
         <div
           ref={dialogRef}

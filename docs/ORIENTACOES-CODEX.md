@@ -1,5 +1,25 @@
 # Orientações e pendências para o Codex
 
+## V1 — animação do dinheiro, 11/11/2026
+
+Pedido do usuário: quando há pagamento, cinco notas voam do card de quem paga para o card de quem recebe. Quando o pagamento é para o banco ou vem dele, elas vão para o miolo do tabuleiro ou saem de lá. O saldo conta até o valor novo, e um "−R$ X" vermelho ou "+R$ X" verde sobe no card. Fica em `apps/web/src/hud/MoneyMotion.tsx`, com estilos em `moneyMotion.css`.
+
+- Hoje a nota é o emoji 💵 (`.money-note`). Se quiser trocar por uma arte de cédula ou moeda, troque o conteúdo ou o fundo da `.money-note` e não mexa no cálculo do voo.
+- A animação dispara quando o saldo mostrado muda, então segue o mesmo momento do painel: o aluguel aparece quando o peão pousa e a carta quando ela fecha.
+
+## V1 — piscadas no celular e botão de rolar, 11/11/2026
+
+O usuário relatou uma piscada rápida da tela no celular, geralmente quando o peão para num estado. Esse é o momento em que o modal de compra abre por cima do tabuleiro 3D. Desfoque de fundo (`backdrop-filter`) sobre um canvas WebGL que redesenha o tempo todo é causa conhecida desse tipo de piscada no Chrome do Android. Na claude/engenharia:
+
+- Saiu o `backdrop-blur` do fundo do PropertyDecisionDialog, que agora é só `bg-black/65`.
+- Saiu o `backdrop-filter` de `.hud-panel`, que já é 92–94% opaco, então não muda quase nada na tela.
+- Pedido: evite `backdrop-filter` em qualquer coisa sobre o tabuleiro. Ainda resta `.ev-dialog::backdrop` em `event-art/event-modals.css`, que é seu. A carta de evento aparece por cima da partida, então vale trocar por uma cor sólida.
+- Se ainda piscar depois disso, as próximas suspeitas são da cena:
+  - o atlas de 6k carregado em todo celular deitado;
+  - a camada de aluguéis (canvas de 3072×2048 com mipmaps), recriada a cada compra.
+
+Botão de rolar: agora é o `footer` do `BoardCenterSlot`, fora da escala do miolo. Avisos e escolhas encolhem no espaço que sobra, e o botão fica sempre no tamanho normal. O botão também ficou maior: 17 px no computador e 13 px no celular.
+
 ## V1 — artes do Aeroporto e das Olimpíadas integradas, 10/11/2026
 
 Na claude/engenharia, as escolhas de viagem (AWAITING_TRAVEL_DESTINATION), de sede normal (AWAITING_OLYMPICS_HOST) e de sede pela carta "Escolha da sede" usam o novo `apps/web/src/hud/ChoiceArtCard.tsx` + `choiceArt.css`. Ele aplica a revisão 3: moldura em nove partes (`border-image-slice:174 fill`, 18 px / 15 px na menor tela) e emblemas da revisão 1, com cópias em `apps/web/src/hud/art/{airport,olympic}-{frame,emblem}.webp`. Incêndio, Apagão e venda para dívida continuam no cartão antigo.

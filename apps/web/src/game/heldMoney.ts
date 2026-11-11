@@ -15,9 +15,15 @@ export interface MoneyHold {
   credits: Record<string, number>;
 }
 
-/** Mudanças de saldo de um lote de EVENTS que vêm depois de um movimento do mesmo jogador. */
-export function moneyFromEvents(events: DomainEvent[], firstVersion: number): MoneyHold[] {
-  const lastMove = new Map<string, number>();
+/**
+ * Mudanças de saldo de um lote de EVENTS que vêm depois de um movimento do mesmo jogador.
+ * {@code earlierMoves}: último movimento de cada jogador em lotes anteriores. Compra, construção e taxa
+ * olímpica chegam num lote próprio (outro comando); se o personagem ainda estiver andando na tela (um bot
+ * decide pelo relógio do servidor, e o aparelho pode estar atrasado), o dinheiro espera ele pousar.
+ * Movimento já pousado libera na hora, então não atrasa nada (11/11/2026: animação do dinheiro em tempo real).
+ */
+export function moneyFromEvents(events: DomainEvent[], firstVersion: number, earlierMoves?: ReadonlyMap<string, number>): MoneyHold[] {
+  const lastMove = new Map<string, number>(earlierMoves);
   const holds: MoneyHold[] = [];
   const hold = (mover: string, atStart: boolean, credits: Record<string, number>) => {
     const moveId = lastMove.get(mover);
@@ -37,6 +43,16 @@ export function moneyFromEvents(events: DomainEvent[], firstVersion: number): Mo
         break;
       case 'SAQUE_COLLECTED':
         hold(event.playerId, false, { [event.playerId]: event.amount, [TAX_POOL]: -event.amount });
+        break;
+      case 'PROPERTY_PURCHASED':
+        hold(event.playerId, false, { [event.playerId]: -event.price });
+        break;
+      case 'HOUSE_BUILT':
+      case 'HOTEL_BUILT':
+        hold(event.playerId, false, { [event.playerId]: -event.cost });
+        break;
+      case 'OLYMPICS_HOST_SELECTED':
+        hold(event.playerId, false, { [event.playerId]: -event.fee });
         break;
       case 'TURN_ENDED':
         lastMove.delete(event.playerId);

@@ -36,11 +36,11 @@ export const regionName = (state: StateDefinition) => REGION_NAMES[state.region]
 const { olympics } = rules;
 const SPECIAL_DESCRIPTIONS: Record<Exclude<TileType, 'PROPERTY'>, string> = {
   START: `Receba ${rules.passStartBonus} créditos sempre que passar ou parar aqui.`,
-  REST: 'Pausa para descansar: você perde a próxima jogada (uma dupla libera antes), mas continua recebendo aluguéis.',
+  REST: `Pausa para descansar: você perde as ${rules.rest.turnsLost} próximas jogadas (uma dupla libera antes), mas continua recebendo aluguéis.`,
   TAX: `Pague ${rules.tax.equityPercent}% do seu patrimônio (saldo + estados + construções + aluguel). O valor vai para o fundo do Saque; sem saldo, a Taxa vira dívida.`,
   SAQUE: 'Leve tudo o que foi pago na Taxa até agora. O fundo volta a zero.',
   OLYMPICS: `Pague ${olympics.hostFee} créditos para sediar as Olimpíadas em um estado seu. O aluguel da sede é multiplicado (×${olympics.multipliers[0]} até ×${olympics.multipliers[olympics.multipliers.length - 1]}).`,
-  NATIONAL_TRAVEL: `No Aeroporto, na próxima jogada, pague ${rules.nationalTravel.fee} créditos e viaje até qualquer estado do tabuleiro, ou role os dados normalmente.`,
+  NATIONAL_TRAVEL: `No Aeroporto, na próxima jogada, pague ${rules.nationalTravel.fee} créditos e viaje até qualquer estado do tabuleiro, ou role os dados normalmente. Quem viaja ainda rola os dados na mesma vez.`,
   EVENT: 'Compre uma carta de eventos e siga as instruções.',
 };
 

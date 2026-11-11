@@ -77,7 +77,7 @@ export function ChoiceArtCard({ choice, selected, deadline, offline, onCommand }
         ) : (
           <>
             {travel ? 'Custo da viagem' : 'Custo para sediar'}: <b>{formatCredits(choice.fee)}</b>
-            {travel && <span className="choice-art-cost-extra"> · ou role os dados</span>}
+            {travel && <span className="choice-art-cost-extra"> · depois você rola os dados</span>}
           </>
         )}
       </p>

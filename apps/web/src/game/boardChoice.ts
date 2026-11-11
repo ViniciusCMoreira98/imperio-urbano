@@ -24,7 +24,7 @@ export interface BoardChoice {
 
 const EVENT_CHOICES = {
   BURN_PROPERTY: { title: '🔥 Incêndio', instruction: 'Toque no estado de um oponente: ele volta a ficar livre, sem as construções.', invalidHint: 'Escolha um estado de um oponente, destacado.' },
-  BLACKOUT: { title: '💡 Apagão', instruction: 'Toque no estado de um oponente: ninguém paga aluguel nele até o dono parar lá 3 vezes.', invalidHint: 'Escolha um estado de um oponente, destacado.' },
+  BLACKOUT: { title: '💡 Apagão', instruction: 'Toque no estado de um oponente: ninguém paga aluguel nele até o dono passar por ele 3 vezes.', invalidHint: 'Escolha um estado de um oponente, destacado.' },
   CHOOSE_OLYMPICS_HOST: { title: '🏅 Escolha da sede', instruction: 'Toque num dos seus estados para sediar as Olimpíadas (sem taxa).', invalidHint: 'Esse estado não é seu. Escolha um estado destacado.' },
 } as const;
 
@@ -56,7 +56,7 @@ export function boardChoice(snapshot: GameSnapshot, myId: string): BoardChoice |
       // Só estados são destino (o Aeroporto não é estado, então a casa atual já fica de fora).
       tiles: board.tiles.filter((t) => t.type === 'PROPERTY').map((t) => t.index),
       title: '✈️ Viagem pelo Aeroporto',
-      instruction: `Toque no estado para onde quer viajar (${formatCredits(fee)}) ou role os dados para seguir normalmente.`,
+      instruction: `Toque no estado para onde quer viajar (${formatCredits(fee)}) e depois role os dados; ou só role os dados para não viajar.`,
       fee,
       invalidHint: 'Só dá para viajar para um estado. Escolha um destacado.',
     };

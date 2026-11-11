@@ -196,11 +196,13 @@ public final class GameEngine {
             case GameStarted e -> initialState(e);
             case DiceRolled e -> state.withDice(e.dice(), e.dice().isDouble() ? state.doublesInRow() + 1 : 0);
             case PlayerMoved e -> {
-                GameState moved = state.updatePlayer(e.playerId(),
+                GameState arrived = state.updatePlayer(e.playerId(),
                         p -> arrive(p.withPosition(e.to()).withCredits(p.credits() + e.startBonus())));
                 if (e.sentToRest()) {
-                    yield moved.withDice(moved.lastDice(), 0).withPhase(TurnPhase.AWAITING_END_TURN);
+                    yield arrived.withDice(arrived.lastDice(), 0).withPhase(TurnPhase.AWAITING_END_TURN);
                 }
+                // Apagão: o dono passando pelo estado também conta (pedido do usuário, 11/11/2026).
+                GameState moved = passBlackouts(arrived, e);
                 PlayerState player = moved.player(e.playerId());
                 GameState visited = ownedPropertyHere(moved, player)
                         .map(p -> moved.withProperty(p.withOwnerVisit()))
@@ -220,7 +222,7 @@ public final class GameEngine {
             case RentWaiverGranted e -> state.updatePlayer(e.playerId(), p -> p.withRentWaivers(p.rentWaivers() + 1));
             case RentWaived e -> state.updatePlayer(e.playerId(), p -> p.withRentWaivers(p.rentWaivers() - 1));
             case TravelChosen e -> state.updatePlayer(e.playerId(),
-                    p -> p.withCredits(p.credits() - e.fee()).withTravelPending(false));
+                    p -> p.withCredits(p.credits() - e.fee()).withTravelPending(false).withRollAfterTravel(true));
             case TravelDeclined e -> state
                     .updatePlayer(e.playerId(), p -> p.withTravelPending(false))
                     .withPhase(TurnPhase.AWAITING_ROLL);
@@ -301,13 +303,32 @@ public final class GameEngine {
             case GameAbandoned e -> state.finished(List.of());
             case TimeLimitReached e -> state.withTimeUp();
             case TurnEnded e -> {
-                int nextIndex = state.indexOf(e.nextPlayerId());
-                boolean sameTurn = nextIndex == state.currentPlayerIndex();
-                yield state.withTurn(nextIndex, e.round(), turnStartPhase(state.players().get(nextIndex)),
-                        sameTurn ? state.doublesInRow() : 0);
+                // A rolagem depois da viagem vale uma vez: some ao fim de qualquer vez.
+                GameState cleared = state.updatePlayer(e.playerId(), p -> p.withRollAfterTravel(false));
+                int nextIndex = cleared.indexOf(e.nextPlayerId());
+                boolean sameTurn = nextIndex == cleared.currentPlayerIndex();
+                yield cleared.withTurn(nextIndex, e.round(), turnStartPhase(cleared.players().get(nextIndex)),
+                        sameTurn ? cleared.doublesInRow() : 0);
             }
         };
         return next.nextVersion();
+    }
+
+    /**
+     * Casas no caminho (sem a de partida e a de chegada, que conta como visita): cada estado do próprio
+     * jogador em apagão fica uma passagem mais perto de voltar a cobrar aluguel.
+     */
+    private GameState passBlackouts(GameState state, PlayerMoved move) {
+        int steps = Math.floorMod(move.to() - move.from(), tileCount);
+        GameState next = state;
+        for (int i = 1; i < steps; i++) {
+            String stateId = catalog.tile((move.from() + i) % tileCount).stateId();
+            PropertyState property = stateId == null ? null : next.property(stateId).orElse(null);
+            if (property != null && property.blackout() && move.playerId().equals(property.ownerId())) {
+                next = next.withProperty(property.withBlackoutPass());
+            }
+        }
+        return next;
     }
 
     /** Carta que pedia um estado foi resolvida (ou perdeu o prazo): o turno segue para o fim. */
@@ -754,7 +775,10 @@ public final class GameEngine {
         GameState state = d.state;
         PlayerState player = state.currentPlayer();
         boolean extraRoll = state.lastDice() != null && state.lastDice().isDouble() && state.doublesInRow() > 0;
-        if (extraRoll && !state.timeUp()) {
+        // Viajou pelo Aeroporto: ainda rola os dados nesta vez (pedido do usuário, 11/11/2026), salvo se a
+        // chegada o mandou ao Descanso ou o faliu.
+        boolean rollAfterTravel = player.rollAfterTravel() && player.skipTurns() == 0 && !player.bankrupt();
+        if ((extraRoll || rollAfterTravel) && !state.timeUp()) {
             d.emit(new TurnEnded(player.id(), player.id(), state.round()));
             return;
         }

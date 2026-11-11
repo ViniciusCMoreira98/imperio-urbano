@@ -70,11 +70,13 @@ class RestAndTravelTest {
                 .withPhase(TurnPhase.AWAITING_TRAVEL_DESTINATION);
     }
 
+    /** Duas rodadas no Descanso (pedido do usuário, 11/11/2026). */
     @Test
-    void landingOnRestCostsTheNextTurn() {
+    void landingOnRestCostsTheNextTwoTurns() {
+        assertThat(CATALOG.rules().rest().turnsLost()).isEqualTo(2);
         placeAna(REST_TILE - 3);
         run("ana", new RollDice(), 1, 2);
-        assertThat(state.player("ana").skipTurns()).isEqualTo(1);
+        assertThat(state.player("ana").skipTurns()).isEqualTo(2);
         finishTurn("ana");
         biaPlays();
 
@@ -82,8 +84,14 @@ class RestAndTravelTest {
 
         assertThat(lost.events()).last().isEqualTo(new RestTurnLost("ana"));
         assertThat(state.player("ana").position()).isEqualTo(REST_TILE);
-        assertThat(state.player("ana").skipTurns()).isZero();
+        assertThat(state.player("ana").skipTurns()).isEqualTo(1);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
+
+        finishTurn("ana");
+        biaPlays();
+        assertThat(run("ana", new RollDice(), 2, 3).events()).last().isEqualTo(new RestTurnLost("ana"));
+        assertThat(state.player("ana").position()).isEqualTo(REST_TILE);
+        assertThat(state.player("ana").skipTurns()).isZero();
 
         finishTurn("ana");
         biaPlays();
@@ -122,7 +130,7 @@ class RestAndTravelTest {
         run("ana", new RollDice(), 3, 3);
 
         assertThat(state.player("ana").position()).isEqualTo(REST_TILE);
-        assertThat(state.player("ana").skipTurns()).isEqualTo(1);
+        assertThat(state.player("ana").skipTurns()).isEqualTo(CATALOG.rules().rest().turnsLost());
     }
 
     @Test
@@ -151,6 +159,31 @@ class RestAndTravelTest {
         assertThat(state.player("ana").credits()).isEqualTo(2500 - TRAVEL_FEE);
         assertThat(state.player("ana").travelPending()).isFalse();
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_PURCHASE);
+    }
+
+    /** Depois da viagem e da casa de destino, rola os dados na mesma vez (pedido do usuário, 11/11/2026). */
+    @Test
+    void afterTravellingThePlayerStillRollsTheDice() {
+        anaChoosingTravel();
+        run("ana", new ChooseTravel(32));
+        finishTurn("ana");
+
+        assertThat(state.currentPlayer().id()).isEqualTo("ana");
+        assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_ROLL);
+        assertThat(state.player("ana").rollAfterTravel()).isFalse();
+
+        run("ana", new RollDice(), 1, 2);
+        assertThat(state.player("ana").position()).isEqualTo((32 + 3) % 34);
+        finishTurn("ana");
+        assertThat(state.currentPlayer().id()).isEqualTo("bia");
+    }
+
+    @Test
+    void decliningTheTravelGivesNoSecondRoll() {
+        anaChoosingTravel();
+        run("ana", new RollDice(), 1, 2);
+        finishTurn("ana");
+        assertThat(state.currentPlayer().id()).isEqualTo("bia");
     }
 
     @Test

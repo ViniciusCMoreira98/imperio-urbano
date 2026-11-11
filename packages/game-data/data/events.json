@@ -6,7 +6,7 @@
     { "id": "incendio", "title": "Incêndio", "text": "Uma casa foi incendiada! Escolha um estado de um oponente. Ele ficará desocupado e poderá ser comprado novamente.", "effect": {"type": "BURN_PROPERTY"}, "copies": 3 },
     { "id": "visita-olimpica", "title": "Visita às Olimpíadas", "text": "Sua visita às Olimpíadas foi paga! Vá até o estado que está sediando os jogos.", "effect": {"type": "VISIT_OLYMPICS_HOST"}, "copies": 3 },
     { "id": "escolha-sede", "title": "Escolha da sede", "text": "O Comitê Olímpico convidou você para escolher um dos seus estados para sediar as Olimpíadas.", "effect": {"type": "CHOOSE_OLYMPICS_HOST"}, "copies": 3 },
-    { "id": "apagao", "title": "Apagão", "text": "Roubaram os fios de uma casa! Escolha um estado de um oponente. Ninguém paga aluguel nele até que o dono pare no estado 3 vezes.", "effect": {"type": "BLACKOUT", "visits": 3}, "copies": 3 },
+    { "id": "apagao", "title": "Apagão", "text": "Roubaram os fios de uma casa! Escolha um estado de um oponente. Ninguém paga aluguel nele até que o dono passe pelo estado 3 vezes (parar também conta).", "effect": {"type": "BLACKOUT", "visits": 3}, "copies": 3 },
     { "id": "descanso-merecido", "title": "Descanso merecido", "text": "Descansar né ? Que o cara não é de ferro ! Vá para o Descanso.", "effect": {"type": "GO_TO_REST"}, "copies": 3 },
     { "id": "passe-livre", "title": "Passe Livre", "text": "Guarde esta carta. Use para sair do Descanso sem perder a vez.", "effect": {"type": "GRANT_REST_PASS"}, "copies": 3 },
     { "id": "aluguel-zero", "title": "Aluguel Zero", "text": "Na próxima propriedade adversária, você não paga aluguel. Uso automático e único.", "effect": {"type": "GRANT_RENT_WAIVER"}, "copies": 2 }

@@ -69,7 +69,7 @@ export type CardEffect =
   | { type: 'VISIT_OLYMPICS_HOST' }
   /** Escolhe, sem taxa, qualquer estado com dono para sediar a próxima edição. */
   | { type: 'CHOOSE_OLYMPICS_HOST' }
-  /** Apagão: estado de oponente sem aluguel até o dono parar nele `visits` vezes. */
+  /** Apagão: estado de oponente sem aluguel até o dono passar (ou parar) nele `visits` vezes (11/11/2026). */
   | { type: 'BLACKOUT'; visits: number }
   /** Descanso merecido: vai direto ao Descanso (sem bônus do Início). */
   | { type: 'GO_TO_REST' }
@@ -119,7 +119,7 @@ export interface RulesConfig {
    */
   turnTimers: { rollSeconds: number; decisionSeconds: number; debtSeconds: number; automaticSeconds: number };
   /** Partida em andamento sem ninguém conectado por esse tempo é encerrada sem vencedor. */
-  abandonment: { seconds: number };
+  abandonment: { seconds: number; botGameSeconds: number };
   /**
    * Moedas fora da partida: apostas permitidas ao criar a sala (o vencedor leva aposta × jogadores),
    * saldo inicial do convidado e recarga diária grátis de quem ficou abaixo de dailyRefill.below.

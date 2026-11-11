@@ -73,7 +73,10 @@ export function reduceServerMessage(state: ServerState, message: ServerMessage, 
       }
       const moves = movesFromEvents(message.events, firstVersion, board.tiles.length);
       const cards = cardsFromEvents(message.events, firstVersion);
-      const money = moneyFromEvents(message.events, firstVersion);
+      // Último movimento de cada jogador já recebido: compra e construção esperam o personagem pousar.
+      const earlierMoves = new Map<string, number>();
+      for (const m of state.moves) earlierMoves.set(m.playerId, Math.max(earlierMoves.get(m.playerId) ?? -1, m.id));
+      const money = moneyFromEvents(message.events, firstVersion, earlierMoves);
       return {
         ...base,
         moves: [...state.moves, ...moves].slice(-MOVES_LIMIT),

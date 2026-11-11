@@ -52,3 +52,20 @@ describe('fundo da Taxa que espera o personagem chegar', () => {
     expect(heldMoveCredits(holds, { ana: 1, bia: 4 }, {})[TAX_POOL]).toBeUndefined();
   });
 });
+
+describe('compra e construção em lote próprio (11/11/2026)', () => {
+  const purchase: DomainEvent[] = [
+    { type: 'PROPERTY_PURCHASED', playerId: 'bot-1', stateId: 'SP', price: 260 },
+    { type: 'HOUSE_BUILT', playerId: 'bot-1', stateId: 'SP', count: 2, cost: 300 },
+  ];
+
+  it('esperam o personagem que ainda anda na tela pousar', () => {
+    const holds = moneyFromEvents(purchase, 40, new Map([['bot-1', 35]]));
+    expect(heldMoveCredits(holds, { 'bot-1': 30 }, {})['bot-1']).toBe(-560);
+    expect(heldMoveCredits(holds, { 'bot-1': 35 }, {})['bot-1']).toBeUndefined();
+  });
+
+  it('sem movimento conhecido, aparecem na hora', () => {
+    expect(moneyFromEvents(purchase, 40)).toEqual([]);
+  });
+});

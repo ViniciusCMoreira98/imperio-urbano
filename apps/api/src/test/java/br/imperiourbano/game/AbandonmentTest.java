@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-/** Encerramento por abandono com prazo curto (1 s) em vez dos 2 minutos de rules.json. */
+/** Encerramento por abandono com prazos curtos (1 s; 2,5 s contra bots) em vez dos de rules.json. */
 @SpringBootTest
 @Import({TestcontainersConfiguration.class, AbandonmentTest.Config.class})
 class AbandonmentTest {
@@ -32,7 +32,7 @@ class AbandonmentTest {
         @Bean
         @Primary
         AbandonmentWatcher.Policy fastAbandonment() {
-            return new AbandonmentWatcher.Policy(Duration.ofSeconds(1));
+            return new AbandonmentWatcher.Policy(Duration.ofSeconds(1), Duration.ofMillis(2_500));
         }
     }
 
@@ -116,5 +116,20 @@ class AbandonmentTest {
                 () -> store.loadSnapshot(room.gameId()).orElseThrow().status() == GameStatus.FINISHED);
 
         assertThat(store.loadSnapshot(room.gameId()).orElseThrow().status()).isEqualTo(GameStatus.FINISHED);
+    }
+
+    /** Contra bots, o prazo é o próprio (3 minutos em rules.json; pedido do usuário, 11/11/2026). */
+    @Test
+    void botGameUsesItsOwnLongerDeadline() throws InterruptedException {
+        GuestPrincipal caio = sessions.create("Caio").player();
+        String botGame = lobby.createVsBots(caio, GameMode.CLASSIC, 2).gameId();
+
+        Thread.sleep(1_500);
+        assertThat(store.loadSnapshot(botGame).orElseThrow().status()).isEqualTo(GameStatus.IN_PROGRESS);
+
+        waitFor(Duration.ofSeconds(5),
+                () -> store.loadSnapshot(botGame).orElseThrow().status() == GameStatus.FINISHED);
+        assertThat(store.loadSnapshot(botGame).orElseThrow().status()).isEqualTo(GameStatus.FINISHED);
+        assertThat(store.loadEvents(botGame)).last().isEqualTo(new GameEvent.GameAbandoned());
     }
 }

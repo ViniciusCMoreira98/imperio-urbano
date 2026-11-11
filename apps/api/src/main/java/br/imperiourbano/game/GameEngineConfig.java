@@ -27,7 +27,8 @@ class GameEngineConfig {
     /** Tempo sem ninguém conectado até encerrar a partida (rules.json); testes usam um tempo curto. */
     @Bean
     AbandonmentWatcher.Policy abandonmentPolicy(Catalog catalog) {
-        return new AbandonmentWatcher.Policy(Duration.ofSeconds(catalog.rules().abandonment().seconds()));
+        var rules = catalog.rules().abandonment();
+        return new AbandonmentWatcher.Policy(Duration.ofSeconds(rules.seconds()), Duration.ofSeconds(rules.botGameSeconds()));
     }
 
     /** Prazos vindos de rules.json; testes substituem por prazos curtos. */

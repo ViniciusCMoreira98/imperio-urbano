@@ -17,7 +17,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
- * Encerra, sem vencedor, a partida em andamento que fica sem ninguém conectado por {@code abandonAfter}.
+ * Encerra, sem vencedor, a partida em andamento que fica sem ninguém conectado por {@code abandonAfter}
+ * ({@code botGameAbandonAfter} na partida contra bots, onde só o anfitrião se conecta: pedido do usuário,
+ * 11/11/2026, 3 minutos).
  * Quem volta antes cancela o encerramento. Ao subir o servidor ninguém está conectado, então as
  * partidas em andamento começam a contar o prazo na hora.
  */
@@ -26,14 +28,18 @@ class AbandonmentWatcher {
 
     private static final Logger log = LoggerFactory.getLogger(AbandonmentWatcher.class);
 
-    /** Tempo sem jogadores conectados até encerrar a partida. */
-    record Policy(Duration abandonAfter) {
+    /** Tempo sem jogadores conectados até encerrar a partida (normal e contra bots). */
+    record Policy(Duration abandonAfter, Duration botGameAbandonAfter) {
+        Policy(Duration abandonAfter) {
+            this(abandonAfter, abandonAfter);
+        }
     }
 
     private final GameService games;
     private final GameStore store;
     private final Presence presence;
     private final Duration abandonAfter;
+    private final Duration botGameAbandonAfter;
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
         Thread thread = new Thread(runnable, "abandonment");
         thread.setDaemon(true);
@@ -46,6 +52,7 @@ class AbandonmentWatcher {
         this.store = store;
         this.presence = presence;
         this.abandonAfter = policy.abandonAfter();
+        this.botGameAbandonAfter = policy.botGameAbandonAfter();
     }
 
     @EventListener
@@ -73,9 +80,16 @@ class AbandonmentWatcher {
     }
 
     private void schedule(String gameId) {
+        Duration after = isBotGame(gameId) ? botGameAbandonAfter : abandonAfter;
         ScheduledFuture<?> previous = pending.put(gameId,
-                scheduler.schedule(() -> abandonIfStillEmpty(gameId), abandonAfter.toMillis(), TimeUnit.MILLISECONDS));
+                scheduler.schedule(() -> abandonIfStillEmpty(gameId), after.toMillis(), TimeUnit.MILLISECONDS));
         if (previous != null) previous.cancel(false);
+    }
+
+    private boolean isBotGame(String gameId) {
+        return store.loadSnapshot(gameId)
+                .map(state -> state.players().stream().anyMatch(p -> Bots.isBot(p.id())))
+                .orElse(false);
     }
 
     private void abandonIfStillEmpty(String gameId) {

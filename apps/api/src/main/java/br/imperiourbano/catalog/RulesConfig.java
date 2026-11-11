@@ -85,8 +85,11 @@ public record RulesConfig(
     public record TurnTimers(int rollSeconds, int decisionSeconds, int debtSeconds, int automaticSeconds) {
     }
 
-    /** Partida em andamento sem ninguém conectado por {@code seconds} é encerrada sem vencedor. */
-    public record AbandonmentRules(int seconds) {
+    /**
+     * Partida em andamento sem ninguém conectado por {@code seconds} é encerrada sem vencedor;
+     * contra bots, por {@code botGameSeconds} (o anfitrião é o único que se conecta).
+     */
+    public record AbandonmentRules(int seconds, int botGameSeconds) {
     }
 
     /**

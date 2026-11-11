@@ -20,13 +20,15 @@ import {ChoiceHighlights} from './ChoiceHighlights';
 const active34=isBoard34(board.tiles);
 /** Cor do peão do dono: pinta a faixa do nome da propriedade comprada. */
 function ownerColor(snapshot:GameSnapshot,stateId:string):string|undefined{const ownerId=snapshot.properties.find(p=>p.stateId===stateId)?.ownerId;const owner=snapshot.players.find(p=>p.id===ownerId);return owner?PAWN_COLORS[owner.pawnColor].hex:undefined;}
+/** Apagão: quantas passagens do dono faltam para o aluguel voltar, na placa do estado (11/11/2026). */
+function blackoutLabel(snapshot:GameSnapshot,stateId:string):string|null{const left=snapshot.properties.find(p=>p.stateId===stateId)?.blackoutVisitsLeft??0;return left>0?`Apagão ${left}x`:null;}
 /** O host da engenharia fornece o saldo oficial formatado da Taxa quando integrar seu schema. */
 export function GameBoard({taxPoolLabel=null,insets,framing='standard'}:{taxPoolLabel?:string|null;insets?:BoardInsets;framing?:BoardFraming}){
  const selectedTile=useViewStore(s=>s.selectedTile),selectTile=useViewStore(s=>s.selectTile),snapshot=useGameStore(s=>s.snapshot);
  const selectedId=selectedTile===null?null:board.tiles[selectedTile]?.id??null;
  const rents=useMemo<BoardRentLabel[]>(()=>{
   if(!active34||!snapshot)return[];
-  return states.filter(state=>board.tiles.some(t=>t.stateId===state.id)&&snapshot.properties.some(p=>p.stateId===state.id&&p.ownerId!==null)).map(state=>({stateId:state.id,rentLabel:snapshot.properties.some(p=>p.stateId===state.id&&p.blackoutVisitsLeft>0)?'Apagão':formatCredits(currentRent(snapshot,state)),ownerColor:ownerColor(snapshot,state.id)}));
+  return states.filter(state=>board.tiles.some(t=>t.stateId===state.id)&&snapshot.properties.some(p=>p.stateId===state.id&&p.ownerId!==null)).map(state=>({stateId:state.id,rentLabel:blackoutLabel(snapshot,state.id)??formatCredits(currentRent(snapshot,state)),ownerColor:ownerColor(snapshot,state.id)}));
  },[snapshot]);
  const onSelect=(id:string)=>{const index=tileIndexOf(id);if(index!==null)selectTile(index);};
  const pieces=<><Buildings/>{!mobileRectangularStudy&&<RentTags labels={rents} mobile={framing==='mobile-diamond'} large={insets?.left!==undefined} clean={mobileCleanStudy}/>}<ChoiceHighlights/><Pawns/><RollingDice/></>;
