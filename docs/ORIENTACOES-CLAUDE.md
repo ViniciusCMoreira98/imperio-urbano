@@ -1,5 +1,17 @@
 # Orientações e pendências para o Claude Code
 
+## Publicação autorizada — 11/11/2026
+
+Usuário autorizou commit e integração desta entrega na develop. Inclui a cédula original aplicada ao MoneyMotion e a retirada dos dois desfoques sobre a partida, com build e 214 testes aprovados. Os registros anteriores de “sem commit/merge” são históricos. A resolução das piscadas ainda precisa ser conferida em aparelho Android físico. Manter a V2 separada.
+
+## Cédula aplicada e desfoque retirado — 11/11/2026
+
+Atendidas as novas orientações da develop515a8f3 na V1. MoneyMotion agora usa hud/art/money/banknote-v1.webp (384×192,30.504bytes), arte original fictícia sem denominação, com fonte/prompt/hashes em assets/money-motion/. Substituição do conteúdo visual por img decorativa, alt vazio/aria-hidden, object-fit:contain, pré-carregamento na montagem;44×22px computador/32×16px móvel. Não alterar amount, pairPayments, âncoras, arco, cinco notas, duração750ms ou intervalo70ms por causa da arte. Contagem/espera, pouso/carta, resync e movimento reduzido preservados; nenhum cálculo de dinheiro foi modificado.
+
+Removidos os backdrops desfocados restantes identificados sobre o tabuleiro: .ev-dialog::backdrop em event-art/event-modals.css e .go-backdrop em hud/gameOver.css agora usam backdrop-filter:none, mantendo os fundos existentes. Menus fora da partida permanecem como estavam. Manter a proibição de backdrop-filter sobre WebGL em futuras interfaces. Não reduzir atlas/resolução/mipmaps sem evidência: esta entrega não mexe na qualidade do tabuleiro.
+
+Build e214 testes aprovados. QA money-motion-art-qa.mjs usa MoneyMotion/AnimatedBalance reais em palco DOM:9 capturas, rotas jogador→jogador/jogador→banco/banco→jogador nos três viewports, cinco imagens, tempos/endpoints/saldos finais e limpeza conferidos. Resync e movimento reduzido sem voos novos; filtros computados dos dois backdrops none. Não é certificação de gameplay multiplayer ou de cintilação no Chrome Android físico. Se a piscada persistir, registrar aparelho/versão e evento antes de investigar atlas/etiquetas. Fonte/README/relatório em assets/money-motion/. Uma geração image_gen, zero créditos Meshy, sem commit/merge nesta entrega.
+
 ## Publicação das entregas pendentes — 11/11/2026
 
 Usuário autorizou commit na develop_arte_3d e integração à develop das entregas abaixo. Preservar o modal do Descanso já funcional e os contratos existentes. Arte de Pagar a dívida, aviso de dados iguais e novo destaque da propriedade-sede olímpica são kits/protótipos publicados para integração, não substituições já feitas nos componentes correspondentes. A nova moldura olímpica exige recalibração, conforme detalhado abaixo. Fontes, prompts, capturas e roteiros acompanham o commit; build/198 testes aprovados e hashes/relatórios conferidos. Os avisos antigos de “sem commit/merge” são históricos da entrega inicial. Não misturar a branch do tabuleiro V2.
