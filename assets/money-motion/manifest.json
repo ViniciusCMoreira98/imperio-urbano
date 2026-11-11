@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-11",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/money-motion/source/banknote-v1.png",
+  "file": "apps/web/src/hud/art/money/banknote-v1.webp",
+  "sourceWidth": 1774,
+  "sourceHeight": 887,
+  "width": 384,
+  "height": 192,
+  "transparent": 27259,
+  "solid": 43924,
+  "bytes": 30504,
+  "sha256": "6708807b7500de6d74b2c31291b9a9629b22e48b338b7576bcd38797a04430d1",
+  "sourceSha256": "8f0370f9cc19e5361caeda4f3d5a9fad28c217b569ad3ebb4bc12ac2009fa625",
+  "prompt": "assets/money-motion/prompt.json",
+  "meshyCredits": 0,
+  "integrated": true
+}

@@ -1,0 +1,859 @@
+{
+  "date": "2026-11-11",
+  "scope": "Real MoneyMotion components in an isolated DOM art stage; flight animations paused only for capture",
+  "checks": [
+    {
+      "kind": "player",
+      "width": 1000,
+      "height": 640,
+      "endpoints": {
+        "from": {
+          "x": 140.6796875,
+          "y": 191.5
+        },
+        "to": {
+          "x": 865.6796875,
+          "y": 191.5
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(865.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(865.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(865.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(865.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(865.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.380",
+        "R$ 1.620"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "pay-bank",
+      "width": 1000,
+      "height": 640,
+      "endpoints": {
+        "from": {
+          "x": 140.6796875,
+          "y": 191.5
+        },
+        "to": {
+          "x": 500,
+          "y": 433.90625
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.400",
+        "R$ 1.500"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "receive-bank",
+      "width": 1000,
+      "height": 640,
+      "endpoints": {
+        "from": {
+          "x": 500,
+          "y": 433.90625
+        },
+        "to": {
+          "x": 140.6796875,
+          "y": 191.5
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 44,
+          "height": 22,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(500px, 433.90625px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(140.6796875px, 191.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.800",
+        "R$ 1.500"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "player",
+      "width": 800,
+      "height": 360,
+      "endpoints": {
+        "from": {
+          "x": 101.5,
+          "y": 131.5
+        },
+        "to": {
+          "x": 701.5,
+          "y": 131.5
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(701.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(701.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(701.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(701.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(701.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.380",
+        "R$ 1.620"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "pay-bank",
+      "width": 800,
+      "height": 360,
+      "endpoints": {
+        "from": {
+          "x": 101.5,
+          "y": 131.5
+        },
+        "to": {
+          "x": 400,
+          "y": 252.859375
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.400",
+        "R$ 1.500"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "receive-bank",
+      "width": 800,
+      "height": 360,
+      "endpoints": {
+        "from": {
+          "x": 400,
+          "y": 252.859375
+        },
+        "to": {
+          "x": 101.5,
+          "y": 131.5
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(400px, 252.859375px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.800",
+        "R$ 1.500"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "player",
+      "width": 667,
+      "height": 280,
+      "endpoints": {
+        "from": {
+          "x": 101.5,
+          "y": 131.5
+        },
+        "to": {
+          "x": 568.5,
+          "y": 131.5
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(568.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(568.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(568.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(568.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(568.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.380",
+        "R$ 1.620"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "pay-bank",
+      "width": 667,
+      "height": 280,
+      "endpoints": {
+        "from": {
+          "x": 101.5,
+          "y": 131.5
+        },
+        "to": {
+          "x": 333.5,
+          "y": 206
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(333.5px, 206px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(333.5px, 206px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(333.5px, 206px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(333.5px, 206px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(333.5px, 206px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.400",
+        "R$ 1.500"
+      ],
+      "cleanup": true
+    },
+    {
+      "kind": "receive-bank",
+      "width": 667,
+      "height": 280,
+      "endpoints": {
+        "from": {
+          "x": 333.5,
+          "y": 206
+        },
+        "to": {
+          "x": 101.5,
+          "y": 131.5
+        }
+      },
+      "notes": [
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        },
+        {
+          "tag": "IMG",
+          "src": "/apps/web/src/hud/art/money/banknote-v1.webp",
+          "width": 32,
+          "height": 16,
+          "fit": "contain",
+          "hidden": "true"
+        }
+      ],
+      "animations": [
+        {
+          "duration": 750,
+          "delay": 0,
+          "first": "translate(333.5px, 206px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 70,
+          "first": "translate(333.5px, 206px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 140,
+          "first": "translate(333.5px, 206px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 210,
+          "first": "translate(333.5px, 206px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        },
+        {
+          "duration": 750,
+          "delay": 280,
+          "first": "translate(333.5px, 206px) translate(-50%, -50%) scale(.6) rotate(-10deg)",
+          "last": "translate(101.5px, 131.5px) translate(-50%, -50%) scale(.7) rotate(-6deg)"
+        }
+      ],
+      "balances": [
+        "R$ 1.800",
+        "R$ 1.500"
+      ],
+      "cleanup": true
+    }
+  ],
+  "resyncDoesNotFly": true,
+  "reducedMotionDoesNotFly": true,
+  "filters": {
+    "event": "none",
+    "result": "none"
+  },
+  "errors": []
+}

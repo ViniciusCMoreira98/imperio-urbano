@@ -4,6 +4,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { formatCredits } from '../property-card/tileInfo';
 import { BANK, pairPayments } from './moneyFlights';
+import banknoteArt from './art/money/banknote-v1.webp';
 import './moneyMotion.css';
 
 /** Duração do voo das notas e da contagem do saldo. */
@@ -86,9 +87,11 @@ function anchor(id: string): { x: number; y: number } | null {
 /** Notas voando de um ponto a outro, em arco, uma atrás da outra. */
 function flyNotes(from: { x: number; y: number }, to: { x: number; y: number }) {
   for (let i = 0; i < NOTES; i++) {
-    const note = document.createElement('span');
+    const note = document.createElement('img');
     note.className = 'money-note';
-    note.textContent = '💵';
+    note.src = banknoteArt;
+    note.alt = '';
+    note.draggable = false;
     note.setAttribute('aria-hidden', 'true');
     document.body.appendChild(note);
     const dx = to.x - from.x;
@@ -118,6 +121,8 @@ function flyNotes(from: { x: number; y: number }, to: { x: number; y: number }) 
  * ({@code resync}) e o primeiro saldo não animam.
  */
 export function useMoneyFlights(shown: Readonly<Record<string, number>>, resync: number) {
+  // Carrega o pequeno sprite antes do primeiro pagamento, sem mudar a hora em que o voo dispara.
+  useEffect(() => { const image = new Image(); image.src = banknoteArt; }, []);
   const previous = useRef<Record<string, number> | null>(null);
   const lastResync = useRef(resync);
   const key = JSON.stringify(shown);

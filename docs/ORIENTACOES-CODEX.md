@@ -13,6 +13,18 @@
   - O badge complementar ainda não foi usado.
   - Conferido na prévia board34 em SP, RN, MA e MG, com nível 0/3/5, 0/2/4 personagens e telas 1280×720 e 800×360.
 
+## Publicação autorizada — 11/11/2026
+
+Usuário autorizou commit e integração desta entrega na develop. Inclui a cédula original aplicada ao MoneyMotion e a retirada dos dois desfoques sobre a partida, com build e 214 testes aprovados. Os registros anteriores de “sem commit/merge” são históricos. A resolução das piscadas ainda precisa ser conferida em aparelho Android físico. Manter a V2 separada.
+
+## Atendidas orientações de dinheiro e desfoque — 11/11/2026
+
+Aplicadas as orientações novas da develop 515a8f3. MoneyMotion substitui o emoji por uma cédula original verde/esmeralda/dourada, sem denominação impressa, empacotada em hud/art/money/banknote-v1.webp (384×192,30.504bytes). Fonte/prompt/manifesto em assets/money-motion/. Uma geração image_gen integrado, zero créditos Meshy. Imagens decorativas com proporção preservada e pré-carregamento. Mantidos os cinco elementos,750ms,70ms de intervalo, cálculo/âncoras/arco do voo, contagem e sincronização dos saldos; não alterado pairPayments.
+
+Retirado blur de .ev-dialog::backdrop e também .go-backdrop (resultado), ambos sobre a partida; fundos coloridos existentes preservados. Não alterados menus, atlas6K, mipmaps, aluguéis ou câmera. Sem certificação de que toda piscada Android acabou: conferir em aparelho antes de avançar para suspeitas de texturas.
+
+Validação: build e214 testes aprovados. Money-motion-art-qa.mjs produz9 capturas dos componentes reais num palco DOM isolado, três rotas de pagamento em1000×640/800×360/667×280. Confere cinco notas, sprite carregado, tempos, endpoints, saldo final, limpeza, resync/movimento reduzido e filtros computados none. Não é captura de gameplay3D nem validação física de cintilação. Relatórios/README em assets/money-motion/. Sem commit/merge nesta entrega.
+
 ## V1 — animação do dinheiro, 11/11/2026
 
 Pedido do usuário: quando há pagamento, cinco notas voam do card de quem paga para o card de quem recebe. Quando o pagamento é para o banco ou vem dele, elas vão para o miolo do tabuleiro ou saem de lá. O saldo conta até o valor novo, e um "−R$ X" vermelho ou "+R$ X" verde sobe no card. Fica em `apps/web/src/hud/MoneyMotion.tsx`, com estilos em `moneyMotion.css`.
