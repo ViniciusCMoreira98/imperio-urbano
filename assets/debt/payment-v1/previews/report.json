@@ -1,0 +1,229 @@
+{
+  "date": "2026-11-10",
+  "scope": "Art prototype on static V1 captures, not integrated gameplay",
+  "checks": [
+    {
+      "width": 1000,
+      "height": 640,
+      "query": "?art",
+      "name": "modal-art",
+      "bounds": {
+        "left": 187.5,
+        "top": 121.259765625,
+        "right": 812.5,
+        "bottom": 518.740234375
+      },
+      "panels": [
+        {
+          "left": 187.5,
+          "top": 121.259765625,
+          "right": 812.5,
+          "bottom": 518.740234375
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "query": "",
+      "name": "board-desktop",
+      "bounds": {
+        "left": 510.59375,
+        "top": 290.203125,
+        "right": 820.59375,
+        "bottom": 487.390625
+      },
+      "panels": [
+        {
+          "left": 510.59375,
+          "top": 290.203125,
+          "right": 820.59375,
+          "bottom": 487.390625
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000962873700926024,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "query": "",
+      "name": "board-mobile",
+      "bounds": {
+        "left": 312,
+        "top": 127.3984375,
+        "right": 520,
+        "bottom": 261.3828125
+      },
+      "panels": [
+        {
+          "left": 312,
+          "top": 127.3984375,
+          "right": 520,
+          "bottom": 261.3828125
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000868170025586489,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "query": "",
+      "name": "board-small",
+      "bounds": {
+        "left": 260.15625,
+        "top": 85.125,
+        "right": 420.15625,
+        "bottom": 200.46875
+      },
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 85.125,
+          "right": 420.15625,
+          "bottom": 200.46875
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "query": "?selected",
+      "name": "selected-mobile",
+      "bounds": {
+        "left": 312,
+        "top": 123.890625,
+        "right": 520,
+        "bottom": 264.890625
+      },
+      "panels": [
+        {
+          "left": 312,
+          "top": 123.890625,
+          "right": 520,
+          "bottom": 264.890625
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": true,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000868170025586489,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "query": "?selected",
+      "name": "selected-small",
+      "bounds": {
+        "left": 260.15625,
+        "top": 80.296875,
+        "right": 420.15625,
+        "bottom": 205.296875
+      },
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 80.296875,
+          "right": 420.15625,
+          "bottom": 205.296875
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": true,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "query": "?selected&partial",
+      "name": "partial-small",
+      "bounds": {
+        "left": 260.15625,
+        "top": 80.296875,
+        "right": 420.15625,
+        "bottom": 205.296875
+      },
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 80.296875,
+          "right": 420.15625,
+          "bottom": 205.296875
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "query": "?hopeless",
+      "name": "hopeless-small",
+      "bounds": {
+        "left": 260.15625,
+        "top": 92.796875,
+        "right": 420.15625,
+        "bottom": 192.796875
+      },
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 92.796875,
+          "right": 420.15625,
+          "bottom": 192.796875
+        }
+      ],
+      "overflow": [],
+      "transparentBackdrop": "rgba(0, 0, 0, 0)",
+      "selected": false,
+      "skip": true,
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    }
+  ],
+  "errors": []
+}

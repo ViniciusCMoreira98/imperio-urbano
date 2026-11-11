@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Command } from '@imperio/shared-types';
 import { isMyTurn } from '../game/rules';
+import { shouldOfferRestChoice } from '../game/restChoice';
 import { playSound } from '../audio/audio';
 import { formatCredits } from '../property-card/tileInfo';
 import { useCardBusy } from '../store/cardStore';
@@ -41,6 +42,7 @@ export function ActionBar({ myId }: { myId: string }) {
   const offline = connection !== 'open';
   const act = (command: Command) => send(command);
   const tableBusy = diceRolling || tableMoving || cardBusy;
+  const choosingRest = turnId === myId && shouldOfferRestChoice(snapshot, myId);
 
   return (
     <div className="hud-action-shell relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
@@ -61,9 +63,9 @@ export function ActionBar({ myId }: { myId: string }) {
             </>
           )}
         </span>
-        {restLeft > 0 && <RestChip turns={restLeft} />}
+        {restLeft > 0 && !choosingRest && <RestChip turns={restLeft} />}
         {/* Some enquanto a mesa mostra a jogada: o prazo do servidor só começa a correr quando ela termina. */}
-        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && <Countdown deadline={deadline} warn={mine} />}
+        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && !choosingRest && <Countdown deadline={deadline} warn={mine} />}
 
         {/* Rolar os dados fica no miolo do tabuleiro (RollButton, 08/11/2026). */}
         {/* Comprar/construir e recusar ("×") ficam no modal de evolução da propriedade; vender para pagar dívida, no aviso de venda (DebtSalePrompt). */}
@@ -101,6 +103,8 @@ export function RollButton({ myId }: { myId: string }) {
   const phase = snapshot.phase;
   const canRoll = isMyTurn(snapshot, myId) && turnId === myId && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
   if (!canRoll) return null;
+  // No Descanso, o modal da vez (RestTurnChoice) já tem o próprio "Rolar dados".
+  if (shouldOfferRestChoice(snapshot, myId)) return null;
   // Some enquanto a mesa mostra a jogada anterior: os dados rolam no miolo, embaixo do botão.
   if (diceRolling || tableMoving || cardBusy) return null;
   return (

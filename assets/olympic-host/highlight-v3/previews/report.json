@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-11",
+  "scope": "Frontal art study using existing state image; not a gameplay capture",
+  "checks": [
+    {
+      "width": 1000,
+      "height": 820,
+      "name": "comparison",
+      "label": "SEDE OLÍMPICA",
+      "state": "SPSão Paulo",
+      "rent": "R$ 40",
+      "baseRent": "R$ 20",
+      "photoAspect": 1.4935064935064934,
+      "sourceAspect": 1.5,
+      "frameAspect": 0.75,
+      "frameSourceAspect": 0.75,
+      "overflow": []
+    },
+    {
+      "width": 700,
+      "height": 700,
+      "name": "host-closeup",
+      "label": "SEDE OLÍMPICA",
+      "state": "SPSão Paulo",
+      "rent": "R$ 40",
+      "baseRent": "R$ 20",
+      "photoAspect": 1.4935064935064934,
+      "sourceAspect": 1.5,
+      "frameAspect": 0.75,
+      "frameSourceAspect": 0.75,
+      "overflow": []
+    },
+    {
+      "width": 800,
+      "height": 360,
+      "name": "comparison-small",
+      "label": "SEDE OLÍMPICA",
+      "state": "SPSão Paulo",
+      "rent": "R$ 40",
+      "baseRent": "R$ 20",
+      "photoAspect": 1.4936170212765958,
+      "sourceAspect": 1.5,
+      "frameAspect": 0.75,
+      "frameSourceAspect": 0.75,
+      "overflow": []
+    }
+  ],
+  "errors": []
+}

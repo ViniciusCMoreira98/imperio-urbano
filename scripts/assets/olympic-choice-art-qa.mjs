@@ -4,8 +4,8 @@ import {fileURLToPath} from 'node:url';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
-const airport=process.argv.includes('--airport'),illustrated=process.argv.includes('--illustrated'),personalized=process.argv.includes('--personalized'),date=airport||personalized||illustrated?'2026-11-10':'2026-11-09',version=illustrated?'-v3':personalized?'-v2':'-v1',preview=(airport?'airport-choice-preview':'olympic-choice-preview')+(version==='-v1'?'':version);
-const root=new URL('../../',import.meta.url),baseDir=airport?'assets/airport/destination-v1/':'assets/olympic-host/selection-v1/',dir=baseDir.replace('-v1/',version+'/'),source=baseDir+'emblem-source.png',file=baseDir+'emblem.webp';
+const debt=process.argv.includes('--debt'),airport=process.argv.includes('--airport'),illustrated=debt||process.argv.includes('--illustrated'),personalized=process.argv.includes('--personalized'),date=debt||airport||personalized||illustrated?'2026-11-10':'2026-11-09',version=illustrated?'-v3':personalized?'-v2':'-v1',preview=debt?'debt-choice-preview':(airport?'airport-choice-preview':'olympic-choice-preview')+(version==='-v1'?'':version);
+const root=new URL('../../',import.meta.url),baseDir=debt?'assets/debt/payment-v1/':airport?'assets/airport/destination-v1/':'assets/olympic-host/selection-v1/',dir=debt?baseDir:baseDir.replace('-v1/',version+'/'),source=baseDir+'emblem-source.png',file=baseDir+'emblem.webp';
 const boardCaptures=JSON.parse(await readFile(new URL('assets/3d/reviews/v1-adverse/report.json',root))).checks.filter(c=>c.scenario==='hotels-high-values');
 await mkdir(new URL(dir+'previews/',root),{recursive:true});
 const server=await createServer({root:fileURLToPath(root),configFile:false,optimizeDeps:{noDiscovery:true,include:[]},server:{host:'127.0.0.1',port:4194,strictPort:true}});
@@ -23,11 +23,13 @@ try{
  assert.ok(encoded.transparent&&encoded.solid);const bytes=Buffer.from(encoded.data,'base64');await writeFile(new URL(file,root),bytes);const {data,...metrics}=encoded;
  await writeFile(new URL(dir+'manifest.json',root),JSON.stringify({date,provider:'OpenAI image_gen built-in',source,file,...metrics,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),sourceSha256:createHash('sha256').update(await readFile(new URL(source,root))).digest('hex'),meshyCredits:0,integrated:false,encoder:'Chromium WebP 92; aspect ratio and alpha preserved'},null,2)+'\n');
  page.on('pageerror',e=>errors.push(e.message));
- for(const [width,height,query,name] of [[1000,640,'?art','modal-art'],[1280,720,'','board-desktop'],[800,360,'','board-mobile'],[667,280,'','board-small'],[800,360,'?selected','selected-mobile'],[667,280,'?selected','selected-small'],[667,280,'?event','event-small']]){
-  if(airport&&query.includes('event'))continue;
+ const cases=[[1000,640,'?art','modal-art'],[1280,720,'','board-desktop'],[800,360,'','board-mobile'],[667,280,'','board-small'],[800,360,'?selected','selected-mobile'],[667,280,'?selected','selected-small'],[667,280,'?event','event-small']];
+ if(debt)cases.push([667,280,'?selected&partial','partial-small'],[667,280,'?hopeless','hopeless-small']);
+ for(const [width,height,query,name] of cases){
+  if((airport||debt)&&query.includes('event'))continue;
   await page.setViewportSize({width,height});await page.goto('http://127.0.0.1:4194/scripts/assets/'+preview+'/'+query,{waitUntil:'networkidle'});await page.locator('.emblem').evaluate(image=>image.decode());
   const result=await page.evaluate(()=>{const dialog=document.querySelector('.dialog'),r=dialog.getBoundingClientRect(),elements=[...document.querySelectorAll('h1,p,.selection,button')];return{bounds:{left:r.left,top:r.top,right:r.right,bottom:r.bottom},panels:[...document.querySelectorAll('.dialog,.confirm-panel')].map(e=>{const r=e.getBoundingClientRect();return{left:r.left,top:r.top,right:r.right,bottom:r.bottom}}),overflow:elements.filter(e=>e.clientWidth>1&&e.scrollWidth>e.clientWidth+1).map(e=>e.textContent),transparentBackdrop:getComputedStyle(document.querySelector('main')).backgroundColor,selected:!document.querySelector('.confirm').disabled,skip:!!document.querySelector('.skip')};});
-  assert.ok(result.bounds.left>=0&&result.bounds.top>=0&&result.bounds.right<=width&&result.bounds.bottom<=height);assert.deepEqual(result.overflow,[]);assert.equal(result.selected,query.includes('selected'));assert.equal(result.skip,!query.includes('event'));
+  assert.ok(result.bounds.left>=0&&result.bounds.top>=0&&result.bounds.right<=width&&result.bounds.bottom<=height);assert.deepEqual(result.overflow,[]);assert.equal(result.selected,query.includes('selected')&&!query.includes('partial'));assert.equal(result.skip,!query.includes('event'));
   if(!query.includes('art')){
    const capture=boardCaptures.find(c=>c.width===width&&c.height===height);
    result.stateClearance=await page.evaluate(async({capture,panels})=>{

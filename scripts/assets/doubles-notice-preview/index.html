@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Império Urbano — aviso de dados iguais</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#123e38;color:#285646}main{height:100dvh;position:relative;background:center/100% 100% no-repeat;isolation:isolate}.notice{position:absolute;left:52%;top:54%;transform:translate(-50%,-50%);width:300px;min-height:90px;padding:15px 18px;display:flex;align-items:center;gap:13px;border:1px solid transparent;isolation:isolate;overflow:hidden;border-radius:7px;box-shadow:0 2px 3px #071d3330}.notice:before{content:'';position:absolute;inset:-1px;z-index:-1;border:1px solid transparent;border-image-source:url('/assets/notices/doubles-v1/frame.webp');border-image-slice:220 fill;border-image-width:20px;pointer-events:none}.dice{display:flex;gap:5px;flex-shrink:0}.die{width:35px;height:35px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px;padding:5px;border:1px solid #bd8c33;border-radius:7px;background:linear-gradient(135deg,#fffef5,#f6e3b4);box-shadow:inset 1px 1px 1px #fff,1px 2px 0 #aa7e2f}.pip{border-radius:50%;background:#124f42;box-shadow:inset 0 1px #002c21}.copy{min-width:0;padding-right:9px}h1{font-size:21px;line-height:1.05;margin:0 0 5px;font-weight:900;color:#10563f;letter-spacing:-.4px}.message{font-size:13px;line-height:1.25;margin:0;color:#52634e}.close{position:absolute;right:5px;top:4px;width:22px;height:22px;padding:0;border:0;background:none;color:#646c4e;font-size:18px;line-height:22px;cursor:pointer}.penalty h1,.penalty .message{color:#8a3c36}.penalty .pip{background:#8a3c36}.art-only{background:radial-gradient(ellipse at center,#387764,#123e38 70%)}.art-only .notice{left:50%;top:50%;width:520px;min-height:164px;padding:29px 33px;gap:24px;transform:translate(-50%,-50%) scale(1.2)}.art-only .notice:before{border-image-width:35px}.art-only .die{width:62px;height:62px;padding:9px;gap:4px;border-radius:11px}.art-only h1{font-size:30px;margin-bottom:9px}.art-only .message{font-size:19px}.art-only .close{top:9px;right:9px;width:25px;height:25px;font-size:23px}
+@media(max-height:500px){.notice{width:208px;min-height:66px;padding:10px;gap:8px}.notice:before{border-image-width:17px}.die{width:25px;height:25px;border-radius:5px;gap:1px;padding:3px}.dice{gap:3px}h1{font-size:14px;margin-bottom:3px}.message{font-size:11px}.copy{padding-right:6px}.close{width:16px;height:16px;line-height:16px;font-size:14px;top:2px;right:3px}}
+@media(max-width:700px) and (max-height:500px){.notice{width:160px;left:51%;top:51%;padding:8px;gap:7px;min-height:58px}.notice:before{border-image-width:14px}.die{width:19px;height:19px;border-radius:4px;padding:2px;gap:1px}.dice{gap:3px}h1{font-size:12px;line-height:1.1}.message{font-size:10.5px;line-height:1.2}.copy{padding-right:4px}.close{font-size:12px;width:13px;height:13px;line-height:13px;right:3px}}
+</style>
+<style>.notice[hidden]{display:none}</style>
+<main><section class="notice" role="status" aria-live="polite" aria-atomic="true">
+ <div class="dice" aria-hidden="true"><div class="die"></div><div class="die"></div></div>
+ <div class="copy"><h1>Dados iguais!</h1><p class="message">Você joga de novo.</p></div>
+ <button class="close" type="button" aria-label="Fechar aviso">×</button>
+</section></main>
+<script type="module">
+const p=new URLSearchParams(location.search),main=document.querySelector('main'),notice=document.querySelector('.notice'),face=Number(p.get('face')||3);
+const positions={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+if(!positions[face])throw Error('Face inválida para a prévia');
+document.querySelectorAll('.die').forEach(die=>{die.dataset.face=face;positions[face].forEach(i=>{const pip=document.createElement('i');pip.className='pip';pip.style.gridColumn=i%3+1;pip.style.gridRow=Math.floor(i/3)+1;die.append(pip)})});
+const background=innerHeight>500?'1280x720':innerWidth>=750?'800x360':'667x280';
+if(p.has('art'))main.classList.add('art-only');else main.style.backgroundImage=`url('/assets/3d/reviews/v1-adverse/hotels-high-values-${background}.png')`;
+let text='Você joga de novo.';
+if(p.has('rest'))text='Você saiu do Descanso.';
+if(p.has('third')){notice.classList.add('penalty');text='Três duplas seguidas: você vai direto para o Descanso.';}
+if(p.has('other'))text='Marina Imperial joga de novo.';
+document.querySelector('.message').textContent=text;notice.setAttribute('aria-label',`Dados iguais: ${face} e ${face}! ${text}`);
+document.querySelector('.close').addEventListener('click',()=>notice.hidden=true);
+</script></html>

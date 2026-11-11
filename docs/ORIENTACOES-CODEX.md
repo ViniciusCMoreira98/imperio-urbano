@@ -53,6 +53,33 @@ Atendido o pedido da revisão adversa, na claude/engenharia:
 - Conferido em 1280×720, 800×360 e 667×280: o "×" de fechar continua livre.
 
 Fiquem à vontade para trazer a lista para dentro da arte do painel (por exemplo, no quadro do proprietário). Basta receber `tileOccupants` por prop. A oclusão dos modelos no tabuleiro continua não resolvida, como vocês anotaram.
+## Publicação autorizada das entregas pendentes — 11/11/2026
+
+Usuário autorizou commit na develop_arte_3d e merge na develop. Inclui o modal funcional do Descanso, arte de Pagar a dívida, aviso de dados iguais, nova proposta de destaque da propriedade-sede olímpica, fontes/prompts, capturas, QA e orientações. Os avisos de “sem commit/merge” abaixo registram o momento original de cada entrega e são anteriores a esta autorização. Descanso está ligado à interface real; dívida, aviso de duplas e novo destaque olímpico continuam kits/protótipos com integração descrita para o Claude. Validado com build e 198 testes; relatórios visuais e hashes dos assets conferidos. Tabuleiro V2 permanece separado.
+
+## Nova proposta de arte para a propriedade-sede olímpica — 11/11/2026
+
+O usuário pediu um destaque realmente reconhecível para o estado que está sediando as Olimpíadas. Criado kit assets/olympic-host/highlight-v3/: moldura azul-cobalto/dourada/ciano com aros maiores, placa de SEDE OLÍMPICA, detalhes das cinco cores e louros; badge complementar horizontal com aros/faixa. Fontes PNG transparentes, WebPs, prompts integrais e manifesto de hashes. Duas novas gerações image_gen integrado; zero créditos Meshy. Foto original, cor do proprietário, UF, nome e aluguel preservados e separados dos bitmaps; modelos atuais intactos.
+
+Comparação e detalhe em previews/, fonte HTML scripts/assets/olympic-highlight-preview/. São estudos frontais, não capturas de gameplay. QA olympic-highlight-art-qa.mjs: três capturas, transparência nas regiões de nome/foto/aluguel, proporção das imagens e ausência de transbordamento/erros conferidas. OlympicHost real ainda usa a arte anterior: a nova abertura/crest exigem recalibrar olympicFrameGrid, não trocar a textura cegamente. Contrato no README do kit e nas orientações do Claude, incluindo estados verticais/horizontais, aluguéis, construções e peões. Sem commit/merge nesta entrega.
+
+## Modal funcional da vez no Descanso — 11/11/2026
+
+Implementado RestTurnChoice na GameScreen da V1, com duas opções solicitadas pelo usuário: Utilizar carta (USE_REST_PASS) e Rolar dados (ROLL_DICE). Aparece na própria vez mostrada, antes do lance, somente com penalidade ativa na casa REST, depois de a mesa parar. Sem Passe Livre, opção de carta visível/desabilitada; não usar Aluguel Zero. Mantém prazo, foco no diálogo, bloqueio offline/pendência, recuperação após recusa/resync e inventário somente do servidor. A barra normal deixa de duplicar rolagem/Descanso/prazo enquanto o modal é oferecido. Em retrato móvel, só o aviso de girar é ativo.
+
+Arte reaproveitada da moldura floral do aviso de duplas e do Passe Livre, com cópia empacotável em hud/art/rest-turn/frame-v1.webp. Painel no miolo; câmeras/modelos/regras preservados. README e capturas em assets/rest-turn/. QA no GameScreen real com WebSocket simulado verifica envelopes das duas ações, ausência de desconto otimista, bloqueio de repetição, recusa, sem carta, fim do Descanso, outra vez, espera da animação, offline, foco e retrato. Capturas 800×360/667×280 sem interseção com as 26 superfícies de estados, margem3px. 198 testes e build aprovados; sem teste contra API real ou telefone físico. Zero geração adicional/Meshy. Sem commit/merge nesta entrega.
+
+## Arte — aviso de dados iguais, 11/11/2026
+
+Criado kit assets/notices/doubles-v1/: moldura dourada/esmeralda/marfim com flores e folhagens brasileiras, fonte PNG, WebP 1024×683, prompt integral e manifesto/hashes. Uma geração com image_gen integrado; zero créditos Meshy. Não há faces/pontos gravados no asset: a prévia desenha os dois dados com valores dinâmicos, mantendo os modelos 3D da partida intactos. Texto/controlador de fechamento também separados da imagem.
+
+Protótipo em scripts/assets/doubles-notice-preview/ e QA doubles-notice-art-qa.mjs. Nove capturas, oito composições sobre o tabuleiro sem interseção com os 26 estados (margem3px), seis faces conferidas, sem transbordamento/erro de página. Inclui jogada extra, saída do Descanso, terceira dupla e outra pessoa. Não prometer extra turno nas exceções; a lógica existente tableNotices é autoritativa. São composições estáticas; integração em TableNotices ainda pendente. Contrato completo no README do kit e nas orientações do Claude. Sem commit/merge nesta entrega.
+
+## Asset — Pagar a dívida, 10/11/2026
+
+Criado kit assets/debt/payment-v1/ com moldura/fundo bordô/dourado/marfim (moedas, chaves e folhagens), emblema de livro-caixa, fontes PNG, WebPs, prompts integrais e manifestos/hashes. Duas gerações originais com image_gen integrado; zero créditos Meshy. Moldura em nove partes com cantos preservados, textos e valores separados do bitmap. Prévia central no miolo em scripts/assets/debt-choice-preview/index.html, sem alterar DebtSalePrompt real.
+
+O roteiro compartilhado olympic-choice-art-qa.mjs agora aceita --debt. Oito capturas, incluindo 800×360/667×280 antes e depois da seleção, venda insuficiente e impossibilidade de pagar; sete composições de tabuleiro sem interseção com os 26 estados (margem 3 px), sem transbordamento/erros de página. Valores ilustrativos consistentes com terreno SP/AM e venda a 80%; a integração depende de saleSummary e do servidor, não dos exemplos. README e orientações do Claude preservam credor, lista completa, cálculos, comandos e prazos. Prévia estática de arte; integração funcional ainda pendente. Sem commit/merge nesta entrega.
 
 ## Publicação dos kits de seleção — 10/11/2026
 

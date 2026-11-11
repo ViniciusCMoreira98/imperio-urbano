@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-11",
+  "frame": "apps/web/src/hud/art/rest-turn/frame-v1.webp",
+  "reusedFrame": "assets/notices/doubles-v1/frame.webp",
+  "frameSha256": "02078583b8027bf59b9850ff52dba6ba6424b7855a380f74395072cd87614f45",
+  "passArt": "apps/web/src/event-art/art/passe-livre-v1.webp",
+  "newImageGenerations": 0,
+  "meshyCredits": 0,
+  "frontendIntegrated": true,
+  "backendChanged": false
+}
