@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { GameSounds } from '../audio/GameSounds';
+import { RestTurnChoice } from '../hud/RestTurnChoice';
 import { GameBoard } from '../board/GameBoard';
 import { ActionBar } from '../hud/ActionBar';
 import { BoardChoicePrompt } from '../hud/BoardChoicePrompt';
@@ -112,6 +113,7 @@ export function GameScreen() {
             <TableNotices myId={session.playerId} />
             {/* Compra/construção da vez e consulta de estados: modal sobre o tabuleiro. */}
             <PropertyDecisionDialog myId={session.playerId} />
+            {!askToRotate && <RestTurnChoice myId={session.playerId} />}
             {snapshot.status === 'FINISHED' && <GameOverScreen myId={session.playerId} token={session.token} gameId={gameId} onLeave={leave} />}
           </>
         )}

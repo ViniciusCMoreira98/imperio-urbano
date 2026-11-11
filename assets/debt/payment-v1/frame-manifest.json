@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-10",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/debt/payment-v1/frame-source.png",
+  "file": "assets/debt/payment-v1/frame.webp",
+  "sourceWidth": 1536,
+  "sourceHeight": 1024,
+  "width": 1024,
+  "height": 683,
+  "bytes": 105564,
+  "sha256": "47b80daa2704bdc23cbeaba7a0ddeb03e6921547f4f1e54785a77de84e1b6998",
+  "sourceSha256": "b885b63d00e36de668e7afb3bc21db7c5f5ddd7755d4755204d4a519fd3149e9",
+  "nineSlice": 174,
+  "cornerDisplayPixels": {
+    "standard": 18,
+    "small": 15,
+    "artOnly": 30
+  },
+  "meshyCredits": 0,
+  "integrated": false
+}

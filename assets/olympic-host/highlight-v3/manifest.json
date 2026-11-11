@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-11",
+  "provider": "OpenAI image_gen built-in",
+  "assets": [
+    {
+      "name": "frame",
+      "source": "assets/olympic-host/highlight-v3/frame-source.png",
+      "file": "assets/olympic-host/highlight-v3/frame.webp",
+      "sourceWidth": 1086,
+      "sourceHeight": 1448,
+      "width": 768,
+      "height": 1024,
+      "transparent": 535703,
+      "solid": 180021,
+      "protectedAlpha": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bytes": 157470,
+      "sha256": "5ddb9f729bbda75baa0b897cc0167c5de986d748fc08c3c01f325c97e2aa9fb2",
+      "sourceSha256": "03146026b3ad416ed713fd7971db0f19e1b2defa73f310396bff851a1122c47a"
+    },
+    {
+      "name": "badge",
+      "source": "assets/olympic-host/highlight-v3/badge-source.png",
+      "file": "assets/olympic-host/highlight-v3/badge.webp",
+      "sourceWidth": 1774,
+      "sourceHeight": 887,
+      "width": 768,
+      "height": 384,
+      "transparent": 124248,
+      "solid": 146992,
+      "protectedAlpha": [],
+      "bytes": 117048,
+      "sha256": "1187e837ae01915d37fffd25fa01bc7c76f52a6ca3cce57236c7591c2ca1d9f4",
+      "sourceSha256": "4699b162f6197e3a18caabbf99e65307a62d061d9648710428b190c7b3c5a7b3"
+    }
+  ],
+  "photo": "apps/web/src/board/board34/art/v3/sp-board-v3.png",
+  "newImageGenerations": 2,
+  "meshyCredits": 0,
+  "integrated": false
+}

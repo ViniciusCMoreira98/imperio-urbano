@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-11",
+  "scope": "Real GameScreen and WebSocket command envelopes with mocked server snapshots",
+  "checks": [
+    {
+      "width": 800,
+      "height": 360,
+      "box": {
+        "left": 309,
+        "right": 523,
+        "top": 114.8125,
+        "bottom": 273.96875
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 360
+      },
+      "atlas": {
+        "width": 800,
+        "height": 360,
+        "dpr": 2,
+        "large": true
+      },
+      "alBounds": {
+        "left": 180.12196497903253,
+        "right": 255.53627651564693,
+        "top": 184.62080830830502,
+        "bottom": 211.3035262365393
+      },
+      "testedStates": 26,
+      "overlaps": [],
+      "buttonTexts": [
+        "Utilizar carta",
+        "Rolar dados"
+      ]
+    },
+    {
+      "width": 667,
+      "height": 280,
+      "box": {
+        "left": 257.15625,
+        "right": 423.15625,
+        "top": 83.171875,
+        "bottom": 202.40625
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "width": 667,
+        "height": 280
+      },
+      "atlas": {
+        "width": 667,
+        "height": 280,
+        "dpr": 2,
+        "large": true
+      },
+      "alBounds": {
+        "left": 164.1529419714288,
+        "right": 222.2360142108088,
+        "top": 143.54646105732812,
+        "bottom": 164.0971257970862
+      },
+      "testedStates": 26,
+      "overlaps": [],
+      "buttonTexts": [
+        "Utilizar carta",
+        "Rolar dados"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "type": "USE_REST_PASS"
+    },
+    {
+      "type": "ROLL_DICE"
+    }
+  ],
+  "tests": [
+    "one command while pending",
+    "no optimistic inventory change",
+    "rejection enables retry",
+    "no pass disables card",
+    "ROLL_DICE instead of pass",
+    "released player has no modal",
+    "not another player turn",
+    "waits for dice animation",
+    "offline disabled",
+    "keyboard focus stays inside",
+    "portrait notice without modal"
+  ],
+  "errors": []
+}

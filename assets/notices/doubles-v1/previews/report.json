@@ -1,0 +1,281 @@
+{
+  "date": "2026-11-11",
+  "scope": "Art prototype on static V1 captures; not integrated gameplay",
+  "checks": [
+    {
+      "name": "notice-art",
+      "width": 1000,
+      "height": 640,
+      "face": 3,
+      "panels": [
+        {
+          "left": 188,
+          "top": 221.60000610351562,
+          "right": 812,
+          "bottom": 418.4000244140625
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        3,
+        3
+      ],
+      "message": "Você joga de novo.",
+      "ariaLabel": "Dados iguais: 3 e 3! Você joga de novo."
+    },
+    {
+      "name": "board-desktop",
+      "width": 1280,
+      "height": 720,
+      "face": 3,
+      "panels": [
+        {
+          "left": 515.59375,
+          "top": 343.796875,
+          "right": 815.59375,
+          "bottom": 433.796875
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        3,
+        3
+      ],
+      "message": "Você joga de novo.",
+      "ariaLabel": "Dados iguais: 3 e 3! Você joga de novo.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000962873700926024,
+        "overlaps": []
+      }
+    },
+    {
+      "name": "board-mobile",
+      "width": 800,
+      "height": 360,
+      "face": 3,
+      "panels": [
+        {
+          "left": 312,
+          "top": 161.390625,
+          "right": 520,
+          "bottom": 227.390625
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        3,
+        3
+      ],
+      "message": "Você joga de novo.",
+      "ariaLabel": "Dados iguais: 3 e 3! Você joga de novo.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000868170025586489,
+        "overlaps": []
+      }
+    },
+    {
+      "name": "board-small",
+      "width": 667,
+      "height": 280,
+      "face": 3,
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 113.796875,
+          "right": 420.15625,
+          "bottom": 171.796875
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        3,
+        3
+      ],
+      "message": "Você joga de novo.",
+      "ariaLabel": "Dados iguais: 3 e 3! Você joga de novo.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    },
+    {
+      "name": "left-rest-small",
+      "width": 667,
+      "height": 280,
+      "face": 2,
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 113.109375,
+          "right": 420.15625,
+          "bottom": 172.484375
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        2,
+        2
+      ],
+      "message": "Você saiu do Descanso.",
+      "ariaLabel": "Dados iguais: 2 e 2! Você saiu do Descanso.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    },
+    {
+      "name": "third-mobile",
+      "width": 800,
+      "height": 360,
+      "face": 5,
+      "panels": [
+        {
+          "left": 312,
+          "top": 153.921875,
+          "right": 520,
+          "bottom": 234.859375
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        5,
+        5
+      ],
+      "message": "Três duplas seguidas: você vai direto para o Descanso.",
+      "ariaLabel": "Dados iguais: 5 e 5! Três duplas seguidas: você vai direto para o Descanso.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000868170025586489,
+        "overlaps": []
+      }
+    },
+    {
+      "name": "third-small",
+      "width": 667,
+      "height": 280,
+      "face": 5,
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 100.515625,
+          "right": 420.15625,
+          "bottom": 185.078125
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        5,
+        5
+      ],
+      "message": "Três duplas seguidas: você vai direto para o Descanso.",
+      "ariaLabel": "Dados iguais: 5 e 5! Três duplas seguidas: você vai direto para o Descanso.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    },
+    {
+      "name": "other-mobile",
+      "width": 800,
+      "height": 360,
+      "face": 6,
+      "panels": [
+        {
+          "left": 312,
+          "top": 160.796875,
+          "right": 520,
+          "bottom": 227.984375
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        6,
+        6
+      ],
+      "message": "Marina Imperial joga de novo.",
+      "ariaLabel": "Dados iguais: 6 e 6! Marina Imperial joga de novo.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000868170025586489,
+        "overlaps": []
+      }
+    },
+    {
+      "name": "other-small",
+      "width": 667,
+      "height": 280,
+      "face": 6,
+      "panels": [
+        {
+          "left": 260.15625,
+          "top": 113.109375,
+          "right": 420.15625,
+          "bottom": 172.484375
+        }
+      ],
+      "overflow": [],
+      "pips": [
+        6,
+        6
+      ],
+      "message": "Marina Imperial joga de novo.",
+      "ariaLabel": "Dados iguais: 6 e 6! Marina Imperial joga de novo.",
+      "stateClearance": {
+        "testedStates": 26,
+        "projectionResidual": 0.00000640873649116391,
+        "overlaps": []
+      }
+    }
+  ],
+  "faces": [
+    {
+      "face": 1,
+      "counts": [
+        1,
+        1
+      ]
+    },
+    {
+      "face": 2,
+      "counts": [
+        2,
+        2
+      ]
+    },
+    {
+      "face": 3,
+      "counts": [
+        3,
+        3
+      ]
+    },
+    {
+      "face": 4,
+      "counts": [
+        4,
+        4
+      ]
+    },
+    {
+      "face": 5,
+      "counts": [
+        5,
+        5
+      ]
+    },
+    {
+      "face": 6,
+      "counts": [
+        6,
+        6
+      ]
+    }
+  ],
+  "close": true,
+  "errors": []
+}

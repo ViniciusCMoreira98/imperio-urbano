@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-11",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/notices/doubles-v1/frame-source.png",
+  "file": "assets/notices/doubles-v1/frame.webp",
+  "sourceWidth": 1536,
+  "sourceHeight": 1024,
+  "width": 1024,
+  "height": 683,
+  "bytes": 119804,
+  "sha256": "02078583b8027bf59b9850ff52dba6ba6424b7855a380f74395072cd87614f45",
+  "sourceSha256": "94663751270c0c47bb05a4195a4b65f336283c6dbfef682dd56b279c096ac5e9",
+  "nineSlice": 220,
+  "cornerPixels": {
+    "desktop": 20,
+    "mobile": 17,
+    "small": 14,
+    "artOnly": 35
+  },
+  "meshyCredits": 0,
+  "integrated": false
+}

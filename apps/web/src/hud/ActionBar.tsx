@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Command } from '@imperio/shared-types';
 import { isMyTurn } from '../game/rules';
+import { shouldOfferRestChoice } from '../game/restChoice';
 import { playSound } from '../audio/audio';
 import { formatCredits } from '../property-card/tileInfo';
 import { useCardBusy } from '../store/cardStore';
@@ -42,6 +43,7 @@ export function ActionBar({ myId }: { myId: string }) {
   const act = (command: Command) => send(command);
   const canRoll = mine && turnId === myId && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
   const tableBusy = diceRolling || tableMoving || cardBusy;
+  const choosingRest = turnId === myId && shouldOfferRestChoice(snapshot, myId);
 
   return (
     <div className="hud-action-shell relative flex w-full flex-col items-center gap-1.5 sm:w-auto">
@@ -62,11 +64,11 @@ export function ActionBar({ myId }: { myId: string }) {
             </>
           )}
         </span>
-        {restLeft > 0 && <RestChip turns={restLeft} />}
+        {restLeft > 0 && !choosingRest && <RestChip turns={restLeft} />}
         {/* Some enquanto a mesa mostra a jogada: o prazo do servidor só começa a correr quando ela termina. */}
-        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && <Countdown deadline={deadline} warn={mine} />}
+        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && !choosingRest && <Countdown deadline={deadline} warn={mine} />}
 
-        {canRoll && (
+        {canRoll && !choosingRest && (
           <Button variant="roll" className="px-6 py-2.5 text-base font-black tracking-wide sm:text-lg" disabled={offline || tableBusy} title={tableBusy ? 'Aguarde a jogada anterior terminar na mesa' : undefined} onClick={() => act({ type: 'ROLL_DICE' })}>
             ROLAR DADOS
           </Button>

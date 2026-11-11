@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-10",
+  "provider": "OpenAI image_gen built-in",
+  "source": "assets/debt/payment-v1/emblem-source.png",
+  "file": "assets/debt/payment-v1/emblem.webp",
+  "sourceWidth": 1254,
+  "sourceHeight": 1254,
+  "width": 640,
+  "height": 640,
+  "transparent": 101872,
+  "solid": 297524,
+  "bytes": 140310,
+  "sha256": "d443244a533707d6d3324ae2b9bb1a4eb41208ba767b08ae3accf4937878dac9",
+  "sourceSha256": "b3b48252d8723631de771a861972b3a769c0193ed888a815d12fdb87df6fab01",
+  "meshyCredits": 0,
+  "integrated": false,
+  "encoder": "Chromium WebP 92; aspect ratio and alpha preserved"
+}
