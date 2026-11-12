@@ -11,7 +11,8 @@ export interface ViewportInfo {
 }
 
 /**
- * A partida no celular é só em paisagem (decisão de 04/11/2026): em pé, pede para girar.
+ * O jogo no celular é só em paisagem (decisão de 04/11/2026; desde 11/11/2026 também no menu e na sala,
+ * para pedir já ao abrir): em pé, pede para girar.
  * Janela estreita no computador (mouse) não conta como celular.
  */
 export function shouldAskToRotate({ width, height, coarsePointer }: ViewportInfo): boolean {
@@ -47,17 +48,17 @@ export function useAskToRotate(): boolean {
 }
 
 /**
- * Cobre a partida enquanto o celular está em pé. Só apresentação: a conexão, o relógio do servidor e o
- * snapshot continuam; ao girar, o jogo aparece no estado atual.
+ * Cobre a tela enquanto o celular está em pé. Só apresentação: na partida, a conexão, o relógio do servidor e
+ * o snapshot continuam; ao girar, o jogo aparece no estado atual.
  */
-export function RotateDeviceNotice() {
+export function RotateDeviceNotice({ inGame = true }: { inGame?: boolean }) {
   return (
     <div
       role="alertdialog"
       aria-modal="true"
       aria-labelledby="rotate-title"
       aria-describedby="rotate-text"
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-slate-950/95 p-6 text-center"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-slate-950/95 p-6 text-center"
     >
       <svg viewBox="0 0 64 64" className="rotate-device-icon h-20 w-20 text-amber-300" aria-hidden="true">
         <rect x="20" y="6" width="24" height="44" rx="4" fill="none" stroke="currentColor" strokeWidth="3" />
@@ -67,7 +68,9 @@ export function RotateDeviceNotice() {
       </svg>
       <h2 id="rotate-title" className="text-xl font-black text-amber-300">Gire o celular</h2>
       <p id="rotate-text" className="max-w-xs text-white/85">
-        A partida é jogada na horizontal. O tempo do turno continua correndo enquanto o aparelho estiver em pé.
+        {inGame
+          ? 'A partida é jogada na horizontal. O tempo do turno continua correndo enquanto o aparelho estiver em pé.'
+          : 'O Império Urbano é jogado na horizontal. Gire o celular para continuar.'}
       </p>
     </div>
   );
