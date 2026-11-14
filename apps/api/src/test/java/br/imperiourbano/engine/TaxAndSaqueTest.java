@@ -55,23 +55,31 @@ class TaxAndSaqueTest {
 
         GameEngine.Result result = run(new RollDice(), 2, 4);
 
-        // Sem estados, o patrimônio é o saldo: 10% de 1000.
-        assertThat(result.events()).contains(new TaxPaid("ana", 100));
-        assertThat(state.player("ana").credits()).isEqualTo(900);
-        assertThat(state.taxPool()).isEqualTo(100);
+        // Sem construções: o mínimo da Taxa.
+        assertThat(result.events()).contains(new TaxPaid("ana", 50));
+        assertThat(state.player("ana").credits()).isEqualTo(950);
+        assertThat(state.taxPool()).isEqualTo(50);
     }
 
     @Test
-    void taxIsTenPercentOfTheWholeEquityRoundedDown() {
-        state = state.withProperty(PropertyState.purchased("AC", "ana")).withProperty(PropertyState.purchased("SP", "ana"));
-        anaSixStepsBefore(TAX_TILE, 1234);
-        int equity = engine.equity(state, "ana");
-        assertThat(equity).isGreaterThan(1234);
+    void taxChargesPerHouseAndPerHotel() {
+        // 3 casas no Acre, 1 no SP e hotel no RJ: 4 × 25 + 100 = 200 (terrenos não pagam).
+        state = state.withProperty(new PropertyState("AC", "ana", 3, 1, 1))
+                .withProperty(new PropertyState("SP", "ana", 1, 1, 1))
+                .withProperty(new PropertyState("RJ", "ana", 5, 3, 3))
+                .withProperty(PropertyState.purchased("AM", "ana"));
+        anaSixStepsBefore(TAX_TILE, 1000);
 
         GameEngine.Result result = run(new RollDice(), 2, 4);
 
-        assertThat(result.events()).contains(new TaxPaid("ana", equity / 10));
-        assertThat(state.player("ana").credits()).isEqualTo(1234 - equity / 10);
+        assertThat(result.events()).contains(new TaxPaid("ana", 200));
+        assertThat(state.player("ana").credits()).isEqualTo(800);
+    }
+
+    @Test
+    void onlyBareLandPaysTheMinimum() {
+        state = state.withProperty(PropertyState.purchased("AC", "ana")).withProperty(PropertyState.purchased("SP", "ana"));
+        assertThat(engine.taxFor(state, "ana")).isEqualTo(50);
     }
 
     @Test
@@ -99,10 +107,10 @@ class TaxAndSaqueTest {
 
     @Test
     void anUnpaidTaxBecomesADebtThatStillFillsThePoolWhenSettled() {
-        // Pouco saldo e um estado: 10% do patrimônio passa do saldo.
+        // Pouco saldo e um estado: a Taxa (o mínimo) passa do saldo.
         state = state.withProperty(PropertyState.purchased("AC", "ana"));
         anaSixStepsBefore(TAX_TILE, 5);
-        int tax = engine.equity(state, "ana") / 10;
+        int tax = engine.taxFor(state, "ana");
         assertThat(tax).isGreaterThan(5);
 
         GameEngine.Result landed = run(new RollDice(), 2, 4);

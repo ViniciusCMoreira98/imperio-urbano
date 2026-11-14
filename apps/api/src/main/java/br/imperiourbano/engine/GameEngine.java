@@ -504,7 +504,7 @@ public final class GameEngine {
             case EVENT -> {
                 if (depth < MAX_CHAINED_LANDINGS) drawEventCard(d, depth);
             }
-            case TAX -> payTax(d, player, rules.tax().amountFor(equity(d.state, player.id())));
+            case TAX -> payTax(d, player, taxFor(d.state, player.id()));
             case SAQUE -> {
                 if (d.state.taxPool() > 0) d.emit(new SaqueCollected(player.id(), d.state.taxPool()));
             }
@@ -832,6 +832,16 @@ public final class GameEngine {
      * Patrimônio = saldo + para cada estado: preço + valor investido em construções + aluguel que cobra hoje
      * (com sede olímpica; zero no apagão). O aluguel faz quem investiu valer mais que o custo (07/11/2026).
      */
+    /** Taxa de quem para na casa: por casa e por hotel que possui, com um mínimo (14/11/2026). */
+    public int taxFor(GameState state, String playerId) {
+        int houses = 0, hotels = 0;
+        for (PropertyState property : state.propertiesOf(playerId)) {
+            if (property.buildingLevel() > rules.construction().maxHouses()) hotels++;
+            else houses += property.buildingLevel();
+        }
+        return rules.tax().amountFor(houses, hotels);
+    }
+
     public int equity(GameState state, String playerId) {
         int assets = state.propertiesOf(playerId).stream()
                 .mapToInt(p -> catalog.state(p.stateId()).price() + investedIn(p) + rentFor(state, p.stateId()))

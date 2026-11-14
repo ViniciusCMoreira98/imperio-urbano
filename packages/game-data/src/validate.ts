@@ -70,7 +70,7 @@ export function validateCatalog(
   if (m[0] !== 2 || m[m.length - 1] !== 10 || m.some((v, i) => i > 0 && v <= m[i - 1])) {
     errors.push('Multiplicadores olímpicos devem crescer de ×2 a ×10');
   }
-  if (!(rules.tax.equityPercent > 0 && rules.tax.equityPercent <= 100)) errors.push('Percentual da Taxa deve ficar entre 1 e 100');
+  if ([rules.tax.perHouse, rules.tax.perHotel, rules.tax.minimum].some((v) => !(v >= 0))) errors.push('Valores da Taxa não podem ser negativos');
   if (rules.construction.firstVisitMaxHouses > rules.construction.maxHouses) {
     errors.push('Casas da primeira visita excedem o máximo');
   }

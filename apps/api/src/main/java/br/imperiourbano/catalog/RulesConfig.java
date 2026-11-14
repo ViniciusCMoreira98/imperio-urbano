@@ -64,13 +64,14 @@ public record RulesConfig(
     }
 
     /**
-     * Taxa: {@code equityPercent}% do patrimônio de quem para na casa (pedido do usuário, 10/11/2026), arredondado
-     * para baixo. O valor vai para o fundo do Saque; sem saldo, vira dívida com o banco.
+     * Taxa: imposto sobre as construções de quem para na casa (pedido do usuário, 14/11/2026; antes, 10% do
+     * patrimônio): {@code perHouse} por casa e {@code perHotel} por hotel, nunca menos que {@code minimum}. O
+     * valor vai para o fundo do Saque; sem saldo, vira dívida com o mesmo destino.
      */
-    public record TaxRules(int equityPercent) {
+    public record TaxRules(int perHouse, int perHotel, int minimum) {
 
-        public int amountFor(int equity) {
-            return Math.max(0, equity) * equityPercent / 100;
+        public int amountFor(int houses, int hotels) {
+            return Math.max(minimum, houses * perHouse + hotels * perHotel);
         }
     }
 

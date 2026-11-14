@@ -17,7 +17,7 @@
   },
   "rest": { "turnsLost": 2 },
   "nationalTravel": { "fee": 50 },
-  "tax": { "equityPercent": 10 },
+  "tax": { "perHouse": 25, "perHotel": 100, "minimum": 50 },
   "debtSale": { "refundPercent": 80 },
   "turnTimers": { "rollSeconds": 7, "decisionSeconds": 10, "debtSeconds": 10, "automaticSeconds": 2, "firstRollSeconds": 25 },
   "abandonment": { "seconds": 120, "botGameSeconds": 180 },

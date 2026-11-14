@@ -224,9 +224,9 @@ class RestAndTravelTest {
 
         GameEngine.Result result = run("ana", new RollDice(), 1, 2);
 
-        // Sem estados, o patrimônio é o saldo: 10% de 2500.
-        assertThat(result.events()).last().isEqualTo(new TaxPaid("ana", 250));
-        assertThat(state.player("ana").credits()).isEqualTo(2250);
+        // Sem construções, paga o mínimo da Taxa.
+        assertThat(result.events()).last().isEqualTo(new TaxPaid("ana", 50));
+        assertThat(state.player("ana").credits()).isEqualTo(2450);
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
     }
 
@@ -234,7 +234,7 @@ class RestAndTravelTest {
     void taxWithoutBalanceBecomesDebtToTheBank() {
         placeAna(TAX_TILE - 3);
         state = state.withProperty(PropertyState.purchased("AC", "ana")).updatePlayer("ana", p -> p.withCredits(5));
-        int tax = engine.equity(state, "ana") / 10;
+        int tax = engine.taxFor(state, "ana");
 
         GameEngine.Result result = run("ana", new RollDice(), 1, 2);
 

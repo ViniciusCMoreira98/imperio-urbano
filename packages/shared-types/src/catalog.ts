@@ -111,7 +111,8 @@ export interface RulesConfig {
   nationalTravel: { fee: number };
   /** Taxa: valor pago ao banco ao parar na casa; sem saldo, vira dívida. */
   /** Taxa: este percentual do patrimônio de quem para na casa, arredondado para baixo (10/11/2026). */
-  tax: { equityPercent: number };
+  /** Taxa (14/11/2026): por casa e por hotel de quem para, nunca menos que o mínimo. */
+  tax: { perHouse: number; perHotel: number; minimum: number };
   /** Venda ao banco para pagar dívida: estado inteiro (terreno + construções) por este percentual. */
   debtSale: { refundPercent: number };
   /**
