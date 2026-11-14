@@ -99,6 +99,8 @@ export interface RulesConfig {
   construction: {
     maxHouses: number;
     firstVisitMaxHouses: number;
+    /** Voltas a partir das quais a Casa 4 sai junto com as outras (0 desliga), 14/11/2026. */
+    fourthHouseAfterLaps: number;
     requiresFullColorGroup: boolean;
     fullGroupBaseRentMultiplier: number;
   };
@@ -117,7 +119,10 @@ export interface RulesConfig {
    * debtSeconds: prazo para vender e pagar uma dívida; ao acabar, o servidor vende o necessário.
    * automaticSeconds: pausa entre as jogadas feitas pelo servidor para quem está desconectado.
    */
-  turnTimers: { rollSeconds: number; decisionSeconds: number; debtSeconds: number; automaticSeconds: number };
+  turnTimers: { rollSeconds: number; decisionSeconds: number; debtSeconds: number; automaticSeconds: number;
+    /** Primeiro lance da partida (ninguém rolou ainda): a mesa 3D ainda carrega no celular. */
+    firstRollSeconds: number;
+  };
   /** Partida em andamento sem ninguém conectado por esse tempo é encerrada sem vencedor. */
   abandonment: { seconds: number; botGameSeconds: number };
   /**

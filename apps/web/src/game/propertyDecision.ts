@@ -4,7 +4,7 @@ import { rules } from '@imperio/game-data';
 import type { Command, GameSnapshot, PropertyState, StateDefinition } from '@imperio/shared-types';
 import type { PropertyEvolutionStage } from '../property-evolution/PropertyEvolutionPanel';
 import { formatCredits } from '../property-card/tileInfo';
-import { HOTEL_LEVEL, affordablePurchaseHouses, buildOptions, isMyTurn, playerOf, propertyAt } from './rules';
+import { HOTEL_LEVEL, affordablePurchaseHouses, buildOptions, housesAtOnce, isMyTurn, playerOf, propertyAt } from './rules';
 
 /** Compra e construção são decisões da vez; consulta é só olhar (fora da vez, ou sem decisão pendente). */
 export type DecisionMode = 'purchase' | 'build' | 'view';
@@ -34,10 +34,10 @@ export function pendingDecision(snapshot: GameSnapshot, myId: string): PropertyD
   const { definition, property } = propertyAt(snapshot, me.position);
   if (!definition) return null;
   if (snapshot.phase === 'AWAITING_PURCHASE' && !property) {
-    return decision('purchase', me.position, definition, undefined, purchaseStages(snapshot, definition, me.credits));
+    return decision('purchase', me.position, definition, undefined, purchaseStages(snapshot, definition, me.credits, me.laps ?? 0));
   }
   if (snapshot.phase === 'AWAITING_BUILD' && property?.ownerId === myId) {
-    return decision('build', me.position, definition, property, buildStages(snapshot, definition, property, me.credits));
+    return decision('build', me.position, definition, property, buildStages(snapshot, definition, property, me.credits, me.laps ?? 0));
   }
   return null;
 }
@@ -100,21 +100,27 @@ function stage(snapshot: GameSnapshot, definition: StateDefinition, level: (type
   return { level, label: STAGE_LABELS[level], rentLabel: formatCredits(rentAt(snapshot, definition, level)), ...(snapshot.olympics.hostStateId === definition.id ? { baseRentLabel: formatCredits([definition.rent.base, definition.rent.house1, definition.rent.house2, definition.rent.house3, definition.rent.house4, definition.rent.hotel][level]) } : {}), status, ...(note ? { note } : {}) };
 }
 
-/** Na compra: terreno ou terreno com 1 a 3 casas, até onde o saldo paga. Casa 4 e hotel ficam para outras visitas. */
-function purchaseStages(snapshot: GameSnapshot, definition: StateDefinition, credits: number): PropertyEvolutionStage[] {
-  const firstVisit = rules.construction.firstVisitMaxHouses;
-  const affordable = definition.price <= credits ? affordablePurchaseHouses(definition, credits) : -1;
+/** Por que a próxima casa ainda não sai nesta visita: outra visita ou, com a regra das voltas, uma volta no tabuleiro. */
+const NEXT_VISIT = rules.construction.fourthHouseAfterLaps > 0 ? 'Em outra visita ou depois de uma volta' : 'Em uma próxima visita';
+
+/**
+ * Na compra: terreno ou terreno com 1 a 3 casas (4 depois de uma volta no tabuleiro, 14/11/2026), até onde
+ * o saldo paga. O hotel fica para outra visita.
+ */
+function purchaseStages(snapshot: GameSnapshot, definition: StateDefinition, credits: number, laps: number): PropertyEvolutionStage[] {
+  const atOnce = housesAtOnce(laps);
+  const affordable = definition.price <= credits ? affordablePurchaseHouses(definition, credits, atOnce) : -1;
   return LEVELS.map((level) => {
     if (level <= affordable) return stage(snapshot, definition, level, 'available');
-    if (level <= firstVisit) return stage(snapshot, definition, level, 'locked', NO_FUNDS);
-    return stage(snapshot, definition, level, 'locked', level === HOTEL_LEVEL ? 'Depois da Casa 4, em outra visita' : 'Em uma próxima visita');
+    if (level <= atOnce) return stage(snapshot, definition, level, 'locked', NO_FUNDS);
+    return stage(snapshot, definition, level, 'locked', level === HOTEL_LEVEL ? 'Depois da Casa 4, em outra visita' : NEXT_VISIT);
   });
 }
 
 /** Na construção: o que o motor libera nesta visita (D4), limitado pelo saldo. */
-function buildStages(snapshot: GameSnapshot, definition: StateDefinition, property: PropertyState, credits: number): PropertyEvolutionStage[] {
+function buildStages(snapshot: GameSnapshot, definition: StateDefinition, property: PropertyState, credits: number, laps: number): PropertyEvolutionStage[] {
   const current = property.buildingLevel;
-  const options = buildOptions(property);
+  const options = buildOptions(property, laps);
   return LEVELS.map((level) => {
     if (level < current) return stage(snapshot, definition, level, 'complete');
     if (level === current) return stage(snapshot, definition, level, 'current');
@@ -122,7 +128,7 @@ function buildStages(snapshot: GameSnapshot, definition: StateDefinition, proper
       if (!options.hotel) return stage(snapshot, definition, level, 'locked', 'Depois da Casa 4, em outra visita');
       return definition.hotelCost <= credits ? stage(snapshot, definition, level, 'available') : stage(snapshot, definition, level, 'locked', NO_FUNDS);
     }
-    if (level - current > options.houses) return stage(snapshot, definition, level, 'locked', 'Em uma próxima visita');
+    if (level - current > options.houses) return stage(snapshot, definition, level, 'locked', NEXT_VISIT);
     return (level - current) * definition.houseCost <= credits
       ? stage(snapshot, definition, level, 'available')
       : stage(snapshot, definition, level, 'locked', NO_FUNDS);

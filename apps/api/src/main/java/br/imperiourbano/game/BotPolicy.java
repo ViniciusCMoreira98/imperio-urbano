@@ -45,7 +45,7 @@ public final class BotPolicy {
     /** Compra com o máximo de casas da primeira etapa que o saldo pague. */
     private GameCommand purchase(PlayerState bot) {
         StateDefinition definition = catalog.state(catalog.tile(bot.position()).stateId());
-        for (int houses = catalog.rules().construction().firstVisitMaxHouses(); houses >= 0; houses--) {
+        for (int houses = engine.housesAtOnce(bot); houses >= 0; houses--) {
             if (bot.credits() >= definition.price() + houses * definition.houseCost()) {
                 return new GameCommand.BuyProperty(houses);
             }
@@ -58,7 +58,7 @@ public final class BotPolicy {
         StateDefinition definition = catalog.state(catalog.tile(bot.position()).stateId());
         PropertyState property = state.property(definition.id()).orElse(null);
         if (property == null) return new GameCommand.SkipBuild();
-        GameEngine.BuildOptions options = engine.buildOptions(property);
+        GameEngine.BuildOptions options = engine.buildOptions(property, bot);
         if (options.hotel() && bot.credits() >= definition.hotelCost()) return new GameCommand.BuildHotel();
         for (int houses = options.houses(); houses >= 1; houses--) {
             if (bot.credits() >= houses * definition.houseCost()) return new GameCommand.Build(houses);

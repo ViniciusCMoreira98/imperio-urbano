@@ -42,8 +42,15 @@ describe('modal de compra', () => {
     const d = pendingDecision(game({ phase: 'AWAITING_PURCHASE' }), 'ana')!;
     expect(d.mode).toBe('purchase');
     expect(statuses(d)).toEqual(['available', 'available', 'available', 'available', 'locked', 'locked']);
-    expect(d.stages[4].note).toBe('Em uma próxima visita');
+    expect(d.stages[4].note).toBe('Em outra visita ou depois de uma volta');
     expect(defaultSelection(d)).toBe(0);
+  });
+
+  it('depois de uma volta no tabuleiro, a Casa 4 já sai na compra', () => {
+    const lapped = { ...player('ana', 9999), laps: 1 } as PlayerState;
+    const d = pendingDecision(game({ phase: 'AWAITING_PURCHASE', players: [lapped, player('bia', 9999, 0)] }), 'ana')!;
+    expect(statuses(d)).toEqual(['available', 'available', 'available', 'available', 'available', 'locked']);
+    expect(d.stages[5].note).toBe('Depois da Casa 4, em outra visita');
   });
 
   it('bloqueia o que o saldo não paga', () => {

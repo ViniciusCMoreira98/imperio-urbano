@@ -196,8 +196,12 @@ public final class GameEngine {
             case GameStarted e -> initialState(e);
             case DiceRolled e -> state.withDice(e.dice(), e.dice().isDouble() ? state.doublesInRow() + 1 : 0);
             case PlayerMoved e -> {
-                GameState arrived = state.updatePlayer(e.playerId(),
-                        p -> arrive(p.withPosition(e.to()).withCredits(p.credits() + e.startBonus())));
+                // Passou ou parou no Início andando para a frente (o mesmo que paga o bônus): mais uma volta.
+                boolean lap = !e.sentToRest() && e.to() < e.from();
+                GameState arrived = state.updatePlayer(e.playerId(), p -> {
+                    PlayerState moved = arrive(p.withPosition(e.to()).withCredits(p.credits() + e.startBonus()));
+                    return lap ? moved.withLap() : moved;
+                });
                 if (e.sentToRest()) {
                     yield arrived.withDice(arrived.lastDice(), 0).withPhase(TurnPhase.AWAITING_END_TURN);
                 }
@@ -646,14 +650,24 @@ public final class GameEngine {
         }
     }
 
-    /** Compra e, na mesma visita, até {@code firstVisitMaxHouses} casas (primeira etapa, D4). */
+    /**
+     * Casas que dá para fazer de uma vez, sem esperar outra visita: {@code firstVisitMaxHouses} (D4) ou, para
+     * quem já deu {@code fourthHouseAfterLaps} voltas no tabuleiro, todas as quatro (14/11/2026).
+     */
+    public int housesAtOnce(PlayerState player) {
+        RulesConfig.ConstructionRules construction = rules.construction();
+        int laps = construction.fourthHouseAfterLaps();
+        return laps > 0 && player.laps() >= laps ? construction.maxHouses() : construction.firstVisitMaxHouses();
+    }
+
+    /** Compra e, na mesma visita, as casas que o jogador pode fazer de uma vez (primeira etapa, D4). */
     private void buyProperty(Decision d, int houses) {
         requirePhase(d.state, TurnPhase.AWAITING_PURCHASE, "Não há estado para comprar agora.");
-        int maxHouses = rules.construction().firstVisitMaxHouses();
+        PlayerState player = d.state.currentPlayer();
+        int maxHouses = housesAtOnce(player);
         if (houses < 0 || houses > maxHouses) {
             throw new RuleViolationException("Na compra é possível construir de 0 a %d casas.".formatted(maxHouses));
         }
-        PlayerState player = d.state.currentPlayer();
         StateDefinition definition = catalog.state(catalog.tile(player.position()).stateId());
         int housesCost = houses * definition.houseCost();
         if (player.credits() < definition.price() + housesCost) {
@@ -669,7 +683,7 @@ public final class GameEngine {
         requirePhase(d.state, TurnPhase.AWAITING_BUILD, "Você só pode construir ao parar no próprio estado.");
         PlayerState player = d.state.currentPlayer();
         PropertyState property = ownedPropertyHere(d.state, player).orElseThrow();
-        int allowed = buildOptions(property).houses();
+        int allowed = buildOptions(property, player).houses();
         if (allowed == 0) {
             throw new RuleViolationException("Não é possível construir casas neste estado agora.");
         }
@@ -685,7 +699,7 @@ public final class GameEngine {
         requirePhase(d.state, TurnPhase.AWAITING_BUILD, "Você só pode construir ao parar no próprio estado.");
         PlayerState player = d.state.currentPlayer();
         PropertyState property = ownedPropertyHere(d.state, player).orElseThrow();
-        if (!buildOptions(property).hotel()) {
+        if (!buildOptions(property, player).hotel()) {
             throw new RuleViolationException("O hotel exige quatro casas e uma nova visita ao estado.");
         }
         int cost = catalog.state(property.stateId()).hotelCost();
@@ -846,12 +860,13 @@ public final class GameEngine {
     public record BuildOptions(int houses, boolean hotel) {
     }
 
-    public BuildOptions buildOptions(PropertyState property) {
+    public BuildOptions buildOptions(PropertyState property, PlayerState owner) {
         RulesConfig.ConstructionRules construction = rules.construction();
         int level = property.buildingLevel();
+        int atOnce = housesAtOnce(owner);
         int houses = 0;
-        if (level < construction.firstVisitMaxHouses()) {
-            houses = construction.firstVisitMaxHouses() - level;
+        if (level < atOnce) {
+            houses = atOnce - level;
         } else if (level < construction.maxHouses() && property.reachedInEarlierVisit()) {
             houses = 1;
         }
@@ -876,7 +891,7 @@ public final class GameEngine {
             return player.credits() >= definition.price() ? TurnPhase.AWAITING_PURCHASE : TurnPhase.AWAITING_END_TURN;
         }
         if (!property.get().ownerId().equals(player.id())) return TurnPhase.AWAITING_END_TURN;
-        BuildOptions options = buildOptions(property.get());
+        BuildOptions options = buildOptions(property.get(), player);
         boolean canAfford = (options.houses() > 0 && player.credits() >= definition.houseCost())
                 || (options.hotel() && player.credits() >= definition.hotelCost());
         return canAfford ? TurnPhase.AWAITING_BUILD : TurnPhase.AWAITING_END_TURN;

@@ -25,7 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * Conectado, quem deve tem {@code debt} para vender por conta própria; ao acabar, o servidor faz a mesma
  * venda, toda de uma vez, até quitar (GameService.timeout).
  */
-public record TurnTimeouts(Duration roll, Duration decision, Duration debt, Duration automatic, Catalog catalog) {
+public record TurnTimeouts(Duration roll, Duration decision, Duration debt, Duration automatic, Catalog catalog, Duration firstRoll) {
+
+    /** Sem prazo próprio para o primeiro lance: vale o mesmo de rolar. */
+    public TurnTimeouts(Duration roll, Duration decision, Duration debt, Duration automatic, Catalog catalog) {
+        this(roll, decision, debt, automatic, catalog, roll);
+    }
 
     public record Timeout(Duration duration, GameCommand defaultCommand) {
     }
@@ -45,7 +50,9 @@ public record TurnTimeouts(Duration roll, Duration decision, Duration debt, Dura
         if (automaticMode) return Optional.of(new Timeout(automatic, command));
         Duration duration = switch (state.phase()) {
             // Escolher o destino da viagem é a ação da casa Aeroporto: mesmo prazo das outras decisões.
-            case AWAITING_ROLL -> roll;
+            // Primeiro lance da partida (ninguém rolou ainda): no celular a mesa 3D ainda está carregando
+            // e o botão só aparece quando ela termina (pedido do usuário, 11/11/2026).
+            case AWAITING_ROLL -> state.lastDice() == null ? firstRoll : roll;
             case AWAITING_DEBT_RESOLUTION -> debt;
             default -> decision;
         };

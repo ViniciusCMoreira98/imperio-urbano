@@ -8,7 +8,8 @@
     "maxHouses": 4,
     "firstVisitMaxHouses": 3,
     "requiresFullColorGroup": false,
-    "fullGroupBaseRentMultiplier": 1
+    "fullGroupBaseRentMultiplier": 1,
+    "fourthHouseAfterLaps": 1
   },
   "olympics": {
     "hostFee": 50,
@@ -18,7 +19,7 @@
   "nationalTravel": { "fee": 50 },
   "tax": { "equityPercent": 10 },
   "debtSale": { "refundPercent": 80 },
-  "turnTimers": { "rollSeconds": 7, "decisionSeconds": 10, "debtSeconds": 10, "automaticSeconds": 2 },
+  "turnTimers": { "rollSeconds": 7, "decisionSeconds": 10, "debtSeconds": 10, "automaticSeconds": 2, "firstRollSeconds": 25 },
   "abandonment": { "seconds": 120, "botGameSeconds": 180 },
   "economy": {
     "stakes": [200, 1000, 5000, 10000, 100000],

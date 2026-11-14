@@ -62,6 +62,8 @@ record SnapshotView(
             boolean travelPending,
             int restPasses,
             int rentWaivers,
+            /** Voltas completas no tabuleiro (libera a Casa 4 de uma vez, 14/11/2026). */
+            int laps,
             /** Foto do Google; nula para convidado (o card mostra o personagem). */
             String photoUrl) {
     }
@@ -96,6 +98,6 @@ record SnapshotView(
     private static Player player(PlayerState p, LobbyView.Member member, Set<String> connected) {
         return new Player(p.id(), p.nickname(), member.avatarId(), member.pawnColor(), member.seat(),
                 p.credits(), p.position(), member.ready(), connected.contains(p.id()), p.bankrupt(),
-                p.skipTurns(), p.travelPending(), p.restPasses(), p.rentWaivers(), member.photoUrl());
+                p.skipTurns(), p.travelPending(), p.restPasses(), p.rentWaivers(), p.laps(), member.photoUrl());
     }
 }

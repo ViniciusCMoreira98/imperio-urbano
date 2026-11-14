@@ -74,6 +74,13 @@ describe('regras de apoio à interface', () => {
     expect(buildOptions(property(4, 3, 2))).toEqual({ houses: 0, hotel: true });
   });
 
+  it('depois de uma volta no tabuleiro, a Casa 4 não espera outra visita', () => {
+    expect(buildOptions(property(2, 1, 1), 1)).toEqual({ houses: 2, hotel: false });
+    expect(buildOptions(property(3, 1, 1), 1)).toEqual({ houses: 1, hotel: false });
+    expect(buildOptions(property(4, 1, 1), 1)).toEqual({ houses: 0, hotel: false });
+    expect(affordablePurchaseHouses(states.find((s) => s.id === 'AP')!, 99999, 4)).toBe(4);
+  });
+
   it('calcula casas pagáveis na compra e aluguel com Olimpíadas', () => {
     const ap = states.find((s) => s.id === 'AP')!;
     expect(affordablePurchaseHouses(ap, ap.price + ap.houseCost)).toBe(1);

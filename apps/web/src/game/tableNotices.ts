@@ -110,7 +110,7 @@ export function tableNotices(
 
   if (myLastMove >= 0) {
     const moved = events[myLastMove] as Extract<DomainEvent, { type: 'PLAYER_MOVED' }>;
-    const short = noFundsAt(snapshot, myId, moved.to, me.credits);
+    const short = noFundsAt(snapshot, myId, moved.to, me.credits, me.laps ?? 0);
     if (short) notices.push({ id: firstVersion + myLastMove, kind: 'noFunds', after: 'table', ...short });
   }
   if (turnCameToMe >= 0 && me.travelPending && me.credits < rules.nationalTravel.fee) {
@@ -126,7 +126,7 @@ export function tableNotices(
 }
 
 /** O que o jogador não pôde fazer por falta de saldo ao parar em {@code tile}; null se não faltou nada. */
-function noFundsAt(snapshot: GameSnapshot, myId: string, tile: number, credits: number): { title: string; text: string } | null {
+function noFundsAt(snapshot: GameSnapshot, myId: string, tile: number, credits: number, laps: number): { title: string; text: string } | null {
   const definition = board.tiles[tile];
   if (!definition) return null;
   const have = `você tem ${formatCredits(credits)}`;
@@ -145,7 +145,7 @@ function noFundsAt(snapshot: GameSnapshot, myId: string, tile: number, credits: 
     return { title: 'Sem saldo para comprar', text: `${state.name} custa ${formatCredits(state.price)} e ${have}.` };
   }
   if (property.ownerId !== myId || snapshot.phase === 'AWAITING_BUILD') return null;
-  const options = buildOptions(property);
+  const options = buildOptions(property, laps);
   if (options.houses === 0 && !options.hotel) return null;
   const canAfford = (options.houses > 0 && credits >= state.houseCost) || (options.hotel && credits >= state.hotelCost);
   if (canAfford) return null;

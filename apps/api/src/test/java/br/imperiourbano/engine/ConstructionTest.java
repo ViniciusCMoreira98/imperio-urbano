@@ -116,8 +116,42 @@ class ConstructionTest {
         run("ana", new Build(1));
 
         assertThat(acre().buildingLevel()).isEqualTo(3);
-        assertThat(engine.buildOptions(acre())).isEqualTo(new GameEngine.BuildOptions(0, false));
+        assertThat(engine.buildOptions(acre(), state.player("ana"))).isEqualTo(new GameEngine.BuildOptions(0, false));
         assertThat(state.phase()).isEqualTo(TurnPhase.AWAITING_END_TURN);
+    }
+
+    @Test
+    void afterALapTheFourthHouseComesWithThePurchase() {
+        // Ana perto do fim do tabuleiro: 3 + 4 passa pelo Início e para em Roraima (casa 3).
+        state = state.updatePlayer("ana", p -> p.withPosition(30));
+        run("ana", new RollDice(), 3, 4);
+        assertThat(state.player("ana").laps()).as("passou pelo Início: uma volta").isEqualTo(1);
+        assertThat(state.player("ana").position()).isEqualTo(3);
+
+        GameEngine.Result result = run("ana", new BuyProperty(4));
+
+        assertThat(result.events()).contains(new HouseBuilt("ana", "RR", 4, 4 * CATALOG.state("RR").houseCost()));
+        assertThat(state.property("RR").orElseThrow().buildingLevel()).isEqualTo(4);
+    }
+
+    @Test
+    void afterALapTheFourthHouseNeedsNoOtherVisit() {
+        state = state.updatePlayer("ana", PlayerState::withLap);
+        anaReturnsToAcre(2, 1, 1);
+
+        assertThat(engine.buildOptions(acre(), state.player("ana"))).isEqualTo(new GameEngine.BuildOptions(2, false));
+        run("ana", new Build(2));
+        assertThat(acre().buildingLevel()).isEqualTo(4);
+        assertThat(engine.buildOptions(acre(), state.player("ana"))).as("o hotel continua pedindo outra visita")
+                .isEqualTo(new GameEngine.BuildOptions(0, false));
+    }
+
+    @Test
+    void landingOnStartAlsoCountsAsALapButRestDoesNot() {
+        state = state.updatePlayer("ana", p -> p.withPosition(31));
+        run("ana", new RollDice(), 1, 2);
+        assertThat(state.player("ana").position()).isZero();
+        assertThat(state.player("ana").laps()).isEqualTo(1);
     }
 
     @Test

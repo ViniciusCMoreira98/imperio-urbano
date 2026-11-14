@@ -311,7 +311,7 @@ class StoredItemCardsTest {
 
     @Test
     void bankruptcyLosesStoredItems() {
-        PlayerState broke = new PlayerState("x", "X", 10, 0, false, 1, true, 2, 3, true).asBankrupt();
+        PlayerState broke = new PlayerState("x", "X", 10, 0, false, 1, true, 2, 3, true, 0).asBankrupt();
 
         assertThat(broke.restPasses()).isZero();
         assertThat(broke.rentWaivers()).isZero();

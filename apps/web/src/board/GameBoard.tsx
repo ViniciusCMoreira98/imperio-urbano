@@ -10,6 +10,7 @@ import {formatCredits} from '../property-card/tileInfo';
 import {tileIndexOf} from './layout';
 import {Buildings,Pawns} from './Pieces';
 import {Board34Scene,type BoardRentLabel} from './board34/Board34Scene';
+import {BoardReadySignal} from '../store/boardReady';
 import type {BoardInsets,BoardFraming} from './camera/tabletopViewport';
 import {RentTags} from './RentTags';
 import{mobileCleanStudy,mobileRectangularStudy}from'./mobileStudy';
@@ -33,5 +34,5 @@ export function GameBoard({taxPoolLabel=null,insets,framing='standard'}:{taxPool
  const onSelect=(id:string)=>{const index=tileIndexOf(id);if(index!==null)selectTile(index);};
  const pieces=<><Buildings/>{!mobileRectangularStudy&&<RentTags labels={rents} mobile={framing==='mobile-diamond'} large={insets?.left!==undefined} clean={mobileCleanStudy}/>}<ChoiceHighlights/><Pawns/><RollingDice/></>;
  if(!active34)throw Error('A partida atual exige o catálogo de 34 casas.');
- return <Board34Scene environment="beach" framing={framing} insets={insets} selectedId={selectedId} onSelect={onSelect} rentLabels={rents} taxPoolLabel={taxPoolLabel} diceValues={null}>{pieces}</Board34Scene>;
+ return <Board34Scene environment="beach" framing={framing} insets={insets} selectedId={selectedId} onSelect={onSelect} rentLabels={rents} taxPoolLabel={taxPoolLabel} diceValues={null}>{pieces}<BoardReadySignal/></Board34Scene>;
 }

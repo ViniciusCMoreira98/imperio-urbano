@@ -35,7 +35,12 @@ public record RulesConfig(
             int maxHouses,
             int firstVisitMaxHouses,
             boolean requiresFullColorGroup,
-            int fullGroupBaseRentMultiplier) {
+            int fullGroupBaseRentMultiplier,
+            /**
+             * Voltas no tabuleiro a partir das quais a Casa 4 sai junto com as outras, sem esperar outra
+             * visita (pedido do usuário, 14/11/2026); 0 desliga e vale só {@code firstVisitMaxHouses}.
+             */
+            int fourthHouseAfterLaps) {
     }
 
     public record OlympicsRules(int hostFee, List<Integer> multipliers) {
@@ -82,7 +87,8 @@ public record RulesConfig(
      * (na dívida, vende o necessário para pagar).
      * {@code automaticSeconds}: pausa entre as jogadas do modo automático (jogador desconectado).
      */
-    public record TurnTimers(int rollSeconds, int decisionSeconds, int debtSeconds, int automaticSeconds) {
+    /** firstRollSeconds: primeiro lance da partida, enquanto a mesa 3D ainda carrega (11/11/2026); 0 = igual ao rollSeconds. */
+    public record TurnTimers(int rollSeconds, int decisionSeconds, int debtSeconds, int automaticSeconds, int firstRollSeconds) {
     }
 
     /**

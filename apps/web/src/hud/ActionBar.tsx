@@ -4,6 +4,7 @@ import { isMyTurn } from '../game/rules';
 import { shouldOfferRestChoice } from '../game/restChoice';
 import { playSound } from '../audio/audio';
 import { formatCredits } from '../property-card/tileInfo';
+import { useBoardReady } from '../store/boardReady';
 import { useCardBusy } from '../store/cardStore';
 import { useDiceStore } from '../store/diceStore';
 import { useGameStore } from '../store/gameStore';
@@ -31,6 +32,8 @@ export function ActionBar({ myId }: { myId: string }) {
   const cardBusy = useCardBusy();
   // A vez mostrada só passa ao próximo jogador quando a mesa termina a jogada anterior.
   const turnId = useShownTurnPlayerId();
+  // Antes da mesa aparecer (carregando no celular), nada de prazo correndo sobre o fundo vazio.
+  const boardReady = useBoardReady((s) => s.ready);
   if (!snapshot) return null;
 
   const mine = isMyTurn(snapshot, myId);
@@ -65,7 +68,7 @@ export function ActionBar({ myId }: { myId: string }) {
         </span>
         {restLeft > 0 && !choosingRest && <RestChip turns={restLeft} />}
         {/* Some enquanto a mesa mostra a jogada: o prazo do servidor só começa a correr quando ela termina. */}
-        {snapshot.status === 'IN_PROGRESS' && deadline !== null && !tableBusy && !choosingRest && <Countdown deadline={deadline} warn={mine} />}
+        {snapshot.status === 'IN_PROGRESS' && deadline !== null && boardReady && !tableBusy && !choosingRest && <Countdown deadline={deadline} warn={mine} />}
 
         {/* Rolar os dados fica no miolo do tabuleiro (RollButton, 08/11/2026). */}
         {/* Comprar/construir e recusar ("×") ficam no modal de evolução da propriedade; vender para pagar dívida, no aviso de venda (DebtSalePrompt). */}
@@ -99,7 +102,9 @@ export function RollButton({ myId }: { myId: string }) {
   const tableMoving = usePawnStore((s) => Object.keys(s.moving).length > 0);
   const cardBusy = useCardBusy();
   const turnId = useShownTurnPlayerId();
-  if (!snapshot || snapshot.status !== 'IN_PROGRESS') return null;
+  const boardReady = useBoardReady((s) => s.ready);
+  // Só com a mesa na tela: no celular o tabuleiro demora a carregar e o botão aparecia antes, sozinho.
+  if (!boardReady || !snapshot || snapshot.status !== 'IN_PROGRESS') return null;
   const phase = snapshot.phase;
   const canRoll = isMyTurn(snapshot, myId) && turnId === myId && (phase === 'AWAITING_ROLL' || phase === 'AWAITING_TRAVEL_DESTINATION');
   if (!canRoll) return null;

@@ -48,6 +48,25 @@ class TurnTimeoutsTest {
                 .hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(12), new GameCommand.DeclareBankruptcy()));
     }
 
+    @Test
+    void firstRollOfTheGameGetsItsOwnLongerDeadline() {
+        TurnTimeouts withFirstRoll = new TurnTimeouts(Duration.ofSeconds(10), Duration.ofSeconds(15), Duration.ofSeconds(12),
+                Duration.ofSeconds(2), catalog, Duration.ofSeconds(25));
+        GameEvent started = engine.start("g1", GameMode.CLASSIC, List.of(new StartingPlayer("ana", "Ana"), new StartingPlayer("bia", "Bia")));
+        GameState opening = engine.replay(List.of(started));
+        GameState later = engine.replay(List.of(started,
+                new GameEvent.DiceRolled("ana", new br.imperiourbano.engine.DiceRoll(1, 2)),
+                new GameEvent.TurnEnded("ana", "bia", 1)));
+
+        assertThat(withFirstRoll.forState(opening, false)).as("ninguém rolou ainda: a mesa ainda carrega")
+                .hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(25), new GameCommand.RollDice()));
+        assertThat(withFirstRoll.forState(opening, true)).as("desconectado segue o modo automático")
+                .hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(2), new GameCommand.RollDice()));
+        assertThat(later.phase()).isEqualTo(br.imperiourbano.engine.TurnPhase.AWAITING_ROLL);
+        assertThat(withFirstRoll.forState(later, false)).as("depois do primeiro lance, o prazo normal")
+                .hasValue(new TurnTimeouts.Timeout(Duration.ofSeconds(10), new GameCommand.RollDice()));
+    }
+
     /** Dívida que o saldo não cobre por {@code missing}. */
     private GameState anaShortBy(int missing, GameEvent... holdings) {
         List<GameEvent> log = new ArrayList<>();

@@ -23,20 +23,29 @@ export function propertyAt(snapshot: GameSnapshot, tileIndex: number): {
   return { definition: statesById.get(stateId), property: snapshot.properties.find((p) => p.stateId === stateId) };
 }
 
-/** Mesma regra de etapas por visita do motor (D4). */
-export function buildOptions(property: PropertyState): { houses: number; hotel: boolean } {
-  const { maxHouses, firstVisitMaxHouses } = rules.construction;
+/**
+ * Casas que dá para fazer de uma vez, como no motor: até a Casa 3 (D4) ou, depois de
+ * fourthHouseAfterLaps voltas no tabuleiro, as quatro (pedido do usuário, 14/11/2026).
+ */
+export function housesAtOnce(laps = 0): number {
+  const { maxHouses, firstVisitMaxHouses, fourthHouseAfterLaps } = rules.construction;
+  return fourthHouseAfterLaps > 0 && laps >= fourthHouseAfterLaps ? maxHouses : firstVisitMaxHouses;
+}
+
+/** Mesma regra de etapas por visita do motor (D4); {@code laps}: voltas do dono no tabuleiro. */
+export function buildOptions(property: PropertyState, laps = 0): { houses: number; hotel: boolean } {
+  const { maxHouses } = rules.construction;
+  const atOnce = housesAtOnce(laps);
   const level = property.buildingLevel;
   const earlierVisit = property.levelReachedAtVisit < property.ownerVisits;
   let houses = 0;
-  if (level < firstVisitMaxHouses) houses = firstVisitMaxHouses - level;
+  if (level < atOnce) houses = atOnce - level;
   else if (level < maxHouses && earlierVisit) houses = 1;
   return { houses, hotel: level === maxHouses && earlierVisit };
 }
 
-/** Quantas casas cabem no saldo ao comprar (0 a 3). */
-export function affordablePurchaseHouses(definition: StateDefinition, credits: number): number {
-  const max = rules.construction.firstVisitMaxHouses;
+/** Quantas casas cabem no saldo ao comprar (0 a {@code max}: 3, ou 4 depois de uma volta). */
+export function affordablePurchaseHouses(definition: StateDefinition, credits: number, max = rules.construction.firstVisitMaxHouses): number {
   let houses = 0;
   while (houses < max && definition.price + (houses + 1) * definition.houseCost <= credits) houses++;
   return houses;

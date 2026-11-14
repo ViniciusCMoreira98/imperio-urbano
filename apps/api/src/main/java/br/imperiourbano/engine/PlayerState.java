@@ -5,6 +5,8 @@ package br.imperiourbano.engine;
  * {@code restPasses} (Passe Livre) e {@code rentWaivers} (Aluguel Zero) são itens guardados das cartas
  * de evento (07/11/2026); snapshots antigos, sem esses campos, leem 0. {@code rollAfterTravel}: viajou
  * pelo Aeroporto nesta vez e ainda rola os dados (11/11/2026); snapshots antigos leem false.
+ * {@code laps}: voltas completas no tabuleiro, contadas ao passar ou parar no Início andando para a frente
+ * (14/11/2026, libera a Casa 4 de uma vez); snapshots antigos leem 0.
  */
 public record PlayerState(
         String id,
@@ -16,43 +18,49 @@ public record PlayerState(
         boolean travelPending,
         int restPasses,
         int rentWaivers,
-        boolean rollAfterTravel) {
+        boolean rollAfterTravel,
+        int laps) {
 
     static PlayerState starting(String id, String nickname, int credits) {
-        return new PlayerState(id, nickname, credits, 0, false, 0, false, 0, 0, false);
+        return new PlayerState(id, nickname, credits, 0, false, 0, false, 0, 0, false, 0);
     }
 
     PlayerState withCredits(int value) {
-        return new PlayerState(id, nickname, value, position, bankrupt, skipTurns, travelPending, restPasses, rentWaivers, rollAfterTravel);
+        return new PlayerState(id, nickname, value, position, bankrupt, skipTurns, travelPending, restPasses, rentWaivers, rollAfterTravel, laps);
     }
 
     PlayerState withPosition(int value) {
-        return new PlayerState(id, nickname, credits, value, bankrupt, skipTurns, travelPending, restPasses, rentWaivers, rollAfterTravel);
+        return new PlayerState(id, nickname, credits, value, bankrupt, skipTurns, travelPending, restPasses, rentWaivers, rollAfterTravel, laps);
     }
 
     PlayerState withSkipTurns(int value) {
-        return new PlayerState(id, nickname, credits, position, bankrupt, value, travelPending, restPasses, rentWaivers, rollAfterTravel);
+        return new PlayerState(id, nickname, credits, position, bankrupt, value, travelPending, restPasses, rentWaivers, rollAfterTravel, laps);
     }
 
     PlayerState withTravelPending(boolean value) {
-        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, value, restPasses, rentWaivers, rollAfterTravel);
+        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, value, restPasses, rentWaivers, rollAfterTravel, laps);
     }
 
     PlayerState withRestPasses(int value) {
-        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, travelPending, value, rentWaivers, rollAfterTravel);
+        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, travelPending, value, rentWaivers, rollAfterTravel, laps);
     }
 
     PlayerState withRentWaivers(int value) {
-        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, travelPending, restPasses, value, rollAfterTravel);
+        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, travelPending, restPasses, value, rollAfterTravel, laps);
     }
 
     /** Viajou pelo Aeroporto nesta vez e ainda rola os dados antes de passar a vez (11/11/2026). */
     PlayerState withRollAfterTravel(boolean value) {
-        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, travelPending, restPasses, rentWaivers, value);
+        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, travelPending, restPasses, rentWaivers, value, laps);
+    }
+
+    /** Completou mais uma volta no tabuleiro. */
+    PlayerState withLap() {
+        return new PlayerState(id, nickname, credits, position, bankrupt, skipTurns, travelPending, restPasses, rentWaivers, rollAfterTravel, laps + 1);
     }
 
     /** Falido perde tudo, inclusive os itens guardados. */
     PlayerState asBankrupt() {
-        return new PlayerState(id, nickname, 0, position, true, 0, false, 0, 0, false);
+        return new PlayerState(id, nickname, 0, position, true, 0, false, 0, 0, false, laps);
     }
 }

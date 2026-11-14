@@ -39,6 +39,8 @@ export interface PlayerState {
   restPasses: number;
   /** Aluguel Zero guardados (gasto sozinho no próximo aluguel adversário). */
   rentWaivers: number;
+  /** Voltas completas no tabuleiro (14/11/2026): a partir de rules.construction.fourthHouseAfterLaps, a Casa 4 sai de uma vez. Servidor antigo não manda (lê 0). */
+  laps?: number;
   /** Foto de perfil do Google (07/11/2026); ausente ou nula para convidado, que mostra o personagem. */
   photoUrl?: string | null;
 }

@@ -36,6 +36,7 @@ class GameEngineConfig {
     TurnTimeouts turnTimeouts(Catalog catalog) {
         RulesConfig.TurnTimers timers = catalog.rules().turnTimers();
         return new TurnTimeouts(Duration.ofSeconds(timers.rollSeconds()), Duration.ofSeconds(timers.decisionSeconds()),
-                Duration.ofSeconds(timers.debtSeconds()), Duration.ofSeconds(timers.automaticSeconds()), catalog);
+                Duration.ofSeconds(timers.debtSeconds()), Duration.ofSeconds(timers.automaticSeconds()), catalog,
+                Duration.ofSeconds(Math.max(timers.rollSeconds(), timers.firstRollSeconds())));
     }
 }
