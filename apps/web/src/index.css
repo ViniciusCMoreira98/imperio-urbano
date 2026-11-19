@@ -231,3 +231,9 @@ body {
 /* Telas menores: três colunas sem amontoar — some o ícone e os três textos diminuem juntos. */
 @media (max-width:1000px) { .pe-summary.pe-summary-with-balance { gap:8px; padding:12px 10px; } .pe-summary.pe-summary-with-balance .pe-summary-icon { display:none; } .pe-summary.pe-summary-with-balance strong { font-size:24px; } .pe-summary.pe-summary-with-balance span:not(.pe-summary-icon) { font-size:14px; } .pe-summary-balance small { font-size:12px; } }
 @media (max-width:700px) { .pe-summary.pe-summary-with-balance strong { font-size:19px; } .pe-summary.pe-summary-with-balance span:not(.pe-summary-icon) { font-size:12px; } .pe-summary-balance small { font-size:11px; } }
+
+/* Termos e Privacidade (LegalLinks): linha discreta no login e na aba Conta. */
+.legal-links{margin:10px 0 0;font-size:11px;line-height:1.4;text-align:center;color:#a9cadb}
+.legal-links a{color:#ffe19a;text-decoration:underline}
+.legal-links a:focus-visible{outline:2px solid #ffedaa;outline-offset:2px}
+@media(max-height:500px){.menu-legal{margin-top:6px;font-size:9px}}

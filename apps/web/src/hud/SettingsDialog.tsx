@@ -18,6 +18,7 @@ import { playSound } from '../audio/audio';
 import { useAudioStore } from '../audio/audioStore';
 import { useAppStore } from '../store/appStore';
 import { GoogleButton, googleClientId } from '../auth/GoogleButton';
+import { LegalLinks } from '../ui/LegalLinks';
 import { useAccountSync } from '../auth/useAccountSync';
 import { api, ApiError, type GoogleSignIn } from '../net/api';
 
@@ -252,6 +253,7 @@ function AccountTab({ onClose }: { onClose: () => void }) {
         {!session?.google && googleEnabled && <section className="st-google-card" aria-label="Salvar progresso com Google"><div className="st-google-heading"><img src={linkIcon} alt=""/><div><strong>Seu progresso com você</strong><p>Entre para guardar ou recuperar seu jogador.</p></div></div><GoogleButton text="signin_with" width={240} onCredential={(credential) => void linkGoogle(credential)}/><small>Conta já usada? Você entra no jogador ligado a ela.</small></section>}
         {session?.google && <section className="st-google-card st-google-connected"><img src={checkIcon} alt=""/><strong>Conta conectada</strong><p>Use esta conta para recuperar seu jogador em outro aparelho.</p></section>}
         {notice && <p className="st-google-notice" role="status">{notice}</p>}
+        <LegalLinks className="st-legal" />
       </div>
     </section>
   );

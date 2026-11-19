@@ -1,0 +1,23 @@
+/* Termos de Uso e Política de Privacidade: páginas estáticas, abrem sem o jogo carregar (link público para o Google). */
+:root { color-scheme: dark; }
+body { margin: 0; background: #082749; color: #e6f0f7; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+.legal { box-sizing: border-box; max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+.legal h1 { margin: 12px 0 4px; font-size: 30px; line-height: 1.2; color: #ffedb6; }
+.legal h2 { margin: 32px 0 8px; font-size: 20px; color: #ffe19a; }
+.legal-meta { margin: 0 0 20px; font-size: 14px; color: #9cc0d5; }
+.legal-draft { padding: 10px 14px; border: 1px solid #dca773; border-radius: 10px; background: #613943; color: #ffe4d3; font-size: 14px; }
+.legal a { color: #8fd3ff; }
+.legal-back { display: inline-block; font-size: 14px; text-decoration: none; }
+.legal mark { padding: 0 3px; border-radius: 4px; background: #ffd65a; color: #2b1d00; }
+.legal ul { padding-left: 22px; }
+.legal li { margin: 4px 0; }
+.legal table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.legal th, .legal td { padding: 8px; border: 1px solid #2f5f86; text-align: left; vertical-align: top; }
+.legal th { background: #0e3a62; color: #ffedb6; }
+@media (max-width: 560px) {
+  .legal table, .legal tbody, .legal tr, .legal td { display: block; width: 100%; box-sizing: border-box; }
+  .legal thead { display: none; }
+  .legal tr { margin-bottom: 10px; border: 1px solid #2f5f86; border-radius: 8px; overflow: hidden; }
+  .legal td { border: 0; border-top: 1px solid #1d4a70; }
+  .legal td:first-child { border-top: 0; background: #0e3a62; font-weight: bold; color: #ffedb6; }
+}

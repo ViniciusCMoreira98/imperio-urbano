@@ -24,6 +24,7 @@ import { useWallet } from '../net/useWallet';
 import { CurrencyMenuCard, PlayerMenuCard } from '../play-menu/MenuCards';
 import { loadLastSession } from '../net/session';
 import { GoogleButton, googleClientId } from '../auth/GoogleButton';
+import { LegalLinks } from '../ui/LegalLinks';
 import { useAccountSync } from '../auth/useAccountSync';
 import { useAppStore } from '../store/appStore';
 import { useCharacterStore, useMenuAvatar } from '../store/characterStore';
@@ -140,6 +141,7 @@ function NicknameForm() {
         </Button>
       )}
       <GoogleSignInBlock onError={setError} />
+      <LegalLinks className="menu-legal" prefix="Ao entrar, você aceita os " />
     </Panel>
   );
 }
